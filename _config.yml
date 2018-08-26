@@ -1,14 +1,14 @@
 baseurl:
-title: Tufte-Jekyll
-subtitle: Content-centric blogging
-author: clay harmon
+title: john-hearn.info
+subtitle: Science, software and sustainability
+author: John Hearn
 simple_search: http://google.com/search
 description: A Jekyll theme for content-rich sites
-name: tufte
+name: john-hearn
 markdown: kramdown
 markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 permalink: /articles/:short_year/:title
-timezone: America/New_York
+timezone: Europe/Madrid
 excerpt_separator: <!--more-->  # you can specify your own separator, of course.
 exclude: ['Gemfile', 'Gemfile.lock', 'Rakefile', 'UploadToGithub.Rakefile', 'README.md']
 post:
@@ -25,3 +25,7 @@ transfer:
   settings: -av
   source: _site/
   destination: ~/Git/clayh53.github.com/
+
+twitter_username: johnhearnbcn
+github_username: johnhearn
+linkedin_username: john-hearn-599762b
