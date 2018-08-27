@@ -71,7 +71,7 @@ And last but not least we have the headline claim about the hashtag being a good
 
 The next step is to translate the claims and their supporting claims into a tree structure. The online mind mapping tool MindMup has a free [argument visualizer](http://argument.mindmup.com/) which works great. This is the result.
 
-![Argument Map]({{site.baseurl}}/assets/custom/img/blog/2018-07-29-argument-maps/argument-map.png)
+![Argument Map](images/argument-map.png)
 
 It was actually quite hard to be totally objective but I think it gives a faithful summary of the flow of reasoning. At the top we have the main contention and underneath a hierarchy of other claims that support it.
 
