@@ -81,7 +81,7 @@ Our GUI won't just be a table but also have a textarea to hold the key. How to w
   verifyThat(table, hasItems(1));
   table.getSelectionModel().selectFirst();
   verifyThat("#key", hasText("category.key1"));
-}
+ }
 ```
 
 That's starting to smell bad again. To make the test make sense we had to induce behaviour from the test, namely selecting the first row. Actually this identifies a problem with the GUI itself because the initial state was undefined. Realising this we simplify the test again and move the default selection into the GUI code.
