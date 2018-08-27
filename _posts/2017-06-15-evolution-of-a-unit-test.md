@@ -65,7 +65,7 @@ Better, we've reduced the coupling again and the test is clean. Now we have a wo
  }
 ```
 
-That's better and involved the carefree deletion of useless code. There's more stuff going on like building the test data for the mock/stub and we're not testing `BundleLoader` at all. Nonetheless we've written an impressive amount of tested GUI with these 3 lines of test code and we haven't even run the app yet. [Note to self: testing tends to be concise and trouble free when there are few branch points in the code, as is the case here. Branch point introduce complexity and complicate the testing.]
+That's better and involved the carefree deletion of useless code{% marginnote "branchpoints" "Note to self: testing tends to be concise and trouble free when there are few branch points in the code, as is the case here. Branch point introduce complexity and complicate the testing." %}. There's more stuff going on like building the test data for the mock/stub and we're not testing `BundleLoader` at all. Nonetheless we've written an impressive amount of tested GUI with these 3 lines of test code and we haven't even run the app yet.
 
 Temptation overwhelms us as we generate a `BundleLoader` implementation with test data (remember we're decoupled from the FileSelector interface now, proof that the design is less coupled), run the app and amazingly it works first time!
 

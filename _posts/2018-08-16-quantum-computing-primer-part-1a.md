@@ -35,11 +35,11 @@ Binary data can also be be represented geometrically, for example as an arrow po
 
 ![Up](images/up.png)   ![Down](images/down.png)
 
-With this in mind we can interpret the familiar NOT operator or *gate* as simply flipping the arrow through 180º, from the `Up` state to the `Down` state and vice versa[^1]. The NOT gate, then, is an example of a *unitary operation* on the bit, that is to say, it changes the direction of the arrow but not its length. In fact in the classical world there are only two one-bit operations, the other being the *identity* operator which leaves the bit in its previous state and obviously doesn't affect the length of the arrow either.
+With this in mind we can interpret the familiar NOT operator or *gate* as simply flipping the arrow through 180º, from the `Up` state to the `Down` state and vice versa{% sidenote "spin" "The `Up` and `Down` terminology is also reminicent of one of the quantum mechanical properties of particles called [spin](https://en.wikipedia.org/wiki/Spin_(physics))." %}. The NOT gate, then, is an example of a *unitary operation* on the bit, that is to say, it changes the direction of the arrow but not its length. In fact in the classical world there are only two one-bit operations, the other being the *identity* operator which leaves the bit in its previous state and obviously doesn't affect the length of the arrow either.
 
 ## Extending the Notion of a Bit to the Quantum World
 
-Now take a moment to imagine that the arrow is not confined to just the `Up` and `Down` states, as it is in the classical world, but can point in *any* direction, up, down, left, right, front and back. The arrow is evidently not restricted to just two mutually exclusive binary states, as in the case of the classical bit, but rather any point over the whole surface of a sphere[^4].
+Now take a moment to imagine that the arrow is not confined to just the `Up` and `Down` states, as it is in the classical world, but can point in *any* direction, up, down, left, right, front and back. The arrow is evidently not restricted to just two mutually exclusive binary states, as in the case of the classical bit, but rather any point over the whole surface of a sphere{% sidenote "bloch-sphere" "This sphere is known as the [Bloch sphere](https://en.wikipedia.org/wiki/Bloch_sphere)." %}.
 
 ![Bloch sphere](images/bloch-sphere.png)
 
@@ -47,11 +47,11 @@ You’ve just imagined the possible states of a **quantum bit**, or **qubit** as
 
 As an analogy, take the surface of the earth with the north and south poles representing the `Up` and `Down` directions. Every location on the surface of the earth would represent a different state, given, for example, by its GPS coordinates.
 
-Now we can imagine a whole new family of gates which not only flip the arrow around 180º (like the classical NOT gate) but can rotate it by different angles into any direction[^2].
+Now we can imagine a whole new family of gates which not only flip the arrow around 180º (like the classical NOT gate) but can rotate it by different angles into any direction{% sidenote "gates" "In the quantum computing literature these gates have (cryptic) names like `H`, `X`, `Y` and `Z`. In reality they are all nothing more than rotations of the arrow in different directions by different amounts." %}.
 
 ## God *does* play dice
 
-In the strange world of quantum mechanics, when we make observations, those same observations affect the state of the system. In this case, when we **measure** a qubit it will always appear to be a classical `true` or `false`, *never anything else*. It is said that the state *collapses* to one of these values[^3]. What is more, the *probability* that it will collapse to one state or another is related directly to how close it is to that state, i.e. how close to the poles.
+In the strange world of quantum mechanics, when we make observations, those same observations affect the state of the system. In this case, when we **measure** a qubit it will always appear to be a classical `true` or `false`, *never anything else*. It is said that the state *collapses* to one of these values{% sidenote "collapse" "No one really knows for certain *why* this happens. There is evidence that when considering the measuring apparatus as a quantum mechanical system in itself then the collapse can be considered as altering the state on the whole system to bring both into alignment. Einstein famously was not convinced." %}. What is more, the *probability* that it will collapse to one state or another is related directly to how close it is to that state, i.e. how close to the poles.
 
 For example, if we identify the `Up` state as `false` and the `Down` state as `true` then if the arrow of our quantum bit is pointing up vertically it will almost certainly be `false` when measured, if it’s pointing down then it’s almost certain to be measured as `true`. If its pointing sideways then it could result in either `True` or `False` with equal likelihood. It is indeterministic, God really does play dice.
 
@@ -75,7 +75,7 @@ Let that sink in.
 
 Two linked, or *entangled*, quantum bits forming a 2-bit quantum register can be in a state which is not a combination of individual qubits! What's more, the measurement of one qubit collapses *both* qubits into a particular state, even if they are separated by great distances.
 
-Einstein called this "spooky action at a distance" and the physical mechanisms behind it are still a mystery. Nonetheless it has been show and confirmed by many experiments and it is one of the remarkable facts that gives quantum computing its immense power and set it apart from classical computing.
+Einstein called this "spooky action at a distance" and the physical mechanisms behind it are still a mystery{% sidenote "entanglement" "See [this video](https://www.youtube.com/watch?v=XGulRS2IyF8) for an esoteric and entertaining attempt explanation of this phenomenon." %}. Nonetheless it has been show and confirmed by many experiments and it is one of the remarkable facts that gives quantum computing its immense power and set it apart from classical computing.
 
 # Quantum computers are not reliable
 
@@ -92,10 +92,3 @@ We have seen how to extend a classical bit to the quantum world. We have also se
 3. Qubits can be combined into *registers* and these registers have more possible states than the combinations of the individual qubits. This means when one qubit is measured and collapses to a particular binary state then the other qubits in the register must also change, even if separated by enormous distances. This effect is known as *entanglement*.
 
 This area of computing is in its infancy and basic things that we take for granted must be reevaluated. On the other hand these properties taken together give us access to a powerful new programming paradigm. This introduction is just the very beginning.
-
-### Footnotes
-
-[^1]: The `Up` and `Down` terminology is also reminicent of one of the quantum mechanical properties of particles called [spin](https://en.wikipedia.org/wiki/Spin_(physics)).
-[^2]: In the quantum computing literature these gates have (cryptic) names like `H`, `X`, `Y` and `Z`. In reality they are all nothing more than rotations of the arrow in different directions by different amounts.
-[^3]: No one really knows for certain *why* this happens. There is evidence that when considering the measuring apparatus as a quantum mechanical system in itself then the collapse can be considered as altering the state on the whole system to bring both into alignment. Einstein famously was not convinced.
-[^4]: This sphere is known as the [Bloch sphere](https://en.wikipedia.org/wiki/Bloch_sphere)
