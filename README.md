@@ -1,26 +1,12 @@
+# Personal website
+
+Published [here](http://john-hearn.info)
+
+Follows original theme readme for reference...
+
 # tufte-jekyll theme
 
 The *Tufte-Jekyll* blog theme is based on the github repository by Edward Tufte [here](https://github.com/edwardtufte/tufte-css), which was orginally created by Dave Leipmann, but is now labeled under Edward Tufte's moniker. I borrowed freely from the Tufte-CSS repo and have transformed many of the typographic and page-structural features into a set of custom Liquid tags that make creating content using this style much easier than writing straight HTML. Essentially, if you know markdown, and mix in a few custom Liquid tags, you can be creating a website with this document style in short order.
-
-## Demo
-
-A sample site with self-documenting content is available [here](http://clayh53.github.io/tufte-jekyll/) on github pages.
-
-## Installation
-
-I'm not going to go into great detail here. I am just going to assume that anyone interested in either Jekyll, Edward Tufte's work or Github has some basic skills. I created this with Ruby 2.2.0 and Jekyll 2.5.3. There is absolutely nothing exotic going on here, so you can probably make any recent version of Jekyll work with this setup.
-
-So copy, pull, download a zipfile or whatever and fire it up.
-
-```
-cd ~/thatPlaceYouPutIt/tufte-jekyll
-jekyll build
-jekyll serve -w
-```
-
-And then point your browser at localhost:4000/tufte-jekyll
-
-You can also use `jekyll serve -w --baseurl ''` to remove `/tufte-jekyll` from the url and serve your site directly from localhost:4000. This only affects your local preview. See [Setting your baseurl correctly](#setting-your-baseurl-correctly) for more details.
 
 ## Configuration
 
