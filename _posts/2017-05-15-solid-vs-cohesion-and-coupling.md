@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: post
+asset-type: article
 name: solid-vs-cohesion-and-coupling
 title: SOLID Principles, Cohesion and Coupling
 description: Some observations about the relationship between well known programming principles

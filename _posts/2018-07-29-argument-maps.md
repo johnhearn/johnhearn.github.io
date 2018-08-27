@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: post
+asset-type: article
 name: argument-maps
 title: Argument Maps
 description: Simple example of using argument maps to visualise and simplify claims and objections to a given argument

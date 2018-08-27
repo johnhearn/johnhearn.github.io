@@ -3,7 +3,7 @@ layout: post
 asset-type: post
 name: evolution-of-unit-test
 title: Evolution of a Unit Test
-description: Example of the evolution of a real unit testing over the course of a morning
+description: Example of the evolution of a real unit test over the course of a morning
 date: 2017-06-15 09:18:00 +00:00
 author: John Hearn
 tags:

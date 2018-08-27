@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: post
+asset-type: article
 name: quantum-computing-primer-part-1a
 title: Quantum Computing Primer
 description: Basic introduction to quantum computing for software engineers
@@ -51,7 +51,7 @@ Now we can imagine a whole new family of gates which not only flip the arrow aro
 
 ## God *does* play dice
 
-In the strange world of quantum mechanics, when we make observations, those same observations affect the state of the system. In this case, when we **measure** a qubit it will always appear to be a classical `true` or `false`, *never anything else*. It is said that the state *collapses* to one of these values{% sidenote "collapse" "No one really knows for certain *why* this happens. There is evidence that when considering the measuring apparatus as a quantum mechanical system in itself then the collapse can be considered as altering the state on the whole system to bring both into alignment. Einstein famously was not convinced." %}. What is more, the *probability* that it will collapse to one state or another is related directly to how close it is to that state, i.e. how close to the poles.
+In the strange world of quantum mechanics, when we make observations, those same observations affect the state of the system. In this case, when we **measure** a qubit it will always appear to be a classical `true` or `false`, *never anything else*. It is said that the state *collapses* to one of these values{% sidenote "collapse" "This is known as the [measurement problem](https://en.wikipedia.org/wiki/Measurement_problem) because no one really knows for certain *why* or *how* this happens. There is evidence that when considering the measuring equipment as a quantum mechanical system in itself then the collapse can be considered as altering the state on the whole system to bring both into alignment. Einstein famously was not convinced." %}. What is more, the *probability* that it will collapse to one state or another is related directly to how close it is to that state, i.e. how close to the poles.
 
 For example, if we identify the `Up` state as `false` and the `Down` state as `true` then if the arrow of our quantum bit is pointing up vertically it will almost certainly be `false` when measured, if it’s pointing down then it’s almost certain to be measured as `true`. If its pointing sideways then it could result in either `True` or `False` with equal likelihood. It is indeterministic, God really does play dice.
 
