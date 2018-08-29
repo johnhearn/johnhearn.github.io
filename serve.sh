@@ -1,1 +1,1 @@
-bundle exec jekyll serve --livereload --incremental --drafts
+bundle exec jekyll serve --livereload --incremental --drafts --future
