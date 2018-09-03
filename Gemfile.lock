@@ -27,6 +27,7 @@ GEM
       pathutil (~> 0.9)
       rouge (>= 1.7, < 4)
       safe_yaml (~> 1.0)
+    jekyll-graphviz (0.1.0)
     jekyll-sass-converter (1.5.2)
       sass (~> 3.4)
     jekyll-time-to-read (0.1.2)
@@ -60,6 +61,7 @@ PLATFORMS
 
 DEPENDENCIES
   jekyll
+  jekyll-graphviz
   jekyll-time-to-read
   rouge
 

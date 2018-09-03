@@ -27,7 +27,12 @@ transfer:
   destination: ~/Git/clayh53.github.com/
 plugins:
   - jekyll-time-to-read
+  - jekyll/graphviz
 
 twitter_username: johnhearnbcn
 github_username: johnhearn
 linkedin_username: john-hearn-599762b
+
+graphviz:
+  options: "-Tsvg" # command option
+  executable: "circo"   # execute this string. specify full path to 'dot' if you need
