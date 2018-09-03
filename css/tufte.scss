@@ -609,3 +609,9 @@ body.full-width, .content-listing, ul.content-listing li.listing {
   padding-left: 0%;
   margin-left: 0px
 }
+
+/* Left align equations */
+.MathJax_Display { 
+  text-align: left !important;
+  display: inline !important;
+}
