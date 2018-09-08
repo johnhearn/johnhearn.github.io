@@ -118,7 +118,6 @@ p .subtitle { font-style: italic;
              display: block;
              line-height: 1.08888888888889; }
 
-
 p, ol, ul { font-size: 1.4rem; }
 
 p, li { line-height: 2rem;
@@ -137,7 +136,6 @@ blockquote p {  font-size: 1.1rem;
 blockquote footer { width: 45%;
                     text-align: right; }
 
-
 .sans { font-family: $sans-font;
         letter-spacing: .03em; }
 
@@ -145,7 +143,6 @@ pre, pre code, p code, p pre code { font-family: $code-font;  // removed .code '
         font-size: 1.2rem;                   // also added p code, p pre code and pre selector to account for Markdown parsing
         line-height: 1.71428571;        // of triple backticks plus rationalized line-heights and margins
         margin-top: 1.71428571rem; }
-
 
 h1 code, h2 code, h3 code { font-size: 0.80em; } //left in for no real reason
 
@@ -197,7 +194,6 @@ th, td{ font-size: 1.2rem;
                  line-height: 1.96; }
 /* -- End of Table Styling section --*/
 
-
 /* Basic Layout stuff --*/
 
 article { position: relative;
@@ -207,7 +203,6 @@ article { position: relative;
 
 section { padding-top: 1rem;
           padding-bottom: 1rem; }
-
 
 ul,ol { width: 45%;
      -webkit-padding-start: 5%;
@@ -405,7 +400,6 @@ body.full-width, .content-listing, ul.content-listing li.listing{ width: 90%;
   width: 90%;
 }
 
-
 h1.content-listing-header{
   font-style: normal;
   text-transform: uppercase;
@@ -428,7 +422,6 @@ li.listing {
   }
 }
 
-
 li.listing:last-of-type{
   border-bottom: none;
   margin-bottom: 1.4rem;
@@ -448,7 +441,6 @@ hr.slender {
     background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
 }
 // End of front listing page stuff
-
 
 // Printing ands screen media queries
 
@@ -517,7 +509,6 @@ hr.slender {
       display:none;
     }
 }
-
 
 /* --- Icomoon icon fonts CSS --*/
 @font-face {
@@ -601,8 +592,18 @@ hr.slender {
 
 /* My customisation */
 /* Correct formatting of code blocks */
-pre.highlight code {
-  padding-left: 0%
+pre.highlight {
+  padding-left: 0%;
+  line-height: 1.0;   
+  code {
+    font-size: 0.9rem;
+    padding-left: 0%;
+  }
+}
+
+code.highlighter-rouge {
+  font-size: 1.1rem;
+  font-weight: bolder;
 }
 
 body.full-width, .content-listing, ul.content-listing li.listing {
