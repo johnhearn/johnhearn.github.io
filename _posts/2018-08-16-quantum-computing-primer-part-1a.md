@@ -3,7 +3,7 @@ layout: post
 asset-type: article
 name: quantum-computing-primer-part-1a
 title: Quantum Computing Primer
-description: Basic introduction to quantum computing for software engineers
+description: Basic maths-free introduction to quantum computing for software engineers
 date: 2018-08-16 20:32:00 +00:00
 author: John Hearn
 tags:
@@ -13,19 +13,19 @@ tags:
 
 ![Header Image](images/header.jpg)
 
-Quantum comuting is coming, in fact it's on our doorstep.
+Quantum computing is coming, in fact it's on our doorstep.
 
 But there's a problem: a lack of quantum software engineers. There is a reason for this. At the moment much of the literature is either popular science, so watered down to be useless for practical purposes, or, at the other extreme, written *by* academics *for* academics making it tough going for many programmers to follow.
 
-Nonetheless software engineers are exactly what the field needs because we build abstractions and abstractions are sorely missing. Quantum computing needs YOU to build new constructs that adedemia hasn't even thought of yet. This article introduces the general concepts behind quantum computing which hopefully any programmer new to quantum computing can understand.
+Nonetheless software engineers are exactly what the field needs because we build abstractions and abstractions are sorely missing. Quantum computing needs YOU to build new constructs that academia hasn't even thought of yet. This article introduces the general concepts behind quantum computing which hopefully any programmer new to quantum computing can understand.
 
 ## A Bit of History
 
 It shouldn't be necessary to explain to programmers what a **bit** is. It's a concept so fundamental to computing that it's taken almost for granted in modern day programming.
 
-We often forget that in the earliest computers each bit of information required a clunky, power-hungry, sausage-sized vacuum tube. Programming in those days was low-level bit twiddling and was inherently error-prone. In time vacuuum tubes were replaced by individual transistors which were gradually miniaturised and packed more and more tightly into the integrated circuits which are the processors of today's laptops and smartphones.
+We often forget that in the earliest computers each bit of information required a clunky, power-hungry, sausage-sized vacuum tube. Programming in those days was low-level bit twiddling and was inherently error-prone. In time vacuum tubes were replaced by individual transistors which were gradually miniaturised and packed more and more tightly into the integrated circuits which are the processors of today's laptops and smartphones.
 
-Today's quantum computers are clunky, power-hungry and error-prone, like the vacuum tubes in their day. Programming them is basically low-level bit twiddling and they operation is inherently error prone. Do not be fooled into thinking that quantum computing is a step backwards, however, in fact we'll see that the strange consequences of quantum mechanics can be harnessed to bring immense benefits and even tiny quantum systems can produce results that traditional computing cannot. The computational power that they will represent in the comming years is unimaginable.
+Today's quantum computers are clunky, power-hungry and error-prone, like the vacuum tubes in their day. Programming them is basically low-level bit twiddling and they operation is inherently error prone. Do not be fooled into thinking that quantum computing is a step backwards, however, in fact we'll see that the strange consequences of quantum mechanics can be harnessed to bring immense benefits and even tiny quantum systems can produce results that traditional computing cannot. The computational power that they will represent in the coming years is unimaginable.
 
 ## What's a Bit Anyway?
 
@@ -35,7 +35,7 @@ Binary data can also be be represented geometrically, for example as an arrow po
 
 ![Up](images/up.png)   ![Down](images/down.png)
 
-With this in mind we can interpret the familiar NOT operator or *gate* as simply flipping the arrow through 180º, from the `Up` state to the `Down` state and vice versa{% sidenote "spin" "The `Up` and `Down` terminology is also reminicent of one of the quantum mechanical properties of particles called [spin](https://en.wikipedia.org/wiki/Spin_(physics))." %}. The NOT gate, then, is an example of a *unitary operation* on the bit, that is to say, it changes the direction of the arrow but not its length. In fact in the classical world there are only two one-bit operations, the other being the *identity* operator which leaves the bit in its previous state and obviously doesn't affect the length of the arrow either.
+With this in mind we can interpret the familiar NOT operator or *gate* as simply flipping the arrow through 180º, from the `Up` state to the `Down` state and vice versa{% sidenote "spin" "The `Up` and `Down` terminology is also reminiscent of one of the quantum mechanical properties of particles called [spin](https://en.wikipedia.org/wiki/Spin_(physics))." %}. The NOT gate, then, is an example of a *unitary operation* on the bit, that is to say, it changes the direction of the arrow but not its length. In fact in the classical world there are only two one-bit operations, the other being the *identity* operator which leaves the bit in its previous state and obviously doesn't affect the length of the arrow either.
 
 ## Extending the Notion of a Bit to the Quantum World
 
@@ -75,7 +75,7 @@ Let that sink in.
 
 Two linked, or *entangled*, quantum bits forming a 2-bit quantum register can be in a state which is not a combination of individual qubits! What's more, the measurement of one qubit collapses *both* qubits into a particular state, even if they are separated by great distances.
 
-Einstein called this "spooky action at a distance" and the physical mechanisms behind it are still a mystery{% sidenote "entanglement" "See [this video](https://www.youtube.com/watch?v=XGulRS2IyF8) for an esoteric and entertaining attempt explanation of this phenomenon." %}. Nonetheless it has been show and confirmed by many experiments and it is one of the remarkable facts that gives quantum computing its immense power and set it apart from classical computing.
+Einstein called this "spooky action at a distance" and the physical mechanisms behind it are still a mystery{% sidenote "entanglement" "See [this video](https://www.youtube.com/watch?v=XGulRS2IyF8) for an esoteric attempt to explain of this phenomenon." %}. Nonetheless it has been show and confirmed by many experiments to be true. It is one of the remarkable facts that gives quantum computing its immense power and set it apart from classical computing.
 
 # Quantum computers are not reliable
 
@@ -85,10 +85,20 @@ The current state of the art in quantum computing is very far from the reliabili
 
 # Summary
 
-We have seen how to extend a classical bit to the quantum world. We have also seen how these bits differ for their classical counterparts:
+We have seen how to extend a classical bit to the quantum world. We have also seen how these bits differ from their classical counterparts:
 
 1. Quantum bits (*qubits*) have a whole continuum of states, not just the binary states of a classical bit.
 2. Even though qubits have a continuum of possible states, when observed or *measured*, they *collapse*, permanently, to one of the classical binary states.
 3. Qubits can be combined into *registers* and these registers have more possible states than the combinations of the individual qubits. This means when one qubit is measured and collapses to a particular binary state then the other qubits in the register must also change, even if separated by enormous distances. This effect is known as *entanglement*.
 
-This area of computing is in its infancy and basic things that we take for granted must be reevaluated. On the other hand these properties taken together give us access to a powerful new programming paradigm. This introduction is just the very beginning.
+This area of computing is in its infancy and basic things that we take for granted must be reevaluated. On the other hand these properties taken together give us access to a powerful new programming paradigm. This introduction is just the very beginning. Nonetheless to get a deeper understanding of what's happening in order to be able to do anything useful requires understanding the maths involved but I encourage you to do so. Quantum computing needs you!
+
+# Online Resources
+
+If you would like to know more I can recommend the following online resources:
+
+Michael Nielson's YouTube course - [Quantum Computing for the Determined](https://www.youtube.com/playlist?list=PL1826E60FD05B44E4)
+
+Microsoft's Q# - [What is Quantum Computing?](https://docs.microsoft.com/en-us/quantum/quantum-concepts-1-intro?view=qsharp-preview)
+
+Craig Gidney's [Quirk](http://algassert.com/quirk) online quantum circuit simulator and [blog](http://algassert.com/).
