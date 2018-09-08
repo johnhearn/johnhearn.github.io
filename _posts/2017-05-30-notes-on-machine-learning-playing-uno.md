@@ -1,10 +1,10 @@
 ---
 layout: post
 title: Notes on Machine Learning - Playing Uno
-date: '2017-05-30T20:36:00.000+02:00'
+date: '2017-08-04T20:36:00.000+02:00'
 author: John
 tags:
-modified_time: '2017-05-30T20:36:31.172+02:00'
+modified_time: '2017-08-04T20:36:31.172+02:00'
 thumbnail: https://2.bp.blogspot.com/-t34_2_GX_zw/WS25HAVgWrI/AAAAAAAANVs/hZZ5k2OoRq8Vf9vNIcRlSw1GWu5wWwbHgCLcB/s72-c/uno%2Bsimulation.png
 blogger_id: tag:blogger.com,1999:blog-525051364647796957.post-7278705496644260718
 blogger_orig_url: http://john-hearn.blogspot.com/2017/05/notes-on-machine-learning-playing-uno.html
@@ -12,11 +12,11 @@ blogger_orig_url: http://john-hearn.blogspot.com/2017/05/notes-on-machine-learni
 
 I was playing [Uno](https://en.wikipedia.org/wiki/Uno_%28card_game%29) with my daughter last weekend and wondering about the best strategies. I had also been looking into [TensorFlow](https://www.tensorflow.org/) and, while the ideas and maths is relatively easy, a lack of practical knowledge about machine learning in general was making the reading difficult. So, as so often happens, two became one and I set about using Uno to learn about machine learning using TDD along the way.
 
-A [previous blog entry](https://john-hearn.blogspot.com.es/2017/05/notes-on-art-of-tdd-uno-part-1.html) talks about the TDD journey in creating an executable Uno model in Java. This post talks about the machine learning part.
+A [previous blog entry](notes-on-art-of-tdd-uno-part-1.html) talks about the TDD journey in creating an executable Uno model in Java. This post talks about the machine learning part.
 
 ### Better Players
 
-How can we apply machine learning to our Uno model? It seems natural that the logic should go into the `Player` class. That class currently just chooses a random card from amongst the playable cards (see the [previous post](https://john-hearn.blogspot.com.es/2017/05/notes-on-art-of-tdd-uno-part-1.html)). We could code some specialised logic into the `Player` class and test the outcome. That's not much fun for a simple game like Uno, the plan is to *learn* the winning strategy, but it's a good way to get started. First of all let's create a test harness for benchmarking our results. We already have a `Game` class which represents an entire game of Uno. One game is not enough to test the effectiveness of a `Player` so we extend the concept and create a Tournament  class. This class executes a given number of games and extracts some statistical data from the results. Just to test the class we run 10 iterations of 200 games, 2000 games in total, with two of our random players.
+How can we apply machine learning to our Uno model? It seems natural that the logic should go into the `Player` class. That class currently just chooses a random card from amongst the playable cards (see the [previous post](notes-on-art-of-tdd-uno-part-1.html)). We could code some specialised logic into the `Player` class and test the outcome. That's not much fun for a simple game like Uno, the plan is to *learn* the winning strategy, but it's a good way to get started. First of all let's create a test harness for benchmarking our results. We already have a `Game` class which represents an entire game of Uno. One game is not enough to test the effectiveness of a `Player` so we extend the concept and create a Tournament  class. This class executes a given number of games and extracts some statistical data from the results. Just to test the class we run 10 iterations of 200 games, 2000 games in total, with two of our random players.
 
 ```java
 Player[] players = { new RandomPlayer(), new RandomPlayer() };
