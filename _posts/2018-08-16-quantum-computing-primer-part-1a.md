@@ -3,7 +3,7 @@ layout: post
 asset-type: article
 name: quantum-computing-primer-part-1a
 title: Quantum Computing Primer
-description: Basic maths-free introduction to quantum computing for software engineers
+description: Basic maths-free introduction to quantum computing for software engineers.
 date: 2018-08-16 20:32:00 +00:00
 author: John Hearn
 tags:

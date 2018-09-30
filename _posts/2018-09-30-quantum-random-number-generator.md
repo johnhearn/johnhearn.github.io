@@ -3,11 +3,12 @@ layout: post
 asset-type: post
 name: quantum-random-number-generator
 title: Quantum Random Number Generator
-description: The simplest quantum algorithm
-date: 2018-09-30 17:45:00 +00:00
+description: The simplest quantum algorithm.
+date: 2018-09-30 15:45:00 +00:00
 author: John Hearn
 tags:
 - quantum computing
+
 ---
 
 {% newthought "One thing to understand is that, as things stand, quantum computers are not particularly useful." %} The limited number of quantum bits we have to work with is so limited that classical computers, with over half a century of exponential improvements behind them, beat quantum algorithms at every task. 

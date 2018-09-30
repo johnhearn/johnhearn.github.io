@@ -3,7 +3,7 @@ layout: post
 asset-type: article
 name: the-good-programmer
 title: The Good Programmer
-description: Some notes on the different meanings of quality
+description: Some notes on the different meanings of quality.
 date: 2018-04-20 16:30:00 +00:00
 
 ---

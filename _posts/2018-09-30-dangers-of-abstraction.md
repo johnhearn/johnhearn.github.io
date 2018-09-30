@@ -3,11 +3,11 @@ layout: post
 asset-type: article
 name: dangers-of-abstraction
 title: The Dangers of Abstraction
-description: Thoughts on the use of high-level abstractions where, if we are not careful, words easily loose their meaning
+description: Thoughts on the use of high-level abstractions where, if we are not careful, words easily loose their meaning.
 date: 2018-09-30 12:52:00 +00:00
 author: John Hearn
 tags:
-- quantum computing
+- critical thinking
 
 ---
 

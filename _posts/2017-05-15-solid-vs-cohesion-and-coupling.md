@@ -3,7 +3,7 @@ layout: post
 asset-type: article
 name: solid-vs-cohesion-and-coupling
 title: SOLID Principles, Cohesion and Coupling
-description: Some observations about the relationship between well known programming principles
+description: Some observations about the relationship between well known programming principles.
 date: 2017-05-15 16:52:00 +00:00
 author: John Hearn
 tags:
