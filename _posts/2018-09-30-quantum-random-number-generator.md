@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: post
+asset-type: notes
 name: quantum-random-number-generator
 title: Quantum Random Number Generator
 description: The simplest quantum algorithm.
