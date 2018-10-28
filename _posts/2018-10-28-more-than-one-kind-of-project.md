@@ -41,7 +41,7 @@ The idea will often be that the code and/or material will be rewritten in the ev
 
 ## The Full Monty
 
-It is a reality that some projects have difficulty releasing anything but a near completed product. It may be because of immovable company culture{% marginnote culture "large and established companies have a lot of difficulty with this" %} or it may be a constraint of the product itself. Embedded systems cannot be released before the hardware is developed. Some financial offerings only work if released as a package.
+It is a reality that some projects have difficulty releasing anything but a near completed product. It may be because of immovable company culture{% sidenote culture "Large and established companies have especial difficulty with this." %} or it may be a constraint of the product itself. Embedded systems cannot be released before the hardware is developed. Some financial offerings only work if released as a package.
 
 Importantly, these kind of projects probably have a pre-agreed release date. Quality is a concern but the date is often more important to stakeholders so planning and some level of estimation appropriate to the level of certainty needed by the stakeholders is essential. 
 
@@ -63,7 +63,7 @@ The craftsman skills are again important for ensuring speed and quality within r
 
 The last example is the trusty maintenance mode project. These projects may or may not be passed to "on-going" teams for bug-fixing and minor enhancements. In any case it's probably working well enough for the job it was designed for and may not be touched for months or years. This is the case for many back-office applications and I have no data to back this up but I guess that this type of application constitutes a considerable part of the current software landscape.
 
-Some people enjoy deep knowledge of a legacy product, other find it unexciting. Nonetheless the conscientious software engineer has a place here too. The maintenance of these systems is of vital importance to many organisations and [legacy refactoring](http://amzn.eu/d/iGwYvm4) is a difficult but rewarding skill with great business value.
+Some people enjoy deep knowledge of a legacy product, others find it unexciting. Nonetheless the conscientious software engineer has a place here too. The maintenance of these systems is of vital importance to many organisations and [legacy refactoring](http://amzn.eu/d/iGwYvm4) is a difficult but rewarding skill with great business value.
 
 ## Conclusion
 
