@@ -52,7 +52,7 @@ Whether or not the changes actually occur may not be immediately apparent or may
 
  An interface specifies a contract, a contract is a single responsibility, or so my logic went. How can an object with multiple interfaces not be implementing multiple responsibilities? I feel to square this circle we should forget the word "responsibility" for a moment and talk about cohesion.
 
- I have a book called "The Practical Guide to Structured Systems Design" (SSD) written back in 1980 and I feel that many of the concepts explained in that book are as relevant here as they were nearly 40 years ago, and maybe more clearly explained because the world was simpler then.
+ I have a book called "The Practical Guide to Structured Systems Design" (SSD){% marginfigure ssd "assets/images/practical-guide-to-structured-systems-design.jpg" "[The Practical Guide to Structured Systems Design](https://www.goodreads.com/book/show/1441004.Practical_Guide_to_Structured_Systems_Design) by Meilir Page-Jones." %} written back in 1980 and I feel that many of the concepts explained in that book are as relevant here as they were nearly 40 years ago, and maybe more clearly explained because the world was simpler then.
 
 Cohesion is a measure of the strength of functional relatedness of elements within a module.
 
