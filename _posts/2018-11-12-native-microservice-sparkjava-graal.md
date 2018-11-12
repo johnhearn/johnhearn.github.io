@@ -2,7 +2,7 @@
 layout: post
 asset-type: notes
 title: Native µservices with SparkJava and Graal
-description: By keeping Java simple and avoiding .
+description: By keeping Java simple and avoiding unnecessary complexity we can natively compile SparkJava sercixes with Graal and no fuss at all.
 date: 2018-11-12 08:52:00 +01:00
 author: John Hearn
 
