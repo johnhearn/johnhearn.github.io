@@ -8,7 +8,7 @@ author: John Hearn
 
 ---
 
-In the last post we built the simplest native microservice with SparkJava and Graal. This time we'll take it a step further and use Kotlin instead of Java.
+In the [last post](native-microservice-sparkjava-graal.html) we built the simplest native microservice with SparkJava and Graal. This time we'll take it a step further and use Kotlin instead of Java.
 
 First we need to add the Kotlin library dependency to the Maven project (as of writing the version is `v1.3.10`).
 
