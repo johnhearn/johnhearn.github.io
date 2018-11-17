@@ -12,7 +12,7 @@ tags:
 
 When any **professional offers their services** for payment then they necessarily enter into a **two-way contract with their client**, either written, verbal or [implied](https://www.rocketlawyer.co.uk/article/implied-terms-of-employment-contract.rl). A written contract would set out the expectations of each party but many times it's partially or completely assumed based on a (hopefully) common understanding. In any case its terms will **vary according to the nature of the work** being undertaken.
 
-The [debate](https://www.youtube.com/watch?v=u-prgMPHcOE) about when the professional software engineer should practice their craft, that is if it should be expected of the [*employer* to provide training](https://www.praqma.com/stories/2who-pays-for-upskilling-soft-developers/) or whether the *professional* should hone his skills outside of working hours, seems to neglect the fact that any expectation that the professional may have of their employer, or the employer of the professional, is **defined by their relationship, not by either individually**.
+The [debate](https://www.youtube.com/watch?v=u-prgMPHcOE) about when the professional software engineer should practice their craft, that is if it should be expected of the [*employer* to provide training](https://www.praqma.com/stories/2who-pays-for-upskilling-soft-developers/) or whether the *professional* should hone their skills outside of working hours, seems to neglect the fact that any expectation that the professional may have of their employer, or the employer of the professional, is **defined by their relationship, not by either individually**.
 
 This is clear if we recognise that a single professional may have multiple relationships simultaneously with different clients, each with their own terms and expectations. The employer likewise, even more so.
 
@@ -48,4 +48,4 @@ As an aside, the concept of a contract between professional and client can be ab
 
 It makes explicit the difference between a property and a *quality*, the `Contract` representing the *qualification* of a relationship between two other entities with its own **independent** properties. There is an important distinction between this definition of a contract and the one sometimes used where a [*service provider* defines a contract](https://en.wikipedia.org/wiki/Design_by_contract) which the client must accept and abide by. 
 
-In my experience these kinds of models are underused in the wild, I guess that's maybe because they are seen as slightly awkward to implement in object oriented languages, although they are natural in relational databases. I'd be interested in hearing about more real-world examples."
+In my experience these kinds of models are underused in the wild, I guess that's maybe because they are seen as slightly awkward to implement in object oriented languages, although they are natural in relational databases. I'd be interested in hearing about more real-world examples.
