@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Notes on Machine Learning - Playing Uno</title>
+
+  
+  
+  <meta name="keywords" content=""/>
+  
+  
+  <meta property="og:title" content="Notes on Machine Learning - Playing Uno">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="/articles/notes-on-machine-learning-playing-uno/">
+  <meta property="og:image" content="https://2.bp.blogspot.com/-t34_2_GX_zw/WS25HAVgWrI/AAAAAAAANVs/hZZ5k2OoRq8Vf9vNIcRlSw1GWu5wWwbHgCLcB/s72-c/uno%2Bsimulation.png">
+  <meta property="og:description" content="Ruminations by a person &quot;beyond freaky&quot;">
+  <meta property="og:site_name" content="john-hearn.info">
+  
+  
+    <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="/articles/notes-on-machine-learning-playing-uno">
+
+  <link rel="alternate" type="application/rss+xml" title="john-hearn.info" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">john-hearn.info</a>
+	  
+      
+  	
+      
+  	
+      
+  	
+      
+		    
+		      <a href="/about/">About</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/notes">Notes</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/css/print.css"></a>
+		    
+	    
+  	
+      
+  	
+	</nav>
+</header>
+    <article class="group">
+      <h1>Notes on Machine Learning - Playing Uno</h1>
+<div class="subtitle">August 4, 2017</div>
+<div class="smaller">17 minutes.</div>
+ 
+<p>I was playing <a href="https://en.wikipedia.org/wiki/Uno_%28card_game%29">Uno</a> with my daughter last weekend and wondering about the best strategies. I had also been looking into <a href="https://www.tensorflow.org/">TensorFlow</a> and, while the ideas and maths is relatively easy, a lack of practical knowledge about machine learning in general was making the reading difficult. So, as so often happens, two became one and I set about using Uno to learn about machine learning using TDD along the way.</p>
+
+<p>A <a href="notes-on-art-of-tdd-uno-part-1.html">previous blog entry</a> talks about the TDD journey in creating an executable Uno model in Java. This post talks about the machine learning part.</p>
+
+<h3 id="better-players">Better Players</h3>
+
+<p>How can we apply machine learning to our Uno model? It seems natural that the logic should go into the <code class="highlighter-rouge">Player</code> class. That class currently just chooses a random card from amongst the playable cards (see the <a href="notes-on-art-of-tdd-uno-part-1.html">previous post</a>). We could code some specialised logic into the <code class="highlighter-rouge">Player</code> class and test the outcome. That’s not much fun for a simple game like Uno, the plan is to <em>learn</em> the winning strategy, but it’s a good way to get started. First of all let’s create a test harness for benchmarking our results. We already have a <code class="highlighter-rouge">Game</code> class which represents an entire game of Uno. One game is not enough to test the effectiveness of a <code class="highlighter-rouge">Player</code> so we extend the concept and create a Tournament  class. This class executes a given number of games and extracts some statistical data from the results. Just to test the class we run 10 iterations of 200 games, 2000 games in total, with two of our random players.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Player</span><span class="o">[]</span> <span class="n">players</span> <span class="o">=</span> <span class="o">{</span> <span class="k">new</span> <span class="n">RandomPlayer</span><span class="o">(),</span> <span class="k">new</span> <span class="n">RandomPlayer</span><span class="o">()</span> <span class="o">};</span>
+<span class="n">Tournament</span> <span class="n">tournament</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Tournament</span><span class="o">();</span>
+<span class="n">Stats</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">tournament</span><span class="o">.</span><span class="na">play</span><span class="o">(</span><span class="n">players</span><span class="o">,</span> <span class="mi">2000</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>The result is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RandomPlayer 1 51(1)
+RandomPlayer 2 49(1)
+</code></pre></div></div>
+
+<p><label for="statistics" class="margin-toggle"> ⊕</label><input type="checkbox" id="statistics" class="margin-toggle" /><span class="marginnote">A note on the statistics. the <a href="https://en.wikipedia.org/wiki/Standard_error">standard error</a> is an estimation of the deviation of the sampled mean from the true mean (which is what we really want to know but is impossible to calculate without infinite runs). It turns out that the standard error is inversely proportional to the square root of the number of runs. Why is this important? Well it means that 4x more runs are required to reduce the standard error by 2, 9x more runs to reduce it by 3, etc. This should be kept in mind when setting up the tournaments and reading the results. </span></p>
+
+<p><code class="highlighter-rouge">RandomPlayer 1</code> won 51% of its games on average with a standard error in the mean estimate of about 1. Likewise, <code class="highlighter-rouge">RandomPlayer 2</code> won 49% of the games. We see that the two players play at the same level, as expected.</p>
+
+<p>Let’s try something else. What about if the player plays offensively by always playing the lowest scoring card in their hand, keeping wild cards for the end? Overriding the appropriate method in <code class="highlighter-rouge">Player</code> we have:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">OffensivePlayer</span> <span class="kd">extends</span> <span class="n">Player</span> <span class="o">{</span>
+
+  <span class="kd">protected</span> <span class="n">Card</span> <span class="nf">chooseCard</span><span class="o">(</span><span class="n">List</span> <span class="n">playableCards</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Card</span> <span class="n">min</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">Card</span> <span class="n">next</span> <span class="o">:</span> <span class="n">playableCards</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">min</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">min</span><span class="o">.</span><span class="na">points</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">next</span><span class="o">.</span><span class="na">points</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">min</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">min</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>How does that do compared to the random player? Let’s see:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Player</span><span class="o">[]</span> <span class="n">players</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Player</span><span class="o">[]</span> <span class="o">{</span> <span class="k">new</span> <span class="n">OffensivePlayer</span><span class="o">(),</span> <span class="k">new</span> <span class="n">RandomPlayer</span><span class="o">()</span> <span class="o">};</span>
+<span class="n">Tournament</span> <span class="n">tournament</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Tournament</span><span class="o">();</span>
+<span class="n">Stats</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">tournament</span><span class="o">.</span><span class="na">play</span><span class="o">(</span><span class="n">players</span><span class="o">,</span> <span class="mi">4000</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Resulting in:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RandomPlayer 2    58(1)
+OffensivePlayer 1 42(1)
+</code></pre></div></div>
+
+<p>The new strategy won 42% of it’s games on average while the random player won 58%. Not a good strategy it would seem. What about the opposite: a defensive player? The code is very similar to the OffensivePlayer except that it chooses the highest scoring card from the hand. The result:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DefensivePlayer 1 75(1)
+RandomPlayer 2 25(1)
+</code></pre></div></div>
+
+<p>Wow! The defensive strategy knocks the socks off a random player. What happens if we pitch them against each other?</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DefensivePlayer 1 78(1)
+OffensivePlayer 2 22(1)
+</code></pre></div></div>
+
+<p>Defensive play seems to be the winning strategy. Let’s play all three against each other to see what happens.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DefensivePlayer 1 40(1)
+RandomPlayer 3    32(1)
+OffensivePlayer 2 28(1)
+</code></pre></div></div>
+
+<p>Defensive play still wins but not by such a margin this time. What happens when we add more random players?</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>OffensivePlayer 0 27(1)
+RandomPlayer 3    25(1)
+RandomPlayer 2    24(1)
+DefensivePlayer 1 23(1)
+</code></pre></div></div>
+
+<p>Curious. The defensive player is not so smug now! In fact it’s below the offensive one. It’s even below the random card players. It’s interesting to see that under some conditions neither the defensive nor the offensive strategy is objectively better. This is backed up by the Uno wiki page which says:</p>
+
+<blockquote>
+  <p>A strategy at Uno may be offensive (aiming to go out), or defensive (aiming to minimize the value of one’s hand, in the event that another player goes out, thus getting those points). Part of the skill of playing Uno is knowing when to adopt an offensive or defensive strategy.</p>
+</blockquote>
+
+<p>Adding more random players to the game changes the dynamics again.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>OffensivePlayer 0 22(1)
+DefensivePlayer 1 19(1)
+RandomPlayer 2    19(1)
+RandomPlayer 3    20(1)
+RandomPlayer 4    20(1)
+</code></pre></div></div>
+
+<p>It seems that the offensive player is more likely to win against random players. Here we have evidence that the offensive strategy works against random (i.e. “bad”) players whereas the defensive strategy works against “good” players.</p>
+
+<p>Offensive play is the best player we have found so far for most cases but maybe there are better strategies. We could have continued to improve the player logic in code. For example, playing action cards first but wild cards last seems to be one of the better options. However that was not the objective. I wanted to make it more intelligent - artificially intelligent…</p>
+
+<h3 id="step-up-the-perceptron">Step up the Perceptron</h3>
+
+<p>The Single Layer <a href="https://en.wikipedia.org/wiki/Perceptron">Perceptron</a> is the simplest kind of neural net assigning a matrix of weights to a list of inputs to produce a list of outputs. Take the simplest formula:</p>
+
+<script type="math/tex; mode=display">\textbf{z} = \textbf{w} \cdot \textbf{x} + \textbf{b}</script>
+
+<p>Where <strong>z</strong> is the output list (as a vector of doubles) and <strong>x</strong> is the input list, also a vector. The input list is also known as a feature vector because it represents the features or characteristics of some <em>thing</em> to be classified by the perceptron. The parameters <strong>w</strong> (another vector) and <strong>b</strong> (a scalar) control the weighting factors and bias (offsets from 0) of the perceptron model respectively. It looks like this:</p>
+
+<p><a href="https://i.stack.imgur.com/VqOpE.jpg"><img src="https://i.stack.imgur.com/VqOpE.jpg" alt="" /></a></p>
+
+<p>In our case <strong>x</strong> is a vector representing a potential card to be played and the output vector will have one element which gives us a number indicating the strength of that card. Using this model we’ll play the card with the highest strength. It should be possible to model both the offensive and defensive strategies with suitable choices of the parameters.</p>
+
+<p>The first, and most pressing question is: how do we know what values to use for the parameters <strong>w</strong> and <strong>b</strong>? That’s a good question. The perceptron can be <em>trained</em> using known answers and <a href="https://en.wikipedia.org/wiki/Backpropagation">back-propagation</a>. Since we don’t have any training data we’re going to take a different route and use a <a href="https://en.wikipedia.org/wiki/Genetic_algorithm">genetic optimisation algorithm</a> to <em>learn</em> the best parameters.</p>
+
+<p>The genetic algorithm is a simulation of the process of natural selection and uses survival of the fittest, mutation and sexual reproduction to continuously improve the parameters (genes) of a population. In our simplest case the player that wins most games will be selected as the “parent” of the next generation. Random fluctuations in the parameter values are introduced (mutations) and the losing players parameters are “crossed” with the winner to produce a new generation.</p>
+
+<p>The input vector is a list with 0s in every position except the one indicating the card to be evaluated, where the value is 1 (the so-called <a href="https://en.wikipedia.org/wiki/One-hot">1-hot encoding</a>). Our output vectors is only one element making the bias pointless so we’ll set it to 0. These choices make our calculation of <strong>z</strong> very easy and efficient.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">double</span> <span class="nf">evaluateCard</span><span class="o">(</span><span class="n">Card</span> <span class="n">card</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">double</span> <span class="n">output</span> <span class="o">=</span> <span class="n">w</span><span class="o">[</span><span class="n">card</span><span class="o">.</span><span class="na">index</span><span class="o">()];</span>
+  <span class="k">return</span> <span class="n">output</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Playing a tournament with a Perceptron player with all parameters initially set to 0 against a random player gives us the expected output, their results are virtually identical. </p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PerceptronPlayer 0 50(1)
+RandomPlayer 1     50(1)
+</code></pre></div></div>
+
+<h3 id="survival-of-the-fittest">Survival of the fittest</h3>
+
+<p>We are ready to introduce our <a href="https://en.wikipedia.org/wiki/Genetic_algorithm#Genetic_operators">genetic</a> algorithm. The mutation looks like this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">mutate</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">pack</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">random</span><span class="o">.</span><span class="na">nextDouble</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">w</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">+=</span> <span class="n">mutation</span><span class="o">();</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">double</span> <span class="nf">mutation</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">random</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The method <code class="highlighter-rouge">random()</code> returns a random number between -1 and +1. The two arbitrary mutation factors (0.1) affect the rate of mutation and the magnitude of mutation<label for="hyperparameters" class="margin-toggle sidenote-number"></label><input type="checkbox" id="hyperparameters" class="margin-toggle" /><span class="sidenote">These numbers are called hyperparameters. </span>. At the moment we don’t know what the optimal values of these numbers are so we’ll have to adjust them using trial and error (and intuition, for now). Actually the magnitude of the mutation should be arbitrary given that it applies equally to all weights. The rate of mutation however could affect the rate of convergence so we may need to tune it in the future.</p>
+
+<p>We can also teach it how to have sex, copying the parameters from a range of values:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">copyFrom</span><span class="o">(</span><span class="n">PerceptronPlayer</span> <span class="n">otherPlayer</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+  <span class="kt">int</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="na">nextInt</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span> <span class="n">x2</span><span class="o">);</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span> <span class="n">x2</span><span class="o">);</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="n">w</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">otherPlayer</span><span class="o">.</span><span class="na">w</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We run numerous tournaments generating a new generation of parameters every time as outlined above. After 200 iterations our Perceptron has learned how to beat a random card player, on average.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PerceptronPlayer 0 27(4)
+PerceptronPlayer 1 26(2)
+PerceptronPlayer 2 25(2)
+RandomPlayer 3     20(2)
+</code></pre></div></div>
+
+<p>Let’s try some more challenging training rounds: we put 3 Perceptrons up against one of each of the other players. The training starts like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>OffensivePlayer 4  22(1)
+PerceptronPlayer 0 17(1)
+PerceptronPlayer 2 17(2)
+PerceptronPlayer 1 16(2)
+RandomPlayer 5     14(1)
+DefensivePlayer 3  12(1)
+</code></pre></div></div>
+
+<p>Pretty much what we might expect. The defensive player does exceeding badly against many other players. The offensive player is winning with the Perceptron and random card players in the middle, averaging about the same.</p>
+
+<p>But after 500 training rounds (perceptron generations) the perceptrons are routinely beating all the other players:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PerceptronPlayer 0 21(1)
+PerceptronPlayer 1 19(2)
+PerceptronPlayer 2 17(0)
+OffensivePlayer 4  16(1)
+RandomPlayer 5     15(2)
+DefensivePlayer 3   9(2)
+</code></pre></div></div>
+
+<p>Lets run a tournament of 2000 games with this new player:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PerceptronPlayer 1 32(2)
+OffensivePlayer 8  26(1)
+RandomPlayer 6     22(1)
+DefensivePlayer 7  20(1)
+</code></pre></div></div>
+
+<p>Ladies and gentlemen we have a new champion. This is a linear Perceptron with a simple list of weights assigned to each card. Can we do better?</p>
+
+<h3 id="what-about-a-non-linear-perceptron">What about a non-linear perceptron? </h3>
+
+<p>Well first we’ll complete the single layer perceptron by applying a non-linear activation function to the evaluation. This is the evaluation formula:</p>
+
+<script type="math/tex; mode=display">\textbf{z} = \sigma(\textbf{w} \cdot \textbf{x} + \textbf{b})</script>
+
+<p>Where <strong>σ</strong> is a nonlinear function normally taken to be a step function, sigmoid or tanh. Basically my understanding is that this exaggerates small variations close to 0 and attenuates large values away from 0 making the overall function more effective in generating interesting results. Note that this non-linearity function makes the bias vector meaningful again so that gets the mutation treatment too.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">(</span><span class="n">random</span><span class="o">.</span><span class="na">nextDouble</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">b</span> <span class="o">+=</span> <span class="n">mutation</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We’ll choose the <a href="https://en.wikipedia.org/wiki/Heaviside_step_function">Heaviside</a> step function as our our non-linear activation function because it’s easy and efficient to calculate. The mathematical advantages of the sigmoid and tanh functions are of little use to us here anyway since we’re not doing backpropagation. By the way, don’t let anyone tell you that the step function is linear, it’s not. It does have straight bits but that does not in any way make it linear. Anyway it’s easy to implement:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="n">h</span> <span class="o">=</span> <span class="n">w</span><span class="o">[</span><span class="n">card</span><span class="o">.</span><span class="na">index</span><span class="o">()]</span> <span class="o">+</span> <span class="n">b</span><span class="o">;</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">h</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+  <span class="n">output</span> <span class="o">+=</span> <span class="n">h</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p>Once again we set off a training session and after 500 iterations this is the result.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>OffensivePlayer 8  31(2)
+PerceptronPlayer 2 26(1)
+RandomPlayer 6     23(1)
+DefensivePlayer 7  20(1)
+</code></pre></div></div>
+
+<p>Not a very big improvement on the random card player. Maybe the training wasn’t long enough. It took a while so let’s see if we can optimise it a bit more first.</p>
+
+<h3 id="better-features">Better features</h3>
+
+<p>I took out some logging to speed things up but it was also concerning me that we had 108+1 degrees of freedom in the model, one for the weight applied to each of the cards in the pack and one for the <strong>b</strong> parameter. We have some redundancy in the model because there are very often 2 or even 4 copies of the same card. I eliminated that redundancy with a hash lookup table reducing the number of degrees of freedom to 53+1 (this is called <a href="https://en.wikipedia.org/wiki/Feature_hashing">Feature hashing</a>).</p>
+
+<p>Initialise the starting weight and bias to 0, we run 2000 training steps and get:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PerceptronPlayer 0 31(2)
+OffensivePlayer 8  25(1)
+RandomPlayer 6     23(2)
+DefensivePlayer 7  21(1)
+</code></pre></div></div>
+
+<p>That’s better. Now let’s complicate things still further. Multi-layer Perceptrons have at least one hidden vector of intermediate values which are then mapped a second time to the output. To convert from our input vector to the hidden vector the weight <em>vector</em> becomes a weight <em>matrix</em> but the maths stays very similar. Our evaluation function now has to sum over all the hidden vector intermediate results:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">double</span> <span class="nf">evaluateCard</span><span class="o">(</span><span class="n">Card</span> <span class="n">card</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">featureVector</span><span class="o">.</span><span class="na">indexOf</span><span class="o">(</span><span class="n">card</span><span class="o">);</span>
+  <span class="kt">double</span> <span class="n">output</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">HIDDEN_LAYER_SIZE</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+
+    <span class="kt">double</span> <span class="n">h</span> <span class="o">=</span> <span class="n">w</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">+</span> <span class="n">b</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">h</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+      <span class="n">output</span> <span class="o">+=</span> <span class="n">h</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="n">output</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We can see the step function is still there but this time included within a loop over the hidden layer. Once again the calculation is simplified immensely by the choice of input vector (all 0s with a single 1 at position i). At first I tried a hidden vector of 10 values. This increases the number of parameters again which is worrying for training purposes, anyway we plough on and train the network in exactly the same way a before. Mutation and parameter crossing is employed, this time over the whole 2D matrix of parameters. With some trepidation I launch a training session and then run a tournament. Here are the results with a graph for good measure.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PerceptronPlayer 3 31(1)
+OffensivePlayer 1  25(1)
+DefensivePlayer 0  22(1)
+RandomPlayer 2     22(1)
+</code></pre></div></div>
+
+<p><img src="https://2.bp.blogspot.com/-t34_2_GX_zw/WS25HAVgWrI/AAAAAAAANVs/hZZ5k2OoRq8Vf9vNIcRlSw1GWu5wWwbHgCLcB/s1600/uno%2Bsimulation.png" alt="Screenshot" /></p>
+
+<p>Well we haven’t made it worse, but we haven’t made it a whole lot better either. It may or may not be worth tuning the new perceptron but time is running out.</p>
+
+<p>Let’s quickly give it a better opponent. We could improve the offensive player’s strategy still more by getting rid of the highest non-wild cards first. In this way we’ll still hold on to wild cards for the end of the round. These are the results of adding that type of player to a 10,000 game tournament with all the other usual suspects:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PerceptronPlayer 0      22(1)
+BetterOffensivePlayer 9 21(2)
+OffensivePlayer 8       20(2)
+RandomPlayer 6          18(2)
+DefensivePlayer 7       17(1)
+</code></pre></div></div>
+
+<p>Our thoughtful play has indeed improved upon the previous incarnation but the Perceptron is still in there. In fact the Perceptron should be able to simulate and even improve all of our strategies. For example it would learn the best strategy for Draw Two cards. (Don’t tell anyone but actually the variances shown here render these results nearly useless. We could run longer tournaments but time has run out.) What we can say is that the simple genetic algorithm has indeed learned to play Uno quite well.</p>
+
+<h3 id="what-next">What next?</h3>
+
+<p>There’s so much more to explore. For example, one thing our (Multi-Layered) Perceptron cannot do is remember the sequence of cards that have been played before which may have an effect of the best game play. For that we need state memory or an <a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/">RNN</a>, learning from <em>every</em> winning game by backpropagation, for example. Also we could add more information to the feature vectors, how many cards each player has would potentially be a useful thing to know.</p>
+
+<p>That’s for another day. For now I need to get back and do some proper work!</p>
+
+
+
+    </article>
+    <span class="print-footer">Notes on Machine Learning - Playing Uno - August 4, 2017 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2018 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

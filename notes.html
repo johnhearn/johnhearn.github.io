@@ -1,17 +1,262 @@
----
-layout: page
-title: Notes
----
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Notes</title>
+
+  
+  
+  
+  <meta property="og:title" content="Notes">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="/notes/">
+  <meta property="og:image" content="/assets/images/the-ship-of-fools.jpg">
+  <meta property="og:description" content="Ruminations by a person &quot;beyond freaky&quot;">
+  <meta property="og:site_name" content="john-hearn.info">
+  
+  
+    <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="/notes">
+
+  <link rel="alternate" type="application/rss+xml" title="john-hearn.info" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">john-hearn.info</a>
+	  
+      
+  	
+      
+  	
+      
+  	
+      
+		    
+		      <a href="/about/">About</a>
+		    
+	    
+  	
+      
+		    
+		      <a class="active" href="/notes" class="active">Notes</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/css/print.css"></a>
+		    
+	    
+  	
+      
+  	
+	</nav>
+</header>
+    <article class="group">
+      <h1>Notes</h1>
+<p class="subtitle"></p>
+
 
 <ul class="content-listing ">
-{% for post in site.posts %}
-  {% if post.asset-type != "article" %}
+
+  
     <li class="listing">
         <hr class="slender">
-        <a href="{{ post.url | prepend: site.baseurl }}"><h3 class="contrast">{{ post.title }}</h3></a>
-        <br><span class="smaller">{{ post.date | date: "%B %-d, %Y" }}</span>  <br/>
-        <div>{{ post.description }}</div> 
+        <a href="/articles/native-microservice-kotlin-sparkjava-graal-gradle"><h3 class="contrast">Native µservices with Kotlin, Spark, Graal and Gradle</h3></a>
+        <br><span class="smaller">November 18, 2018</span>  <br/>
+        <div>Moving from Maven to Gradle for the Kotlin/SparkJava. Spoiler it's almost too easy.</div> 
     </li>
-  {% endif %}
-{% endfor %}
+  
+
+  
+
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/native-microservice-kotlin-sparkjava-graal"><h3 class="contrast">Native µservices with Kotlin, Spark and Graal</h3></a>
+        <br><span class="smaller">November 14, 2018</span>  <br/>
+        <div>Combining SparkJava, Graal and Kotlin.</div> 
+    </li>
+  
+
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/native-microservice-sparkjava-graal"><h3 class="contrast">Native µservices with SparkJava and Graal</h3></a>
+        <br><span class="smaller">November 12, 2018</span>  <br/>
+        <div>By keeping Java simple and avoiding unnecessary (hidden) complexity we can natively compile SparkJava services with Graal with no fuss at all.</div> 
+    </li>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/grovers-search"><h3 class="contrast">Grover's Search Algorithm</h3></a>
+        <br><span class="smaller">October 3, 2018</span>  <br/>
+        <div>At last, a potentially useful quantum algorithm.</div> 
+    </li>
+  
+
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/deutsch-jozsa-algorithm"><h3 class="contrast">The Deutsch-Jozsa Algorithm</h3></a>
+        <br><span class="smaller">October 1, 2018</span>  <br/>
+        <div>One of the first quantum algorithms which was shown to be significantly better that any classical counterpart.</div> 
+    </li>
+  
+
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/quantum-random-number-generator"><h3 class="contrast">Quantum Random Number Generator</h3></a>
+        <br><span class="smaller">September 30, 2018</span>  <br/>
+        <div>The simplest quantum algorithm.</div> 
+    </li>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/notes-on-go-go-kit-for-java-programmer"><h3 class="contrast">Notes on Go - Go-kit for a Java programmer</h3></a>
+        <br><span class="smaller">November 1, 2017</span>  <br/>
+        <div></div> 
+    </li>
+  
+
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/notes-on-machine-learning-playing-uno"><h3 class="contrast">Notes on Machine Learning - Playing Uno</h3></a>
+        <br><span class="smaller">August 4, 2017</span>  <br/>
+        <div></div> 
+    </li>
+  
+
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/evolution-of-a-unit-test"><h3 class="contrast">Evolution of a Unit Test</h3></a>
+        <br><span class="smaller">June 15, 2017</span>  <br/>
+        <div>Example of the evolution of a real unit test over the course of a morning.</div> 
+    </li>
+  
+
+  
+
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/notes-on-art-of-tdd-uno-part-4"><h3 class="contrast">Notes on the Art of TDD - Uno (Part 4)</h3></a>
+        <br><span class="smaller">June 4, 2017</span>  <br/>
+        <div></div> 
+    </li>
+  
+
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/notes-on-art-of-tdd-uno-part-3"><h3 class="contrast">Notes on the Art of TDD - Uno (Part 3)</h3></a>
+        <br><span class="smaller">June 1, 2017</span>  <br/>
+        <div></div> 
+    </li>
+  
+
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/notes-on-art-of-tdd-uno-part-2"><h3 class="contrast">Notes on the Art of TDD - Uno (Part 2)</h3></a>
+        <br><span class="smaller">May 23, 2017</span>  <br/>
+        <div></div> 
+    </li>
+  
+
+  
+
 </ul>
+
+    </article>
+    <span class="print-footer">Notes - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2018 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

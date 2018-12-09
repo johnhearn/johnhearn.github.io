@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Grover's Search Algorithm</title>
+
+  
+  <meta name="description" content="At last, a potentially useful quantum algorithm.">
+  
+  
+  <meta name="keywords" content="quantum computing"/>
+  
+  
+  <meta property="og:title" content="Grover&#39;s Search Algorithm">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="/articles/grovers-search/">
+  <meta property="og:image" content="/assets/images/the-ship-of-fools.jpg">
+  <meta property="og:description" content="At last, a potentially useful quantum algorithm.">
+  <meta property="og:site_name" content="john-hearn.info">
+  
+  
+    <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="/articles/grovers-search">
+
+  <link rel="alternate" type="application/rss+xml" title="john-hearn.info" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">john-hearn.info</a>
+	  
+      
+  	
+      
+  	
+      
+  	
+      
+		    
+		      <a href="/about/">About</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/notes">Notes</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/css/print.css"></a>
+		    
+	    
+  	
+      
+  	
+	</nav>
+</header>
+    <article class="group">
+      <h1>Grover's Search Algorithm</h1>
+<div class="subtitle">October 3, 2018</div>
+<div class="smaller">two minutes.</div>
+ 
+<p>Grover’s algorithm is actually useful<label for="useful" class="margin-toggle"> ⊕</label><input type="checkbox" id="useful" class="margin-toggle" /><span class="marginnote">Useful, at least, if we had more real qubits available for processing. That is to say reaching quantum supremacy. All of these examples only make sense when scaled to hundreds of qubits. We currently have just a few dozen at most, not counting for error correction.  </span>. It can quickly find configurations of bits matching some predefined criteria. Let’s take an absurdly simple example and find the bit sequence matching a given number.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">assertEquals</span><span class="p">(</span><span class="m">0</span><span class="n">b1011</span><span class="p">,</span> <span class="n">groversSearch</span><span class="p">(</span><span class="m">4</span><span class="p">)</span> <span class="p">{</span><span class="n">it</span> <span class="p">==</span> <span class="m">0</span><span class="n">b1011</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>The algorithm itself starts in a similar way to Deutsch’s algorithm, namely that it takes n bits and an additional <em>ancillary</em> bit and performs a hadamard operation on all of them. Intuitively this prepares the bits by putting them in an unbiased superposition, that is, so to speak, half <code class="highlighter-rouge">1</code> and half <code class="highlighter-rouge">0</code>.</p>
+
+<p>In quko this looks like before:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">phi</span> <span class="p">=</span> <span class="n">Qubits</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">random</span><span class="p">).</span><span class="n">hadamard</span><span class="p">(</span><span class="m">0</span> <span class="n">until</span> <span class="n">n</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The next step, also mirroring Deutsch’s algorithm, is to apply the oracle, <script type="math/tex">U_f</script>, followed by another hadamard operation to the first n bits. Next we apply a new gate which is specially prepared for this circuit and we follow that by another hadamard gate. The last three gates are repeated several times to refine the result. The whole process is summarised this this diagram:</p>
+
+<p><img src="/grovers.png" width="75%" /></p>
+
+<p>In quko code this looks like this:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">repeat</span><span class="p">(</span><span class="n">iterations</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">phi</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="n">oracle</span><span class="p">).</span><span class="n">hadamard</span><span class="p">(</span><span class="m">0</span> <span class="n">until</span> <span class="n">n</span><span class="p">).</span><span class="n">apply</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="n">special</span><span class="p">).</span><span class="n">hadamard</span><span class="p">(</span><span class="m">0</span> <span class="n">until</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>where <code class="highlighter-rouge">iterations</code> is calculated as <script type="math/tex">\sqrt{2^n}</script>. The <code class="highlighter-rouge">special</code> operator is calculated from the formula <script type="math/tex">2\vert 0^n \rangle \langle 0^n \vert -I_n</script> first by expanding <script type="math/tex">\vert 0^n \rangle</script> (<code class="highlighter-rouge">zeron</code>) and then performing the outer product on itself (<code class="highlighter-rouge">outer</code>).</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">fun</span> <span class="nf">diffusion</span><span class="p">(</span><span class="nv">n</span><span class="p">:</span> <span class="nc">Int</span><span class="p">):</span> <span class="nc">ComplexMatrix</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">zeron</span> <span class="p">=</span> <span class="p">(</span><span class="m">0</span> <span class="n">until</span> <span class="n">n</span><span class="p">-</span><span class="m">1</span><span class="p">).</span><span class="n">fold</span><span class="p">(</span><span class="n">ZERO</span><span class="p">)</span> <span class="p">{</span> <span class="n">acc</span><span class="p">,</span> <span class="n">_</span> <span class="p">-&gt;</span> <span class="n">acc</span> <span class="n">kronecker</span> <span class="n">ZERO</span> <span class="p">}</span>
+    <span class="kd">val</span> <span class="py">outer</span> <span class="p">=</span> <span class="n">zeron</span> <span class="n">outer</span> <span class="n">zeron</span>
+    <span class="k">return</span> <span class="m">2.0</span> <span class="p">*</span> <span class="n">outer</span> <span class="p">-</span> <span class="n">identity</span><span class="p">(</span><span class="n">pow2</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Finally we measure the result:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">phi</span><span class="p">.</span><span class="n">measureAll</span><span class="p">().</span><span class="n">toInt</span><span class="p">()</span>
+</code></pre></div></div>
+
+
+
+
+    </article>
+    <span class="print-footer">Grover's Search Algorithm - October 3, 2018 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2018 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

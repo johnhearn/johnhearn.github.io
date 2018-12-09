@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Quantum Random Number Generator</title>
+
+  
+  <meta name="description" content="The simplest quantum algorithm.">
+  
+  
+  <meta name="keywords" content="quantum computing"/>
+  
+  
+  <meta property="og:title" content="Quantum Random Number Generator">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="/articles/quantum-random-number-generator/">
+  <meta property="og:image" content="/assets/images/the-ship-of-fools.jpg">
+  <meta property="og:description" content="The simplest quantum algorithm.">
+  <meta property="og:site_name" content="john-hearn.info">
+  
+  
+    <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="/articles/quantum-random-number-generator">
+
+  <link rel="alternate" type="application/rss+xml" title="john-hearn.info" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">john-hearn.info</a>
+	  
+      
+  	
+      
+  	
+      
+  	
+      
+		    
+		      <a href="/about/">About</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/notes">Notes</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/css/print.css"></a>
+		    
+	    
+  	
+      
+  	
+	</nav>
+</header>
+    <article class="group">
+      <h1>Quantum Random Number Generator</h1>
+<div class="subtitle">September 30, 2018</div>
+<div class="smaller">two minutes.</div>
+ 
+<p><span class="newthought">One thing to understand is that, as things stand, quantum computers are not particularly useful.</span>  The limited number of quantum bits we have to work with is so limited that classical computers, with over half a century of exponential improvements behind them, beat quantum algorithms at every task.</p>
+
+<p>So why are we interested? Well, we anticipate a point where quantum algorithms will surpass their classical counterparts at some tasks. This is true, for example, with the factoring of semi-prime numbers. That point is known as <em>quantum supremacy</em> and could be years away. What’s more interesting today is that quantum computers represent a new hardware paradigm. There are things that cannot be done way a classical way that <em>can</em> be done using the magic of superposition and entanglement.</p>
+
+<p>The most basic example is the generation of <em>true</em> random numbers which can be implemented trivially on a quantum computer where the probabilistic nature of quantum measurement is the source of randomness. We do this by preparing qubits such that they have a 50-50 change of being <code class="highlighter-rouge">true</code> or <code class="highlighter-rouge">false</code> when measured, that is in a state lying on the equator of the Bloch sphere.</p>
+
+<p>This can done with a <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Hadamard_(H)_gate">Hadamard</a> gate or a <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Square_root_of_NOT_gate_(%E2%88%9ANOT)"><script type="math/tex">\sqrt{NOT}</script></a> gate, that is, the gate that when applied twice would create a <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Pauli-X_gate"><script type="math/tex">NOT</script></a> gate. This is simple circuit to generate a random 3-bit number.</p>
+
+<p><img src="/assets/images/3-bit-rng.png" alt="Random number circuit" width="320px" /></p>
+
+<p>Measurement of <script type="math/tex">q_0</script>, <script type="math/tex">q_1</script>, <script type="math/tex">q_2</script> will provide 3 random classical binary digits which can be treated as a number between 0 and 7.</p>
+
+<p>In the quko simulator we can write this as:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">java.util.*</span>
+<span class="k">import</span> <span class="nn">quam.*</span>
+
+<span class="kd">val</span> <span class="py">qubits</span> <span class="p">=</span> <span class="n">Qubits</span><span class="p">(</span><span class="m">3</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">halfNot</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">halfNot</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">halfNot</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
+<span class="kd">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">qubits</span><span class="p">.</span><span class="n">measureAll</span><span class="p">()</span>
+<span class="n">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>             <span class="c1">// [false, true, true]</span>
+<span class="n">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">toInt</span><span class="p">())</span>     <span class="c1">// 3</span>
+</code></pre></div></div>
+
+<p>The result will be a (simulated) random number. Run this algorithm on a real QPU and the number will be truly random.</p>
+
+<p>One thing to notice is that quko interprets the number from top to bottom, MSB first. That is, the result is the binary number <script type="math/tex">q_2</script><script type="math/tex">q_1</script><script type="math/tex">q_0</script>. This not important here but will be important in other algorithms where the actual value of the result is of interest.</p>
+
+
+
+    </article>
+    <span class="print-footer">Quantum Random Number Generator - September 30, 2018 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2018 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

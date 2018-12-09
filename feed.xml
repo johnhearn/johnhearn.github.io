@@ -1,31 +1,665 @@
----
-layout: null
-nav_exclude: true
----
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.title | xml_escape }}</title>
-    <description>{{ site.description | xml_escape }}</description>
-    <link>{{ site.url }}{{ site.baseurl }}/</link>
-    <atom:link href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" rel="self" type="application/rss+xml"/>
-    <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
-    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
-    <generator>Jekyll v{{ jekyll.version }}</generator>
-    {% for post in site.posts limit:10 %}
+    <title>john-hearn.info</title>
+    <description>Ruminations by a person &quot;beyond freaky&quot;</description>
+    <link>/</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 09 Dec 2018 22:37:38 +0100</pubDate>
+    <lastBuildDate>Sun, 09 Dec 2018 22:37:38 +0100</lastBuildDate>
+    <generator>Jekyll v3.8.5</generator>
+    
       <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>{{ post.content | xml_escape }}</description>
-        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        <link>{{ post.url | prepend: site.baseurl | prepend: site.url }}</link>
-        <guid isPermaLink="true">{{ post.url | prepend: site.baseurl | prepend: site.url }}</guid>
-        {% for tag in post.tags %}
-        <category>{{ tag | xml_escape }}</category>
-        {% endfor %}
-        {% for cat in post.categories %}
-        <category>{{ cat | xml_escape }}</category>
-        {% endfor %}
+        <title>Native µservices with Kotlin, Spark, Graal and Gradle</title>
+        <description>&lt;p&gt;In the &lt;a href=&quot;native-microservice-kotlin-sparkjava-graal.html&quot;&gt;last post&lt;/a&gt; we built the simplest native microservice in Kotlin with SparkJava and Graal. This time we’ll take it a step further and build it with Gradle instead of Maven.&lt;/p&gt;
+
+&lt;p&gt;First we need to add the Kotlin library dependency to the Gradle project (as of writing the version is &lt;code class=&quot;highlighter-rouge&quot;&gt;v1.3.10&lt;/code&gt;).&lt;/p&gt;
+&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;compile&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.10&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And to use the Kotlin compiler plugin again becomes more concise s compared to Maven.&lt;/p&gt;
+&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;plugins&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'org.jetbrains.kotlin.jvm'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'1.3.10'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To copy the resources we can use this task:&lt;/p&gt;
+&lt;div class=&quot;language-groovy highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;copyDependencies&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;type:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Copy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;configurations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;default&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;into&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'build/libs'&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;shouldRunAfter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jar&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;assemble&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;dependsOn&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;copyDependencies&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Build the service with Gradle and run it to check it works.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; ./gradlew clean assemble
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; java &lt;span class=&quot;nt&quot;&gt;-cp&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;build/libs/*&quot;&lt;/span&gt; HelloWorldKt
+...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Thread-0] INFO org.eclipse.jetty.server.Server - Started @363ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; curl localhost:4567/sayHello
+Hello World!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Building the native executable is just the same as before.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 18 Nov 2018 18:08:00 +0100</pubDate>
+        <link>/articles/native-microservice-kotlin-sparkjava-graal-gradle</link>
+        <guid isPermaLink="true">/articles/native-microservice-kotlin-sparkjava-graal-gradle</guid>
+        
+        
       </item>
-    {% endfor %}
+    
+      <item>
+        <title>Professionalism - Learning at Work</title>
+        <description>&lt;p&gt;When any &lt;strong&gt;professional offers their services&lt;/strong&gt; for payment then they necessarily enter into a &lt;strong&gt;two-way contract with their client&lt;/strong&gt;, either written, verbal or &lt;a href=&quot;https://www.rocketlawyer.co.uk/article/implied-terms-of-employment-contract.rl&quot;&gt;implied&lt;/a&gt;. A written contract would set out the expectations of each party but many times it’s partially or completely assumed based on a (hopefully) common understanding. In any case its terms will &lt;strong&gt;vary according to the nature of the work&lt;/strong&gt; being undertaken.&lt;/p&gt;
+
+&lt;p&gt;In the &lt;a href=&quot;https://www.youtube.com/watch?v=u-prgMPHcOE&quot;&gt;debate&lt;/a&gt; about when the professional software engineer should practice their craft, that is if it should be expected of the &lt;a href=&quot;https://www.praqma.com/stories/2who-pays-for-upskilling-soft-developers/&quot;&gt;&lt;em&gt;employer&lt;/em&gt; to provide training&lt;/a&gt; or whether the &lt;em&gt;professional&lt;/em&gt; should hone their skills outside of working hours&lt;label for=&quot;bob&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;bob&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;For example Uncle Bob in his book &lt;a href=&quot;https://www.goodreads.com/book/show/10284614-the-clean-coder&quot;&gt;Clean Coder&lt;/a&gt; by Robert C. Martin he says &quot;&lt;em&gt;You should plan on working 60 hours a week. The first 40 are for your employer. The remaining 20 are for you. During this remaining 20 hours you should be reading, practicing, learning, and otherwise enhancing your career.&lt;/em&gt;&quot; &lt;/span&gt;, both sides seem to ignore the fact that any expectation that the professional may have of their employer, or the employer of the professional, is &lt;strong&gt;defined by their relationship, not by either individually&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is clear if we recognise that a single professional may have multiple relationships simultaneously with different clients or employers, each with their own terms and expectations. The employer likewise, even more so.&lt;/p&gt;
+
+&lt;p&gt;We need to talk not so much about the actors (professionals, clients, employers, etc.) in isolation but rather the &lt;strong&gt;expectations and relationships between them&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;For example, if you work as a freelance contractor then, in addition to your time, you will probably be contracted explicitly to provide some kind of &lt;strong&gt;expertise&lt;/strong&gt;. It would be inappropriate, i.e. incompatible with your contract, for you to ask for training in that same area of expertise&lt;label for=&quot;doctor&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;doctor&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Image you’ve privately contracted a doctor to treat some specific condition and he then asks for training. Jikes. &lt;/span&gt;. If, however, you need to work with some in-house software with which you have no experience and, importantly, &lt;strong&gt;that expertise was not expected of you&lt;/strong&gt;, then here too training on the job is fully compatible with your contract.&lt;/p&gt;
+
+&lt;p&gt;On the other hand if you work as an employee for a company then you will have been employed with a given set of skills (ascertained by tests or interviews) for a given amount of hours to &lt;strong&gt;fulfil a specific job title&lt;/strong&gt;. You should not be necessarily expected to know things outside this agreement but, on the other hand, your employer has the right to use your working time as they see fit &lt;em&gt;within that role&lt;/em&gt;. If that includes training then that is completely compatible with your contract, because you were probably not contracted for anything that you didn’t already know and &lt;strong&gt;you can even reasonably ask for training&lt;/strong&gt; if you believe you need it to be effective in your role. It may also make business sense for you to be given training for motivational reasons.&lt;/p&gt;
+
+&lt;p&gt;As a third option, you may be subcontracted by an agency in which case there are three simultaneous relationships in play:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;you and the end client&lt;/li&gt;
+  &lt;li&gt;you and the agency&lt;/li&gt;
+  &lt;li&gt;the agency and the end client&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The first is your day-to-day reality however things often actually go wrong because the second and third are not in sync. In my professional career I have been asked by agencies to lie about my expertise to satisfy &lt;em&gt;their&lt;/em&gt; contract. This is unfortunately quite widespread but in my opinion &lt;strong&gt;totally unethical&lt;/strong&gt;&lt;label for=&quot;ethics&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;ethics&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Software codes of ethics &lt;a href=&quot;https://www.computer.org/web/education/code-of-ethics&quot;&gt;already exist&lt;/a&gt; but no-one seems to pay them the blind bit of notice. &lt;/span&gt;. Professional ethics in this area is something we should be &lt;a href=&quot;https://en.wikipedia.org/wiki/Software_engineering_professionalism&quot;&gt;seriously addressing as an industry&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As a last point, &lt;strong&gt;if you enjoy your job&lt;/strong&gt;, as I do, and have an interest in developing your skills and professionalism then &lt;strong&gt;you will want to practice and study in you own time&lt;/strong&gt;, i.e. outside of any existing professional relationships, to help you progress &lt;strong&gt;both professionally and personally&lt;/strong&gt;. If you have a family and other commitments then you may not be able to do this. This is &lt;em&gt;your&lt;/em&gt; decision and does not make you any less professional in the workplace.&lt;/p&gt;
+
+&lt;p&gt;In contrast, I have seen many many examples of so-called professionals using a project as a springboard for new skills. I call this CV-oriented-development and is effectively using someone else’s resources for your own personal gain. A professional should not choose a technology for a project because they want to learn it. They should choose it because they know that it will provide &lt;strong&gt;value to their client/employer&lt;/strong&gt; and that they can &lt;strong&gt;provide the expertise&lt;/strong&gt; to implement it correctly. Similarly, in my opinion it is &lt;em&gt;unprofessional&lt;/em&gt; (and even unethical, again) to use a technology which will be hard for the client to maintain if you leave and may therefore not provide long-term business value, unless, of course, the ramifications have been explained and agreed.&lt;/p&gt;
+
+&lt;p&gt;In conclusion, software engineers work with different employers and clients in different ways. Whether not to study outside of work depends on your own personal circumstances but, in my personal opinion, it is &lt;strong&gt;not a requirement of professionalism&lt;/strong&gt; but rather a means for your own professional and personal advancement. On the other hand, your employer does not necessarily have a responsibility to provide you training either but they may well decide to do so if it provides value to them, which it often does, or because it’s part of the contract you have with them, which it often is.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;As an aside, the concept of a contract between professional and client can be abstractly modelled in UML by an association class&lt;label for=&quot;modelling&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;modelling&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Here we are using a model as a thinking tool, a kind of &lt;em&gt;gedankenmodell&lt;/em&gt;, not as a software design. &lt;/span&gt;. The lengthy description above could be represented visually in a diagram like this:&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;A model of the two-way relationship between the professional and client.&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/contract-as-association.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;It makes explicit the difference between a property and a &lt;em&gt;quality&lt;/em&gt;, the &lt;code class=&quot;highlighter-rouge&quot;&gt;Contract&lt;/code&gt; representing the &lt;em&gt;qualification&lt;/em&gt; of a relationship between two other entities with its own &lt;strong&gt;independent&lt;/strong&gt; properties. There is an important distinction between this definition of a contract and the one sometimes used where a &lt;a href=&quot;https://en.wikipedia.org/wiki/Design_by_contract&quot;&gt;&lt;em&gt;service provider&lt;/em&gt; defines a contract&lt;/a&gt; which the client must accept and abide by.&lt;/p&gt;
+
+&lt;p&gt;In my experience these kinds of models are underused in the wild, I guess that’s maybe because they are seen as slightly awkward to implement in object oriented languages, although they are natural in relational databases. I’d be interested in hearing about more real-world examples.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 17 Nov 2018 08:30:00 +0100</pubDate>
+        <link>/articles/professionalism-learning-at-work</link>
+        <guid isPermaLink="true">/articles/professionalism-learning-at-work</guid>
+        
+        <category>craftsmanship</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Native µservices with Kotlin, Spark and Graal</title>
+        <description>&lt;p&gt;In the &lt;a href=&quot;native-microservice-sparkjava-graal.html&quot;&gt;last post&lt;/a&gt; we built the simplest native microservice with SparkJava and Graal. This time we’ll take it a step further and use Kotlin instead of Java.&lt;/p&gt;
+
+&lt;p&gt;First we need to add the Kotlin library dependency to the Maven project (as of writing the version is &lt;code class=&quot;highlighter-rouge&quot;&gt;v1.3.10&lt;/code&gt;).&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
+    ...
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.jetbrains.kotlin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;kotlin-stdlib&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${kotlin.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And the Kotlin compiler plugin. This is all taken directly from the &lt;a href=&quot;https://kotlinlang.org/docs/reference/using-maven.html&quot;&gt;Kotlin documentation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;kotlin-maven-plugin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.jetbrains.kotlin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;${kotlin.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;compile&lt;span class=&quot;nt&quot;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;compile&lt;span class=&quot;nt&quot;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;test-compile&lt;span class=&quot;nt&quot;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;test-compile&lt;span class=&quot;nt&quot;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With Kotlin our crazily simple microservice becomes even simpler.&lt;/p&gt;
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;spark.Spark.*&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/sayHello&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;res&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Hello World!&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Build the service with Maven and run it to check it works.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; mvn clean package
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; java &lt;span class=&quot;nt&quot;&gt;-cp&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;target/sparkjava-graal-1.0-SNAPSHOT.jar:target/lib/*&quot;&lt;/span&gt; HelloWorldKt
+...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Thread-0] INFO org.eclipse.jetty.server.Server - Started @363ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; curl localhost:4567/sayHello
+Hello World!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s compile it natively. Because it &lt;em&gt;is&lt;/em&gt; Java, the command is nearly identical to the Java version.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; native-image &lt;span class=&quot;nt&quot;&gt;-cp&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;target/sparkjava-graal-1.0-SNAPSHOT.jar:target/lib/*&quot;&lt;/span&gt; HelloWorldKt
+Build on Server&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pid: 53242, port: 51191&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;helloworldkt:53242]    classlist:     783.03 ms
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;helloworldkt:53242]        &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cap&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:   2,139.45 ms
+...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;helloworldkt:53242]        write:     591.88 ms
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;helloworldkt:53242]      &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;total]:  53,074.15 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And run it:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; ./helloworldkt
+...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Thread-2] INFO org.eclipse.jetty.server.Server - Started @2ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; curl localhost:4567/sayHello
+Hello World!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The executable is nearly identical in size and startup speed to the Java version, as would be expected since it’s effectively the same code.&lt;/p&gt;
+
+&lt;p&gt;This is a basic example but the combination of Kotlin for simplicity in implementation, SparkJava for microservice simplicity and Graal for deployment simplicity is a very attractive proposition for microservice development. However I do have some concerns about production use. Mainly if something were to go wrong there is very little information in the public domain to help you out, and still less for this specific combination. On the other hand these are all open source projects so nothing is hidden.&lt;/p&gt;
+
+&lt;p&gt;Another limitation is that many libraries simply don’t work with Graal. This is not altogether negative because it will encourage us to go back to simple coding practices however you may have a dependency which you can’t change and this could cause major hassle. I think the main drawback initially will be reflection driven mapping, whether of the serialisation or ORM variety. The current options here are to use key/value type mappings (&lt;a href=&quot;https://github.com/fangyidong/json-simple&quot;&gt;JSON.simple&lt;/a&gt;, &lt;a href=&quot;https://github.com/json-path/JsonPath&quot;&gt;JsonPath&lt;/a&gt;, etc.) or compile-time annotation processing (&lt;a href=&quot;https://github.com/Instagram/ig-json-parser&quot;&gt;ig-json-parser&lt;/a&gt;). Both have drawbacks. In spite of railing against annotations earlier I suspect that compile-time annotations (aka code generation) will have a place.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 14 Nov 2018 09:08:00 +0100</pubDate>
+        <link>/articles/native-microservice-kotlin-sparkjava-graal</link>
+        <guid isPermaLink="true">/articles/native-microservice-kotlin-sparkjava-graal</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Native µservices with SparkJava and Graal</title>
+        <description>&lt;p&gt;When annotations were introduced to Java people jumped on the bandwagon, as is the wont of the IT industry. Before long we were to a large extent programming with annotations, even to do things that were easy in plain Java. One of the main problems with this is that we end up &lt;strong&gt;adding complexity in an attempt to hide it&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;One perfect example of this is Spring Mvc / REST framework. Spring allows you to create microservices very easily using a couple of annotations but at the cost of adding a whole eco-system of libraries to your application and an extensive family of Spring specific annotations to your code-base.&lt;/p&gt;
+
+&lt;p&gt;SparkJava takes an another approach. Microservices written in SparkJava are just plain Java code which use a plain Java library. No annotation magic just plain, simple code. The advantage of this simple style of programming is that it is, well, simpler. It’s so simple that &lt;strong&gt;the Graal native compiler just compiles it and runs it without batting an eye-lid&lt;/strong&gt;. Something which is currently&lt;label for=&quot;currently&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;currently&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;I’m sure that someone will invent another battery of technologies to overcome this problem, a problem that doesn’t even need to exist. &lt;/span&gt; &lt;strong&gt;impossible&lt;/strong&gt; with Spring.&lt;/p&gt;
+
+&lt;p&gt;This short post shows how easy it is.&lt;/p&gt;
+
+&lt;p&gt;First you’ll need to install the latest version of the Graal SDK. As of writing this is &lt;code class=&quot;highlighter-rouge&quot;&gt;1.0.0-rc9&lt;/code&gt;. I did it using SdkMan:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sdk install java 1.0.0-rc9-graal
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;And from then on&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sdk use java 1.0.0-rc9-graal
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then create a basic Maven&lt;label for=&quot;maven&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;maven&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;I chose to use Maven because I know it better. I’d like to do it also with Gradle. &lt;/span&gt; project and add the minimum dependencies:&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;slf4j-version&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;slf4j-version&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;It’s important that the Slf4j implementation you choose matches the version specified by &lt;code class=&quot;highlighter-rouge&quot;&gt;sparkjava&lt;/code&gt;. I had trouble when it didn’t. &lt;/span&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.sparkjava&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spark-core&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.7.2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.slf4j&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;slf4j-simple&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.7.13&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With SparkJava a microservice is crazily simple.&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Spark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.*;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/sayHello&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Hello world!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To run it as a command line program it’s convenient to copy all the dependencies together into the same directory. We can do that with Maven.&lt;/p&gt;
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;maven-dependency-plugin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;copy-dependencies&lt;span class=&quot;nt&quot;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;phase&amp;gt;&lt;/span&gt;prepare-package&lt;span class=&quot;nt&quot;&gt;&amp;lt;/phase&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;copy-dependencies&lt;span class=&quot;nt&quot;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;outputDirectory&amp;gt;&lt;/span&gt;${project.build.directory}/lib&lt;span class=&quot;nt&quot;&gt;&amp;lt;/outputDirectory&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Build the service with Maven and run it to check it works.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; mvn clean package
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;An run it:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; java &lt;span class=&quot;nt&quot;&gt;-cp&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;target/sparkjava-graal-1.0-SNAPSHOT.jar:target/lib/*&quot;&lt;/span&gt; HelloWorld
+...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Thread-0] INFO org.eclipse.jetty.server.Server - Started @383ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; curl localhost:4567/sayHello
+Hello World!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s compile it natively. The command is thankfully very similar to &lt;code class=&quot;highlighter-rouge&quot;&gt;java&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; native-image &lt;span class=&quot;nt&quot;&gt;-cp&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;target/sparkjava-graal-1.0-SNAPSHOT.jar:target/lib/*&quot;&lt;/span&gt; HelloWorld
+...
+Build on Server&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pid: 31197, port: 52737&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;helloworld:31197]    classlist:   2,142.65 ms
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;helloworld:31197]        &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cap&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:   2,154.21 ms
+...
+...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;helloworld:31197]        write:     443.13 ms
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;helloworld:31197]      &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;total]:  56,525.52 ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And run it:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; ./helloworld
+...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Thread-2] INFO org.eclipse.jetty.server.Server - Started @2ms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; curl localhost:4567/sayHello
+Hello World!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The executable is 14Mb but look at that start time! &lt;strong&gt;2ms&lt;/strong&gt;, basically instantaneous.&lt;/p&gt;
+
+&lt;p&gt;Memorywise, according to &lt;code class=&quot;highlighter-rouge&quot;&gt;top&lt;/code&gt; the memory it takes is 7Mb. The &lt;code class=&quot;highlighter-rouge&quot;&gt;java&lt;/code&gt; version consumes 151Mb (granted without tuning). It would not be wise to pay too much heed to those numbers but it is clear that there is a considerable improvement from removing the JVM from the runtime&lt;label for=&quot;link&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;link&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Compare these results with a Go microservice from a &lt;a href=&quot;notes-on-go-go-kit-for-java-programmer.html&quot;&gt;previous post&lt;/a&gt;. &lt;/span&gt;. This is especially important in microservices systems where a large number of independent processes are deployed.&lt;/p&gt;
+
+&lt;p&gt;Obviously there is a lot more to do to make this a fully functional service but if we choose to keep using simple, static Java code then problems will be minimised.&lt;/p&gt;
+
+&lt;p&gt;The next step will be to convert to Kotlin and then Gradle. That sounds like a very nice combination :)&lt;/p&gt;
+</description>
+        <pubDate>Mon, 12 Nov 2018 08:52:00 +0100</pubDate>
+        <link>/articles/native-microservice-sparkjava-graal</link>
+        <guid isPermaLink="true">/articles/native-microservice-sparkjava-graal</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Putting a Value on a Decision</title>
+        <description>&lt;p&gt;Back last year I wrote an article about the expected loss of a unit test, that is an estimate of the value of a test given its cost and potential reward. I showed how we could use this calculation to decide whether a unit test has positive value, and hence worth writing, or represented an overall loss.&lt;/p&gt;
+
+&lt;p&gt;Expected loss sounds la little negative and alternative is expected value or even expectation&lt;/p&gt;
+
+&lt;p&gt;blah dshbf&lt;/p&gt;
+</description>
+        <pubDate>Sat, 03 Nov 2018 20:04:00 +0100</pubDate>
+        <link>/articles/expected-loss-of-a-decision</link>
+        <guid isPermaLink="true">/articles/expected-loss-of-a-decision</guid>
+        
+        <category>estimation</category>
+        
+        <category>critical thinking</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Estimate Everything</title>
+        <description>&lt;p&gt;Many years ago I was having a final interview with the CEO of a company where I very much wanted to work. It went well and at the end of the meeting he asked my salary expectation. I was young and foolish, I knew I could ask for a lot more than I was already getting but I didn’t want to lose the opportunity by asking for too much. Rather than pick a number at random, I said I didn’t know. &lt;em&gt;He then taught me a lesson in estimation which I will never forget&lt;/em&gt;. First he asked about my current salary. Then he asked what I would gain or lose from the new job compared to the previous one, including perks and options but also intangibles like the opportunity to work with experts in the field, new challenges, experience, the commute, company values, flexible working hours, etc. Together&lt;label for=&quot;contract&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;contract&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Incidentally he also taught me in that moment that negotiating an agreement is not (or should not) be seen winning or losing but rather about finding a fair reward for both parties. &lt;/span&gt; we roughly &lt;strong&gt;estimated&lt;/strong&gt; what those things might be worth in monetary terms. With this information he sketched a graph on the whiteboard and projected an approximate figure which, as it happens, worked for both of us.&lt;/p&gt;
+
+&lt;p&gt;What this taught me is that &lt;strong&gt;estimation is a skill&lt;/strong&gt;. Literally anything can be estimated, and we have powerful tools at our disposal to help us, but estimation is both misunderstood and misused.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;steve-oconnell&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;steve-oconnell&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/not-a-number.jpg&quot; /&gt;&lt;br /&gt;Random cult series reference.&lt;/span&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;an-estimate-is-not-what-most-people-think-it-is&quot;&gt;An estimate is not what most people think it is&lt;/h2&gt;
+
+&lt;p&gt;The most important thing to consider is that &lt;strong&gt;an estimation is not a number&lt;/strong&gt;, it must have at the very least two components from which both the &lt;strong&gt;best guess&lt;/strong&gt; &lt;em&gt;and&lt;/em&gt; the &lt;strong&gt;level of confidence&lt;/strong&gt; can be gleaned. The best guess is also misleadingly called the &lt;em&gt;expected&lt;/em&gt; value and is what people usually concentrate on but it means very little if stated without the qualification of confidence.&lt;/p&gt;
+
+&lt;p&gt;One of the things that puts many people off a more rigorous approach to estimates is their association with statistics and indeed an estimate is best represented mathematically as a probability distribution. However there are other ways to communicate estimates one of the easiest being &lt;a href=&quot;https://en.wikipedia.org/wiki/Confidence_interval&quot;&gt;confidence intervals&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;For example, I could say that a job will take between 1 week and 2 weeks with a high level of confidence&lt;label for=&quot;confidence&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;confidence&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;100% confidence is virtually impossible so in many fields we use 95% as a yardstick for high confidence. &lt;/span&gt;. I could also say that it will take between 10 and 12 days with lower confidence. There are simple rules of thumb for working these things out. In most practical cases you get an intuition for the level of confidence, the key is to &lt;em&gt;communicate it as a constituent part of the estimate&lt;/em&gt; along with the best guess.&lt;/p&gt;
+
+&lt;p&gt;The level of confidence can be broken down still further. I think of it as a rectangle with fixed area where one side is the &lt;strong&gt;precision&lt;/strong&gt; of the estimation and the other is the &lt;strong&gt;speed&lt;/strong&gt; with which it can be produced&lt;label for=&quot;accuracy&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;accuracy&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Notice that we are not saying anything here about accuracy. I’m assuming you already understand the &lt;a href=&quot;https://www.google.es/search?q=accuracy+vs+precision&quot;&gt;difference between precision and accuracy&lt;/a&gt;. It’s fundamental in any discussion about estimation. &lt;/span&gt;. As one increases the other must decrease. So when we produce a quick estimation then the precision will be relatively low. Likewise when we want more precision we have to take more time to produce it. Just common sense™.&lt;/p&gt;
+
+&lt;p&gt;For some reason people are not very good at recognising this. For decades we’ve been estimating software projects often without specifying the precision at all&lt;label for=&quot;steve-oconnell&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;steve-oconnell&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/software-estimation-mcconnell.jpg&quot; /&gt;&lt;br /&gt;&lt;a href=&quot;https://www.goodreads.com/book/show/93891.Software_Estimation&quot;&gt;Software Estimation&lt;/a&gt; by Steve O’Connell is a notable exception to this. Although dated it is well researched and the general principles are applicable to modern development.&lt;/span&gt;. Or worse, implying a false precision by using inappropriately precise numbers. It’s no wonder estimates get such a bad press.&lt;/p&gt;
+
+&lt;p&gt;I’ve worked on projects where estimates were calculated with very high precision and attached with guarantees. The precision was valued above speed. The estimates were &lt;strong&gt;hardly ever accurate&lt;/strong&gt; and a good deal of time was spent on the details which became invalid as soon as requirements changed. This is one of the drawbacks of outsourcing in its commonest form.&lt;/p&gt;
+
+&lt;p&gt;For every action there is an equal reaction and so there is a movement to stop estimating altogether because it wastes time. Personally I believe that &lt;strong&gt;#NoEstimates is just another form of estimation&lt;/strong&gt; where speed is valued above precision, the implication being that the project has some implicit, imprecise idea of the magnitude of what needs to be done and its relation to expected return. If that is true then this kind of estimation makes sense, frequently it does not.&lt;/p&gt;
+
+&lt;p&gt;Estimations are fundamental to making business decisions and therefore as conscientious engineers we should &lt;strong&gt;make estimation skills as important as other technical skills&lt;/strong&gt;. We should have an eye for both precision and speed and know when to trade one for the other, just as we do in other areas. We should also understand the business context and know the appropriate level of confidence. We should also be able to communicate the trade-offs to the people who make the decisions.&lt;/p&gt;
+
+&lt;h2 id=&quot;first-approximations&quot;&gt;First approximations&lt;/h2&gt;
+
+&lt;p&gt;Now that we know what an estimation is, it may be surprising to see just how easy they are. In fact you can nearly always have an intuition about how long a task will take together with its precision with hardly any requirements at all. Information is always available from context and &lt;a href=&quot;https://en.wikipedia.org/wiki/Order_of_magnitude#Order-of-magnitude_estimate&quot;&gt;order-of-magnitude approximations&lt;/a&gt; have immediate value. For example how long would it take to do a DIY project on my house? Without any more details you can make an educated guess: in the order of days or weeks. Certainly not minutes and seconds, and probably not years or decades. Of course this guess has low precision. If I then told you that I had just bought a paintbrush and a tin of paint then the precision of your estimation would improve dramatically. In any case you’d be able to say with some confidence if I’d be finished by Christmas.&lt;/p&gt;
+
+&lt;p&gt;From Steve McConnell’s reaction to the #NoEstimates movement&lt;label for=&quot;steve-mcconnell-article&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;steve-mcconnell-article&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;The entire &lt;a href=&quot;https://stevemcconnell.com/blog/17-theses-software-estimation/&quot;&gt;article&lt;/a&gt; is recommended reading. &lt;/span&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Is showing someone several pictures of kitchen remodels that have been completed for $30,000 and implying that the next kitchen remodel can be completed for $30,000 estimation? Yes, it is.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The same for software. As software consultants we’ve all been asked seemingly absurd questions like “How long will it take to create my website?” but with just a couple of pieces of context&lt;label for=&quot;twenty-questions&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;twenty-questions&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;If you’ve ever played 20 questions then you’ll know the power of binary search and that 20 good questions are worth 2^20 random guesses. &lt;/span&gt; we won’t have a highly precise estimate but we can know if it’s worth continuing the conversation. &lt;strong&gt;This is also estimation&lt;/strong&gt;, in fact it is one of the best kinds.&lt;/p&gt;
+
+&lt;p&gt;There is a famous problem attributed to Enrico Fermi &lt;label for=&quot;fermi-problems&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;fermi-problems&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;This is one of Fermi’s problems where surprisingly good estimates are made where seemingly impossible to do so. Another example is &lt;a href=&quot;https://en.wikipedia.org/wiki/Drake_equation&quot;&gt;Drake’s prediction&lt;/a&gt; of the number of civilisations in our own galaxy which leads to Fermi’s paradox, well known to science-fiction aficionados. &lt;/span&gt; where you are asked to estimate the &lt;a href=&quot;https://en.wikipedia.org/wiki/Fermi_problem#Examples&quot;&gt;number of piano tuners in Chicago&lt;/a&gt;. Using order-of-magnitude estimation and the law of large numbers it is possible to be quite accurate.&lt;/p&gt;
+
+&lt;p&gt;Another technique could be called &lt;strong&gt;triangulation&lt;/strong&gt;, that is estimating quickly in several different ways to narrow down the options, increasing confidence. Drawing lines on a graph and seeing where they cross is one kind of triangulation, so is comparing the estimations of more than one person. &lt;a href=&quot;https://en.wikipedia.org/wiki/Bayesian_inference&quot;&gt;Baysian inference&lt;/a&gt; is a more sophisticated kind of triangulation.&lt;/p&gt;
+
+&lt;p&gt;More information allows us to increase our precision&lt;label for=&quot;keynes&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;keynes&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;John Maynard Keynes famously said ”When my information changes, I alter my conclusions. What do you do, sir?” &lt;/span&gt;. That is normal, inevitable and to be embraced. Requirements change and estimates change accordingly. New decisions are based on new information. &lt;strong&gt;This is one of the strengths of agile methodologies over waterfall based ones&lt;/strong&gt;. Iterations give feedback and improve estimation precision enabling finer-grained business decisions to be made.&lt;/p&gt;
+
+&lt;p&gt;These techniques are part of the skill of estimation that can to be learnt and there is much value in learning it.&lt;/p&gt;
+
+&lt;h2 id=&quot;in-conclusion&quot;&gt;In conclusion&lt;/h2&gt;
+
+&lt;p&gt;Estimation is not the enemy. In fact as we have seen it is easier than you think and we do it subconsciously all the time. By ensuring we keep tabs not only on the best guess but also our level of confidence in that guess we can harness them and control them.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 03 Nov 2018 08:12:00 +0100</pubDate>
+        <link>/articles/estimate-everything</link>
+        <guid isPermaLink="true">/articles/estimate-everything</guid>
+        
+        <category>estimation</category>
+        
+        <category>agile</category>
+        
+        <category>critical thinking</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>There's More Than One Kind of Project</title>
+        <description>&lt;p&gt;Of the vast number of abstract terms we use as professionals the term &lt;strong&gt;project&lt;/strong&gt; comes up very often. It’s such a familiar word that maybe we don’t stop to think about what it really means. It turns out, as so often is the case, that its meaning depends on the situation and business context&lt;label for=&quot;context&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;context&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;hmm… maybe we should apply the bounded context principle to our own communication. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you are working on an internal team with a particular set of requirements, a particular workflow and particular end date then you probably have a very clear idea of what “project” means in this scenario. For example, “the project has been cancelled” has a very clear meaning.&lt;/p&gt;
+
+&lt;p&gt;On the other had if you’re working permanently on the company’s public crown jewels and the project is cancelled, that probably means a whole different thing. This kind of situation is being called product-mode development and a great deal has been written about this is the last few years.&lt;/p&gt;
+
+&lt;p&gt;I think that the &lt;em&gt;product vs project&lt;/em&gt; dichotomy is not the whole story though. There are other modes and each modes benefits from different methodologies, practices and skills. To be clear, these different modes are not down to project mismanagement (although that happens) but mainly to different business scenarios. I’m listing here some of the project modes I have worked on. It’s certainly not an exhaustive list.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-centrepiece&quot;&gt;The Centrepiece&lt;/h2&gt;
+
+&lt;p&gt;This is the software product which defines a company and generates a substantial part of its revenue. In this situation the sales and marketing teams are probably working together with developer teams on identifying the best features using things like A/B testing and maximising returns by rolling out incrementally.&lt;/p&gt;
+
+&lt;p&gt;Features are needed fast and frequent releases are encouraged. This is where many Agile techniques really shine. For example the constant improvement cycles and regular delivery of Scrum help ensure maximum ROI. Anything but the highest level of estimation is a waste. Minimising waist in the deployment cycle is also a major concern so DevOps practices and continuous deployment/delivery make perfect sense.&lt;/p&gt;
+
+&lt;p&gt;The best companies realise that quality is a necessity, not just because downtime directly affects business revenue, but also to ensure the sustained pace of development of new revenue generating features. XP practices like TDD and refactoring really do pave the way for faster development.&lt;/p&gt;
+
+&lt;p&gt;This is indeed a product that requires a stable team, a product mindset and considerable funding. It also is the one developers seem talk about most, although I’m not sure how typical this is in the industry at large. Which leads to another mode on the opposite end of the scale.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-scramble&quot;&gt;The Scramble&lt;/h2&gt;
+
+&lt;p&gt;Often in nascent startups where sales (or your co-founder) need demoable features as fast as possible (days or even hours). Requirements are vague and unproven but speed is vital. Often a client will want a demo ASAP. Generate it from a template, hack it, it doesn’t matter. A single sale or a single new client can make or break a small company.&lt;/p&gt;
+
+&lt;p&gt;Non-functional prototypes are more difficult to sell so the thing should work but bugs are not a problem as long as a happy path hangs together. Any kind of planning or testing are the first things to go out of the window. Unit testing, forget it.&lt;/p&gt;
+
+&lt;p&gt;This demo mode is not the sort of situation that many a conscientious software engineer considers attractive however, on the face of it, it would seem to be a good fit. The work has an undeniable business value and the best craftspeople know how to work well and fast due to deliberate practice. They know when rules can be broken and which technology that will get fast results.&lt;/p&gt;
+
+&lt;p&gt;The idea will often be that the code and/or material will be rewritten in the event of a sale but that often doesn’t happen. Ironically the best developers are again best placed to ensure the right balance of quality because this kind of project can, if successful, easily become a Centerpiece.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-full-monty&quot;&gt;The Full Monty&lt;/h2&gt;
+
+&lt;p&gt;It is a reality that some projects have difficulty releasing anything but a near completed product. It may be because of immovable company culture&lt;label for=&quot;culture&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;culture&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Large and established companies have especial difficulty with this. &lt;/span&gt; or it may be a constraint of the product itself. Embedded systems cannot be released before the hardware is developed. Some financial offerings only work if released as a package.&lt;/p&gt;
+
+&lt;p&gt;Importantly, these kind of projects probably have a pre-agreed release date. Quality is a concern but the date is often more important to stakeholders so planning and some level of estimation appropriate to the level of certainty needed by the stakeholders is essential.&lt;/p&gt;
+
+&lt;p&gt;This is anathema to most of what we learn within the agile movement but in fact is compatible with the manifesto. Technical work can still be done iteratively or incrementally. Work can almost always be split into vertical slices and prioritised accordingly but it does mean that frequent releases are less important. For this kind of project the requirements are in place but not fully fleshed out so continuous feedback is beneficial.&lt;/p&gt;
+
+&lt;p&gt;The role of the conscientious software engineer here is difficult but the business motivations no less imperative. Again the craftsman should be able to direct his skills to this kind of situation. Soft skills are as important here as anywhere because trade-offs will need to be evaluated. Requirements will change and expectations must be managed.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-migration&quot;&gt;The Migration&lt;/h2&gt;
+
+&lt;p&gt;A variation of the Full Monty but where requirements, apart from some cosmetic tinkering, are completely known beforehand. This has happened several times in my experience when a product is being migrated from a legacy platform to a new one.&lt;/p&gt;
+
+&lt;p&gt;Requirements are fixed but weak, often in the style “must do the same as that one” but domain experts are usually readily available and may even include members of the team which created the original implementation.&lt;/p&gt;
+
+&lt;p&gt;I believe, and I have some evidence to support this, that the feedback loops in some Agile methodologies (such as Scrum) can get in the way and slow down such projects, Kanban and &lt;a href=&quot;http://agilemodeling.com/essays/fdd.htm&quot;&gt;feature based development&lt;/a&gt; (FDD) are better alternatives. The key here is focus and velocity, meaning that the right engineers work where they can be most beneficial.&lt;/p&gt;
+
+&lt;p&gt;The craftsman skills are again important for ensuring speed and quality within reasonable timescales.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-austin-allegro&quot;&gt;The Austin Allegro&lt;/h2&gt;
+
+&lt;p&gt;The last example is the trusty maintenance mode project. These projects may or may not be passed to “on-going” teams for bug-fixing and minor enhancements. In any case it’s probably working well enough for the job it was designed for and may not be touched for months or years. This is the case for many back-office applications and I have no data to back this up but I guess that this type of application constitutes a considerable part of the current software landscape.&lt;/p&gt;
+
+&lt;p&gt;Some people enjoy deep knowledge of a legacy product, others find it unexciting. Nonetheless the conscientious software engineer has a place here too. The maintenance of these systems is of vital importance to many organisations and &lt;a href=&quot;http://amzn.eu/d/iGwYvm4&quot;&gt;legacy refactoring&lt;/a&gt; is a difficult but rewarding skill with great business value.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;As we have seen here there are various types of software project and no one-size-fits-all approach their to development. It seems to me that this is a need of some kind of categorisation which would help us to apply the right tools to the right projects and enable us to communicate more accurately within the community.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 28 Oct 2018 13:09:00 +0100</pubDate>
+        <link>/articles/more-than-one-kind-of-project</link>
+        <guid isPermaLink="true">/articles/more-than-one-kind-of-project</guid>
+        
+        <category>craftsmanship</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>What happened to UML?</title>
+        <description>&lt;p&gt;I was surprised to find that there are software developers who are not willing to engage in software design conversations if there is an UML diagram involved. I was baffled. I use UML diagrams all the time to elucidate design decisions before any code has even been written and I’m not sure what I’d do without them. In any case, surely diagrams are just tools, excellent tools but just tools to aid learning and understanding along with code and patterns and natural language. Why could anyone be so against them? So I looked on the internet and instantly found this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“I would say that people that defend diagrams and notations are simply not able to grasp code, at all.” - AkitaOnRails&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;When I had gotten back up off the floor I continued searching. I quickly found something more constructive from the seemingly omniscient Martin Fowler:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“UML has got rather out of fashion it seems. Although this isn’t good for me financially, I can’t say I’m displeased to see a lot of rather dodgy UMLisms going away [however] I continue to find it a useful tool” - Martin Fowler &lt;a href=&quot;https://martinfowler.com/bliki/UmlAsNotes.html&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This was written back in 2011, I guess the downward trend may have continued since then but there is some nuance in Fowler’s position. He describes different &lt;strong&gt;modes of UML&lt;/strong&gt; which are (&lt;em&gt;were!?&lt;/em&gt;) in common use. I can remember the days of &lt;a href=&quot;https://en.wikipedia.org/wiki/Model-driven_architecture&quot;&gt;MDA&lt;/a&gt;&lt;label for=&quot;mda&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;mda&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;MDA was never going to work, for many reasons, but it is regrettable that some of the component oriented design concepts went down with it. We are seeing them come back now with the better micro-service designs but the same errors (wide interfaces, poor cohesion, accidental complexity) are still visible as they were in the early EJB days. &lt;/span&gt; where UML diagrams were intended to be &lt;a href=&quot;https://martinfowler.com/bliki/UmlAsProgrammingLanguage.html&quot;&gt;&lt;em&gt;executable&lt;/em&gt;&lt;/a&gt;. They became so loaded down with detail that they &lt;strong&gt;lost all possible sense&lt;/strong&gt;. UML may still be tainted with a mental association with MDA.&lt;/p&gt;
+
+&lt;p&gt;Related to the last point, UML may also be associated negatively with Rational Rose, an awful piece of software with so many bugs that it was a continual frustration to use. Unfortunately it gained market share&lt;label for=&quot;ibm&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;ibm&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Rational was bought by IBM and “&lt;em&gt;nobody get sacked for buying IBM&lt;/em&gt;.“ &lt;/span&gt; and its colour scheme (yellow boxes with burgundy borders) stuck as the de-facto standard for UML from then on. I’ve used Rose and I guess that colour scheme stuck with me as well.&lt;/p&gt;
+
+&lt;p&gt;UML also suffered from &lt;strong&gt;abuse&lt;/strong&gt;, like any other tool. It has been used, unsuccessfully in my opinion, for the documentation&lt;label for=&quot;blueprint&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;blueprint&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Fowler’s &lt;a href=&quot;https://martinfowler.com/bliki/UmlAsBlueprint.html&quot;&gt;blueprint&lt;/a&gt; mode &lt;/span&gt; of large systems. Without proper care or attention diagrams balloon&lt;label for=&quot;big-bad-and-ugly-uml&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;big-bad-and-ugly-uml&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/big-bad-uml.png&quot; /&gt;&lt;br /&gt;Don’t do &lt;a href=&quot;https://knowhow.visual-paradigm.com/know-how_files/2011/04/Class-Diagram2.png&quot;&gt;this&lt;/a&gt;, for example.&lt;/span&gt; in both side and complexity to the extent again that they provide negative value.&lt;/p&gt;
+
+&lt;p&gt;Beyond the flaws in UML or its use I do believe there is another factor. Having worked with different people over time I have noticed that some people prefer diagrams of systems, while others prefer descriptions. In psychology these are known as visual and verbal thinking&lt;label for=&quot;thinking-style&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;thinking-style&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Not be confused with the discredited &lt;em&gt;learning&lt;/em&gt; styles teaching methods. &lt;/span&gt; styles. To know if your preference is for visual or verbal thinking consider how you study. If you repeat the words to yourself in you head then that’s a verbal thinking style, if you draw a diagram, or picture one in your mind, with colours and some kind of meaningful layout then that’s a visual style. I strongly prefer visual representations and I guess that’s why I like UML. The point is that some people like diagrams more and other like words and that’s OK.&lt;/p&gt;
+
+&lt;p&gt;But anyway, regardless of how it happened we seem to have forgotten how to use what is just another tool. Another more useful mode that Fowler talks about is using &lt;a href=&quot;https://martinfowler.com/bliki/UmlAsSketch.html&quot;&gt;UML to sketch&lt;/a&gt; ideas. This is how I use it and I think it’s where it really shines. Early diagrams like &lt;a href=&quot;https://en.wikipedia.org/wiki/Booch_method&quot;&gt;Booch’s&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Object-modeling_technique&quot;&gt;OMT&lt;/a&gt;&lt;label for=&quot;gof-omt&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;gof-omt&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;The universally known GoF patterns book used a variant of this style of diagram. &lt;/span&gt; diagrams, were difficult and unwieldy to draw with rhombi or circles on every relation to specify its type. We have now with UML a fairly universal and, if used well, lightweight visual language for communicating software design to our peers. For example, I love &lt;a href=&quot;http://www.codingthearchitecture.com/2016/04/25/layers_hexagons_features_and_components.html&quot;&gt;this article&lt;/a&gt; about software architecture because he uses UML to show visually the similarities between different approaches, and therefore the differences. I find processing that information verbally much more difficult.&lt;/p&gt;
+
+&lt;p&gt;So these are my recommendations for using UML if you haven’t given up on it already:&lt;/p&gt;
+
+&lt;p&gt;Use it for &lt;strong&gt;sketching and note taking&lt;/strong&gt;. Don’t be worried about the details.&lt;/p&gt;
+
+&lt;p&gt;Use it for &lt;strong&gt;communicating simple design ideas&lt;/strong&gt;. This is especially useful when discussing the choices before any decisions have been taken. Component diagrams are really useful here. I’ve found that most developers use these naturally. Also use it for communicating the basic patterns (composites, decorators, etc.) and structure (layers, cross boundary interfaces, etc.).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Don’t use it for documentation&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Use the 10% of UML that is useful:&lt;/p&gt;
+
+&lt;p&gt;The simplest class diagrams usually with &lt;strong&gt;just a few classes&lt;/strong&gt; to show the relationship between them, hardly ever any members, no rhombi, just plain arrows with arity which is usually just an asterisk to indicate a collection or otherwise nothing to indicate 1-to-1.&lt;/p&gt;
+
+&lt;p&gt;The &lt;strong&gt;&lt;em&gt;required&lt;/em&gt; and &lt;em&gt;provided&lt;/em&gt; interface&lt;/strong&gt; notation in component diagrams are useful and I tend to mix them freely with class diagrams, use packages and nodes well to indicate system boundaries.&lt;/p&gt;
+
+&lt;p&gt;Sequence diagrams can be useful but use them &lt;strong&gt;sparingly&lt;/strong&gt; because they take time to draw. I find well crafted code to be easier to read and to write.&lt;/p&gt;
+
+&lt;h1 id=&quot;functional-programming-diagrams&quot;&gt;Functional programming diagrams&lt;/h1&gt;
+
+&lt;p&gt;UML came from the object-oriented design community and does not afford much help when trying to visualise functional decompositions. The idea of a first-class function is not really very well represented. Of course you could use an activity diagram, kind of, but I’m not sure how far that would get you.&lt;/p&gt;
+
+&lt;p&gt;For representing functional structures I prefer computational graphs. There doesn’t seem to be a consensus here (again diagrams seem to be out of fashion in functional programming too) but there are some hints. Take this definition of a &lt;strong&gt;Monoid&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A Monoid is a set of values S that is closed under an &lt;em&gt;associative&lt;/em&gt; binary operation &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt; and contains an &lt;em&gt;identity&lt;/em&gt; value &lt;script type=&quot;math/tex&quot;&gt;I&lt;/script&gt; such that &lt;script type=&quot;math/tex&quot;&gt;\forall x \in S&lt;/script&gt;;  &lt;script type=&quot;math/tex&quot;&gt;f(I, x) = x&lt;/script&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Visually this could be expressed as a graph where the operator and the identity are, for example, circles, the operator being the one that receives two inputs.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;Associativity&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/monoid-associativity.png&quot; /&gt;&lt;/figure&gt;
+&lt;figure&gt;&lt;figcaption&gt;Identity&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/monoid-identity.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;The definition can be extended, for example:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;If changing the order of operands does not affect the result then the operation is commutative and the monoid is called, unsurprisingly, a &lt;strong&gt;commutative monoid&lt;/strong&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Integer addition, of course, is commutative, string concatenation is not. See how easy that is to visualise:&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;Commutativity&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/monoid-commutativity.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;These visualisations are interesting in that they convey a lot of information very efficiently. I personally find them useful for understanding the concept, I can virtually “see” strings and integers “flowing” through the graph. Of course it could be just me but in any case it would be interesting to see if this kind of modelling could be useful for visualising functional ideas which are well known for being &lt;a href=&quot;https://wiki.haskell.org/Monad_tutorials_timeline&quot;&gt;tricky&lt;/a&gt; to communicate.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 14 Oct 2018 14:45:00 +0200</pubDate>
+        <link>/articles/what-happened-to-uml</link>
+        <guid isPermaLink="true">/articles/what-happened-to-uml</guid>
+        
+        <category>uml</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Grover's Search Algorithm</title>
+        <description>&lt;p&gt;Grover’s algorithm is actually useful&lt;label for=&quot;useful&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;useful&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;Useful, at least, if we had more real qubits available for processing. That is to say reaching quantum supremacy. All of these examples only make sense when scaled to hundreds of qubits. We currently have just a few dozen at most, not counting for error correction.  &lt;/span&gt;. It can quickly find configurations of bits matching some predefined criteria. Let’s take an absurdly simple example and find the bit sequence matching a given number.&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b1011&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;groversSearch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b1011&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The algorithm itself starts in a similar way to Deutsch’s algorithm, namely that it takes n bits and an additional &lt;em&gt;ancillary&lt;/em&gt; bit and performs a hadamard operation on all of them. Intuitively this prepares the bits by putting them in an unbiased superposition, that is, so to speak, half &lt;code class=&quot;highlighter-rouge&quot;&gt;1&lt;/code&gt; and half &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;In quko this looks like before:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;phi&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Qubits&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadamard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;until&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The next step, also mirroring Deutsch’s algorithm, is to apply the oracle, &lt;script type=&quot;math/tex&quot;&gt;U_f&lt;/script&gt;, followed by another hadamard operation to the first n bits. Next we apply a new gate which is specially prepared for this circuit and we follow that by another hadamard gate. The last three gates are repeated several times to refine the result. The whole process is summarised this this diagram:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/grovers.png&quot; width=&quot;75%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In quko code this looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;repeat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iterations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;phi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oracle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadamard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;until&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;special&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadamard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;until&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;where &lt;code class=&quot;highlighter-rouge&quot;&gt;iterations&lt;/code&gt; is calculated as &lt;script type=&quot;math/tex&quot;&gt;\sqrt{2^n}&lt;/script&gt;. The &lt;code class=&quot;highlighter-rouge&quot;&gt;special&lt;/code&gt; operator is calculated from the formula &lt;script type=&quot;math/tex&quot;&gt;2\vert 0^n \rangle \langle 0^n \vert -I_n&lt;/script&gt; first by expanding &lt;script type=&quot;math/tex&quot;&gt;\vert 0^n \rangle&lt;/script&gt; (&lt;code class=&quot;highlighter-rouge&quot;&gt;zeron&lt;/code&gt;) and then performing the outer product on itself (&lt;code class=&quot;highlighter-rouge&quot;&gt;outer&lt;/code&gt;).&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;diffusion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ComplexMatrix&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;zeron&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;until&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ZERO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kronecker&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ZERO&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;outer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zeron&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zeron&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2.0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;identity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pow2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally we measure the result:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;phi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;measureAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toInt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 03 Oct 2018 09:12:00 +0200</pubDate>
+        <link>/articles/grovers-search</link>
+        <guid isPermaLink="true">/articles/grovers-search</guid>
+        
+        <category>quantum computing</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>The Deutsch-Jozsa Algorithm</title>
+        <description>&lt;p&gt;This was one of the first quantum algorithms to be discovered that gave a theoretically significant improvement over the classical equivalent. Having said that it’s not useful at all, its main value was that it served as inspiration for other more practical algorithms such as Grover’s search and Shor’s factoring.&lt;/p&gt;
+
+&lt;h2 id=&quot;simplest-case&quot;&gt;Simplest case&lt;/h2&gt;
+
+&lt;p&gt;The simplest statement of the problem is to determine if a boolean function, &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt;, always results in the same &lt;em&gt;constant&lt;/em&gt; value or if it is &lt;em&gt;balanced&lt;/em&gt; and returns both true and false depending on the input.&lt;/p&gt;
+
+&lt;p&gt;In programming terms this means evaluating the function:&lt;/p&gt;
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Boolean&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;for both possible inputs and checking the results.&lt;/p&gt;
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xor&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the classical world this will obviously require &lt;strong&gt;two&lt;/strong&gt; evaluations of the function however in the quantum version only &lt;strong&gt;one&lt;/strong&gt; evaluation is ever required.&lt;/p&gt;
+
+&lt;p&gt;Imagine we are given a gate &lt;script type=&quot;math/tex&quot;&gt;U_f&lt;/script&gt; which is based on the function we are interested in. This gate can be constructed in various ways but we’ll assume that it’s given.&lt;/p&gt;
+
+&lt;p&gt;Then a circuit for the algorithm can be represented by the following diagram:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/deutschs-circuit.png&quot; alt=&quot;Deutsch's algorithm circuit&quot; width=&quot;320px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This equates in quko to the following snippet:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Qubits&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadamard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadamard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oracle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadamard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;measure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If the function is &lt;em&gt;balanced&lt;/em&gt; then the measurement will always be &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;, if constant then the measurement will always be &lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;One way to think about how this works is that the &lt;script type=&quot;math/tex&quot;&gt;U_f&lt;/script&gt; gate transforms the superposition of both possible input values. The resulting interference patter provides us with the information we require.&lt;/p&gt;
+
+&lt;h2 id=&quot;extending-to-multiple-bits&quot;&gt;Extending to multiple bits&lt;/h2&gt;
+
+&lt;p&gt;Other researchers extended to algorithm to multiple bits which corresponds to the function taking an integer argument.&lt;/p&gt;
+
+&lt;p&gt;The function becomes:&lt;/p&gt;
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Int&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;and will, on average, need many more evaluations of the function to test be able to determine if it is &lt;em&gt;constant&lt;/em&gt; or not.&lt;/p&gt;
+
+&lt;p&gt;The quantum circuit in this case becomes:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/deutsch-jozsa-circuit.png&quot; alt=&quot;Deutsch-Jozsa algorithm circuit&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can build this circuit in quko as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;isBalanced&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+    &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Qubits&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;not&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadamard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oracle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xor&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hadamard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;until&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;measureFirst&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toInt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This will give us a boolean result for the given function, assuming the function works on &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; bit integers. Note: &lt;code class=&quot;highlighter-rouge&quot;&gt;oracle&lt;/code&gt; is a utility function of quko for building the appropriate gate &lt;script type=&quot;math/tex&quot;&gt;U_f&lt;/script&gt; from the function &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 01 Oct 2018 16:45:00 +0200</pubDate>
+        <link>/articles/deutsch-jozsa-algorithm</link>
+        <guid isPermaLink="true">/articles/deutsch-jozsa-algorithm</guid>
+        
+        <category>quantum computing</category>
+        
+        
+      </item>
+    
   </channel>
 </rss>

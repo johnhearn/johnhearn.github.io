@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SOLID Principles, Cohesion and Coupling</title>
+
+  
+  <meta name="description" content="Some observations about the relationship between well known programming principles.">
+  
+  
+  <meta name="keywords" content="oop, programming"/>
+  
+  
+  <meta property="og:title" content="SOLID Principles, Cohesion and Coupling">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="/articles/solid-vs-cohesion-and-coupling/">
+  <meta property="og:image" content="/assets/images/the-ship-of-fools.jpg">
+  <meta property="og:description" content="Some observations about the relationship between well known programming principles.">
+  <meta property="og:site_name" content="john-hearn.info">
+  
+  
+    <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="/articles/solid-vs-cohesion-and-coupling">
+
+  <link rel="alternate" type="application/rss+xml" title="john-hearn.info" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">john-hearn.info</a>
+	  
+      
+  	
+      
+  	
+      
+  	
+      
+		    
+		      <a href="/about/">About</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/notes">Notes</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/css/print.css"></a>
+		    
+	    
+  	
+      
+  	
+	</nav>
+</header>
+    <article class="group">
+      <h1>SOLID Principles, Cohesion and Coupling</h1>
+<div class="subtitle">May 15, 2017</div>
+<div class="smaller">seven minutes.</div>
+ 
+<p>A few years ago I was given a coding problem as part of a recruitment process for a very well known software consultancy. Fair enough, I thought. Doesn’t seem too hard, I thought. A couple of hours and it’ll be in the bag.</p>
+
+<p>I failed the test and was thrown out on my ear with very little ceremony.</p>
+
+<p>What went wrong? Easy, two things…. Object Oriented Design and TDD skills.</p>
+
+<p>The solution I submitted had good unit-test coverage, was easy enough to understand, built incrementally, self-documenting, and all the rest it. I’d even go so far as to say it was reasonably well designed by my own pragmatic criteria. It even worked.</p>
+
+<p>However it did not stand up to scrutiny. A public getter here, a redundant test there, an integration test skulking amongst the unit tests, and that was the end of it. Literal failure.</p>
+
+<p>How did this happen? I have been doing (or, now it seems, failing to do) OOD for over 15 years. I have read more than many on the subject and worked hard to understand the principles. I am a convert to the cause but somehow my skills still didn’t cut the mustard. Likewise TDD. (To my defense, although my day job as technical manager in a bank should expose me daily to these skill sets, it doesn’t.)</p>
+
+<p>So… back to the books (one was recommended to me by the recruiter) and the trusty IDE to hone those skills. This series of posts is to document the journey.</p>
+
+<p>Back to basics. What is OOD? We all know some textbook examples: a <code class="highlighter-rouge">Car</code> is a <code class="highlighter-rouge">Vehicle</code> and has <code class="highlighter-rouge">Wheels</code>, <code class="highlighter-rouge">Amplifiers</code> depend on <code class="highlighter-rouge">Speakers</code>, etc. Choose your metaphor. I’m not here to go over that. I’m interested in the design skills to design good systems and they rarely have anything to do with cars and wheels but rather processors and parsers and formatters and caches and tasks and orders…..</p>
+
+<p>So lets start with the basic <a href="https://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29"><strong>SOLID principles</strong> of OOD</a>. There are a million books and internet articles on these principles first proposed in the early 2000s. I don’t want to rehash that but rather document some insights I have gained by going back over them and to the skills required to put them into practice. SOLID starts with S….</p>
+
+<h2 id="s---separation-of-responsibilities">S - Separation of responsibilities</h2>
+
+<p>A seemingly simple principle and easy to apply, right? Wrong. After going back over the basic definitions, it turns out there is a great deal of subtlety here. Robert C Martin’s justification for this principle:</p>
+
+<blockquote>
+  <p>“If a class has more than one responsibility, then the responsibilities become coupled. Changes to one responsibility may impair or inhibit the class’ ability to meet the others. This kind of coupling leads to fragile designs that break in unexpected ways when changed.”</p>
+</blockquote>
+
+<p>… however later he goes on to state,</p>
+
+<blockquote>
+  <p>“If, on the other hand, the application is not changing in ways that cause the the two responsibilities to change at different times, then there is no need to separate them.”</p>
+</blockquote>
+
+<p>Understanding subtle contradictions like these is actually where the “skill” in OOP lies. Sweeping statements about separation of concerns don’t hold if those concerns are so tightly bound that they will always change in tandem. Stated in another way:</p>
+
+<blockquote>
+  <p>“An axis of change is only an axis of change if the changes actually occur.”</p>
+</blockquote>
+
+<p>Whether or not the changes actually occur may not be immediately apparent or may only become apparent with domain knowledge or driven by testing (a future article) but this will not always be the case. Changes to requirements very often, if not in the majority of cases, affect the design in unexpected ways. Should we design for unexpected changes? There are different schools of thought but in the end experience will be the guide.</p>
+
+<p>Lets now jump straight over to the I in SOLID because it has some relevance…</p>
+
+<h2 id="i---interface-segregation">I - Interface segregation</h2>
+
+<p>An interface specifies a contract, a contract is a single responsibility, or so my logic went. How can an object with multiple interfaces not be implementing multiple responsibilities? I feel to square this circle we should forget the word “responsibility” for a moment and talk about cohesion.</p>
+
+<p>I have a book called “The Practical Guide to Structured Systems Design” (SSD)<label for="ssd" class="margin-toggle">⊕</label><input type="checkbox" id="ssd" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/practical-guide-to-structured-systems-design.jpg" /><br /><a href="https://www.goodreads.com/book/show/1441004.Practical_Guide_to_Structured_Systems_Design">The Practical Guide to Structured Systems Design</a> by Meilir Page-Jones.</span> written back in 1980 and I feel that many of the concepts explained in that book are as relevant here as they were nearly 40 years ago, and maybe more clearly explained because the world was simpler then.</p>
+
+<p>Cohesion is a measure of the strength of functional relatedness of elements within a module.</p>
+
+<p>Change “module” to “class” and the definition holds for OOD. I contend that “<strong>responsibility</strong>” is giving a name to a set of “<strong>strongly related elements</strong>” or “<strong>stuff which goes together</strong>”, in the case of OOD both data and behaviour, grouped by some abstract concept. I had made the mistake of equating responsibility with behaviour. This seems obvious now, which is encouraging because that’s what happens when you learn new skills - things seem obvious when they didn’t before.</p>
+
+<p>Now, related elements may certainly have different functional interfaces. An amplifier may have a jack plug socket and co-axial connections but it is nonetheless cohesive and has a single responsibility in that sense.</p>
+
+<p>Incidentally, the interface segregation principle is also intimately related to the concept of coupling which also elucidates the meaning of this principle. SSD encourages the use of “Narrow (as opposed to broad) connections” to weaken coupling, a concept taken from Yourdon in the 1970s. Essentially <strong>a client depending on a smaller interface has a narrower connection and is therefore less likely to change</strong>.</p>
+
+<h3 id="the-key-takeaway-is-that-the-interface-segregation-principle-minimises-coupling-while-the-single-responsibility-principle-maximises-cohesion">The key takeaway is that the <strong>interface segregation principle minimises coupling</strong> while the <strong>single responsibility principle maximises cohesion</strong>.</h3>
+
+<p>For fun, lets look at the other principles in SOLID in terms of cohesion and coupling.</p>
+
+<h2 id="d---dependency-inversion">D - Dependency inversion</h2>
+
+<p>The interface of a class (or interface) must, by definition, be equal to or narrower than its sub-classes (or sub-interfaces). This principle states that, where possible, we should use narrower super-classes rather than broader sub-classes, just what we need to reduce coupling. If a client depends on the narrower (or equal) interface of the super-class rather than the sub-class then that must minimise the coupling. <strong>The farther we go up the class hierarchy the smaller the interface and the lower the coupling</strong>.  If we assume the Liskov principle as well (below) then the interface will always behave as expected. All good. Not much skill involved here..</p>
+
+<p>Now lets do the O.</p>
+
+<h2 id="o---openclosed-principle">O - Open/closed principle</h2>
+
+<p>Open for extension, closed for modification. Lets put this in terms of cohesion and coupling. In OO we must consider not only public interfaces but protected ones too, that is, the “interface” from classes to their super-classes. Visualise being inside the class “looking up” at the super class: we see everything except the private methods. That interface represents a connection which can be narrow or broad. And we know that <strong>narrow interfaces reduce coupling</strong>.</p>
+
+<p>So we want restrict that interface, right?</p>
+
+<p>No so fast. There is another concern and that is how extensible a class is. More extensible classes tend to have broader protected interfaces. The balancing of extensibility with reducing super-class coupling is another <strong>skill</strong> to be learned.</p>
+
+<p>But wait. The superclass interface can also be modified by overriding methods. It’s not actually modifying the source code in the original sense but rather modifying the behaviour as seen by a client…. which leads us finally to L:</p>
+
+<h2 id="l---the-liskov-substitution-principle">L - the Liskov substitution principle</h2>
+
+<p>Clients are connected to classed not only by their interface defined as methods and data, but also by their behaviour. A kind of semantic coupling. A class can break the contract of the interface of the super-class, which in turn may break a client, which is bad.</p>
+
+<p>That’s it for this post. This journey will continue…</p>
+
+
+
+
+    </article>
+    <span class="print-footer">SOLID Principles, Cohesion and Coupling - May 15, 2017 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2018 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

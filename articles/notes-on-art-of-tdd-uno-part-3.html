@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Notes on the Art of TDD - Uno (Part 3)</title>
+
+  
+  
+  <meta name="keywords" content="ood series, tdd"/>
+  
+  
+  <meta property="og:title" content="Notes on the Art of TDD - Uno (Part 3)">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="/articles/notes-on-art-of-tdd-uno-part-3/">
+  <meta property="og:image" content="/assets/images/the-ship-of-fools.jpg">
+  <meta property="og:description" content="Ruminations by a person &quot;beyond freaky&quot;">
+  <meta property="og:site_name" content="john-hearn.info">
+  
+  
+    <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="/articles/notes-on-art-of-tdd-uno-part-3">
+
+  <link rel="alternate" type="application/rss+xml" title="john-hearn.info" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">john-hearn.info</a>
+	  
+      
+  	
+      
+  	
+      
+  	
+      
+		    
+		      <a href="/about/">About</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/notes">Notes</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/css/print.css"></a>
+		    
+	    
+  	
+      
+  	
+	</nav>
+</header>
+    <article class="group">
+      <h1>Notes on the Art of TDD - Uno (Part 3)</h1>
+<div class="subtitle">June 1, 2017</div>
+<div class="smaller">six minutes.</div>
+ 
+<p>[Next day - continued from <a href="notes-on-art-of-tdd-uno-part-2.html">here</a>]</p>
+
+<p>The first test for the new requirement is straightforward, if a little contrived:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testResetPack</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+  <span class="n">Pack</span> <span class="n">pack</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pack</span><span class="o">();</span>
+  <span class="kt">int</span> <span class="n">numCardsInPack</span> <span class="o">=</span> <span class="n">pack</span><span class="o">.</span><span class="na">numCards</span><span class="o">();</span>
+
+  <span class="n">Pile</span> <span class="n">pile</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pile</span><span class="o">();</span>
+  <span class="n">pile</span><span class="o">.</span><span class="na">addCard</span><span class="o">(</span><span class="k">new</span> <span class="n">WildCard</span><span class="o">());</span>
+  <span class="n">pile</span><span class="o">.</span><span class="na">addCard</span><span class="o">(</span><span class="k">new</span> <span class="n">WildCard</span><span class="o">());</span>
+  <span class="n">pile</span><span class="o">.</span><span class="na">addCard</span><span class="o">(</span><span class="k">new</span> <span class="n">WildCard</span><span class="o">());</span>
+
+  <span class="n">pack</span><span class="o">.</span><span class="na">resetPack</span><span class="o">(</span><span class="n">pile</span><span class="o">);</span>
+
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">numCards</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">numCardsInPack</span> <span class="o">+</span> <span class="mi">3</span><span class="o">);</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">pile</span><span class="o">.</span><span class="na">numCards</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The code is simple.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">resetPack</span><span class="o">(</span><span class="n">Pile</span> <span class="n">pile</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">cards</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">pile</span><span class="o">.</span><span class="na">cards</span><span class="o">);</span>
+  <span class="n">pile</span><span class="o">.</span><span class="na">cards</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">shuffle</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>But how to test the game logic. This is a recurring theme of this exercise. The functionality is easy to test while the game logic is hard. This is the test I came up with:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testCardsFromPileAddedToPackWhenPackEmpty</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+  <span class="n">MockPack</span><span class="err"> </span><span class="n">pack</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MockPack</span><span class="o">(</span><span class="mi">17</span><span class="o">);</span>
+  <span class="n">pile</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pile</span><span class="o">();</span>
+  <span class="n">players</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Player</span><span class="o">[]</span> <span class="o">{</span> <span class="k">new</span> <span class="n">Player</span><span class="o">(),</span> <span class="k">new</span> <span class="n">MockPlayer</span><span class="o">(</span><span class="kc">null</span><span class="o">)</span> <span class="o">};</span>
+  <span class="n">game</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UnoGame</span><span class="o">(</span><span class="n">pack</span><span class="o">,</span> <span class="n">pile</span><span class="o">,</span> <span class="n">players</span><span class="o">);</span>
+  <span class="n">game</span><span class="o">.</span><span class="na">play</span><span class="o">();</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">count</span><span class="o">.</span><span class="na">get</span><span class="o">()).</span><span class="na">isGreaterThan</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">players</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">numCards</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">MockPack</span> <span class="kd">extends</span> <span class="n">Pack</span> <span class="o">{</span>
+  <span class="n">AtomicInteger</span> <span class="n">count</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicInteger</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+
+  <span class="kd">public</span> <span class="nf">MockPack</span><span class="o">(</span><span class="kt">int</span> <span class="n">numCards</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">cards</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numCards</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+      <span class="n">cards</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">WildCard</span><span class="o">().</span><span class="na">withColour</span><span class="o">(</span><span class="n">Colour</span><span class="o">.</span><span class="na">BLUE</span><span class="o">));</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">resetPack</span><span class="o">(</span><span class="n">Pile</span> <span class="n">pile</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">.</span><span class="na">resetPack</span><span class="o">(</span><span class="n">pile</span><span class="o">);</span>
+    <span class="n">count</span><span class="o">.</span><span class="na">incrementAndGet</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>It sets up a game situation which should result in the pile being moved to the stack and then uses a mock Pack implementation to ensure that the <code class="highlighter-rouge">resetPack()</code> method is indeed called. This seems brittle and overly complex. Maybe I should have tested all the logic this way from the beginning and then maybe I could have simplified the process more. Not sure.</p>
+
+<p>This is really getting close to a working Uno game now. All the card types are done and the logic is applied. A whole game can be played out. We’re missing a few things like scoring and output which shouldn’t be too difficult. However before doing that I’ve noticed we’re occasionally getting the following error:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
+at java.util.LinkedList.checkElementIndex(LinkedList.java:555)
+at java.util.LinkedList.remove(LinkedList.java:525)
+at project.Pack.drawCard(Pack.java:35)
+at project.UnoGame.pickupCards(UnoGame.java:89)
+at project.UnoGame.nextTurn(UnoGame.java:65)
+at project.UnoGame.play(UnoGame.java:36)
+at project.GameTest.testGame(GameTest.java:24)
+</code></pre></div></div>
+
+<p>After some investigation it seems the above test did not catch the case where we’re running out of cards in the pack while drawing because of a DrawTwo or WildFour card. In this case the <code class="highlighter-rouge">resetPack()</code> method should be called automatically. This has identified yet again that the tests only catch problems in the cases you have thought of, things that may have been picked up earlier by the traditional design-&gt;implement-&gt;test sequence. I think I can see how this happens. A branch in code should be tested by positive and negative tests. A second branch produces 4 possible combinations. A third branch 8 with only 6 tests. A fourth 16 with only 8 tests. You get the point. <label for="testing-branches" class="margin-toggle"> ⊕</label><input type="checkbox" id="testing-branches" class="margin-toggle" /><span class="marginnote">Edit: See James O Coplien’s article <a href="http://rbcs-us.com/documents/Why-Most-Unit-Testing-is-Waste.pdf">Why Most Unit Testing is a Waste</a> </span>This has important consequences for algorithm development using TDD which I haven’t seen mentioned by the TDD gurus.</p>
+
+<p>Anyway, to test this I’m going to fall back to the way we’ve been testing logic in this project, namely extracting a protected method. I don’t like it but I’m not seeing the alternatives. Noticing we don’t actually have a test for the <code class="highlighter-rouge">drawCard()</code> method on the <code class="highlighter-rouge">Pack</code> class (why not?), we create one first:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDrawCard</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+  <span class="n">Pack</span> <span class="n">pack</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pack</span><span class="o">();</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">numCards</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">drawCard</span><span class="o">()).</span><span class="na">isNotNull</span><span class="o">();</span>
+  <span class="o">}</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">drawCard</span><span class="o">()).</span><span class="na">isNull</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Ensuring <code class="highlighter-rouge">drawCard()</code> no longer throws an <code class="highlighter-rouge">IndexOutOfBoundsException</code> when the pack is empty. Then we test a new protected method on the game logic:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testResetPackOnDraw</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+  <span class="n">MockPack</span> <span class="n">pack</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MockPack</span><span class="o">(</span><span class="mi">50</span><span class="o">);</span>
+  <span class="n">pile</span><span class="o">.</span><span class="na">addCard</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">drawCard</span><span class="o">());</span>
+  <span class="n">pile</span><span class="o">.</span><span class="na">addCard</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">drawCard</span><span class="o">());</span>
+  <span class="n">pile</span><span class="o">.</span><span class="na">addCard</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">drawCard</span><span class="o">());</span>
+  <span class="n">game</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UnoGame</span><span class="o">(</span><span class="n">pack</span><span class="o">,</span> <span class="n">pile</span><span class="o">,</span> <span class="n">players</span><span class="o">);</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">numCards</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">game</span><span class="o">.</span><span class="na">drawCard</span><span class="o">()).</span><span class="na">isNotNull</span><span class="o">();</span>
+  <span class="o">}</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">count</span><span class="o">.</span><span class="na">get</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">game</span><span class="o">.</span><span class="na">drawCard</span><span class="o">()).</span><span class="na">isNotNull</span><span class="o">();</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">count</span><span class="o">.</span><span class="na">get</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We’ve used the <code class="highlighter-rouge">MockPack</code> class again to verify that the resetPack() method has indeed been called. We also check that the protected method doesn’t return null because the pack has been reset from the pile. The tests now pass every time. These last test cases seem very forced and they took a lot of time to develop… not only to determine what tests to write but I was even forced to debug the code to find the sources of the errors not picked up by the tests. Either TDD is very very hard or it actually has some pitfalls. Focusing on test cases can mean that if you are not careful your developer intuition is eroded for example for corner cases and error scenarios.</p>
+
+<p>We’ll continue in the <a href="notes-on-art-of-tdd-uno-part-4.html">next part</a>.</p>
+
+
+
+    </article>
+    <span class="print-footer">Notes on the Art of TDD - Uno (Part 3) - June 1, 2017 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2018 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

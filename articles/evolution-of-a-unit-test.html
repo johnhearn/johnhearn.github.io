@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Evolution of a Unit Test</title>
+
+  
+  <meta name="description" content="Example of the evolution of a real unit test over the course of a morning.">
+  
+  
+  <meta name="keywords" content="tdd"/>
+  
+  
+  <meta property="og:title" content="Evolution of a Unit Test">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="/articles/evolution-of-a-unit-test/">
+  <meta property="og:image" content="/assets/images/the-ship-of-fools.jpg">
+  <meta property="og:description" content="Example of the evolution of a real unit test over the course of a morning.">
+  <meta property="og:site_name" content="john-hearn.info">
+  
+  
+    <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="/articles/evolution-of-a-unit-test">
+
+  <link rel="alternate" type="application/rss+xml" title="john-hearn.info" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">john-hearn.info</a>
+	  
+      
+  	
+      
+  	
+      
+  	
+      
+		    
+		      <a href="/about/">About</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/notes">Notes</a>
+		    
+	    
+  	
+      
+		    
+		      <a href="/css/print.css"></a>
+		    
+	    
+  	
+      
+  	
+	</nav>
+</header>
+    <article class="group">
+      <h1>Evolution of a Unit Test</h1>
+<div class="subtitle">June 15, 2017</div>
+<div class="smaller">seven minutes.</div>
+ 
+<p>Continuing the series of notes taken by a TDD apprentice. This post covers a day in the life of a unit test. In this case it happens to be a GUI unit test but it applies broadly, I think.</p>
+
+<h2 id="it-started-with-a-test">It started with a test…</h2>
+
+<p>The application is a JavaFX GUI for loading and modifying resource bundle property files. We decided that the first test to drive the development will display an unadorned window with a button to load a resource bundle. Applying Uncle Bob’s <a href="http://butunclebob.com/ArticleS.UncleBob.TheThreeRulesOfTdd">Three Rules of TDD</a> our first unit test looks like this…</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nd">@Test</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">should_call_load_bundle</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">clickOn</span><span class="o">(</span><span class="s">"#loadBundle"</span><span class="o">);</span>
+  <span class="n">verify</span><span class="o">(</span><span class="n">bundleLoader</span><span class="o">,</span> <span class="n">times</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">loadBundle</span><span class="o">();</span>
+ <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This just ensures that the method <code class="highlighter-rouge">bundleLoader#loadBundle()</code> is called when we press the button. We’ve used <a href="https://github.com/TestFX/TestFX">TextFX</a> to drive the GUI and <a href="http://site.mockito.org/">Mockito</a> to create a stub for a “bundle loader” interface (which still does not exist) and we make sure it is called exactly once when the <code class="highlighter-rouge">#loadBundle</code> button is pressed. This test doesn’t just fail, it doesn’t even compile (This is TDD!) so we bootstrapped the JavaFX application and painted an empty screen with a button. We also generated a BundleLoader interface (and I mean generated because the IDE quick-fixes practically did it for us), wrote some code (lambdas are cool) and, voila, green bar. This is what TDD is supposed to feel like.</p>
+
+<p>Next we wanted to allow the user to select a file to load. We clearly couldn’t open a file selection dialog box in a unit test so we cleverly encapsulated the file selection behaviour behind an interface, mocked it and passed the selected file to the bundle loader. Sound good?</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nd">@Test</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">should_call_load_bundle</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">clickOn</span><span class="o">(</span><span class="s">"#loadBundle"</span><span class="o">);</span>
+  <span class="n">verify</span><span class="o">(</span><span class="n">fileSelector</span><span class="o">,</span> <span class="n">times</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">selectFile</span><span class="o">();</span>
+  <span class="n">verify</span><span class="o">(</span><span class="n">bundleLoader</span><span class="o">,</span> <span class="n">times</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">loadBundle</span><span class="o">(</span><span class="s">"filename"</span><span class="o">);</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="s">"#text"</span><span class="o">,</span> <span class="n">hasText</span><span class="o">(</span><span class="s">"Loaded"</span><span class="o">));</span>
+ <span class="o">}</span>
+</code></pre></div></div>
+
+<p>We did some coding and made that go green but we started realising that this was beginning to smell bad. Why? Well first we noticed that we have have significantly increased coupling, not just in one but in two ways:</p>
+
+<p>We’ve coupled ourselves to a second interface (the <code class="highlighter-rouge">fileSelector</code>) for very little gain.
+We’ve broadened the <code class="highlighter-rouge">BundleLoader</code> interface (adding a new parameter), increasing coupling that way too (see this blog post)
+Maybe <code class="highlighter-rouge">fileSelector</code> would be better passed in as a dependency to the bundle loader? Let’s see. The test becomes…</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nd">@Test</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">should_call_load_bundle</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">clickOn</span><span class="o">(</span><span class="s">"#loadBundle"</span><span class="o">);</span>
+  <span class="n">verify</span><span class="o">(</span><span class="n">bundleLoader</span><span class="o">,</span> <span class="n">times</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">loadBundle</span><span class="o">();</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="s">"#table"</span><span class="o">,</span> <span class="n">hasText</span><span class="o">(</span><span class="s">"Loaded"</span><span class="o">));</span>
+ <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Better, we’ve reduced the coupling again and the test is clean. Now we have a working button but there’s another problem… it doesn’t do anything useful. We realised that we’ve tested a nonsensical outcome too. We don’t really want to see a “Loaded” message. We want to see a loaded bundle in a table!</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nd">@Test</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">should_call_load_bundle</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+  <span class="n">clickOn</span><span class="o">(</span><span class="s">"#loadBundle"</span><span class="o">);</span>
+  <span class="n">verify</span><span class="o">(</span><span class="n">bundleLoader</span><span class="o">,</span> <span class="n">times</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">loadBundle</span><span class="o">();</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="s">"#table"</span><span class="o">,</span> <span class="n">hasItems</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+ <span class="o">}</span>
+</code></pre></div></div>
+
+<p>That’s better and involved the carefree deletion of useless code<label for="branchpoints" class="margin-toggle"> ⊕</label><input type="checkbox" id="branchpoints" class="margin-toggle" /><span class="marginnote">Note to self: testing tends to be concise and trouble free when there are few branch points in the code, as is the case here. Branch point introduce complexity and complicate the testing. </span>. There’s more stuff going on like building the test data for the mock/stub and we’re not testing <code class="highlighter-rouge">BundleLoader</code> at all. Nonetheless we’ve written an impressive amount of tested GUI with these 3 lines of test code and we haven’t even run the app yet.</p>
+
+<p>Temptation overwhelms us as we generate a <code class="highlighter-rouge">BundleLoader</code> implementation with test data (remember we’re decoupled from the FileSelector interface now, proof that the design is less coupled), run the app and amazingly it works first time!</p>
+
+<p>Back now to TDD.</p>
+
+<p>Our GUI won’t just be a table but also have a textarea to hold the key. How to we test that? Easy:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nd">@Test</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">should_display_translations</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+  <span class="n">clickOn</span><span class="o">(</span><span class="s">"#loadBundle"</span><span class="o">);</span>
+  <span class="n">TableView</span><span class="o">&lt;</span><span class="n">KeyColumnModel</span><span class="o">&gt;</span> <span class="n">table</span> <span class="o">=</span> <span class="n">lookup</span><span class="o">(</span><span class="s">"#table"</span><span class="o">).</span><span class="na">queryFirst</span><span class="o">();</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="n">table</span><span class="o">,</span> <span class="n">hasItems</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+  <span class="n">table</span><span class="o">.</span><span class="na">getSelectionModel</span><span class="o">().</span><span class="na">selectFirst</span><span class="o">();</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="s">"#key"</span><span class="o">,</span> <span class="n">hasText</span><span class="o">(</span><span class="s">"category.key1"</span><span class="o">));</span>
+ <span class="o">}</span>
+</code></pre></div></div>
+
+<p>That’s starting to smell bad again. To make the test make sense we had to induce behaviour from the test, namely selecting the first row. Actually this identifies a problem with the GUI itself because the initial state was undefined. Realising this we simplify the test again and move the default selection into the GUI code.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nd">@Test</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">should_display_table_and_first_translation</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+  <span class="n">clickOn</span><span class="o">(</span><span class="s">"#loadBundle"</span><span class="o">);</span>
+  <span class="n">verify</span><span class="o">(</span><span class="n">bundleLoader</span><span class="o">,</span> <span class="n">times</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">loadBundle</span><span class="o">();</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="s">"#table"</span><span class="o">,</span> <span class="n">hasItems</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="s">"#key"</span><span class="o">,</span> <span class="n">hasText</span><span class="o">(</span><span class="s">"category.key1"</span><span class="o">));</span>
+ <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This test seems obvious now, and that’s a very positive sign, but we’ve seen how hard simplicity can sometimes be. Now, with only 4 lines of clean test code we have a working (stubbed) GUI. It’s easy now to add the final remaining functionality, the text values for the different languages in the bundle. It’s nearly the same as the previous case.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nd">@Test</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">should_display_table_and_first_translation</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+  <span class="n">clickOn</span><span class="o">(</span><span class="s">"#loadBundle"</span><span class="o">);</span>
+  <span class="n">verify</span><span class="o">(</span><span class="n">bundleLoader</span><span class="o">,</span> <span class="n">times</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">loadBundle</span><span class="o">();</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="s">"#table"</span><span class="o">,</span> <span class="n">hasItems</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="s">"#key"</span><span class="o">,</span> <span class="n">hasText</span><span class="o">(</span><span class="s">"category.key1"</span><span class="o">));</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="s">"#ta_"</span><span class="o">,</span> <span class="n">hasText</span><span class="o">(</span><span class="s">"clave de prueba"</span><span class="o">));</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="s">"#ta_en"</span><span class="o">,</span> <span class="n">hasText</span><span class="o">(</span><span class="s">"test key"</span><span class="o">));</span>
+  <span class="n">verifyThat</span><span class="o">(</span><span class="s">"#ta_ca"</span><span class="o">,</span> <span class="n">hasText</span><span class="o">(</span><span class="s">"clau de prova"</span><span class="o">));</span>
+ <span class="o">}</span>
+</code></pre></div></div>
+
+<p>That is now the whole GUI happy path tested for this first TDD iteration. A couple of key takeaways.</p>
+
+<ol>
+  <li>
+    <p>From the evolution of the test we can see that <strong>striving to simplify the test has resulted in better design decisions and cleaner code</strong>. The application even worked first time! We are still missing corner case testing (IOExceptions should be handled elegantly) but a big chunk of the functionality has been driven out and tested.</p>
+  </li>
+  <li>
+    <p>The resulting <strong>test is fairly resistant to refactoring</strong>. We might decide to split the GUI up into composite controls and refactor the internals of the BundleLoader but that will have little or no effect on the test.</p>
+  </li>
+  <li>
+    <p>A corollary of the previous point is that this is a unit test that spans more than one class. The unit being the GUI behaviour. <strong>The unit of testing is a behaviour, NOT a class</strong> (as I once erroneously believed).</p>
+  </li>
+  <li>
+    <p>Talking of refactoring, the app was improved by <strong>worry-free, aggressive refactoring</strong> during the development, something which could be done without the fear of breaking the code.</p>
+  </li>
+  <li>
+    <p>The resulting test is small and easy to read while covering large swathes of the GUI. It surprised even us the <strong>excellent coverage achieved by a small, well designed test.</strong></p>
+  </li>
+</ol>
+
+<p>Several TDD skills honed today. These are my notes from a real project. I post them in the hope that someone might find them useful.</p>
+
+
+
+    </article>
+    <span class="print-footer">Evolution of a Unit Test - June 15, 2017 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2018 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>
