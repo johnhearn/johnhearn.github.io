@@ -1,14 +1,14 @@
 ---
 layout: post
 asset-type: notes
-title: Native µservices with Kotlin, Spark and Graal
+title: Native Services with Kotlin, Spark and Graal
 description: Combining SparkJava, Graal and Kotlin.
 date: 2018-11-14 09:08:00 +01:00
 author: John Hearn
 
 ---
 
-In the [last post](native-microservice-sparkjava-graal.html) we built the simplest native microservice with SparkJava and Graal. This time we'll take it a step further and use Kotlin instead of Java.
+In the [last post](native-sparkjava-graal.html) we built the simplest native microservice with SparkJava and Graal. This time we'll take it a step further and use Kotlin instead of Java.
 
 First we need to add the Kotlin library dependency to the Maven project (as of writing the version is `v1.3.10`).
 
