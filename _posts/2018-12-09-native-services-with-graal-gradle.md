@@ -18,13 +18,17 @@ tags:
 
 In the [last post](native-kotlin-sparkjava-graal) we built the simplest native microservice in Kotlin with SparkJava and Graal. This time we’ll do the same thing with Gradle instead of Maven.
 
-First we need to add the Kotlin library dependency to the Gradle project (as of writing the version is v1.3.10).
+First we need to add our libraries to the Gradle project, including the Kotlin library dependency (as of writing the version is v1.3.10).
 
 ```groovy
-compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.10"
+dependencies {
+    compile "com.sparkjava:spark-core:2.7.2"
+    compile "org.slf4j:slf4j-simple:1.7.13"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.10"
+}
 ```
 
-And to use the Kotlin compiler plugin again becomes more concise s compared to Maven.
+And to use the Kotlin compiler plugin again becomes more concise compared to Maven.
 
 ```groovy
 plugins {
@@ -54,4 +58,5 @@ Build the service with Gradle and run it to check it works.
 > curl localhost:4567/sayHello
 Hello World!
 ```
+
 Building the native executable is just the same as before.
