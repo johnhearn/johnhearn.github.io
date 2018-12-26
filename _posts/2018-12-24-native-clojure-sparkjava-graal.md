@@ -1,7 +1,7 @@
 ---
 layout: post
 asset-type: notes
-title: Native Services with Clojure, SparkJava and Graal
+title: Native µservices with Clojure, SparkJava and Graal
 description: Combining SparkJava, Graal and Clojure enables us to build dynamic, functional style native services.
 date: 2018-12-24 11:52:00 +00:00
 author: John Hearn
