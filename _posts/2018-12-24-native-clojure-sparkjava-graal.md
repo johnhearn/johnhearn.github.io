@@ -8,7 +8,9 @@ author: John Hearn
 
 ---
 
-Using Clojure to build serve endpoints is an attractive proposition. Services are naturally functional in nature, in fact a service *is* a function. We'll follow the same simple example we used for [Java](native-sparkjava-graal) and [Kotlin](native-kotlin-sparkjava-graal). This is a continuation of those articles but please bear in mind that my Clojure skills do not (yet :) match Java and Kotlin. We start, as you might imagine, with a new project:
+Using Clojure to build serve endpoints is an attractive proposition. Services are naturally functional in nature, in fact a service *is* a function. We'll follow the same simple example we used for [Java](native-sparkjava-graal) and [Kotlin](native-kotlin-sparkjava-graal). This is a continuation of those articles but please bear in mind that my Clojure skills do not (yet :) match Java and Kotlin. 
+
+We start, as you might imagine, with a new project:
 
 ```bash
 lein new hello-clojure
