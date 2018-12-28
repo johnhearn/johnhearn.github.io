@@ -12,7 +12,7 @@ When annotations were introduced to Java people jumped on the bandwagon, as is t
 
 One perfect example of this is Spring Mvc / REST framework. Spring allows you to create microservices very easily using a couple of annotations but at the cost of adding a whole eco-system of libraries to your application and an extensive family of Spring specific annotations to your code-base. 
 
-SparkJava takes an another approach. Microservices written in SparkJava are just plain Java code which use a plain Java library. No annotation magic just plain, simple code. The advantage of this simple style of programming is that it is, well, simpler. It's so simple that **the Graal native compiler just compiles it and runs it without batting an eye-lid**. Something which is currently{% sidenote currently "I'm sure that someone will invent another battery of technologies to overcome this problem, a problem that doesn't even need to exist." %} **impossible** with Spring.
+SparkJava takes an another approach. Microservices written in SparkJava are just plain Java code which use a plain Java library. No annotation magic just plain, simple code. The advantage of this simple style of programming is that it is, well, simpler. It's so simple that **the Graal native compiler just compiles it and runs it without batting an eye-lid**. Something which is currently{% sidenote currently "I'm sure that someone will come up with the [appropriate workarounds](https://jira.spring.io/browse/SPR-16991) to overcome this problem, a problem that doesn't even need to exist." %} **impossible** with Spring.
 
 This short post shows how easy it is.
 
