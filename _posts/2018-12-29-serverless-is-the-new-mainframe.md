@@ -4,7 +4,7 @@ asset-type: article
 name: serverless-is-the-new-mainframe
 title: Serverless is the new Mainframe
 description: Many of the touted advantages of serverless architectures have been enjoyed on Mainframes for decades. What lessons can be learnt for the new serverless era?
-date: '2018-12-29T11:00:00.000+00:00'
+date: '2018-12-29T10:30:00.000+00:00'
 author: John
 tags:
 - serverless
