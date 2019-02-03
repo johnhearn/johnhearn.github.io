@@ -40,7 +40,7 @@ The first derailed me slightly because it concerned the definition of the projec
 
 A second point was that not all features are equal. Some features may be known to be fixed in scope and require less maintenance over time, or even be likely to be replaced. If we consider the diagram above on a feature by feature basis it again allows us to adjust or efforts for maximum overall value.
 
-A third point was that quality itself is a [multidimensional measure](https://en.wikipedia.org/wiki/Eight_dimensions_of_quality). This again is a broader and arguably much richer definition of quality that the one used to justify sustainable delivery. Bearing this in mind no doubt will make us better developers.
+A third point was that quality itself is a [multidimensional measure](https://en.wikipedia.org/wiki/Eight_dimensions_of_quality). This again is a broader and arguably much richer definition of quality than the one used to justify sustainable delivery. Bearing this in mind no doubt will make us better developers.
 
 ## Lessons learnt
 Providing value through high code and design quality has a **direct and somewhat dynamic relationship with time** and depends on **project length and volatility**. Things to bear in mind in our day to day work.
@@ -48,3 +48,5 @@ Providing value through high code and design quality has a **direct and somewhat
 The compendium of confused terms continues to grow. There are **multiple ways of looking at quality** and it's easy to mix them up. I'll be sure to qualify the word when I use it in the future - if we want to communicate ideas then we must have a shared experience of them. 
 
 Not only are there multiple definitions of quality but, as we discovered, **multiple definitions of the project management triangle**, and even different names for it (the iron triangle, for example). Successful conversations rely on shared experience and it rests on us to understand different perspectives to avoid unproductive misunderstandings.
+
+Many thanks to my colleagues at [Codurance](codurance.com) for their feedback and discussions. Generous and informative as always.
