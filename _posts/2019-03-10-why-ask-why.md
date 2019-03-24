@@ -11,6 +11,10 @@ tags:
 
 ---
 
+> Santiago - _"Tom died for this money. Will you do it for him?"_  
+> Benny - _"He didn't die for that money, he died because of it."_  
+> _**Triple Frontier** (2019)_
+
 {% newthought "_**Why**_" %} is a great word and as a concept it’s near the root of everything.
 
 When I hear the word *why* I immediately remember being surprised to discover that in Spanish it has (at least) two different translations: 
@@ -21,9 +25,9 @@ It’s a subtle distinction and often forgotten in daily conversation but there 
 
 Is it important or even interesting? Well, I think it is when reflecting about the choices we make. 
 
-If the reason you work where you do is because it’s close to your house then that’s a passive reason. If it’s because it’s a job which fits with your interests and goals then that is an active reason. 
+If the reason you work where you do is because it’s close to your house then that’s a passive reason. If it’s because it’s a job which fits with your interests and goals then that is an active reason{% sidenote wardly "Simon Wardley breaks it down further and has [two types of active why](https://blog.gardeviance.org/2016/11/how-to-master-strategy-as-simply-as-i.html):  (1) why of purpose, and (2) why of movement. The first is strategic and the second tactical, winning the chess game vs moving the piece. Both these types are active whys." %}. 
 
-**Modern life seems to want to encourage active whys all the time**. Business and project management are full of examples of this. Productivity tools are all around us. {% marginnote wardly "Simon Wardley breaks it down further and has [two types of why](https://blog.gardeviance.org/2016/11/how-to-master-strategy-as-simply-as-i.html):  (1) why of purpose, and (2) why of movement. The first is strategic and the second tactical, winning the chess game vs moving the piece. Both these types are active whys." %}
+**Modern life seems to want to encourage active whys all the time**. Business and project management are full of examples of this. Productivity tools are all around us. It's kind of stressful.
 
 On the other hand many people live their entire lives with passive whys.
 
