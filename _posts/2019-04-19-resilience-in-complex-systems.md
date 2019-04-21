@@ -22,7 +22,7 @@ I recently read this in a popular science magazine:
 
 These principles seem to be quite applicable to any complex system, including distributed software systems. In particular, when I read that quote, I immediately thought of Netflix and its well publicised techniques for giving their platform greater resilience. Let's take a look at each of the principles from the quote in terms of software. 
 
-Bear in mind that here we are talking about resilience of an entire system, not of its individual components. Having said that, systems principles tend to be fractal in nature, applicable at different scales simultaneously.
+Bear in mind that here we are talking about the resilience of an entire system, not of its individual components, and certainly not the robustness{% sidenote robust-vs-resilient "Here I am using the term *robust* to mean that it's difficult to break as opposed to *resilient* which is essentially adaptability in the face of change." %} of any particular component. Having said that, systems principles tend to be fractal in nature, applicable at different scales simultaneously.
 
 ### Redundancy
 
