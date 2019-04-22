@@ -22,7 +22,7 @@ I recently read this in a popular science magazine:
 
 These principles seem to be quite applicable to any complex system, including distributed software systems. In particular, when I read that quote, I immediately thought of Netflix and its well publicised techniques for making their platform reliable in the face of infrastructure problems.
 
-In the above quote, the ecologist talks about robust systems but, technically, the terms **robustness** and **resilience** have different meanings in this context, *robustness* being strength to bear additional load and *resilience* the ability to adapt in the face of changing external factors. Beware that authors (myself included) are liable mix these two concepts even though each play separate roles in a stable system.
+In the above quote, the ecologist talks about robust systems but, technically, the terms **robustness** and **resilience** have different meanings in this context, *robustness* being strength to bear additional load and *resilience* the ability to adapt and respond in the face of changing external factors. The looser, everyday meanings of these words mean that authors (myself included) are liable mix these two concepts even though each play separate roles in a stable system.
 
 Bear in mind that here we are talking about the stability of an entire system, not any particular component, and certainly not the robustness of any individual component. Having said that, systems principles tend to be fractal in nature, applicable at different scales simultaneously, so similar techniques which hold at a system level may also be applicable at component level too.
 
