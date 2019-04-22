@@ -1,8 +1,8 @@
 ---
 layout: post
 asset-type: article
-name: complexity-recap
-title: Complexity in 5 minutes
+name: encounter-with-complexity
+title: An Encounter with Complexity
 description: Systems flourish between the predictable and the chaotic.
 date: 2019-04-20 12:00:00 +00:00
 author: John Hearn
