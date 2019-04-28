@@ -9,7 +9,6 @@ author: John
 tags:
 - complexity
 - systems
-- cynefin
 
 ---
 
@@ -20,7 +19,7 @@ I recently read this in a popular science magazine:
 > Second, they have **diversity**, which increases the odds that at least some species will be able to cope with unexpected change.
 > Third, they have **modularity**, so that failure of part of the system doesn't bring down the whole thing.* - The Goldilocks Planet - New Scientist (23 March 2019)
 
-These principles seem to be quite applicable to any complex system, including distributed software systems. In particular, when I read that quote, I immediately thought of Netflix and its well publicised techniques for making their platform reliable in the face of infrastructure problems.
+These principles seem to be quite applicable to any non-trivial system, including distributed software systems. In particular, when I read that quote, I immediately thought of Netflix and its well publicised techniques for making their platform reliable in the face of infrastructure problems.
 
 In the above quote, the ecologist talks about robust systems but, technically, the terms **robustness** and **resilience** have different meanings in this context, *robustness* being strength to bear additional load and *resilience* the ability to adapt and respond in the face of changing external factors. The looser, everyday meanings of these words mean that authors (myself included) are liable mix these two concepts even though each play separate roles in a stable system.
 
@@ -48,9 +47,9 @@ Modularity, and the related concept of minimising coupling, has been the basis o
 
 ### Conclusion
 
-Famously, Netflix uses [Chaos engineering](https://en.wikipedia.org/wiki/Chaos_engineering) to test the stability of their systems by deliberately applying selective, or even mass outages. Similarly, the article from which the quote above is taken suggests that extinctions, or even mass extinctions, in Earth's past have actually made its ecosystem more stable. Of course there are other ways we can increase the stability of complex software systems, or even organisations, but it is nonetheless interesting to see the similarities between distributed software and natural ecosystems. 
+Famously, Netflix uses [Chaos engineering](https://en.wikipedia.org/wiki/Chaos_engineering) to test the stability of their systems by deliberately applying selective, or even mass outages. Similarly, the article from which the quote above is taken suggests that extinctions, or even mass extinctions, in Earth's past have actually made its ecosystem more stable. Of course there are other ways we can increase the stability of software systems, or even organisations, but it is nonetheless interesting to see the similarities between software and natural ecosystems. 
 
-I think the principles underlying these ideas are actually applicable to any complex system.  Consider how they are represented in more sophisticated design frameworks like systems thinking, Cynefin and risk-based decision making. And better ways of thinking about resilience will take us into [Anti-fragility](https://en.wikipedia.org/wiki/Antifragile) and related ideas.
+I think the principles underlying these ideas are actually applicable to many systems. Consider how they are represented in more sophisticated frameworks like systems thinking, Cynefin and risk-based decision making. And better ways of thinking about resilience will take us into [Anti-fragility](https://en.wikipedia.org/wiki/Antifragile) and related ideas.
 
 There is certainly a great deal to learn in this area. 
 
