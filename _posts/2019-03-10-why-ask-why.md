@@ -26,7 +26,7 @@ It's a subtle distinction and often forgotten in daily conversation but there ar
 
 Is it important or even interesting? Well, I think it is when reflecting about the choices we make. 
 
-If the reason you work where you do is because the office is close to your house then that's a passive reason. On the other hand if it's because it's a job which fits with your interests and goals then that is an active reason{% sidenote wardly "Simon Wardley breaks it down further and has [two types of active why](https://blog.gardeviance.org/2016/11/how-to-master-strategy-as-simply-as-i.html):  (1) why of purpose, and (2) why of movement. The first is strategic and the second tactical, winning the chess game vs moving the piece. Both these types are active whys." %}. 
+If the reason you work where you do is because the office is close to your house then that's a passive reason. On the other hand if it's because it's a job which fits with your interests and goals then that is an active reason{% sidenote wardly "Simon Wardley breaks it down further and has [two types of active why](https://blog.gardeviance.org/2016/11/how-to-master-strategy-as-simply-as-i.html):  (1) why of purpose, and (2) why of movement. The first is strategic and the second tactical, the latter typically *instrumental* to the first, for example winning the chess game vs moving the piece. Both these are active whys." %}. 
 
 **Modern life seems to want to encourage active whys all the time**. Business and project management are full of examples of this. Productivity techniques are always asking for goals and objectives. It's kind of stressful.
 
