@@ -1,9 +1,9 @@
 ---
 layout: post
 asset-type: article
-name: stability-in-complex-systems
-title: Stability in Complex Systems
-description: A quote from an ecologist regarding the stability of ecosystems applies to software systems too.
+name: stability-of-systems
+title: The Stability of Systems
+description: A quote from an ecologist regarding the stability of ecosystems could also apply to software systems.
 date: '2019-04-19T11:30:00.000+00:00'
 author: John
 tags:
