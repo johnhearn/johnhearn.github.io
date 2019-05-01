@@ -175,7 +175,21 @@ OK, so we have built our Qubit and a couple of gates, X and H, to manipulate it.
 => (false false false false true true true true false false)
 ```
 
-Not bad a bad start but there's still a lot to do. The next steps will be to introduce Neanderthal and complex numbers but I'll leave that for [next time](building-a-qpu-simulator-in-clojure-part-2).
+Going back to the original feature test, we can also now simulate an 8-sided die simply by tossing a coin 3 times and interpreting the result as binary. We could do this in the REPL:
+
+```clojure
+(defn to-int [& b]
+  (reduce (fn [acc v] (+ (* 2 acc) (if v 1 0)))
+          0
+          b))
+=> #'qucl.qubits/to-int
+(apply to-int (repeatedly 3 coin-toss))
+=> 7
+(apply to-int (repeatedly 3 coin-toss))
+=> 3
+```
+
+Not a bad start but there's still a lot to do. To implement our feature test completely we need to be able to combine Qubits. We've some way to go and the next steps will be to introduce Neanderthal and complex numbers but I'll leave that for [next time](building-a-qpu-simulator-in-clojure-part-2).
 
 <br>
 
