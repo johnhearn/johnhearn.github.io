@@ -1,7 +1,7 @@
 ---
 layout: post
 asset-type: notes
-name: building-a-quantum-simulator-from-scratch-part-1
+name: building-a-qpu-simulator-in-clojure-part-1
 title: Building a QPU simulator in Clojure - Part 1
 description: First steps in building a quantum CPU simulator with Clojure and TDD.
 date: 2019-01-27 16:52:00 +00:00
@@ -9,6 +9,7 @@ author: John Hearn
 tags:
 - quantum computing
 - tdd
+- clojure
 
 ---
 

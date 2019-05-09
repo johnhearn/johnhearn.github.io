@@ -1,7 +1,7 @@
 ---
 layout: post
 asset-type: notes
-name: building-a-quantum-simulator-from-scratch-part-2
+name: building-a-qpu-simulator-in-clojure-part-2
 title: Building a QPU simulator in Clojure - Part 2
 description: Adding Neanderthal and complex numbers.
 date: 2019-05-01 09:52:00 +00:00
@@ -9,6 +9,7 @@ author: John Hearn
 tags:
 - quantum computing
 - tdd
+- clojure
 
 ---
 
