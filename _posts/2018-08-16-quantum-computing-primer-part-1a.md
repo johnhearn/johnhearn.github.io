@@ -51,15 +51,15 @@ Now we can imagine a whole new family of gates which not only flip the arrow aro
 
 ## God *does* play dice
 
-In the strange world of quantum mechanics, when we make observations, those same observations affect the state of the system. In this case, when we **measure** a qubit it will always appear to be a classical `true` or `false`, *never anything else*. It is said that the state *collapses* to one of these values{% sidenote "collapse" "This is known as the [measurement problem](https://en.wikipedia.org/wiki/Measurement_problem) because no one really knows for certain *why* or *how* this happens. There is evidence that when considering the measuring equipment as a quantum mechanical system in itself then the collapse can be considered as altering the state on the whole system to bring both into alignment. Einstein famously was not convinced." %}. What is more, the *probability* that it will collapse to one state or another is related directly to how close it is to that state, i.e. how close to the poles.
+In the strange world of quantum mechanics, when we make observations, those same observations affect the state of the system. In this case, when we **measure** a qubit it will always appear to be straight `Up` or straight `Down`, *never anything in-between*. It is said that the state *collapses* to one of these values{% sidenote "collapse" "This is known as the [measurement problem](https://en.wikipedia.org/wiki/Measurement_problem) because no one really knows for certain *why* or *how* this happens. There is evidence that when considering the measuring equipment as a quantum mechanical system in itself then the collapse can be considered as altering the state on the whole system to bring both into alignment. Einstein famously was not convinced." %}. What's more, the *probability* that it will collapse to one state or another is related directly to how close it is to that state, i.e. how close to the poles.
 
-For example, if we identify the `Up` state as `false` and the `Down` state as `true` then if the arrow of our quantum bit is pointing up vertically it will almost certainly be `false` when measured, if it’s pointing down then it’s almost certain to be measured as `true`. If its pointing sideways then it could result in either `True` or `False` with equal likelihood. It is indeterministic, God really does play dice.
+For example, if we identify the `Up` state as `false` and the `Down` state as `true` then if the arrow of our quantum bit is pointing vertically up then it will almost certainly be `false` when measured. On the other hand if it's pointing down then it's almost certain to be measured as `true`. If it's pointing sideways then it could result in either `true` or `false` with equal likelihood. It is indeterministic, in other words *random*. God really does play dice.
 
 Believe it or not this view of a qubit has been validated by experiment time and again. Specially prepared light particles, sub-atomic particles and even atoms behave in exactly this way. It leads to some very useful results in its own right, like true random number generation, but the real power doesn't come until we combine multiple bits into a single state.
 
 ## Combining Two Qubits
 
-We know how to combine classical bits, it’s just the binary number system that we use everyday. For example, the combination of 2 bits have exactly 4 possible states, namely 00, 01, 10 and 11. Notice that although each bit exists separately, to have meaning the bits need to be considered together, as a single register, in a given combined state.
+We know how to combine classical bits, it’s just the binary number system that we use everyday. For example, the combination of 2 bits have exactly 4 possible states, namely 00, 01, 10 and 11. Notice that although each bit exists separately, to have meaning they need to be considered together, as a single *register*, in a given combined state.
 
 In a similar way quantum bits can be combined into quantum registers and, just as we saw that a quantum bit can be considered a mix or *superposition* of `Up` and `Down` states, so can the quantum registers be considered a superposition of their possible states, although unfortunately there is no easy way to intuitively visualise them as there is with the Bloch sphere of a single quantum bit.
 
@@ -69,13 +69,13 @@ In other words, the quantum register is some weighted superposition of `Up`-`Up`
 
 When measured, a 2-bit quantum register will collapse to just one of 4 possible states, just as in the classical case.
 
-What’s remarkable about quantum registers is that the number of possible states for the register *before* measurement is greater than the number of states that could be produced from two single quantum bits working separately.
+There is something truly remarkable about quantum registers and it is this: the number of possible states for the register *before* measurement is greater than the number of states that could be produced from two single quantum bits working separately.
 
 Let that sink in.
 
-Two linked, or *entangled*, quantum bits forming a 2-bit quantum register can be in a state which is not a combination of individual qubits! What's more, the measurement of one qubit collapses *both* qubits into a particular state, even if they are separated by great distances.
+Two linked, or *entangled*, quantum bits forming a 2-bit quantum register can be in a state which is not a combination of individual qubits! What's more, the measurement of one qubit affects *both* qubits, even if they are separated by great distances.
 
-Einstein called this "spooky action at a distance" and the physical mechanisms behind it are still a mystery{% sidenote "entanglement" "See [this video](https://www.youtube.com/watch?v=XGulRS2IyF8) for an esoteric attempt to explain of this phenomenon." %}. Nonetheless it has been show and confirmed by many experiments to be true. It is one of the remarkable facts that gives quantum computing its immense power and set it apart from classical computing.
+Einstein called this "spooky action at a distance" and the physical mechanisms behind it are still a mystery{% sidenote "entanglement" "See [this video](https://www.youtube.com/watch?v=XGulRS2IyF8) for an esoteric attempt to explain of this phenomenon." %}. Nonetheless it has been shown and confirmed by many experiments to be true. It is one of the remarkable facts that gives quantum computing its immense power and set it apart from classical computing.
 
 # Quantum computers are not reliable
 
