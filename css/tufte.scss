@@ -593,12 +593,17 @@ hr.slender {
 /* My customisation */
 /* Correct formatting of code blocks */
 pre.highlight {
+  width: 100%;
   padding-left: 0%;
   line-height: 1.0;   
   code {
     font-size: 0.9rem;
     padding-left: 0%;
   }
+}
+
+div.highlight {
+  width: 640px;
 }
 
 code.highlighter-rouge {
