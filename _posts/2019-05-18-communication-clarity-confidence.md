@@ -26,7 +26,9 @@ digraph "communication-clarity-confidence" {
 
 Notice that the arrows are bidirectional, that is each one feeds into the others. Lets start with communication.
 
-**Verbal communication**, requires us to linearise the concepts within our heads into a train of words. Steven Pinker describes this very well in [this talk](https://youtu.be/OV5J6BfToSw?t=1545) about writing style. These webs of knowledge will be quite complicated and we may not even be aware of all the connections ourselves. **The more clarity we have of those connections, the easier it is to convert them to words**. 
+## Communication
+
+There are different forms fo communication. **Verbal communication**, requires us to linearise the concepts within our heads into a train of words. Steven Pinker describes this very well in [this talk](https://youtu.be/OV5J6BfToSw?t=1545) about writing style. These webs of knowledge will be quite complicated and we may not even be aware of all the connections ourselves. **The more clarity we have of those connections, the easier it is to convert them to words**. 
 
 This also works the other way around: **forcing yourself to write can encourage greater clarity**. So many times has the simple act of writing an idea down made it clear where the holes or inconsistencies are. This is the main reason for writing this blog. 
 
@@ -38,11 +40,19 @@ Another important form of communication is through body language. Psychologicall
  - Appropriate eye contact, handshake and physical contact
  - Posture and [hand gestures](https://www.youtube.com/watch?v=ZZZ7k8cMA-4)
 
+The other side of communication is **listening**. Many times I have been told that I'm not present in conversations and that is often true because a "tree" of possibilities and consequences of what the other person is saying overwhelms me. [Being present is key to good communication](https://www.youtube.com/watch?v=H6n3iNh4XLI).
+
+## Clarity
+
 If you don't have clarity in your ideas it will be impossible to communicate them effectively. **Arguments must be coherent to be viable, which is not the same as being right**, a mistake made very often which I must try to avoid.
 
 Like it or not, **the right level of confidence is an essential part of persuasive communication**. We are humans and we evaluate what people are saying not only on *what* is being said but also *how* it is being said.
 
+## Confidence 
+
 Confidence requires clarity of ideas but is not about bullying or not being wrong. Quite the opposite. **Confidence is about being able to state an opinion but also to recognise better ideas and the ability to accept mistakes without feeling personal failure**. Confidence also ties back to body language which is essential for maintaining credibility and holding interest. 
+
+## Actions
 
 In terms of actions, I have a number of ideas which, no doubt, will grow over time.
 - To continue writing this blog which I am finding to be very valuable. I'll also continue contributing to the company blog.
