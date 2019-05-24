@@ -4,7 +4,7 @@ asset-type: notes
 name: building-a-qpu-simulator-in-julia-part-3
 title: Building a QPU simulator in Julia - Part 3
 description: Improving performance.
-date: 2019-05-23 08:22:00 +02:00
+date: 2019-05-24 08:22:00 +02:00
 author: John Hearn
 tags:
 - quantum computing
