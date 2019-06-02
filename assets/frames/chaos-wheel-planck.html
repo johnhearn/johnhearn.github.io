@@ -1,0 +1,106 @@
+<html><body>
+<script src="https://cdn.jsdelivr.net/npm/planck-js@0.2/dist/planck-with-testbed.js"></script>
+<script>
+  planck.testbed(function(testbed) {
+    testbed.width = 20
+    testbed.height = 30
+    testbed.y = -5
+
+    var pl = planck, Vec2 = pl.Vec2;
+    var world = new pl.World({
+      gravity: Vec2(0, -10),
+    });
+
+    var center = world.createBody();
+    center.createFixture(pl.Circle(2.0), 1.0);
+
+    // Define arm
+    var follower = world.createDynamicBody(Vec2(0.0, 0.0));
+    follower.createFixture(pl.Circle(1.0), 1.0);
+
+    world.createJoint(pl.RevoluteJoint({}, center, follower, Vec2(0.0, 0.0)));
+
+    function createCup(x,y) {
+      var bottom = pl.Box(1.5, 0.15);
+      var left = pl.Box(0.15, 1.5, Vec2(-1.45, 2.35), 0.2);
+      var right = pl.Box(0.15, 1.5, Vec2(1.45, 2.35), -0.2);
+
+      // Define cup
+      var container = world.createBody({
+        type: 'dynamic',
+        fixedRotation: true,
+        position: Vec2(x, y)
+      });
+      container.createFixture(bottom, 1.0);
+      container.createFixture(left, 1.0);
+      container.createFixture(right, 1.0);
+      
+      world.createJoint(pl.RevoluteJoint({}, follower, container, Vec2(x, y)));
+    }
+  
+    var r = 8.0
+    var sin = Math.sin(Math.PI/3)
+    var cos = Math.cos(Math.PI/3)
+    createCup(0.0, r);
+    createCup(-r*sin, -r*cos);
+    createCup(+r*sin, -r*cos);
+    //createCup(-r, 0);
+
+    var points = [];
+
+    // Detect collisions
+    world.on('pre-solve', function(contact, oldManifold) {
+      var manifold = contact.getManifold();
+
+      if (manifold.pointCount == 0) {
+        return;
+      }
+
+      var fixtureA = contact.getFixtureA();
+      var fixtureB = contact.getFixtureB();
+
+      var worldManifold = contact.getWorldManifold();
+
+      for (var i = 0; i < manifold.pointCount; ++i) {
+        var cp = {};
+        cp.fixtureA = fixtureA;
+        cp.fixtureB = fixtureB;
+        cp.position = worldManifold.points[i];
+        cp.normal = worldManifold.normal;
+        // cp.state = state2[i];
+        cp.normalImpulse = manifold.points[i].normalImpulse;
+        cp.tangentImpulse = manifold.points[i].tangentImpulse;
+        cp.separation = worldManifold.separations[i];
+        points.push(cp);
+      }
+    });
+
+    var step = 0
+    testbed.step = function() {
+      
+      // Remove drops which collide with center fixture
+      for (var i = 0; i < points.length; ++i) {
+        var point = points[i];
+        
+        var body1 = point.fixtureA.getBody();
+        var body2 = point.fixtureB.getBody();
+        
+        if(body1 === center) world.destroyBody(body2);
+      }
+      
+      // Inlet
+      if(step++ % 10 == 0) {
+        var drop = pl.Circle(0.25);
+        var ball = world.createDynamicBody(Vec2(1.0*Math.random(), 15.0));
+        ball.createFixture(drop, {
+          density: 50.0,
+          friction: 0.10
+        });
+      }
+    };
+
+    return world;
+  });
+</script>
+</iframe>
+</body></html>
