@@ -5,7 +5,7 @@ author: John Hearn
 simple_search: http://google.com/search
 description: Personal site for blogging and about science, software and such
 name: john-hearn
-avatar: /assets/images/complexity/class4.png
+#avatar: /assets/images/complexity/class4.png
 markdown: kramdown
 markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 permalink: /articles/:title
