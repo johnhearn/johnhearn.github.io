@@ -239,7 +239,8 @@ eye = () -> Matrix{Float32}(I, 2, 2)
 Now we must *lift* the $$M_0$$ operator as $$I^{k-1} \times M_0 \times I^{n-k-1}$$. In Julia this can be written like this:
 
 ```julia
-lift = (n, k, op) -> foldl(kron, map(it -> (it == k) ? op : eye, collect(1:n)))```
+lift = (n, k, op) -> foldl(kron, map(it -> (it == k) ? op : eye, collect(1:n)))
+```
 
 This function will combine a series of $$I$$ operators, the `op` operator over the `k`th bit and then more $$I$$ operators to the end of the register. The result is{%sidenote sparse "It can be seen here that the lifting matrix is mostly full of zeros. Hopefully we'll be able to take advantage of Julia's specialised matrix representations to optimise this." %}:
 
