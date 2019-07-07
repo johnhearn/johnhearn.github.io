@@ -24,7 +24,7 @@ This first post treats it as a programmer.
 ## Data
 Imagine a random area of a memory chip full of transistors, each either on or off. One might suppose that those states mean something to someone but without any context it remains data and, actually,  **does not provide information at all**. 
 
-That may seem counter intuitive because we are used to seeing data as information but thinking about it it can't be. First, we don't even know if it is a complete representation of anything. It's just a state with no context. It might as well, in fact, be random{% sidenote extraction "We may be able to apply techniques from the higher levels to extract more data from the data: average, variance, repeating patterns, etc. but until we apply the higher levels the data remains data." %}.
+That may seem counter intuitive because we are used to seeing data as information but, thinking about it, it can't be. First, we don't even know if it is a complete representation of anything. It's just a state with no context. It might as well, in fact, be random{% sidenote extraction "We may be able to apply techniques from the higher levels to extract more data from the data: average, variance, repeating patterns, etc. but until we apply the higher levels the data remains data." %}.
 
 Often, as programmers we confuse data with information and pay the price with bugs and errors, as we'll see in a moment.
 
