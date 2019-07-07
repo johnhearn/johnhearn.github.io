@@ -14,7 +14,7 @@ tags:
 
 Recall that [Deutsch's algorithm](deutsch-jozsa-algorithm) can be represented by the following circuit:
 
-![Deutsch's algorithm circuit](/assets/images/deutschs-circuit.png){:width="320px"}
+![Deutsch's algorithm circuit](/assets/images/quantum-computing/deutschs-circuit.png){:width="320px"}
 
 We want something like this, remembering that Julia is 1-index based:
 
@@ -91,7 +91,7 @@ We can see that this is exactly the result we expect.
 
 Extending to multiple bits, the generalised quantum circuit in this case is:
 
-![Deutsch-Jozsa algorithm circuit](/assets/images/deutsch-jozsa-circuit.png){:width="400px"}
+![Deutsch-Jozsa algorithm circuit](/assets/images/quantum-computing/deutsch-jozsa-circuit.png){:width="400px"}
 
 This is known as the Deutsch-Jozsa algorithm. The wikipedia article has much more information about how this works. In our Julia DSL we can easily extend to 2-bit functions:
 

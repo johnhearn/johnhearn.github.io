@@ -19,7 +19,7 @@ The most basic example is the generation of _true_ random numbers which can be i
 
 This can done with a [Hadamard](https://en.wikipedia.org/wiki/Quantum_logic_gate#Hadamard_(H)_gate) gate or a [$$ \sqrt{NOT} $$](https://en.wikipedia.org/wiki/Quantum_logic_gate#Square_root_of_NOT_gate_(%E2%88%9ANOT)) gate, that is, the gate that when applied twice would create a [$$ NOT $$](https://en.wikipedia.org/wiki/Quantum_logic_gate#Pauli-X_gate) gate. This is simple circuit to generate a random 3-bit number.
 
-![Random number circuit](/assets/images/3-bit-rng.png){:width="320px"}
+![Random number circuit](/assets/images/quantum-computing/3-bit-rng.png){:width="320px"}
 
 Measurement of $$q_0$$, $$q_1$$, $$q_2$$ will provide 3 random classical binary digits which can be treated as a number between 0 and 7.
 

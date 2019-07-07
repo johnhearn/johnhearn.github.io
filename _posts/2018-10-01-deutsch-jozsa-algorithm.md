@@ -32,7 +32,7 @@ Imagine we are given a gate $$U_f$$ which is based on the function we are intere
 
 Then a circuit for the algorithm can be represented by the following diagram:
 
-![Deutsch's algorithm circuit](/assets/images/deutschs-circuit.png){:width="320px"}
+![Deutsch's algorithm circuit](/assets/images/quantum-computing/deutschs-circuit.png){:width="320px"}
 
 This equates in quko to the following snippet:
 
@@ -64,7 +64,7 @@ and will, on average, need many more evaluations of the function to test be able
 
 The quantum circuit in this case becomes:
 
-![Deutsch-Jozsa algorithm circuit](/assets/images/deutsch-jozsa-circuit.png){:width="400px"}
+![Deutsch-Jozsa algorithm circuit](/assets/images/quantum-computing/deutsch-jozsa-circuit.png){:width="400px"}
 
 We can build this circuit in quko as follows:
 
