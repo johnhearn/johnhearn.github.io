@@ -3,7 +3,7 @@ layout: post
 asset-type: article
 name: dikuw-programmer
 title: DIKUW for Programmers
-description: An explanation for programmers. 
+description: An explanation for programmers of the concepts behind the decision-making information hierarchy. 
 date: '2019-07-07T18:30:00.000+00:00'
 author: John
 tags:
@@ -87,7 +87,7 @@ Understanding why and how is very different from following the rules.
 
 OK, so we understand universal computation and the game of life, the APL language, the text encodings, the bytes and the transistors. We might understand the concepts but how do we know when and if to apply them? When would I consider APL over some other language? When should I use a programming language at all or and when should I be playing with my children?
 
-You might have noticed that the ideas become more abstract and general as we move along the chain. This last level is the most difficult of all and the subject of most debate. If understanding requires reflection then this require still more. 
+You might have noticed that the ideas become more abstract and general as we move along the chain. This last level is the most difficult of all and the subject of most debate. If understanding requires reflection then this require still more, even a personal philosophy about ones own values.
 
 
 This has been just one trivial example of the many levels of knowledge or understanding behind anything we do. We are knowledge workers, using information everyday. I wonder sometimes if we really stop to really understand some of the things we do (he says, copy/pasting from Wikipedia) or whether we are content with *just* knowledge. 
