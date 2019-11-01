@@ -1,16 +1,16 @@
 ---
 layout: post
-asset-type: post
+asset-type: notes
 name: composing-abstraction
 
 ---
 
-Linguists have a lot to say about this. Consider the following statement:
+Linguists have a lot to say about this. Consider the following statement proposed by the renowned linguist Noam Chomsky:
 
-> _Colourless green ideas sleep furiously_ - Noam Chomsky
+> _Colourless green ideas sleep furiously_
 
 Lack-lustre environmental proposals are dormant... no. There is a composition of abstractions here which, while grammatically correct, makes no actual sense.
 
 > _To infinity and beyond_ - Buzz Lightyear
 
-This is a composition of abstractions begetting another: *beyond infinity*. Together it makes no actual sense. In fact the concept of infinite itself is defined as something that cannot be reached
+This is a composition of abstractions begetting another: *beyond infinity*. Together these abstractions also make no actual sense.

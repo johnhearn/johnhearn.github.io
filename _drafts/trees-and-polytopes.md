@@ -40,7 +40,7 @@ $$
 
 The product is non-commutative however in the case of real or complex elements the result is *permutation equivalent*, that is, since the order of multiplication of each element ($$ac=ca$$) is not important, the resulting vector contains the same elements in a different order.
 
-This structure is isomorphic to the family of [cross-polytope](https://en.wikipedia.org/wiki/Cross-polytope)s. Here is the skeletal graph of the 4 element cross-polytope (a square).
+This structure is isomorphic to the family of [cross-polytope](https://en.wikipedia.org/wiki/Cross-polytope)s{% sidenote polyhedral-representation "[Edit: this is not a new idea. See [this library](https://polyhedral.info/) which leverages polyhedral representations for algorithm compilation. "%}. Here is the skeletal graph of the 4 element cross-polytope (a square).
 
 {% graphviz %}
 digraph "4-element tree" {
@@ -283,9 +283,11 @@ digraph G {
   j->b
 }{% endgraphviz %}
 
-### I'm wondering if this fact could be used to generate more efficient data types for the tensor producto of sparse matrices which are found in quantum computing simulators.
+**I'm wondering if this fact could be used to generate more efficient data types for the tensor product of sparse matrices which are found in quantum computing simulators.**
 
 Or maybe not :)
+
+(The line graph of the conceptual network is the connection graph.)
 
 ----
 
