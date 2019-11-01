@@ -20,7 +20,7 @@ Just for a kicks, I started rewriting [Quko], my simple quantum computing simula
 So, I started looking again at [*complexity* theory](encounter-with-complexity). I was lead via [logistic maps](https://en.wikipedia.org/wiki/Logistic_map), and [other](https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations) [dynamic](https://en.wikipedia.org/wiki/Rayleigh%E2%80%93B%C3%A9nard_convection) [systems](https://en.wikipedia.org/wiki/Galaxy_filament) to a library called [DynamicSystems.jl](https://juliadynamics.github.io/JuliaDynamics/) written in a language called [Julia]. I remembered having seen Julia two years ago from another [talk](https://www.youtube.com/watch?v=cLLQcshWEbE) on simulating spiking neural networks using Julia.
 
 
-The things that were bothering me in Kotlin and Clojure when building the QPU simulator were complex numbers and linear algebra, specifically the Krondecker product, and it turns out that Julia supports both natively! So it was worth giving it a try.
+The things that were bothering me in Kotlin and Clojure when building the QPU simulator were complex numbers and linear algebra, specifically the Krondecker product, and it turns out that Julia supports both natively! So it was worth giving it a try{% sidenote guide "Edit: For a nice guide through [Julia] syntax take a look at the [ThinkJulia online book](https://benlauwens.github.io/ThinkJulia.jl/latest/book.html). It pretty much covers all the basic and is very easy to understand." %}.
 
 Installing Julia on a Mac is as simple as you might expect{% sidenote jupyter "You can use it from [Jupyter], if you prefer. I wrote down how to do that in a [separate note](using-julia-in-jupyter). The community overlap with Python is understandable." %}
 

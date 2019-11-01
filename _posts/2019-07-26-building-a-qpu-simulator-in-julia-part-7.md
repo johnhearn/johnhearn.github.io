@@ -16,7 +16,7 @@ Unlike Deutsch's algorithm, which merely shows the possibility of quantum speed-
 
 Using tools from number theory, the algorithm consists of a procedure which transforms the problem of prime factorings into a problem of period finding. The advantage of this is that the period finding part, which is exponentially hard on classical computers, can be implemented efficiently (i.e. in polynomial time) with a quantum computer.
 
-The details of the algorithm can be found across the internet. Here's a [video of a talk](https://www.youtube.com/watch?v=8EcLYB6VD4s) by colleague James Birnie but I recommend you look for your own research material. There's some non-trivial maths going on and it's not easy to understand all of the different elements involved in the algorithm. It helps to read multiple different tutorials and explanations.
+The details of the algorithm can be found across the internet. Here's a [video of a talk](https://www.youtube.com/watch?v=8EcLYB6VD4s) by James Birnie but I recommend you to also look for your own research material. There's some non-trivial maths going on and it's not easy to understand all of the different elements involved in the algorithm. It helps to read multiple different tutorials and explanations.
 
 Anyway, for the moment, let's just implement the classical parts in Julia. It turns out to be quite simple. These are the steps:
 
