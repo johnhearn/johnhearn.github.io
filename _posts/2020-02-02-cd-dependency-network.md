@@ -3,7 +3,7 @@ layout: post
 asset-type: article
 name: cd-dependency-network
 title: Technical Practices for Continuous Delivery
-description: What are the relationships between the different technical practices which underlie Continuous Delivery in the DORA model.
+description: Looking at the relationships between the different technical practices in the DORA model.
 image: /assets/images/cicd/cd-dependency-graph.svg
 date: 2020-02-03 08:25:00 +01:00
 author: John Hearn
