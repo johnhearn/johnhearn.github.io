@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: notes
 name: designing-a-talk
 title: Designing a Talk
 description: Do a talk at a conference, they said. 
@@ -10,37 +10,31 @@ tags:
 
 ---
 
-One of the nicest things about working at Codurance is the bi-weekly *catch-ups*. Those of us who are working mainly at client offices go to the Codurance office, meet other Codurancers who we haven't seen for a while, eat together and share our experiences. We also do lightning talks about things that interest us and at the same time get a chance to practice our presentation skills. After doing many of these internal talks, someone said in a peer review that maybe I should take it up a notch and do a talk externally. Always trying to push out of my comfort zone (aka a sucker for punishment) I proposed a talk at the Barcelona Software Crafters conference, with a very short synopsis. 
+> Edit: I did the talk laid out in this post on the 10th of October 2019. It mostly followed the outline presented here but in the heat of the moment I accidentally skipped the ice-breaker and much of the introduction, I guess because of nerves. Of the feedback that I got, one person felt that it had lacked a better narrative structure, which is exactly what I did try to do, unsuccessfully it seems. Next talk will be about Conway's Law at the "Papers We Love" Meetup group. Let's see how that goes.
+
+<hr class="slender" width="50%"/>
+
+One of the nicest things about working at Codurance{% sidenote codurcne "Edit: This was written before I left Codurance for pastures new. The content of the post regarding my time there still stands." %} is the bi-weekly *catch-ups*. Those of us who are working mainly at client offices go to the Codurance office, meet other Codurancers who we haven't seen for a while, eat together and share our experiences. We also do lightning talks about things that interest us and at the same time get a chance to practice our presentation skills. After doing many of these internal talks, someone said in a peer review that maybe I should take it up a notch and do a talk externally. Always trying to push out of my comfort zone (aka a sucker for punishment) I proposed a talk at the Barcelona Software Crafters conference, with a very short synopsis.
 
 > How predictable is your code? How predictable is your system, your project or your business? What does it mean to be predictable? Knowing this will help us write better code, create better systems and run better projects and help us understand why agile practices work and when they may not be enough...
 
 To my astonishment it was accepted.
 
-The theme of the talk was clear to me and I had (in my head) a clear narrative to explain. 
+The theme of the talk was clear to me and I had (in my head) a clear narrative to explain.
 
 - Predictably unpredictable code (traditional complexity metrics)
 - Predictably unpredictable systems (Game of Life, deterministic complexity)
 - Predictably unpredictable complex adaptive systems (human systems, Systems Thinking and Cynefin)
 
-However, as I tried to nail down the actual slides I realised it wouldn't be as easy as I had anticipated. For one, as I added individual ideas which I wanted to cover I couldn't find a clean, linear arc for the presentation (things seem much cleaner in one's head). What's more, during the research, more and more related topics came up and I couldn't cover them all. And all the while I still had to be true to the original proposal. 
+However, as I tried to nail down the actual slides I realised it wouldn't be as easy as I had anticipated. For one, as I added individual ideas which I wanted to cover I couldn't find a clean, linear arc for the presentation (things seem much cleaner in one's head). What's more, during the research, more and more related topics came up and I couldn't cover them all. And all the while I still had to be true to the original proposal.
 
 So I wrote down a new possible arc:
 
 - Connection
 - Interaction
-- Systems
-- Adaptation
+- Systems/Adaptation
 
-With this outline I had the same problem, I had simply pivoted what was essientially a two-dimensional idea:
-
-|                 | Code | System | CAS  |
-| --------------- | ---- | ------ | ---- |
-| **Connection**  | x    | x      | x    |
-| **Interaction** |      | x      | x    |
-| **System**      |      | x      | x    |
-| **Adaptation**  |      |        | x    |
-
-Actually **Interaction** and **System** cover the same points so we can simplify:
+With this outline I had the same problem, I had simply pivoted what was essentially a two-dimensional idea:
 
 |                 | Code | System | CAS  |
 | :-------------- | ---- | ------ | ---- |
@@ -48,7 +42,7 @@ Actually **Interaction** and **System** cover the same points so we can simplify
 | **Interaction** |      | x      | x    |
 | **Adaptation**  |      |        | x    |
 
-So I can traverse this row-wise or column-wise, top-down or bottom-up, right to left or left to right. I chose column-wise, left-right, top-down. 
+So I can traverse this row-wise or column-wise, top-down or bottom-up, right to left or left to right. I chose column-wise, left-right, top-down.
 
 - Code - Connection (traditional complexity)
 - System - Connection - Interaction (dynamic complexity, Systems Thinking)
@@ -64,7 +58,7 @@ Wrapping in an introduction and a final section which rewinds the talk, I have t
   - if only we could predict the future (BTTF II)
   - tireless search for predictability doesn't always work
   - raising the bar (Alex Bolboaca)
-  - recipies vs principles (Heston Blumenthal)
+  - recipes vs principles (Heston Blumenthal)
 
 - Connections in code
 
@@ -124,4 +118,3 @@ Wrapping in an introduction and a final section which rewinds the talk, I have t
 
 - Questions
 
-TODO: Add more references to where agile practices fit in
