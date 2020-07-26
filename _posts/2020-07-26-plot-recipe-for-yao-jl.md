@@ -46,12 +46,12 @@ Looking back at the results, Yao.jl gives us an array of `BitStr` results and th
 
 We now have access to the number of bits in $n$. The maximum possible value is then `max = (1<<n)-1`. Then we can calculate the histogram using standard Julia tools:
 
-```juli
+```julia
 hist = fit(Histogram, Int.(measurements), 0:max+1)
 hist = normalize(hist, mode=:pdf)
 ```
 
-Notice that this is where the conversion to `Int` happens and we also use the `max`value that came via the type parametrisation. Next the plot attributes, basically the same as the histogram used above:
+Notice that this is where the conversion to `Int` happens and we one again use the `max` value that came via the type parametrisation. Next the plot attributes, basically the same as the histogram used above:
 
 ```julia
 seriestype := :bar
@@ -60,7 +60,7 @@ xticks --> (0:max)
 legend --> :none
 ```
 
-Again using the `max`value. Then we can return the histogram results, centering on the tick marks:
+Again using the `max` value. Then we can return the histogram results, centering on the tick marks:
 
 ```julia
 hist.edges[1] .- 0.5, hist.weights
@@ -74,7 +74,7 @@ plot(results)
 
 ![Distribution of random numbers produced by the recipe](/assets/images/quantum-computing/random-dist-8.png){:width="60%"}
 
-What about non-uniform results. Let's try imitating a random 6-sided die by preselection of the unwanted values 6 and 7.
+To check with a different distriibution let's try imitating a random 6-sided die by preselection of the unwanted values 6 and 7.
 
 ```julia
 import YaoBlocks.ConstGate.P0
