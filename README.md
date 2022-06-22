@@ -1,6 +1,6 @@
 # Personal website
 
-Published [here](http://john-hearn.info)
+Published [here](http://johnhearn.github.io)
 
 Follows original theme readme for reference...
 
