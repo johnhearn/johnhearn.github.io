@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: notes
+asset-type: article
 name: simulate-chaotic-water-wheel-with-planck
 title: Chaotic Waterwheel with Planck
 description: A simulation of a chaotic waterwheel with the Planck JavaScript physics engine.

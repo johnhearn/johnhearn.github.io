@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: notes
+asset-type: article
 title: Why Lognormal?
 description: The distribution of latencies in a system is often approximately log-normal. Why?
 date: 2021-08-19 08:21:00 +02:00
@@ -32,6 +32,8 @@ Now what happens to the distribution of latencies? Well, luck would have it that
 
 {% maincolumn "assets/images/latency/log-normal-vs-beta-prime-error.png" "Absolute error tapers away."  %}
 
-What does this mean? Absolutely nothing and it's wrong for all kinds of reasons. Nonetheless it might give a clue to the usefulness of the LogNormal distribution and its tail. The intuition would be that the natural variance in the load produces latencies heavily skewed by the [elbow curve](https://www.r-bloggers.com/2015/07/hockey-elbow-and-other-response-time-injuries/) of the latency formula, especially when under hight load. Under lower loads the skewing effect is less and the distribution loses it's long tail. In fact becoming more like an Erlang distribution after all.
+What does this mean? Absolutely nothing and it's wrong for all kinds of reasons. Nonetheless it might give a clue to the usefulness of the LogNormal distribution and its tail and why the Erlang/Gamma distributions sometimes are more indicative. 
+
+The intuition would be that the natural variance in the load produces latencies heavily skewed by the [elbow curve](https://www.r-bloggers.com/2015/07/hockey-elbow-and-other-response-time-injuries/) of the latency formula, especially when under high load, producing the long tail. Under lower loads the skewing effect is less and the distribution loses it's long tail, in fact becoming more like an Erlang distribution after all.
 
 Source code for the graphs is [here](https://github.com/johnhearn/notebooks/blob/master/beta-prime.ipynb).
