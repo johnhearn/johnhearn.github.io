@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: 2020-05-1-polynomial-chaos
 title: Polynomial Chaos
 description: Approximating probability distributions with polynomials.

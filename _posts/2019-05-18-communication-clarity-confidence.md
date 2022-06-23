@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: communication-clarity-confidence
 title: Communication Clarity Confidence
 description: A few ideas for improving leadership skills for technical people. 

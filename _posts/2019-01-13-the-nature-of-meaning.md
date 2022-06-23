@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: the-nature-of-meaning
 title: Some Perspectives on the Nature Of Meaning
 description: An understanding of how we arrive at meaning has great implications for learning and communication.

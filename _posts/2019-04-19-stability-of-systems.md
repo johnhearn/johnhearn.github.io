@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: stability-of-systems
 title: The Stability of Systems
 description: A quote from an ecologist regarding the stability of ecosystems could also apply to software systems.

@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: cd-dependency-network
 title: Technical Practices for Continuous Delivery
 description: Looking at the relationships between the different technical practices in the DORA model.

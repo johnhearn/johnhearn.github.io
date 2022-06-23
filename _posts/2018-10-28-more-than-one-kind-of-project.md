@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: more-than-one-kind-of-project
 title: There's More Than One Kind of Project
 description: Software engineering projects come in many shapes and this article lists some of them. Different skills apply to each one, however, and we need to be able to distinguish them and apply the right tools to each.

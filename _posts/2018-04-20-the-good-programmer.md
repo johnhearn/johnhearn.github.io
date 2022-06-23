@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: the-good-programmer
 title: The Good Programmer
 description: Some notes on the different meanings of quality.

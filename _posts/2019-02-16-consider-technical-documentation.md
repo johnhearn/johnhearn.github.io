@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: consider-technical-documentation
 title: Consider Technical Documentation
 description: Visualising a system can lead to more effective communication and better decisions.

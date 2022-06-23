@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: encounter-with-complexity
 title: An Encounter with ℂ𝕠𝕞𝕡𝕝𝕖𝕩𝕚𝕥𝕪
 description: From the Game of Life to Cynefin, systems flourish on the edge of chaos.

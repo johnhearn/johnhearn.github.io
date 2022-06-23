@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: estimate-everything
 title: Estimate Everything
 description: The power of estimation is widely denigrated or ignored. That is a shame.

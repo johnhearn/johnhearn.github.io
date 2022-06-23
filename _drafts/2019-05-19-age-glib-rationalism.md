@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: age-glib-rationalism
 title: The Age of Glib Rationalism
 description: Rationalism is the mainstay of the modern world but they forgot to teach us how we're wrong, what we don't know and how to live with uncertainty.

@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: dangers-of-abstraction
 title: The Dangers of Abstraction
 description: Thoughts on the use of high-level abstractions where, if we are not careful, words easily loose their meaning.

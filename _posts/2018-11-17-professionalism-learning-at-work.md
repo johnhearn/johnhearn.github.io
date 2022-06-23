@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 title: Professionalism - Learning at Work
 description: The debate about where to learn your craft focuses on the professional on the one side or the employer on the other. We should be considering their relationship instead.
 date: '2018-11-17T09:30:00.000+02:00'

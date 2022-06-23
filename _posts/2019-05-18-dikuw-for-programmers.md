@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: dikuw-programmer
 title: DIKUW for Programmers
 description: An explanation for programmers of the concepts behind the decision-making information hierarchy. 

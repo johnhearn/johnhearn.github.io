@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: stop-using-autowire
 title: Stop Using @Autowire
 description: Some reasons why Spring's @Autowire annotation could be considered a code smell.

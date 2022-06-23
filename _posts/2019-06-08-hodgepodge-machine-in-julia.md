@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: hodgepodge-machine-in-julia
 title: The Hodgepodge Machine
 description: A classic 2D cellular automa with Julia.

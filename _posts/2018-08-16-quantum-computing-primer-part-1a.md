@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: quantum-computing-primer-part-1a
 title: Quantum Computing Primer
 description: Basic maths-free introduction to quantum computing for software engineers.

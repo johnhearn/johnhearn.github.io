@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: we-are-maxwells-demon
 title: We Are Maxwell's Demon
 description:  

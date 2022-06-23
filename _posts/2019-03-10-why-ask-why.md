@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: why-ask-why
 title: Why ask why?
 description: A paradox of modern life - take charge of your life but go with the flow.

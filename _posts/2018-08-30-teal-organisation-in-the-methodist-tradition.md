@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: teal-organisation-in-the-methodist-tradition
 description: Comments on the similarity between the way Methodists organise themselves and so-called Teal organisations.
 date: 2018-08-30 00:32:00 +00:00

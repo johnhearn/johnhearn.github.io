@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: norse-and-complexity
 title: How the Norse embraced complexity
 date: 2019-11-30 10:38:00 +01:00

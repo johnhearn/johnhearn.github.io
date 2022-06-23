@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: political-antifragility
 title: Political Anti-Fragility
 description: Certain politicians have the ability to gain popularity even in the face of severe criticism.

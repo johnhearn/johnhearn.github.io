@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: articles
+asset-type: posts
 name: java-beans
 title: Java Beans
 description: A relic from another age.

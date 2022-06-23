@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: software-religiosity
 title: Software Religiosity
 description: Belief is a necessary part of human nature, whether we realise it or not.

@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: what-happened-to-uml
 title: What happened to UML?
 description: UML seems to have fallen out of favour with many software developers. It's understandable but maybe we have thrown the baby out with the bath water.

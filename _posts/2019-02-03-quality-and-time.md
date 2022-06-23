@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: quality-and-time
 title: Quality and Time
 description: Digging into the meaning of quality and its relationship with time.

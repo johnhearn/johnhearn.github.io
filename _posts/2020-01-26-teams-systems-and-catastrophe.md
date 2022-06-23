@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: teams-systems-and-catastrophe
 title: Teams, Systems and Catastrophe
 description: Examples of surprising cascading effects when increasing the rate or strength of interactions in a team or distributed system.

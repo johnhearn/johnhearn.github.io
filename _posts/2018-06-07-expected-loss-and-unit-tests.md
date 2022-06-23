@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 name: expected-loss-unit-test
 title: Expected Loss of a Unit Test
 description: Exploration of the concept of expected loss as a measure of the effectiveness of a unit testing.

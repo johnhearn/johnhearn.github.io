@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: article
+asset-type: post
 title: Why Lognormal?
 description: The distribution of latencies in a system is often approximately log-normal. Why?
 date: 2021-08-19 08:21:00 +02:00
