@@ -1,7 +1,7 @@
 ---
 layout: post
 asset-type: post
-title: Accelerate and Farmer's Gates
+title: Accelerate and Farmers' Gates
 description: Predictive inference is not enough.
 date: 2022-07-08 20:01:00 +02:00
 category: 
@@ -16,7 +16,7 @@ tags: probability
 
 In the rural community where I grew up there was a common aphorism: "*A good farmer has good gates*" and generations of experience showed that this is a pretty good rule of thumb. 
 
-If you took a group of researchers and surveyed the local farmer's general habits, including how well maintained their gates are, do you think they could infer a relation? Could they even **predict** which were the better farmers based on their gates? Yes they probably could, because *a good farmer has good gates*.
+If you took a group of researchers and surveyed the local farmers' general habits, including how well maintained their gates are, do you think they could infer a relation? Could they even **predict** which were the better farmers based on their gates? Yes they probably could, because *a good farmer has good gates*.
 
 In the jargon, this is *predictive inference*, and it is the kind of inference that _Accelerate_ describes{% sidenote chapter12 "In chapter 12 they go into some detail." %}.
 
