@@ -2,7 +2,7 @@
 layout: post
 asset-type: post
 title: Inverse Markov
-description: Infering a model about how stuff moves about
+description: Inferring a model about how stuff moves about
 date: 2022-10-29 08:46:00 +02:00
 category: 
 author: John Hearn
