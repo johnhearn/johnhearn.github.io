@@ -1,31 +1,644 @@
----
-layout: null
-nav_exclude: true
----
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.title | xml_escape }}</title>
-    <description>{{ site.description | xml_escape }}</description>
-    <link>{{ site.url }}{{ site.baseurl }}/</link>
-    <atom:link href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" rel="self" type="application/rss+xml"/>
-    <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
-    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
-    <generator>Jekyll v{{ jekyll.version }}</generator>
-    {% for post in site.posts limit:10 %}
+    <title>John Hearn</title>
+    <description>Personal site for blogging and about science, software and such</description>
+    <link>https://johnhearn.github.io//</link>
+    <atom:link href="https://johnhearn.github.io//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 14 Jul 2024 18:49:03 +0200</pubDate>
+    <lastBuildDate>Sun, 14 Jul 2024 18:49:03 +0200</lastBuildDate>
+    <generator>Jekyll v4.3.3</generator>
+    
       <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>{{ post.content | xml_escape }}</description>
-        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        <link>{{ post.url | prepend: site.baseurl | prepend: site.url }}</link>
-        <guid isPermaLink="true">{{ post.url | prepend: site.baseurl | prepend: site.url }}</guid>
-        {% for tag in post.tags %}
-        <category>{{ tag | xml_escape }}</category>
-        {% endfor %}
-        {% for cat in post.categories %}
-        <category>{{ cat | xml_escape }}</category>
-        {% endfor %}
+        <title>Flow and Cognitive Load</title>
+        <description>&lt;p&gt;“Maximise flow by minimising cognitive load”. Wait a minute…&lt;/p&gt;
+
+&lt;p&gt;I’ve had a bad back recently and have been scrolling LinkedIn more than I usually do. One thing I noticed was the words “flow” and “cognitive load” coming up a lot, quite often together. Now I’ve heard three people in real life saying almost the exact phrase above and I think it warrants a bit of extra thought.&lt;/p&gt;
+
+&lt;p&gt;I guess the first whiff of something fishy is that it smacks a bit of our old friend and adversary Mr Frederick Winslow Taylor. The suggestion of optimisation and words like “cognitive”, sound quite sciency, don’t they? Scientific management has been around a long time. It tends to get sidelined during times of boom to be wheeled out again during the bust. We are no longer in a boom cycle so fair enough but the deserved concern around its dehumanising aspect still remains and we need to be careful. (Also, to me, cognitive load and flow seem to have something vaguely reminiscent of time and motion. Probably my imagination.)&lt;/p&gt;
+
+&lt;p&gt;There’s also something fishy about the use of the phrase “cognitive load” itself. Are we talking about an individual’s capacity for learning the skills required to do the work or the whole team’s ability to assimilate that knowledge as a group? It seems quite confused. In either case, there is no better formula to demotivate a skilled person than to remove the need for their skill, especially if you say it’s for their own good. I hope that what is really being meant by “cognitive load” is to minimise the bureaucracy, the burdensome tools, the handoff coordination, the form filling, the approval seeking, all the stuff that really gets in the way of flow.&lt;/p&gt;
+
+&lt;p&gt;And talking of flow… secondly, and obviously, flow means so many things. It could just mean not being blocked. It could refer to a simple experience like an easy payment process. It could imply a certain grace and ease such as the flow of a passage of text or a piece of music while at the same time, and less elegantly, it could mean a slicker pipe through which material can be discharged quickly.&lt;/p&gt;
+
+&lt;p&gt;Most interestingly to me, “flow” could mean a mental disposition such as the one conceived by Mihály Csíkszentmihályi where work is energising, engaging and enjoyable. Everyone from programmers to PowerPoint wranglers know and enjoy that feeling. However Csíkszentmihályi proposed that the most productive and satisfying work wasn’t done by minimising the difficulty of the task, but by balancing the difficulty with the skill of the person or people involved. If that were the case we don’t want to minimise cognitive load but to balance it.&lt;/p&gt;
+
+&lt;p&gt;Whatever the case, whatever maximising fast flow means to you and whatever minimising cognitive load means to you, we’ve been saying for years that it’s velocity, not speed that’s important, that is direction and purpose over how fast you go. We’ve also said that we need skilled and motivated employees fully engaged in the work they are doing. Maximising flow and minimising cognitive load sounds like it could be a recipe for the best possible feature factory.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 06 Feb 2024 13:30:00 +0100</pubDate>
+        <link>https://johnhearn.github.io//articles/flow-and-cognitive-load</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/flow-and-cognitive-load</guid>
+        
+        
       </item>
-    {% endfor %}
+    
+      <item>
+        <title>A Little Every Day</title>
+        <description>&lt;p&gt;People have given me a lot of advise over the years. “Do what you love.” Ha ha. “Measure twice, cut once.” Well, that would depend, wouldn’t it.&lt;/p&gt;
+
+&lt;p&gt;In the end there are only a couple of phrases which stick with me. One was “Always run to something, not from something.” Run to a new job, not from an old one. Run to safety, not from a fire. Maybe I’ll write about why that helps sometime.&lt;/p&gt;
+
+&lt;p&gt;Another piece of advice which I still apply is “Do a bit every day.” Let me explain.&lt;/p&gt;
+
+&lt;p&gt;This was given to me by a friend of my parents when I had a young family and I was renovating our home. The size of the task ahead was daunting and time was in short supply because nappies needed changing, bread needed winning and the basic necessities of life needed attending to. It was overwhelming.&lt;/p&gt;
+
+&lt;p&gt;I tried planning the work and sticking to the plan but I always slipped behind which was stressful in itself, just adding to the problem. I suffered and the family suffered.&lt;/p&gt;
+
+&lt;p&gt;Then I tried to “do one job every day” and it changed everything. The “one job”, Joe told me, needn’t be big, in fact it could be as simple as placing a single tile or laying a single floorboard. Sometimes the job was just 5 minutes when everyone else was in bed. No pressure to finish, no schedule to keep to.&lt;/p&gt;
+
+&lt;p&gt;The amazing thing was that as the days passed, stuff got done. As if by magic walls were tiled and floors were laid. And the stress was gone.&lt;/p&gt;
+
+&lt;p&gt;I put the success of this “technique” down to two things. First, sometimes just getting started is the hardest part. After that the job becomes easier than you thought and it’s done before you know it. The other factor is that as the days pass you maintain some momentum. A couple of times I stopped doing a job everyday and it became harder to get that momentum back. Each and every day something gets done and you move closer to your goal.&lt;/p&gt;
+
+&lt;p&gt;When the house was finally complete it turned out to be an immensely rewarding experience.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 22 Feb 2023 10:30:00 +0100</pubDate>
+        <link>https://johnhearn.github.io//articles/a-little-every-day</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/a-little-every-day</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Inverse Markov</title>
+        <description>&lt;p&gt;Markov chains are a fantastic tool for modelling how stuff moves about over a network of possible states. Think about them as probabilistic state machines. Its uses are widespread, from Google’s &lt;a href=&quot;https://saattrupdan.github.io/2020-08-07-pagerank/&quot;&gt;PageRank algorithm&lt;/a&gt; which models the way users move about the internet to analysing the ways players move around a &lt;a href=&quot;http://www.bewersdorff-online.de/amonopoly/&quot;&gt;Monopoly board&lt;/a&gt;. We can also use it as a simple model of workload in a distributed system or team.&lt;/p&gt;
+
+&lt;p&gt;In my case I had some economic data and I wanted to see if I could make a fortune finding a trend in the market&lt;label for=&quot;notrich&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;notrich&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;Needless to say the result was negative and my wealth has increased only in terms of knowledge. &lt;/span&gt; so I found myself wanting to determine a Markov chain model from real-world data.&lt;/p&gt;
+
+&lt;p&gt;It turns out that this topic was studied extensively in the last century&lt;sup id=&quot;fnref:Lee1965&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:Lee1965&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;’&lt;sup id=&quot;fnref:Lee1968&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:Lee1968&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; and, although simple and well understood, it took me a while to get my head around it. I’m writing it up here to help me remember.&lt;/p&gt;
+
+&lt;p&gt;For the background of the maths behind Markov chains in general there are numerous resources &lt;a href=&quot;https://www.google.com/search?q=markov+chain&quot;&gt;online&lt;/a&gt;. Basically we repeatedly apply a transformation to the current state to turn it into a new state. We then apply the same transformation to the new state to create the next state and so on. Remarkably, no matter which state we start in, while conditions stay constant the system &lt;em&gt;always&lt;/em&gt; converges to the same steady state (plus a bit of noise). We can use this fact to work backwards from observations of the sequence of states and infer the model that would have generated them.&lt;/p&gt;
+
+&lt;p&gt;Say we have a state represented by a vector $\nu$ and a transformation represented by a matrix $P$. Based on a sequence of noisy observations of the state, $\left(\nu_1, \nu_2…\nu_n\right)$, what is our best estimate of $P$?&lt;/p&gt;
+
+&lt;p&gt;We’ll need plenty of observations so let’s put them together into the same matrix: \(V = \left[\nu_1, \nu_2...\nu_{n-1}\right]\)&lt;/p&gt;
+
+&lt;p&gt;Each application of $P$ takes us to the subsequent state so we have \(VP = \left[\nu_2, \nu_3...\nu_n\right] = U\)&lt;/p&gt;
+
+&lt;p&gt;We end up with an equation involving $\nu_1, \nu_2…\nu_n$.&lt;/p&gt;
+
+&lt;p&gt;Since $P$ is a square matrix we will need $n$ to be at least equal to the number of states. If we have more then even better. Using the &lt;a href=&quot;https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse&quot;&gt;&lt;em&gt;pseudo-inverse&lt;/em&gt;&lt;/a&gt; of the states we can get the &lt;a href=&quot;https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse#Linear_least-squares&quot;&gt;least squares&lt;/a&gt; best estimate for P.
+\(\hat P = V^+ \times U\)&lt;/p&gt;
+
+&lt;p&gt;Where the $^+$ symbol represents the generalised inverse which in fact is easy enough to calculate, $V^+ = (V’V)^{-1}V’$.&lt;/p&gt;
+
+&lt;p&gt;In Julia, assuming we already have the state data in the variable $\nu$, this becomes&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ν&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ν&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;V⁺&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inv&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&apos;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Pest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V⁺&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This works fairly well but it has problem. The peudo-inverse knows nothing of the contraint on the probabilities which must all be positive. Various workarounds exist but in the end we end up having to fiddle with the numbers to get them all positive in the optimal way.&lt;/p&gt;
+
+&lt;p&gt;Luckily for us, optimisation algorithms for situations like these have also been studied extensively. Julia’s &lt;a href=&quot;https://jump.dev/&quot;&gt;JuMP eco-system&lt;/a&gt;, for instance, provides tools which eat these kinds problems for breakfast.&lt;/p&gt;
+
+&lt;p&gt;We are optimising for the minimum square difference between $U$ and $VP$ where the entries in $P$, always positive, are the variables we are trying to determine, $p_{ij} &amp;gt; 0 \space \forall i,j$&lt;/p&gt;
+
+&lt;p&gt;Specifically, we are finding values for $p_{ij}$ with the objective of minimising
+\((U-VP)^2 = (U-VP)&apos; \cdot (U-VP)\)&lt;/p&gt;
+
+&lt;p&gt;We also have the condition that the entries must be positive and the constraint that the rows must sum to 1, $\sum_{j}{p_{ij}} = 1$.&lt;/p&gt;
+
+&lt;p&gt;Assuming $r$ is the number of states, in JuMP we can define the problem like this:&lt;/p&gt;
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Ipopt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Optimizer&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@variable&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@objective&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Min&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@constraint&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;optimize!&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Pest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reshape&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With this code I’ve been able to recover a good approximation to the transition matrix in testing, the approximation becomming better with increasing sample size.&lt;/p&gt;
+
+&lt;p&gt;We could give the algorithm an initial hint based on the pseudo-inverse described above but in my experiments the optimisation algorithm is fast enough to not require it.&lt;/p&gt;
+
+&lt;p&gt;The method could be improved by quantifying the uncertainty in the results. On way would be to batch observations and look at the distribution of results. Another might be to apply a bayesian approach using a Dirichlet multinomial as the prior and updating with the observations. A problem for another time.&lt;/p&gt;
+
+&lt;p&gt;References&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:Lee1965&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;&lt;sup&gt;&lt;sub&gt;Lee, T. C., Judge, George G., Takayama, T., 1965. On Estimating the Transition Probabilities of a Markov Process. American Journal of Agricultural Economics 47, 742–762. &lt;a href=&quot;https://doi.org/10.2307/1236285&quot;&gt;https://doi.org/10.2307/1236285&lt;/a&gt;&lt;/sub&gt;&lt;/sup&gt; &lt;a href=&quot;#fnref:Lee1965&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:Lee1968&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;&lt;sup&gt;&lt;sub&gt;Lee, T. C., Judge, George G., Zellner, A., 1968. Maximum Likelihood and Bayesian Estimation of Transition Probabilities. Journal of the American Statistical Association 63, 1162–1179. &lt;a href=&quot;https://doi.org/10.1080/01621459.1968.10480918&quot;&gt;https://doi.org/10.1080/01621459.1968.10480918&lt;/a&gt;&lt;/sub&gt;&lt;/sup&gt; &lt;a href=&quot;#fnref:Lee1968&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 29 Oct 2022 08:46:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/inverse-markov</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/inverse-markov</guid>
+        
+        <category>estimation</category>
+        
+        <category>modelling</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Accelerate and Farmers&apos; Gates</title>
+        <description>&lt;p&gt;&lt;label for=&quot;accelerate-book&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;accelerate-book&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/accelerate-book.jpg&quot; /&gt;&lt;br /&gt;&lt;a href=&quot;https://www.goodreads.com/book/show/35747076-accelerate&quot;&gt;Accelerate: Building and Scaling High-Performing Technology Organizations&lt;/a&gt; by Nicole Forsgren, Jez Humble, Gene Kim&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;farm-gate&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;farm-gate&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;https://upload.wikimedia.org/wikipedia/commons/b/bd/Farm_gate_-_geograph.org.uk_-_538713.jpg&quot; /&gt;&lt;br /&gt;The kind of gate I’m talking about.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;In the rural community where I grew up there was a common aphorism: “&lt;em&gt;A good farmer has good gates&lt;/em&gt;” and generations of experience showed that this is a pretty good rule of thumb.&lt;/p&gt;
+
+&lt;p&gt;If you took a group of researchers and surveyed the local farmers’ general habits, including how well maintained their gates are, do you think they could infer a relation? Could they even &lt;strong&gt;predict&lt;/strong&gt; which were the better farmers based on their gates? Yes they probably could, because &lt;em&gt;a good farmer has good gates&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the jargon, this is &lt;em&gt;predictive inference&lt;/em&gt;, and it is the kind of inference that &lt;em&gt;Accelerate&lt;/em&gt; describes&lt;label for=&quot;chapter12&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;chapter12&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;In chapter 12 they go into some detail. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Does having good gates &lt;em&gt;make&lt;/em&gt; you a good farmer? Of course not. The relation between gates and the type of farmer is &lt;strong&gt;not causal&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Can a farmer become a better farmer through better maintenance of his gates? Hmm. &lt;em&gt;Accelerate&lt;/em&gt; might say that “good gates &lt;em&gt;drive&lt;/em&gt; good farming”. IMO the word “drive” is bearing quite a lot of weight to make that statement.&lt;/p&gt;
+
+&lt;p&gt;The unfortunate situation is that predictive inference explains nothing. It may validate a hypothesis based on a theory but the scientific literature is littered with such validations that later turned out to be false&lt;label for=&quot;phack&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;phack&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Try &lt;a href=&quot;https://projects.fivethirtyeight.com/p-hacking/&quot;&gt;this website&lt;/a&gt; to demonstrate your political point. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;For explanation you need, at least, &lt;em&gt;causal inference&lt;/em&gt; and that is much much harder. Causal inference requires a causal statistical model which is notoriously hard to get right.&lt;/p&gt;
+
+&lt;p&gt;My feeling is that some of the key indicators in &lt;em&gt;Accelerate&lt;/em&gt; really are causal but others are just the equivalent of good gates.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 08 Jul 2022 20:01:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/accelerate-and-farmers-gates</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/accelerate-and-farmers-gates</guid>
+        
+        <category>probability</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Why Lognormal?</title>
+        <description>&lt;p&gt;The &lt;a href=&quot;https://en.wikipedia.org/wiki/Log-normal_distribution&quot;&gt;log-normal distribution&lt;/a&gt; is &lt;a href=&quot;https://www.semanticscholar.org/paper/What-Do-You-Mean-Revisiting-Statistics-for-Web-Time-Ciemiewicz/65162028a420dbefdcb71c6def616e4aa1b126b1?p2df&quot;&gt;sometimes&lt;/a&gt; used as a simple model for the distribution of latencies from real-world systems. &lt;label for=&quot;careful&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;careful&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;It’s important to understand that models are just models. Under different situations the latency distributions may be completely different. &lt;/span&gt;By no means is it a perfect model and sometimes &lt;a href=&quot;https://newrelic.com/blog/best-practices/expected-distributions-website-response-times&quot;&gt;alternatives&lt;/a&gt; are better, especially when the load is far below maximum capacity but at high load I’ve empirically found it to be a reasonable fit.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Real world data from proprietary production system under high load.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/latency/log-normal-fit.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;One reason that this is important is that the log-normal is long-tailed. This means that while the average response time under these conditions might be excellent, the top percentiles might be totally unacceptable so we end up having to oversize more than we might like.&lt;/p&gt;
+
+&lt;p&gt;I’ve often wondered why this might be the case and answers to this question are often very hand-wavey. Here I attempt a totally unscientific explanation.&lt;/p&gt;
+
+&lt;p&gt;Let’s take a &lt;a href=&quot;https://erikbern.com/2018/03/27/waiting-time-load-factor-and-queueing-theory.html&quot;&gt;standard result&lt;/a&gt; from queueing theory and say that the latency is a function of the load factor,$f$, defined as the ratio of arrival rate to service rate.&lt;/p&gt;
+
+\[Latency \propto \frac{1}{1-f}\]
+
+&lt;p&gt;Latencies fly off to infinity when the load factor approaches 1. Makes sense because if the requests arrive faster than they can be serviced then the queue will grow until something else gives.&lt;/p&gt;
+
+&lt;p&gt;Now we might assume there is some dispersal in the load factor due to the natural burstiness of incoming traffic. We don’t want to model this noise with a normal distribution because our load factor is strictly between 0 and 1. A better choice is the &lt;a href=&quot;https://en.wikipedia.org/wiki/Beta_distribution&quot;&gt;beta distribution&lt;/a&gt; which has exactly that property and just so happens to nicely approximate the normal distribution if we &lt;a href=&quot;https://www.johndcook.com/blog/normal_approx_to_beta/&quot;&gt;choose the right parameters&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now what happens to the distribution of latencies? Well, luck would have it that the transformation of the beta distribution by the formula above gives us the so called &lt;a href=&quot;https://en.wikipedia.org/wiki/Beta_prime_distribution&quot;&gt;beta-prime distribution&lt;/a&gt;. And that approximates a LogNormal distribution surprisingly well, especially around the tail.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Beta-prime distribution compared to the Log Normal distribution by method of moments.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/latency/log-normal-vs-beta-prime.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Absolute error tapers away.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/latency/log-normal-vs-beta-prime-error.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;What does this mean? Absolutely nothing and it’s wrong for all kinds of reasons. Nonetheless it might give a clue to the usefulness of the LogNormal distribution and its tail and why the Erlang/Gamma distributions sometimes are more indicative.&lt;/p&gt;
+
+&lt;p&gt;The intuition would be that the natural variance in the load produces latencies heavily skewed by the &lt;a href=&quot;https://www.r-bloggers.com/2015/07/hockey-elbow-and-other-response-time-injuries/&quot;&gt;elbow curve&lt;/a&gt; of the latency formula, especially when under high load, producing the long tail. Under lower loads the skewing effect is less and the distribution loses it’s long tail, in fact becoming more like an Erlang distribution after all.&lt;/p&gt;
+
+&lt;p&gt;Source code for the graphs is &lt;a href=&quot;https://github.com/johnhearn/notebooks/blob/master/beta-prime.ipynb&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 19 Aug 2021 08:21:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/why-log-normal</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/why-log-normal</guid>
+        
+        <category>probability</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Load Balancing Strategies and their Distributions</title>
+        <description>&lt;p&gt;Results of a simulation to compare four of the most well known load balancer strategies:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Round robin&lt;/strong&gt; - requests are routed to each of the available servers in turn&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Least occupied&lt;/strong&gt; - requests are routed to the server with least current requests&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Random&lt;/strong&gt; - requests are routed to a randomly selected server&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Random 2&lt;/strong&gt; - requests are routed to one of two randomly selected servers, where the chosen server has least current requests (see &lt;a href=&quot;https://www.haproxy.com/blog/power-of-two-load-balancing/&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;https://www.nginx.com/blog/nginx-power-of-two-choices-load-balancing-algorithm&quot;&gt;here&lt;/a&gt;)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;the-experiment&quot;&gt;The experiment&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Arrival rate&lt;/strong&gt;: requests arrive with a Poisson process with mean $\lambda$.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Service rate&lt;/strong&gt;: request completions are distributed with a Log-Normal distribution (although any realistic distribution shows the same characteristics).&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Load factor&lt;/strong&gt; is the ratio of arrival rate to completion rate, ranging strictly from 0.0 to 1.0. If greater than 1 then the requests would accumulate without end.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We keep a record of the number of requests in the system for a single server. The &lt;a href=&quot;https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/0209bfb5a128fd332250cf341b97064281ea4feb/Smadex/Load%20Balancing%20Stats.ipynb&quot;&gt;Julia code&lt;/a&gt; is here.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-results&quot;&gt;The results&lt;/h2&gt;
+
+&lt;p&gt;The difference in the distributions of the concurrent requests in with the different strategies is clear.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Distribution of concurrent requests under different load balancing strategies. The requests are distributed over 20 servers with average arrival rate of 10 per step at 75% load factor.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/load-balancing/hist-20-75.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Notice how remnants of the input and output distributions are still visible in the &lt;em&gt;round robin&lt;/em&gt; strategy. The &lt;em&gt;least occupied&lt;/em&gt; and &lt;em&gt;random 2&lt;/em&gt; strategies tend to concentrate the distribution around its average. On the other hand the &lt;em&gt;random&lt;/em&gt; strategy seems to spread the distribution still further.&lt;/p&gt;
+
+&lt;p&gt;How does the average vary with load factor?&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Change in average concurrent requests as load factory varies, keeping number of servers at 20.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/load-balancing/mean-20-p.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;All strategies perform progressively worse as load factor increases, as would be expected. However the &lt;em&gt;least occupied&lt;/em&gt; and &lt;em&gt;random 2&lt;/em&gt; strategies are noticeably better that the others, even at higher load factors.&lt;/p&gt;
+
+&lt;p&gt;And how does it change with number of servers?&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Change in average concurrent requests as number of servers varies, keeping load factor constant at 80%.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/load-balancing/mean-c-80.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Clearly the best strategies require a minimum number of servers over which to spread the requests. That number is relatively small (in this example around 10) and very little improvement is observed with additional servers. The others are unaffected by number of servers.&lt;/p&gt;
+
+&lt;h2 id=&quot;variance&quot;&gt;Variance&lt;/h2&gt;
+
+&lt;p&gt;The spread in concurrent requests will translate to a spread in latencies too. For a distributed systems we are usually interested in maintaining predictable latencies and minimising long-tails, so we want to minimise this spread. It’s visibly clear that &lt;em&gt;least occupied&lt;/em&gt; is the best in this case as it has the narrowest distribution. Let’s have a look at the variance for each one, taking &lt;em&gt;round robin&lt;/em&gt; as the base.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Comparison of variance of the distribution of concurrent requests under different load balancing strategies, keeping the number of servers at 20.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/load-balancing/variance-20-p.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;What is the relationship between number of servers and the variance?&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Change in variance under different load balancing strategies as number of servers increases.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/load-balancing/variance-c-80.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;We can see that when there is only a single server, all strategies are the same (obviously). Both the &lt;em&gt;round robin&lt;/em&gt; and &lt;em&gt;random&lt;/em&gt; strategies have little or no effect on the variance, no matter how many servers there are in the cluster. Although bot &lt;em&gt;least occupied&lt;/em&gt; and &lt;em&gt;random 2&lt;/em&gt; fare better, the &lt;em&gt;least occupied&lt;/em&gt; has a clear advantage here and seems to be able to capitalise on additional servers more effectively.&lt;/p&gt;
+
+&lt;h2 id=&quot;shedding&quot;&gt;Shedding&lt;/h2&gt;
+
+&lt;p&gt;We employ a shedding mechanism to help keep request distributions under control independently of the load balancing strategy. How does this affect the results? Here we apply a simple shedding of requests by disallowing more than 20 concurrent requests per server.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Distribution of concurrent requests under different load balancing strategies, shedding requests above 20 per server.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/load-balancing/hist-20-75-shedding20.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;The mean of the worse strategies has actually gone down, however much more shedding is being done. That means that server throughput (serviced requests) should be lower. On the other hand the average latencies will also be higher due to the higher load on the server.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;&lt;label for=&quot;entropy&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;entropy&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/load-balancing/entropy-c-80.png&quot; /&gt;&lt;br /&gt;As an aside, we can also calculate the entropy of the distribution and see (as shown in the graph above) that it has also has &lt;strong&gt;decreased&lt;/strong&gt; for the &lt;em&gt;least occupied&lt;/em&gt; and &lt;em&gt;random 2&lt;/em&gt; strategies while it has actually &lt;strong&gt;increased&lt;/strong&gt; for the random one. One interpretation of these results is that the &lt;em&gt;random&lt;/em&gt; strategy introduces a little bit of new uncertainty into the system. On the other hand &lt;em&gt;least occupied&lt;/em&gt; and &lt;em&gt;random 2&lt;/em&gt; actually remove uncertainty. This is the load balancer equivalent of &lt;a href=&quot;https://en.wikipedia.org/wiki/Maxwell&apos;s_demon&quot;&gt;Maxwell’s demon&lt;/a&gt;, applying work to each request in order to reduce its uncertainty.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Of all the strategies &lt;em&gt;round robin&lt;/em&gt; and &lt;em&gt;random&lt;/em&gt; are disastrous and either do nothing to improve the distribution of requests or actually make it worse. However, the &lt;em&gt;least occupied&lt;/em&gt; and &lt;em&gt;random 2&lt;/em&gt; strategies are able to take advantage of multiple servers to not only reduce the mean but also reduce the variance across the cluster.&lt;/p&gt;
+
+&lt;p&gt;While the &lt;em&gt;least occupied&lt;/em&gt; is slightly better in terms of the spread of requests, the &lt;em&gt;random 2&lt;/em&gt; has some other advantages. Firstly, it’s slightly simpler and therefore faster in practice because only 2 servers are checked for each request rather than all of them. More importantly, it avoids servers which are (re)starting receiving all the load immediately. This is useful when the server needs some time to warmup caches, etc.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 03 Apr 2021 17:27:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/load-balancing-strategies</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/load-balancing-strategies</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>A Plot Recipe for Yao.jl</title>
+        <description>&lt;p&gt;It’s sometimes useful to see a distribution plot for multiple results obtained from a quantum circuit. Take for example the random number generator from a &lt;a href=&quot;quantum-random-numbers-in-yao-jl&quot;&gt;previous post&lt;/a&gt; where we used such a plot to check the results were uniformly distributed. Julia has great support for plotting. With the &lt;a href=&quot;https://docs.juliaplots.org/latest/&quot;&gt;Plots.jl&lt;/a&gt; package it’s extremely easy to get a distribution histogram but getting the axes tidy is a bit fiddly. Fortunately Plots.jl provides a very conveniente extension mechanism which we can use.&lt;/p&gt;
+
+&lt;p&gt;As a reminder, here we generate an array of random 3-bit numbers using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nshots&lt;/code&gt; parameter to specify how many, in this case 1000.&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Yao&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zero_state&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repeat&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;measure&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nshots&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;1000-element Array{BitBasis.BitStr{3,Int64},1}:
+ 100 ₍₂₎
+       ⋮
+ 110 ₍₂₎
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To see the histogram of results we could do something like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;histogram&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bint&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xticks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is OK but it has a few things I don’t like, for one the ticks don’t really line up properly with the bars. Also the ticks have to be manually set. Also the bins often have to be tweaked manually as well. These things are easy to fix and put inside a Plots.jl recipe for easy reuse.&lt;/p&gt;
+
+&lt;p&gt;Looking back at the results, Yao.jl gives us an array of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BitStr&lt;/code&gt; results and the full type &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Array{BitBasis.BitStr{3,Int64},1}&lt;/code&gt; is parametrised by the number of bits. That turns out to be quite useful. Defining the recipe function like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@recipe&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt; user_recipe&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;measurements&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BitStr&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We now have access to the number of bits in $n$. The maximum possible value is then &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;max = (1&amp;lt;&amp;lt;n)-1&lt;/code&gt;. Then we can calculate the histogram using standard Julia tools:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;hist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fit&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Histogram&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;measurements&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;hist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;normalize&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hist&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pdf&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Notice that this is where the conversion to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Int&lt;/code&gt; happens and we one again use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;max&lt;/code&gt; value that came via the type parametrisation. Next the plot attributes, basically the same as the histogram used above:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;seriestype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;bins&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;xticks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;none&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Again using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;max&lt;/code&gt; value. Then we can return the histogram results, centering on the tick marks:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;hist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.-&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;weights&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Y voila. Julia will automatically dispatch to our recipe based on the type of the results:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/quantum-computing/random-dist-8.png&quot; alt=&quot;Distribution of random numbers produced by the recipe&quot; width=&quot;60%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To check with a different distriibution let’s try imitating a random 6-sided die by preselection of the unwanted values 6 and 7.&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YaoBlocks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConstGate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P0&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;die&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chain&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; 
+    &lt;span class=&quot;n&quot;&gt;repeat&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;control&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;results&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zero_state&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;block&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;focus!&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;measure&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nshots&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/quantum-computing/random-dist-6.png&quot; alt=&quot;Distribution of preselected random numbers produced by the recipe&quot; width=&quot;60%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Distribution shows values 6 and 7 have 0% probability, as we expected.&lt;/p&gt;
+
+&lt;p&gt;Working code available &lt;a href=&quot;https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/master/QuantumComputing/A Plot Recipe for Yao.jl.ipynb&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 26 Jul 2020 15:30:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/plot-recipe-for-yao-jl</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/plot-recipe-for-yao-jl</guid>
+        
+        <category>quantum computing</category>
+        
+        <category>julia</category>
+        
+        <category>yao</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Grover&apos;s Algorithm in Yao.jl</title>
+        <description>&lt;p&gt;Continuing the series of posts building the basic quantum algorithms with &lt;a href=&quot;https://github.com/QuantumBFS&quot;&gt;Yao.jl&lt;/a&gt; we come to Grover’s algorithm. There is a &lt;a href=&quot;https://tutorials.yaoquantum.org/dev/generated/quick-start/3.grover-search/&quot;&gt;tutorial on Grover&lt;/a&gt; in the Yao.jl documentation &lt;label for=&quot;qiskit&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;qiskit&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;QisKit also has a &lt;a href=&quot;https://qiskit.org/textbook/ch-algorithms/grover.html&quot;&gt;nice explication&lt;/a&gt;. It’s worth getting multiple perspectives on these things. &lt;/span&gt; but I found it a little hard to follow the code so I simplified it right down to the basics.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;grovers-search-algorithm&quot;&gt;Remember&lt;/a&gt; that we have a binary function, $f$, which is always equal $0$ except for a single value $u$, when it is equal to $1$. The challenge is to find $u$ with as few queries to $f$ as possible. As always, and with all the usual caveats, we take for granted that we have access to an oracle, $U_f$, that provides a suitable quantum transformation based on $f$.&lt;/p&gt;
+
+&lt;p&gt;The oracle consists of a transformation which reflects the target value, $u$, and only this value, around the x-axis. All other values are left untouched.&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt; oracle&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;:&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Unsigned&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ceil&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# Use only as many bits as necessary&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ones&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;ComplexF64&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# Flip the value we&apos;re looking for&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;Diagonal&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We work out the smallest number of bits needed from the value itself. In the Yao.jl tutorial this is all on one line and quite cryptic, hopefully this version is easier to read.&lt;/p&gt;
+
+&lt;p&gt;In the tutorial they use the phased version of the diffusion operator&lt;label for=&quot;yaodraw&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;yaodraw&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;This diagram is generated directly from the code with YaoDraw :) &lt;/span&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/quantum-computing/grovers-circuit-phase.png&quot; alt=&quot;grovers-circuit&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Notice that with this construction we don’t have to use an ancillary bit. As can be seen in the diagram we also have some reusable blocks, namely the $H^{\otimes n}$, which for some reason the tutorial calls &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gen&lt;/code&gt;, and the repeating section which is a combination of the oracle itself followed by the diffusion operator. They are chained together like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;n&quot;&gt;gen&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repeat&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;reflect0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;control&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Z&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# I-2|0&amp;gt;&amp;lt;0|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;repeating_circuit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chain&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Uf&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gen&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reflect0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gen&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Inside the repeating section there is also the reflection circuit, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reflect0&lt;/code&gt; which is responsible for flipping the distribution about the average value which is what has the effect of amplifying values made negative by the oracle. To check that it is indeed the correct circuit it can be compared to the other form \(I_n - 2\vert 0^n \rangle \langle 0^n \vert\).&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;ZERO&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foldl&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kron&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;real&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sparse&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ZERO&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ZERO&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It is indeed the same, although I’m still sure of the origin of the conditional &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Z&lt;/code&gt; transform version, it’s an identity to bear in mind.&lt;/p&gt;
+
+&lt;p&gt;Continuing with the algorithm, the repeating section is simply placed in a for loop applied to a prepared quantum register:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;n&quot;&gt;reg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zero_state&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gen&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;reg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repeating_circuit&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iter&lt;/code&gt; is the number of iterations we want to apply. Getting the right value for this is tricky&lt;label for=&quot;iter&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;iter&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;The tutorial has much more sophisticated way of doing this. &lt;/span&gt; so we just use a hand picked value for now. It should be less than $\sqrt{2^n}$. For clarity we wrap the whole circuit in a function and pass in the oracle:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt; grovers&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Uf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AbstractBlock&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;grovers&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matblock&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oracle&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mb&quot;&gt;0b11110011&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;measure!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And that’s it, not too bad actually. Working code is &lt;a href=&quot;https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/master/QuantumComputing/Grover%27s%20Algorithm%20in%20Yao.jl.ipynb&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Looking forward to applying to more &lt;a href=&quot;https://www.youtube.com/watch?v=afuoGbptET8&quot;&gt;interesting problems&lt;/a&gt; to it.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;PS: Just for fun this is how the histogram of probabilities evolves between each iteration. It’s clear how the chosen value emerges in just a few steps.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/quantum-computing/grovers-search-anim.gif&quot; alt=&quot;grovers-search&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you’re interested, this is the code to generate the histogram. Run with 6 bits over 6 iterations and 1000 shots at each iteration to get the probability.&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Plots&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;anim&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@animate&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;measure&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nshots&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bint&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;histogram&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;normed&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xlims&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;63&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ylims&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nbins&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;64&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;reg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repeating_circuit&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;gif&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;anim&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;grovers-search.gif&quot;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fps&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 25 Jul 2020 14:26:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/grovers-with-yao-jl</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/grovers-with-yao-jl</guid>
+        
+        <category>quantum computing</category>
+        
+        <category>julia</category>
+        
+        <category>yao</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>The Deutsch-Jozsa Algorithm in Yao.jl</title>
+        <description>&lt;p&gt;(Post adapted from a &lt;a href=&quot;deutsch-jozsa-algorithm&quot;&gt;similar one&lt;/a&gt; using &lt;a href=&quot;https://yaoquantum.org/&quot;&gt;Yao.jl&lt;/a&gt; instead of &lt;a href=&quot;https://github.com/johnhearn/quko&quot;&gt;Quko&lt;/a&gt;. &lt;a href=&quot;https://qiskit.org/textbook/ch-algorithms/deutsch-josza.html&quot;&gt;Here&lt;/a&gt; is another one using &lt;a href=&quot;https://qiskit.org/&quot;&gt;QisKit&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;This post describes one of the first quantum algorithms to be discovered that gave a theoretically significant improvement over the classical equivalent. Having said that it’s not useful at all, its main value was that it served as inspiration for other more practical algorithms such as Grover’s search and Shor’s factoring.&lt;/p&gt;
+
+&lt;h2 id=&quot;simplest-case&quot;&gt;Simplest case&lt;/h2&gt;
+
+&lt;p&gt;The simplest statement of the problem is to determine if a boolean function, \(f\), always results in the same &lt;em&gt;constant&lt;/em&gt; value or if it is &lt;em&gt;balanced&lt;/em&gt; and returns both true and false depending on the input.&lt;/p&gt;
+
+&lt;p&gt;In programming terms this means evaluating the function:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Boolean&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Boolean&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;for both possible inputs and checking the results. This amounts to applying an XOR operation to the two results:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;⊻&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the classical world this will obviously require &lt;strong&gt;two&lt;/strong&gt; evaluations of the function however in the quantum version only &lt;strong&gt;one&lt;/strong&gt; evaluation is ever required.&lt;/p&gt;
+
+&lt;p&gt;Imagine we are given a gate \(U_f\) which is based on the function we are interested in. This gate can be constructed in various ways but for now we’ll assume that it’s given.&lt;/p&gt;
+
+&lt;p&gt;Then a circuit for the algorithm can be represented by the following diagram:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/quantum-computing/deutschs-circuit.png&quot; alt=&quot;Deutsch&apos;s algorithm circuit&quot; width=&quot;320px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This equates in Yao.jl to the following snippet:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;deutsch&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Uf&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chain&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;repeat&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;Uf&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Where $U_f$&lt;label for=&quot;like&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;like&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;One of the things I like about Julia is that it is OK to use naming more akin to the mathematics, even using unicode, than would be conventional in other language conventions. &lt;/span&gt; is the block implementing the function. If the function is &lt;em&gt;balanced&lt;/em&gt; then the measurement will always be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;, if constant then the measurement will always be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;false&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;One way to think about how this works is that the \(U_f\) gate transforms the superposition of both possible input values. The resulting interference pattern provides us with the result.&lt;/p&gt;
+
+&lt;p&gt;As an example, if the function, $f$, evaluates to a constant value $1$. If you work through the logic then the oracle, $U_f$, simply flips the second bit. In Yao.jl the block can be created like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Uf₁&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;put&lt;/code&gt; is a Yao.jl function to add an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;X&lt;/code&gt; gate to the second qubit. Then, evaluating the circuit:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;zero_state&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deutsch&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Uf₁&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;focus!&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;measure!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Always results in a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0&lt;/code&gt; to indicate a &lt;em&gt;constant&lt;/em&gt; function. On the other hand if we try a balanced function which can be represented by the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CNOT&lt;/code&gt; gate.&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Uf₂&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;control&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In this case evaluating the circuit as before results ins a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1&lt;/code&gt; indicating that it is balanced.&lt;/p&gt;
+
+&lt;h2 id=&quot;extending-to-multiple-bits&quot;&gt;Extending to multiple bits&lt;/h2&gt;
+
+&lt;p&gt;Other researchers extended to algorithm to multiple bits which corresponds to the function taking an integer argument. The result bust either be &lt;em&gt;constant&lt;/em&gt;, as before, or &lt;em&gt;balanced&lt;/em&gt;, meaning that the function returns either 1 or 0 half of the time (other possible functions are not contemplated).&lt;/p&gt;
+
+&lt;p&gt;The function becomes:&lt;/p&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Int&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and will, on average, need many more evaluations of the function to test be able to determine if it is &lt;em&gt;constant&lt;/em&gt; or not.&lt;/p&gt;
+
+&lt;p&gt;The quantum circuit in this case would be:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/quantum-computing/deutsch-jozsa-circuit.png&quot; alt=&quot;Deutsch-Jozsa algorithm circuit&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;One way to build this circuit in Yao.jl is as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;deutsch_jozsa&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Uf&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chain&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;repeat&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;Uf&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;repeat&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In this case $m$ is the number of bits in the integer part of the circuit. This will give us a boolean result for the given function, assuming the function works on \(m\) bit integers. To build the oracle, $U_f$, we’ll use some bit fiddling to create a permutation:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;perm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;⊻&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The double comprehension syntax is very convenient here. Compare the calculation &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y ⊻ f(x)&lt;/code&gt; (where ⊻ means XOR) with the &lt;a href=&quot;https://en.wikipedia.org/wiki/Deutsch%E2%80%93Jozsa_algorithm#Algorithm&quot;&gt;definition&lt;/a&gt; of the gate.&lt;/p&gt;
+
+&lt;p&gt;To convert this to a Yao.jl block we have to create a permutation matrix (complex for generality) and then convert to a matrix block &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;matblock&lt;/code&gt; for Yao.jl to understand it.&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;permute&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sparse&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;perm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt;
+     &lt;span class=&quot;kt&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Complex&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Float64&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;}}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;matblock&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We can then test our circuit with a function, say $f(x)=1$ which should give us $0$ since it’s constant:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# constant&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zero_state&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deutsch_jozsa&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Uf&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;focus!&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;measure!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Which indeed results in 0.&lt;/p&gt;
+
+&lt;p&gt;To see this all working take a look at &lt;a href=&quot;https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/master/QuantumComputing/The%20Deutsch-Jozsa%20Algorithm%20in%20Yao.jl.ipynb&quot;&gt;this notebook&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 25 Jul 2020 14:26:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/deutsch-jozsa-with-yao-jl</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/deutsch-jozsa-with-yao-jl</guid>
+        
+        <category>quantum computing</category>
+        
+        <category>julia</category>
+        
+        <category>yao</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Quantum Random Numbers in Yao.jl</title>
+        <description>&lt;p&gt;The first example I use for understanding quantum computing concepts is the &lt;a href=&quot;quantum-random-number-generator&quot;&gt;Quantum Random Number Generator&lt;/a&gt;. It’s also the simplest example possible. Let’s see what it looks like &lt;a href=&quot;https://github.com/QuantumBFS&quot;&gt;Yao.jl&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As you might expect, it’s beyond trivial.&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Yao&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BitBasis&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;zero_state&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repeat&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;measure!&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bint&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Yao&lt;/code&gt; is the base package. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BitBasis&lt;/code&gt; contains the tools for dealing with bit strings which Yao returns.&lt;/p&gt;
+
+&lt;p&gt;We pass a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zero_state&lt;/code&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;n&lt;/code&gt; qubits, i.e. $\vert 0^n \rangle$, through &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;n&lt;/code&gt; hadamard gates and then measure the result. Each bit has a 50/50 chance of being 0 or 1. In this case we use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bint&lt;/code&gt; function from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BitBasis&lt;/code&gt; package to convert the measured bits to a number.&lt;/p&gt;
+
+&lt;p&gt;The result is indeed a random number between 0 and 7.&lt;/p&gt;
+
+&lt;p&gt;Let’s go a little further and make sure the numbers are uniform by plotting the distribution of the results:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;results&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zero_state&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;repeat&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;measure&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nshots&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10_000&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bint&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The only difference here is the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nshots&lt;/code&gt; parameter passed to the measure function to repeat the measurement that many times. This is much faster and cleaner than using a comprehension of something. the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.|&amp;gt;&lt;/code&gt; operator converts the individual results.&lt;/p&gt;
+
+&lt;p&gt;The result is an array of 10,000 measurements which should be uniformly distributed. Let’s check:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;histogram&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xticks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;maximum&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;results&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bar_width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.9&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Gives us&lt;/p&gt;
+
+&lt;figure width=&quot;200px&quot;&gt;&lt;figcaption&gt;&lt;span&gt;Uniformly distributed random numbers.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/quantum-computing/uniform-distribution.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Which is good.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 23 Jul 2020 21:42:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/quantum-random-numbers-in-yao-jl</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/quantum-random-numbers-in-yao-jl</guid>
+        
+        <category>quantum computing</category>
+        
+        <category>julia</category>
+        
+        <category>yao</category>
+        
+        
+      </item>
+    
   </channel>
 </rss>
