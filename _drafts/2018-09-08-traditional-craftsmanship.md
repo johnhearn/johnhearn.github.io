@@ -1,7 +1,8 @@
 ---
 layout: post
-asset-type: post
+asset-type: notes
 name: Traditional Craftsmanship
+date: 2018-09-08 13:17:18 +02:00
 
 ---
 

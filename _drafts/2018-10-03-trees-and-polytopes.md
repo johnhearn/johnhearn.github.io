@@ -1,8 +1,10 @@
 ---
 layout: post
-asset-type: post
+asset-type: notes
 name: trees-and-polytopes
+title: Trees and Polytopes
 description: Some notes about the similarities between the tensor product and cross-polytopes.
+date: 2018-09-03 11:45:18 +01:00
 
 ---
 

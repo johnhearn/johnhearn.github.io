@@ -1,7 +1,8 @@
 ---
 layout: post
-asset-type: post
+asset-type: notes
 name: building-a-quantum-simulator-from-scratch
+date: 2018-08-27 10:40:37 +01:00
 
 ---
 

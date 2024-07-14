@@ -2,6 +2,7 @@
 layout: post
 asset-type: notes
 name: composing-abstraction
+date: 2018-08-29 10:42:40 +0100
 
 ---
 
