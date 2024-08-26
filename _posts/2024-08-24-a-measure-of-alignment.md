@@ -1,6 +1,6 @@
 ---
 layout: post
-asset-type: post
+asset-type: notes
 title: A Measure of Alignment
 description: A little mathematical formula for measuring the angular alignment of things
 date: 2024-08-24 19:30:00 +02:00
@@ -69,7 +69,7 @@ $$
 I've tested this with different distributions of angles and it gives a reliable indicator of the alignment. The only thing is that the cosine squared makes it quite non-linear having a tendency to be closer to the extremes, 0 and 1. To counteract this an inverse straightens out the results for a smoother gradient, so
 
 $$
-A'' = \frac{2}{\pi}cos^{-1} \sqrt{A'}
+A'' = 1 -\frac{2}{\pi}cos^{-1} \sqrt{A'}
 $$
 
 might give better results depending on the application.
