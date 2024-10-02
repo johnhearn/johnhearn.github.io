@@ -1,0 +1,92 @@
+<html>
+  <head>
+        <script src='https://raw.githack.com/paulmasson/math/master/build/math.js'></script>
+        <script src='https://cdn.plot.ly/plotly-2.35.2.min.js'></script>
+
+    </head>
+
+    <body>
+        <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+    </body>  
+
+ 
+    <script>
+
+        W=40    // Number of work items
+        b=5     // Batch size
+        N=100000  // Samples
+        
+        function sample(W, b) {
+            s=0  // Successes (=deliveries)
+            t=0
+            while (s<W/b) {
+                s += Math.random() < 1/b
+                t += 1
+            }
+            return t
+        }
+        
+        var samples = Array.from({length: N}, () => sample(W,b));
+        
+        var trace1 = {
+          x: samples,
+          type: "histogram", 
+          name: 'Monte Carlo simulation',
+          histnorm: 'probability', 
+          xbins: {
+            start: 6,
+            end: 80, 
+            size: 1, 
+          }, 
+          marker: {
+            color: "rgba(255, 100, 102, 0.7)", 
+             line: {
+              color:  "rgba(255, 100, 102, 1)", 
+              width: 1
+            }
+          },  
+          opacity: 0.5
+        };
+        
+        r = W/b
+        p = 1/b
+                
+        function cdf(k,r,p) {
+          return betaRegularized(p,r,k+1) - betaRegularized(p,r,k);
+        }
+        
+        var x2 = [];
+        var y2 = [];
+        for (var k = 2; k < 80-r; k+=1) 
+        {
+          x2.push(k+r+0.5);
+          y2.push(cdf(k,r,p))
+        }
+        
+        
+        var trace2 = {
+          x: x2,
+          y: y2,
+          mode: 'lines+markers',
+          name: "Negative Binomial fit",
+          type: 'scatter'
+        };
+        
+        var data = [trace1, trace2];
+        var layout = {
+          bargap: 0.05, 
+          bargroupgap: 0.2, 
+          barmode: "overlay", 
+          xaxis: {title: `Days to deliver ${W} items`}, 
+          yaxis: {title: "Probability"},
+          showlegend: true,
+          legend: {
+            xanchor: 'right',
+          }
+        };
+        var config = {staticPlot: true}
+        Plotly.newPlot('myDiv', data, layout, config);
+        
+        </script>
+
+</html>
