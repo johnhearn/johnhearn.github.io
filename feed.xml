@@ -1,31 +1,744 @@
----
-layout: null
-nav_exclude: true
----
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.title | xml_escape }}</title>
-    <description>{{ site.description | xml_escape }}</description>
-    <link>{{ site.url }}{{ site.baseurl }}/</link>
-    <atom:link href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" rel="self" type="application/rss+xml"/>
-    <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
-    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
-    <generator>Jekyll v{{ jekyll.version }}</generator>
-    {% for post in site.posts limit:10 %}
+    <title>John Hearn</title>
+    <description>Personal site for blogging and about science, software and such</description>
+    <link>https://johnhearn.github.io//</link>
+    <atom:link href="https://johnhearn.github.io//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 17 Nov 2024 17:50:39 +0100</pubDate>
+    <lastBuildDate>Sun, 17 Nov 2024 17:50:39 +0100</lastBuildDate>
+    <generator>Jekyll v4.3.3</generator>
+    
       <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>{{ post.content | xml_escape }}</description>
-        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        <link>{{ post.url | prepend: site.baseurl | prepend: site.url }}</link>
-        <guid isPermaLink="true">{{ post.url | prepend: site.baseurl | prepend: site.url }}</guid>
-        {% for tag in post.tags %}
-        <category>{{ tag | xml_escape }}</category>
-        {% endfor %}
-        {% for cat in post.categories %}
-        <category>{{ cat | xml_escape }}</category>
-        {% endfor %}
+        <title>Christopher Alexander and Network Theory</title>
+        <description>&lt;p&gt;&lt;label for=&quot;aim&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;aim&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;The aim of this article is not to give a complete picture of 60 years of his work. I suggest you read his books for that. Rather it is to explain just enough to see the arc and place it in context. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;In his early work, “&lt;em&gt;Notes on the Synthesis of Form (1964)&lt;/em&gt;” (abbreviated in the following as &lt;em&gt;NotSoF&lt;/em&gt;), Christopher Alexander explored a mathematical, network-based approach to design. He conceptualised design as an interrelated network of “misfit variables” to be optimised through computational analysis, algorithmically &lt;em&gt;solving&lt;/em&gt; conflicts between interconnected elements.&lt;/p&gt;
+
+&lt;p&gt;His thesis was that to solve a design problem it should be reduced to multiple smaller problems and that, crucially, we have been limited to using existing concepts that have come down to us as “&lt;em&gt;arbitrary historical accidents&lt;/em&gt;” rather than being an optimal description of the situation at hand. At this stage, Alexander’s approach was reductionist and analytical, believing that a design could be synthesised and studied through rigorous structural optimization. He suggested algorithms (precursors to &lt;a href=&quot;https://en.wikipedia.org/wiki/Community_structure&quot;&gt;community structure&lt;/a&gt; algorithms) to cluster elements together in such a way as to reduce the overall design problem to a hierarchical tree of simpler ones which in turn could be solved and optimised &lt;em&gt;independently&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;assets/images/alexander/diagrams.jpg&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;assets/images/alexander/diagrams.jpg&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;A figure from NotSoF which shows design variables (small black circles, so-called &lt;em&gt;nodes&lt;/em&gt; in the network) and their interactions (lines). The nodes are grouped into clusters (represented as the larger circles). &lt;/span&gt;
+&lt;img src=&quot;/assets/images/alexander/diagrams.jpg&quot; alt=&quot;Diagrams&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In this work, the clusters of variables Alexander calls “&lt;em&gt;diagrams&lt;/em&gt;” (which he would later rename to the “&lt;em&gt;patterns&lt;/em&gt;” which he became famous for) and this is where his thinking began to change. As he states in the preface to later editions:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;As you can see, it is the independence of the diagrams which gives them these powers. At the time I wrote this book, I was very much concerned with the formal definition of “independence,” and the idea of using a mathematical method to discover systems of forces and diagrams which are independent. But once the book was written, I discovered that it is quite unnecessary to use such a complicated and formal way of getting at the independent diagrams.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;What does modern network science tell us about this? To answer this we can use the example described in depth at the end of NotSoF.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;assets/images/alexander/village.jpg&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;assets/images/alexander/village.jpg&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;The example from the book NotSoF which in turn is taken from the study “&lt;em&gt;The De­termination of Components for an Indian Village&lt;/em&gt;” - Conference on Design Method (Oxford : Pergamon, 1963). The layout is force directed, meaning that related nodes are attracted toward each other and unconnected nodes are pushed apart. Sometimes clusters appear naturally but in this case none are easily identified. The graph is interactive, feel free to try and pull the clusters apart yourself.  &lt;/span&gt;&lt;/p&gt;
+
+&lt;iframe width=&quot;55%&quot; height=&quot;400&quot; frameborder=&quot;0&quot; src=&quot;https://observablehq.com/embed/e954fd2bd1ba27cb@219?cells=chart&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;This is the full and extensive design problem that Alexander studied. Although he was able to group this into 12 hierarchical clusters (represented by the colours off the nodes), the nature of the &lt;em&gt;independence&lt;/em&gt; of those clusters is far from clear. Force directed layouts such as this one sometimes identify underlying structure but not in this case. Even so, visually it might be deceiving so we can apply modern summary statistics to this network and see the difficulty in clustering this network at all.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;table style=&quot;width:70%&quot;&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Average degree&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;~20&lt;/td&gt;
+      &lt;td&gt;Each node, on average, interacts with 20 other nodes.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Edge density&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;0.14&lt;/td&gt;
+      &lt;td&gt;About 1 in 7 of all possible interactions are present. This is a dense graph.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Average_path_length&quot;&gt;Average Path Length&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;2.0&lt;/td&gt;
+      &lt;td&gt;On average there are just 2 hops between each node.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Clustering_coefficient#Global_clustering_coefficient&quot;&gt;Global clustering coefficient&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;0.06&lt;/td&gt;
+      &lt;td&gt;Higher values mean better clusters. This is a very low value.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Algebraic_connectivity&quot;&gt;Algebraic connectivity&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&amp;gt;6&lt;/td&gt;
+      &lt;td&gt;Very high. By comparison tree-like graphs, scale-free and small-world networks have this typically less then 1.0.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;These metrics all point at this being a highly connected network without any clear clusters or community structure. Although the &lt;em&gt;diagrams&lt;/em&gt; suggested by Alexander in the book do, to some measure, minimise the links between clusters, the result is still very far from the tree-like structure that is espoused.&lt;/p&gt;
+
+&lt;p&gt;Alexander realised this, of course, and the beginnings of a perspective shift are clear in his essay the very next year “&lt;em&gt;A City is Not a Tree (1965)&lt;/em&gt;”, where he claimed that cities and urban structures cannot be fully explained by hierarchical models or purely tree-like networks. He argued that successful cities are not trees but are “semi-lattices” — networks with overlapping connections that resemble the organic, intertwined complexity of real-life. Here, Alexander is reflecting on and challenging his own reductionist assumptions, positing that cities function best with fluid, overlapping, and non-hierarchical connections, allowing diverse elements to interrelate dynamically.&lt;/p&gt;
+
+&lt;p&gt;Alexander’s reflexivity is to be admired. Remember he was writing this 60 years ago, when hard science was a raging success explaining the unexplainable and we were still optimistic for “Grand Theories of Everything” even though computers filled an entire room.&lt;/p&gt;
+
+&lt;p&gt;By the time Alexander finished “&lt;em&gt;A Pattern Language (1977)&lt;/em&gt;”, his thinking had moved even further away from strict optimization schemes toward a more life-centered philosophy. He recognized that human environments thrive on the richness of overlapping networks rather than static or strictly hierarchical arrangements. Rather than optimizing individual design problems, he focused on identifying “patterns” — recurring, archetypal solutions that reflect timeless principles of habitability. Each pattern addressed a design aspect that could contribute to a “whole” design when combined with others in rich and intricate ways. Patterns were interconnected in what Alexander saw as a more organic network, linked by relationships that encouraged cohesion and harmony within the design. Rather than algorithmic clustering, these patterns represented design wisdom drawn from observation and experience, creating environments that intuitively supported human needs and preferences.&lt;/p&gt;
+
+&lt;p&gt;Taking this idea further, in “&lt;em&gt;The Nature of Order series (2002–2005)&lt;/em&gt;”, Alexander considers “centers,” a concept intended to capture essential order that appears naturally within vibrant environments. Alexander believed these centers were interrelated and overlapping, embedded in a “living” structure that achieved harmony through wholeness rather than quantifiable connections.&lt;/p&gt;
+
+&lt;p&gt;By this point Alexander’s perspective has shifted entirely to a holistic one. He is no longer using tree structures and prefers using words like &quot;&lt;em&gt;wholeness&lt;/em&gt;&quot; to describe this shift requiring experience and expertise to understand the full picture.&lt;/p&gt;
+
+&lt;hr class=&quot;slender&quot; width=&quot;50%&quot; /&gt;
+
+&lt;p&gt;I will admit that the mathematical approach of Alexander’s early work still very much appeals to the logical side of my brain and 30+ years of western education: if I follow this procedure, I can solve the problem in the abstract using maths and computers. This is one extreme of a philosophical framework which emphasises narrowing the vision and focusing in on breaking down and solving component problems and then reintegrating them. Some people use the left-hemisphere as a metaphor for this kind of thinking.&lt;/p&gt;
+
+&lt;p&gt;This is also the thinking that leads us to search for optimal efficiency through gradient descent to cost reduction and maximal productivity.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;left-right&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;left-right&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;Ironically the left-right distinction is itself a left-hemisphere concept. Using such terms encumbers us with a recursive limitation. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;However, shifting too dramatically from a left-hemisphere to right-hemisphere approach (System A to System B, as he called them) causes unresolvable tension, poles so far apart that there simply is no sweet spot. Christopher Alexander himself documented these problems in the book “&lt;em&gt;The Battle for the Life and Beauty of the Earth: A Struggle between Two World-Systems (2012)&lt;/em&gt;”. System A drives for cold, modern efficiency and System B for life and harmony. I live in a System A building. How much better it could have been with a little System B. Too much System B and it wouldn’t even exist. As Daniel Schmachtenberger says “&lt;em&gt;we’re creating a future that &lt;strong&gt;nobody&lt;/strong&gt; wants&lt;/em&gt;”.&lt;/p&gt;
+
+&lt;p&gt;Can we apply modern efficiency to find life and harmony and get the best of both worlds? It doesn’t seem like an impossible goal to me.&lt;/p&gt;
+
+&lt;p&gt;In modern network theory, &lt;em&gt;patterns&lt;/em&gt;, &lt;em&gt;diagrams&lt;/em&gt; and even &lt;em&gt;centres&lt;/em&gt; might be better considered as &lt;a href=&quot;https://en.wikipedia.org/wiki/Network_motif&quot;&gt;motifs&lt;/a&gt; rather than clusters determined by the density of their interactions. Motifs are repeating, stable structures with the potential to identify key functional properties embedded within a network of a particular type - certain configurations that always seem to work well together. Importantly, they do not need to be disconnected from the rest of the network but can mix and overlap with other nodes and motifs while maintaining their own essential structure. Although there are modern algorithms for detecting motifs, just like clusters, at this point Alexander was arguing that algorithms could not capture the fundamental quality of “&lt;em&gt;life&lt;/em&gt;” that great designs embody; only an intuitive, holistic understanding could bring the sense of harmony aspired to.&lt;/p&gt;
+
+&lt;p&gt;There is a certain circularity in Alexander’s story. With the aim of trying to get away from subjective, accidental concepts to a more objective approach he ended up saying that only through expertise are we able to detect and evaluate the concepts in the first place.&lt;/p&gt;
+
+&lt;p&gt;I am more optimistic. I wonder if we will be able to complete the circle and detect natural but explainable motifs. For example, new language models seem to be able to glean underlying patterns that maybe even the experts are not aware of. I can envision a world, not too far away, where we will need both the algorithmic tools &lt;em&gt;and&lt;/em&gt; expert evaluation to keep things in check.&lt;/p&gt;
+
+&lt;p&gt;A nice example of a similar circularity has happened in chess. Many believed that computers could not play chess due to the unfathomable number of possible moves while others believed that even if they did, the game would become boring and predictable. Nonetheless modern engines have far surpassed humans and are now helping professional players to develop new intuitions. Rather than mechanising the game, modern encounters are quick to leave theory behind and explore more novel openings than they did before the engines existed.&lt;/p&gt;
+
+&lt;p&gt;The evolution of Christopher Alexander’s design philosophy also has an interesting analogy with the modern tension between systems thinking and complexity theory. When viewed through the lens of network theory we can place his journey in a firm conceptual framework and show his battles in a modern light. He moved from clustering design variables to a more holistic, fluid approach. This is very similar to the comparison by some of traditional and structural systems thinking approaches (such as lines and circles and systems dynamics) to more fluid approaches from Complexity Theory. Bearing in mind Alexander’s philosophical journey, I am eager to see the evolution and synthesis of both of these subjects.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 16 Nov 2024 08:30:00 +0100</pubDate>
+        <link>https://johnhearn.github.io//articles/christopher-alexander-network-theory</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/christopher-alexander-network-theory</guid>
+        
+        <category>design</category>
+        
+        <category>alexander</category>
+        
+        <category>network theory</category>
+        
+        
       </item>
-    {% endfor %}
+    
+      <item>
+        <title>Predictability and batch size</title>
+        <description>&lt;p&gt;Some results from a little Monte Carlo simulation of delivery times &lt;a href=&quot;https://www.linkedin.com/posts/phil-ledgerwood_in-my-last-post-on-this-httpslnkdin-activity-7245467832489046017-sk_N&quot;&gt;posted on LinkedIn&lt;/a&gt; showed that &lt;strong&gt;predictability decreases with larger batch sizes&lt;/strong&gt;. A little maths shows clearly why this is the case.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-model&quot;&gt;The model&lt;/h3&gt;
+
+&lt;p&gt;The post compared a team delivering one work item per day with a team delivering 5 work items together every 5 days. The teams have a batch size of 1 and 5 respectively. In this situation we’d expect the mean delivery rate to be the same, namely 1 item per day on average. We’ll call the batch size $b$.&lt;/p&gt;
+
+&lt;p&gt;In our model, a team will deliver $W$ work items (doesn’t matter the size of each item, we’re only using the finishing rate in this model) in batches with $\frac{W}{b}$ items in each batch. Let’s call the number of batches $r=\frac{W}{b}$.&lt;/p&gt;
+
+&lt;p&gt;In this idealised model, Team 1’s probability of delivering each day is close to 1, so for this case let’s say $p=1$. Team 2’s probability of delivering 5 work items on any particular day is $p=\frac{1}{5}$. So in general on a given day a team delivers $b$ work items with a probability of $p=\frac{1}{b}$.&lt;/p&gt;
+
+&lt;p&gt;We want to know the probability of delivering $W$ items of work in $n$ days. This requirement is captured by a &lt;a href=&quot;https://en.wikipedia.org/wiki/Negative_binomial_distribution&quot;&gt;Negative Binomial&lt;/a&gt; distribution and, luckily for us, all the maths has been previously worked out. We’ll break the total delivery time down into two parts. First, the the number of times that a team &lt;em&gt;fails&lt;/em&gt; to deliver on a specific day, that is the gaps between deliveries. We’ll call that number $k$. Secondly, we need the number of days that it does deliver, this is $r$. We can then say that the total number of days is the sum of the delivery days, $r$, plus the non-delivery days, $k$. In other words, $n=k+r$. In this case then $k$ follows:&lt;/p&gt;
+
+\[n-r = k \sim NegativeBinomial(r, p)\]
+
+&lt;p&gt;And from this we can work out the distribution of $n$.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-does-the-model-tell-us&quot;&gt;What does the model tell us?&lt;/h3&gt;
+
+&lt;p&gt;Given the distribution defined above, and remembering that $r$ is a constant, then the expected value of $n$ is:&lt;/p&gt;
+
+\[E[n] = E[k+r] = E[k] + r = \frac{r(1-p)}{p} + r = \frac{r}{p} = \frac{\frac{W}{b}}{\frac{1}{b}} = W\]
+
+&lt;p&gt;So, in this model, to deliver $W$ work items &lt;strong&gt;the average total delivery time is independent of the batch size&lt;/strong&gt;, as expected.&lt;/p&gt;
+
+&lt;p&gt;What about its variance? The variance of the mean (a measure of predictability) is:&lt;/p&gt;
+
+\[Var[n] = Var[k+r] = Var[k] = \frac{r(1-p)}{p^2} = \frac{W}{b} \frac{(1-\frac{1}{b})}{\left( \frac{1}{b} \right)^2} = W(b-1)\]
+
+&lt;p&gt;So &lt;strong&gt;the variance &lt;em&gt;increases linearly&lt;/em&gt; with batch size&lt;/strong&gt;. Since the greater the variance the less predictable the result we can say that the predictability &lt;em&gt;decreases&lt;/em&gt; with batch size.&lt;/p&gt;
+
+&lt;p&gt;The variance &lt;strong&gt;also increases linearly with the amount of work&lt;/strong&gt;. This captures the fact that the predictability decreases the further into the future you look, even if the delivery rate remains constant. This is just one of the factors comprising the &lt;a href=&quot;https://en.wikipedia.org/wiki/Cone_of_uncertainty&quot;&gt;cone of uncertainty&lt;/a&gt; that results solely from batch size.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-model-is-a-model&quot;&gt;A model is a model&lt;/h3&gt;
+
+&lt;p&gt;In any real team the batch size won’t be constant but, all other things being equal, this model is good enough to tell us that regular delivery of smaller batches is preferable to larger ones.&lt;label for=&quot;other reasons&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;other reasons&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;There are other reasons too, like the accumulation of changes increasing the probability of bugs but that is not covered in this model. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Also in real teams the work items are generally not completely independent. This can be due to internal team dynamics, one piece of work being a prerequisite of another, etc. The practical effect of this is to increase the variance further. One nice thing about the negative binomial as a modelling tool is that it can easily be tuned to the teams actual data by increasing its variance slightly while keeping the mean constant. In the past I have found this to be a very good approximation of data gathered from real teams.&lt;/p&gt;
+
+&lt;p&gt;Another nice thing about using a known distribution is that we can go beyond normal Monte Carlo and use Bayesian inference for forecasting. Having a Bayesian model has the advantage of being deterministic and smoother, regulating and reducing noise or small sample effects that are sometimes evident in Monte Carlo simulations.&lt;/p&gt;
+
+&lt;p&gt;As always these results need to be used with caution and a full understanding of what they mean. Nonetheless having models to help us understand the mechanisms and principles behind our intuitions can be very handy at times.&lt;/p&gt;
+
+&lt;h3 id=&quot;validation&quot;&gt;Validation&lt;/h3&gt;
+
+&lt;p&gt;Just to check that the model we’ve described actually works, the shaded area in the plot below shows 100,000 live results from Monte Carlo simulations of delivery times for 40 pieces of work when 5 items are delivered together. The red line represents the negative binomial model described here. Hopefully, they match as perfectly now as they did when I wrote this.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;iframe width=&quot;780&quot; height=&quot;470&quot; src=&quot;https://johnhearn.github.io//assets/frames/negative-binomial-plot.html&quot;&gt;
+
+&lt;/iframe&gt;
+</description>
+        <pubDate>Sat, 28 Sep 2024 18:30:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/predictability-and-batch-size</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/predictability-and-batch-size</guid>
+        
+        <category>probability</category>
+        
+        <category>forecasting</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Dunbar&apos;s number deconstructed (again)</title>
+        <description>&lt;p&gt;&lt;a href=&quot;dunbars-number-good-science-within-limits&quot;&gt;Last week&lt;/a&gt; I was looking at how Dunbar arrived at his famous number and learnt a lot about the effects of different types of linear regression and the limits of their predictive power. I concluded that, while the science was good, the wide error margin in the linear regression over log transformed data means that we need to apply a good deal of caution about arriving at any specific number.&lt;/p&gt;
+
+&lt;p&gt;The data I used was from one of his more recent papers&lt;label for=&quot;dunbar-2021&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbar-2021&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Dunbar, Robin I. M., and Susanne Shultz. ‘Social Complexity and the Fractal Structure of Group Size in Primate Social Evolution’. Biological Reviews 96, no. 5 (October 2021): 1889–1906. &lt;a href=&quot;https://doi.org/10.1111/brv.12730&quot;&gt;doi.org/10.1111/brv.12730&lt;/a&gt;. &lt;/span&gt; so my results were slightly different from his. It was tabulated in the paper and I was just too lazy to copy it out. Nevertheless I was left with some curiosity about how the results might have changed using the original data.&lt;/p&gt;
+
+&lt;h2 id=&quot;reproducing-dunbars-exact-results&quot;&gt;Reproducing Dunbar’s exact results&lt;/h2&gt;
+
+&lt;p&gt;So yesterday, with a combination of OCR and careful copying, I recovered Dunbar’s original data from his paper. Here’s a reproduction of a plot of the data - satisfyingly similar to the original.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;dunbars-data&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbars-data&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/dunbar/dunbars data.png&quot; /&gt;&lt;br /&gt;Comparison with Dunbar’s data taken from his original paper.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 1. Mean group size for individual genera plotted against neocortex ratio (relative to rest of brain; i.e., total brain volume less neocortex). (●) Polygamous anthropoids; (+) monogamous anthropoids; (○) diurnal prosimians; (□) nocturnal prosimians; (△) hominoids.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/dunbars data original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Not sure why those axis limits were chosen, maybe just rounding to orders of ten. In any case group sizes less than 1 make no sense and neocortex ratios beyond that of humans are not useful. From now on the plots will focus on the meaningful ranges. They’ll also have the vertical axis on the right so that predicted values are easier to read off.&lt;/p&gt;
+
+&lt;p&gt;To this graph Dunbar’s original fit is overlaid. One again his famous number, 150, appears as the predicted value for human group size.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 2: Same plot restricting the axes to a meaningful range and extending Dunbar’s fit to the measured neocortex ratio for humans (4.102).&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/dunbars result original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Using this data and using exactly the same RMA (aka Geometric) linear regression we can recover his results almost&lt;label for=&quot;almost&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;almost&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;I believe there are some minor transcription errors in the original paper (or my reading of it) which produce a very slightly different line but the difference is minimal and changes nothing. &lt;/span&gt; exactly. The next plot shows the agreement along with the 95% confidence interval as calculated following Rayner&lt;label for=&quot;rayner-1985&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;rayner-1985&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Rayner, J. M. V. ‘Linear Relations in Biomechanics: The Statistics of Scaling Functions’. Journal of Zoology 206, no. 3 (July 1985): 415–39. &lt;a href=&quot;https://doi.org/10.1111/j.1469-7998.1985.tb05668.x&quot;&gt;10.1111/j.1469-7998.1985.tb05668.x&lt;/a&gt;. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 3: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102), confirming agreement with Dunbar’s original results.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/my result original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;This agreement was exactly what I was hoping for by using the original data and reproduces Dunbar’s result satisfactorily.&lt;/p&gt;
+
+&lt;h2 id=&quot;residuals&quot;&gt;Residuals&lt;/h2&gt;
+
+&lt;p&gt;One again we can apply simple residual checks on the data to ensure we are satisfying the linear regression assumptions. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot&quot;&gt;qqplot&lt;/a&gt; shows the residuals close to a normal distribution.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 4: Q-Q plot comparing the standardised residuals with a standard normal distribution.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/residuals distribution original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;The residuals plot itself shows some variance but no obvious &lt;a href=&quot;https://en.wikipedia.org/wiki/Homoscedasticity_and_heteroscedasticity&quot;&gt;heteroscedasticity&lt;/a&gt;.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 5: Plot of the residuals.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/residuals plot original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;confidence-in-the-mean&quot;&gt;Confidence in the mean&lt;/h2&gt;
+
+&lt;p&gt;While the fit itself is statistically sound, if we look again at Figure 3, we can see that the logarithmic scale underplays the numerical range. Looking at the same graph with the vertical axis scaled linearly then the problem is clear.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 6: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102).&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/predict original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;The confidence interval (which is &lt;em&gt;only for the mean itself&lt;/em&gt;) is from under 100 to nearly 250. This is worse than the previous data because the slope is greater. I think you will agree that this is a wide error margin which is partially obscured by the log-log view. If we don’t believe the confidence interval calculation (and we shouldn’t, some doubt has been placed on it&lt;label for=&quot;dunbar-2021&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbar-2021&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Changyong Feng, Hongyue Wang, Naiji Lu, Tian Chen, Hua He, Ying Lü, and Xin Tu. ‘Log-Transformation and Its Implications for Data Analysis’. Shanghai Archives of Psychiatry 26, no. 2 (1 April 2014): 105–9. &lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4120293/&quot;&gt;10.3969/j.issn.1002-0829.2014.02.009&lt;/a&gt;. &lt;/span&gt;, see below) then let’s take a different approach and compare.&lt;/p&gt;
+
+&lt;p&gt;Assuming the parameters of the fit are normal, &lt;em&gt;as we must because it was an assumption of the regression itself and has been somewhat confirmed empirically&lt;/em&gt;, then we can generate random samples of regression lines drawn from those distributions. This is a so-called Monte-Carlo simulation of the regression distributions and gives us an alternative way to histogram the predicted values. The following plot shows 3000 such samples together with a histogram of the predicted values for human group size.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 7: plot of Monte Carlo random samples of the regression line together with a histogram of the predicted value for human group size.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/ncr vs gs mc.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Again we find an average in the right range (see below) but once more with very wide error margins for the prediction. Actually it’s worse. The distribution is clearly heavy tailed towards higher group sizes. This is an expected effect of converting a Normal distribution on a log scale to a linear scale where it becomes Log Normal and therefore long tailed. Taking 1 million such predictions it’s evident that it conforms very closely.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 8: histogram of 1 million predictions fitting very closely with a LogNormal distribution. 95% quantiles are shown as vertical lines at 71 and 368 respectively. Mean is 176.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/prediction histogram.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Taking these results we can confirm that the 95% confidence interval has widened further, from 71 as a lower bound to 368 as the upper. Remember that this is still the range for the mean itself and does not take into account the variability in the samples.&lt;/p&gt;
+
+&lt;p&gt;There is another insight here too. The mean of the LogNormal distribution is &lt;strong&gt;not 150 but rather 176&lt;/strong&gt;. The reason for this is exactly as stated in &lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4120293/&quot;&gt;Feng et al.&lt;/a&gt; and can be confirmed by direct calculation. The mean of the distribution when transformed back into natural units is &lt;em&gt;not&lt;/em&gt; $exp(\mu) = 150$ but rather $exp(\mu + \sigma^2/2) = 176$. The variance shifts the mean.&lt;/p&gt;
+
+&lt;h1 id=&quot;confidence-in-the-prediction&quot;&gt;Confidence in the prediction&lt;/h1&gt;
+
+&lt;p&gt;We’ve stated several times that until now we have been looking at inferences related only to the prediction of the mean of the regression line, not including the variance in the data itself. Let’s take that into account now. We know the variance in the residuals and under the assumption they are normally distributed in log space then, in principle, we can model the residuals in the predicted value.&lt;/p&gt;
+
+&lt;p&gt;The normal distribution of the mean regression and the normal distribution of the residuals is combined using the relation: $𝒩(\mu_1, \sigma_1^2)+𝒩(\mu_2,\sigma_2^2) = 𝒩(\mu_1+\mu_2, \sigma_1^2+\sigma_2^2)$. We can then carefully extend this to linear space by expressing as a &lt;em&gt;Lognormal&lt;/em&gt; distribution with parameters $\mu = ln(10)(\mu_1+\mu_2)$ and $\sigma = ln(10)\sqrt{\sigma_1^2+\sigma_2^2}$. &lt;label for=&quot;ln10&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;ln10&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;The $ln(10)$ factors are necessary because the original data was transformed base 10 and the relation between the normal and the Lognormal is via the natural logarithm. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Using this new distribution the confidence interval has now widened still further. The 95% interval ranging between 31 to over 740. The mean now is above 200 due to the upward effect of the increased variance.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;With the original data it’s been possible to reproduce Dunbar’s famous results almost perfectly.&lt;/p&gt;
+
+&lt;p&gt;However it has become even clearer that the extrapolation of the regression line to human scales is highly questionable. The prediction is well outside the existing data, leading to wide error margins, and the log transformation exaggerates the error still further. If we also take into account the residual variance in the data, the confidence interval of any prediction widens beyond useful limits (according to my analysis, the 95% interval is from 71 up to 740).&lt;/p&gt;
+
+&lt;p&gt;This is not an issue related to the type of regression nor any internal structure in the samples but rather the overwhelming error margins that make sensible prediction based on the available data unreasonable.&lt;/p&gt;
+
+&lt;p&gt;This is all consistent with the Stockholm University group’s “deconstruction”&lt;label for=&quot;Lindenfors-2021&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;Lindenfors-2021&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Patrik Lindenfors, Patrik Lindenfors, Andreas Wartel, Andreas Wartel, Johan Lind, and Johan Lind. ‘“Dunbar’s Number” Deconstructed’. Biology Letters 17, no. 5 (1 May 2021): 20210158–20210158. &lt;a href=&quot;https://doi.org/10.1098/rsbl.2021.0158&quot;&gt;10.1098/rsbl.2021.0158&lt;/a&gt;. &lt;/span&gt; of not only the number itself, but the notion that such a number is even sensible to talk about.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 17 Sep 2024 08:30:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/dunbars-number-deconstructed-again-copy</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/dunbars-number-deconstructed-again-copy</guid>
+        
+        <category>science</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Investigating Dunbar&apos;s number</title>
+        <description>&lt;p&gt;In a seminal paper&lt;label for=&quot;dunbar-1992&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbar-1992&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Dunbar, R. I. M. ‘Neocortex Size as a Constraint on Group Size in Primates’. Journal of Human Evolution 22, no. 6 (1 June 1992): 469–93. doi: &lt;a href=&quot;https://doi.org/10.1016/0047-2484(92)90081-j&quot;&gt;10.1016/0047-2484(92)90081-j&lt;/a&gt;. &lt;/span&gt; from 1992, &lt;a href=&quot;https://en.wikipedia.org/wiki/Robin_Dunbar&quot;&gt;Robin Dunbar&lt;/a&gt; extrapolated from the brain measurements of different animal species and their typical social group sizes, to make a now famous prediction about human social group size. His analysis led him to what has become known as &lt;em&gt;Dunbar’s number&lt;/em&gt;, 150, which has had multiple &lt;a href=&quot;https://en.wikipedia.org/wiki/Dunbar%27s_number#Applications&quot;&gt;applications&lt;/a&gt; in different organisational contexts.&lt;/p&gt;
+
+&lt;p&gt;Prompted by a definition in this &lt;a href=&quot;https://martyoo.medium.com/stop-team-topologies-fd954ea26eca&quot;&gt;blog post&lt;/a&gt;, and out of pure curiosity, I searched for a bit more information and stumbled on an relatively recent &lt;a href=&quot;https://theconversation.com/dunbars-number-why-my-theory-that-humans-can-only-maintain-150-friendships-has-withstood-30-years-of-scrutiny-160676&quot;&gt;article by him&lt;/a&gt; in which he gives an overview of his research. The article sounded a little snarky to me and snarkiness continued in the comments. It seems he was responding to some research&lt;label for=&quot;dunbar-1992&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbar-1992&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Patrik Lindenfors, Patrik Lindenfors, Andreas Wartel. ‘“Dunbar’s Number” Deconstructed’. Biology Letters 17, no. 5 (1 May 2021): 20210158–20210158. &lt;a href=&quot;https://doi.org/10.1098/rsbl.2021.0158&quot;&gt;10.1098/rsbl.2021.0158&lt;/a&gt;. &lt;/span&gt; published by a group at Stockholm University who ran a set of modern statistical tools over the original dataset and were unable to draw the same conclusions that Mr Dunbar had. This group then responded to Dunbar’s article by writing another &lt;a href=&quot;https://theconversation.com/why-we-dispute-dunbars-number-the-claim-humans-can-only-maintain-150-friendships-161944&quot;&gt;article&lt;/a&gt; explaining their position in more detail.&lt;/p&gt;
+
+&lt;p&gt;Since working with real data and reading the work of different research groups is a fantastic way to learn, I decided to do a bit of amateur data analysis. I learned &lt;em&gt;a lot&lt;/em&gt; and hopefully by writing down what I saw, I’ll learn even more.&lt;/p&gt;
+
+&lt;h2 id=&quot;fitting-the-data&quot;&gt;Fitting the data&lt;/h2&gt;
+
+&lt;p&gt;&lt;label for=&quot;rayner-1985&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;rayner-1985&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;Much of the mathematics of this section can be found in Rayner, J. M. V. ‘Linear Relations in Biomechanics: The Statistics of Scaling Functions’. Journal of Zoology 206, no. 3 (July 1985): 415–39. &lt;a href=&quot;https://doi.org/10.1111/j.1469-7998.1985.tb05668.x&quot;&gt;10.1111/j.1469-7998.1985.tb05668.x&lt;/a&gt;. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Here’s an example of a similar data set to the one used in the original studies. The data is tabulated in the paper but it’s a lot to copy out so I took a similar data set published by the same author in a later paper. Figure 1 is a plot of the data. For multiple species of animal, it shows the ratio of the size of the neocortext to the size of the rest of the brain ($C_r$) on the horizontal axis and the average social group size ($N$) for that species on the vertical axis.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 1: a plot of neocortext ratio $N_r$ against average social group size $G$ for 39 animal species.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/ncr vs gs.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Neither Dunbar nor his critics used the data in this form however, they used its logarithm. This is a common technique used under the assumption that it will make skewed data (as this is) appear more symmetrical (normal). There is no explanation of the reasons for the transform in this particular case. Nonetheless it has an important effect on the results. We’ll come back to this point later. Here’s the transformed data.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;dunbars-data&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbars-data&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/dunbar/dunbars data.png&quot; /&gt;&lt;br /&gt;Comparison with Dunbar’s data taken from his original paper.&lt;/span&gt;&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 2: a plot of $log_{10}N_r$ against $log_{10}G$ for the same 39 animal species.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/log10ncr vs log10gs.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;I’ve presented it in exactly the same way as Dunbar’s paper. Although the data is slightly different the similarity is clear. Also, it does &lt;em&gt;look&lt;/em&gt; a bit more like a straight line now and the variance is a little less pronounced. I’m not sure how valid this kind of subjective judgement is.&lt;/p&gt;
+
+&lt;p&gt;Figure 3 overlays Dunbar’s original result onto this data set and there is no surprise. The line (the equation for which is given explicitly in the paper) is projected out to  show the predicted human mean group size which can be seen to be close to 150. This is the source of Dunbar’s number.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 3: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102).&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/dunbars result.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;I’m tried to reproduce this result but for now we note that for the analysis to work we have to make the strong assumption that an errors in the measurements are normally distributed. The choice of using the log-log transformation another strong assumption that we’re taking as fact for the moment but we will return to it.&lt;/p&gt;
+
+&lt;p&gt;The parameters of the line are determined using linear regression which attempts to find the best straight line through the points. The question arises: what is the best straight line? It turns out that there are multiple ways of defining best fit and depending on which you chose you can get different results.&lt;/p&gt;
+
+&lt;p&gt;The most common type of linear regression is most commonly called &lt;strong&gt;Ordinary Least Squares&lt;/strong&gt;&lt;label for=&quot;lsr&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;lsr&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Dunbar calls it LSR (Least Squares Regression) in his paper. &lt;/span&gt; (OLS) where the the best line is chosen to be the one that minimises the squares of the vertical difference between each point and itself. This is the most basic regression technique taught in statistics classes.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;york-2004&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;york-2004&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;For more discussion about regression with &lt;em&gt;known&lt;/em&gt; error weights in both axes for each sample see this &lt;a href=&quot;https://doi.org/10.1119/1.1632486&quot;&gt;paper&lt;/a&gt;. In this case we don’t know the error margins in the data. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;The problem with OLS, as Dunbar points out in his original paper and again in his recent article, is that by minimising only the vertical distances there is an implicit assumption that there are no errors in the measurements on the x-axis, which is not true in this case.&lt;/p&gt;
+
+&lt;p&gt;To take these (unknown) error margins into account in both axes we can choose to minimise the &lt;em&gt;geometric&lt;/em&gt; distance between the points and the line. This is called &lt;strong&gt;Geometric Mean Regression&lt;/strong&gt;&lt;label for=&quot;rma&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;rma&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Dunbar calls it RMA (Reduced Major Axis) but just as heads up it turns out the the web page that Dunbar references in his article to explain RMA is wrong. For a neat overview of the main types of regression I’d recommend the paper by Xu, S. (2014). A Property of Geometric Mean Regression. The American Statistician, 68(4), 277–281. doi:&lt;a href=&quot;https://doi.org/10.1080/00031305.2014.962763&quot;&gt;10.1080/00031305.2014.962763&lt;/a&gt;. &lt;/span&gt; in much of the modern literature. The geometric distance is the &lt;em&gt;area&lt;/em&gt; between the point and the line, the triangle spanning both the distance along the x-axis and the distance along the y-axis.&lt;/p&gt;
+
+&lt;p&gt;One &lt;a href=&quot;https://doi.org/10.1016/0096-3003(94)00161-V&quot;&gt;cited&lt;/a&gt; problem with geometric regression is the extra difficulty in the interpretation of confidence intervals for the parameters. I haven’t seen that as being any more of a problem for this type of regression than for any other but I might be wrong. Please read the paper if you are interested.&lt;/p&gt;
+
+&lt;p&gt;I did both geometric and OLS regression to compare the difference. Figure 4 shows the results of both types of linear regression transformed back into the original, untransformed scales.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 4: plot showing the regression results of both OLS and Geometric regressions with a 95% confidence interval.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/ols vs gmr.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;This confirms Dunbar’s assertion that OLS considerably &lt;em&gt;underestimates&lt;/em&gt; the slope of the regression line, as compared to geometric one.&lt;/p&gt;
+
+&lt;p&gt;There are two other important things to note here beyond the difference between the two lines. First notice the upward curve of the regression lines over the original data. This is a result of the log transformations, essentially producing an approximately exponential fit due to the differing scales of the two axes.&lt;/p&gt;
+
+&lt;p&gt;The second thing to notice is the wide spread of the confidence interval for this line. This is also exaggerated by the log transformation. In fact, the validity of the confidence intervals after transformation is highly questionable. See &lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4120293/&quot;&gt;Feng et al.&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;p&gt;Notwithstanding the above caveats, what happens if we extrapolate the curve in an attempt to predict a typical group size for humans?&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 5: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102).&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/predict.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;A direct extrapolation of this data using the geometric fit gives a group size prediction for humans as very approximately ~100. This well below Dunbar’s result but some difference should be expected due to the different data. It does however highlight the disproportionate effect of the log-log transformation on the prediction. It also puts into question the conceptual validity of extrapolating so far outside the available data. Remember that this is the spread of the confidence interval of just the mean itself and does not extrapolate from the variance seen in the rest of the data. This is a key point and an interesting realisation for me personally.&lt;/p&gt;
+
+&lt;p&gt;Until now we have collected a series of assumptions about the data that we’ll look at in turn in light of the analysis.&lt;/p&gt;
+
+&lt;h3 id=&quot;log-log-transformation&quot;&gt;Log-log transformation&lt;/h3&gt;
+
+&lt;p&gt;It is evident that by taking the log-log transformation of the data we have made the confidence intervals of the predictions extremely wide. Was this choice justified? Let’s take a look at the distributions of the data before and after the transformation.
+&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 6: Distribution of original and log transformed neocortex ratio, $N_r$, and mean group size, $G$.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/data distributions.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;They show that the transformation has gone some way to make the distributions more symmetrical, especially the group size. It might be interesting to see the results without taking the log of the neocortex ratio but it’s confirmed that this transformation does make sense in this case, even though it does introduce other problems elsewhere. It’s a trade-off I guess.&lt;/p&gt;
+
+&lt;h3 id=&quot;distribution-of-errors&quot;&gt;Distribution of errors&lt;/h3&gt;
+&lt;p&gt;It was assumed that the errors in the measurements in both axes were normally distributed. Figure 7 takes a closer look at the distributions of the residuals of the  log transformed data against their regression line.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 7: Q-Q plot comparing the standardised residuals with a normal distribution N(0,1).&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/residuals distribution.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;This residuals are reasonably close to a normal distribution which is one possible justification for the log-log transformation on the data.&lt;/p&gt;
+
+&lt;p&gt;We would like to check for the presence of &lt;a href=&quot;https://en.wikipedia.org/wiki/Homoscedasticity_and_heteroscedasticity&quot;&gt;heteroscedasticity&lt;/a&gt; which can cause ordinary least squares estimates of the variance (and, thus, standard errors) of the coefficients to be biased, possibly above or below the true of population variance. A quick plot of the residuals doesn’t give us too much cause for concern.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 8: Plot of the residuals.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/residuals plot.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;We might like to check that more formally with a Breusch-Pagan test. Again this can be taken as further justification for the log-log transformation.&lt;/p&gt;
+
+&lt;h2 id=&quot;confirmation-bias&quot;&gt;Confirmation bias&lt;/h2&gt;
+
+&lt;p&gt;More recently additional evidence has been gathered to support the original Dunbar number of 150. As we’ve seen, this number is at best a very rough guess of the mean and doesn’t include the potential variance over the extrapolated range. Nonetheless there is a very real possibility of confirmation bias in later results. The phenomena starts when people latch on to these specific numbers and then &lt;a href=&quot;https://teamtopologies.com/news-blogs-newsletters/dunbars-numbers-and-communities-of-practice-q-and-a-with-emily-webber&quot;&gt;send&lt;/a&gt; their correlates to Dunbar who then catalogues them as supporting evidence.&lt;/p&gt;
+
+&lt;p&gt;What have military units got to do with Christmas card lists? Christmas card lists are definitely a social phenomenon but it if far from clear which band they should be in. If the results had been 50, say, then it would have been taken as evidence for that smaller group size. It’s a post-hoc correlation.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;So, after all this analysis, I learnt a great deal about regression considerations. Least squares never seemed so controversial until I started this. My results came in below Dunbar’s original results. This means nothing, of course, but it does lend some credence to the critics suspicions which would be compatible with my little investigation here.&lt;/p&gt;
+
+&lt;p&gt;I also learnt a lot about what can and can’t be said about Dunbar’s number as a concept.&lt;/p&gt;
+
+&lt;p&gt;First, none of this says anything about the nested structure of the group sizes and other predictions made subsequently, which have also been used widely&lt;label for=&quot;team-topologies-definition&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;team-topologies-definition&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;The Team Topologies book uses Dunbar’s work as a basis for team size discussions. For them, “Dunbar’s number” (as defined in the glossary) actually refers to results from Dunbar’s &lt;a href=&quot;https://onlinelibrary.wiley.com/doi/pdf/10.1111/brv.12730&quot;&gt;later work on nested group sizes&lt;/a&gt; and is related but different to Dunbar’s number as usually understood. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Secondly, it is most &lt;strong&gt;definitely not a maximum or upper limit&lt;/strong&gt;, as often &lt;a href=&quot;https://martyoo.medium.com/stop-team-topologies-fd954ea26eca&quot;&gt;stated&lt;/a&gt;. We need to be careful not to confuse the confidence interval of the sample mean with a measure of confidence of the prediction.&lt;/p&gt;
+
+&lt;p&gt;It is clear to me now that stating Dunbar’s number as 150 is misleading and misses a great deal of context. Even assuming the validity of the model and the regression, it is a predicted mean value extrapolated far outside the underlying data with extremely wide error bars and &lt;strong&gt;needs to be treated with a great deal of caution&lt;/strong&gt;. The prediction has even wider margins to the point of losing some of its meaning as a useful concept.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 10 Sep 2024 09:30:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/dunbars-number-good-science-within-limits</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/dunbars-number-good-science-within-limits</guid>
+        
+        <category>science</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>A Measure of Alignment</title>
+        <description>&lt;p&gt;During the summer holidays I stumbled on a printed copy of my old degree dissertation. It’s over 25 years old and I was pleasantly surprised by the writing style but no so much about the structure - no clear explanation of what was being demonstrated and the conclusions were a bit lacking.&lt;/p&gt;
+
+&lt;p&gt;The project itself was to use Monte Carlo simulation techniques to discover things about the phases of idealised liquid crystals, modelled as ellipses and ellipsoids in 2 and 3 dimensions. The original code was written in C (much to my tutors chagrin who wanted me to use FORTRAN).&lt;/p&gt;
+
+&lt;p&gt;For some reason, last weekend I though it would be a good idea to rewrite it Julia. So I did and it worked so much better (faster) than back in 1997. Maybe I’ll be able to finish the original aims of the dissertation, 25 years later!&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;liquidcrystalnematicphase&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;liquidcrystalnematicphase&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/liquidcrystalmontecarlo/nematic-phase.png&quot; /&gt;&lt;br /&gt;Figure 1: Nematic phase of partially aligned liquid crystals, modelled as ellipses.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;One of the properties of liquid crystals is that, at low enough temperatures and high enough pressures, they align with each other in much the same way they do on LCD displays when a voltage is applied. My simulations were able to recreate this effect (see Figure 1). They measured the density of the simulated material, which obviously increases the more the crystals align. I did notice that there wasn’t a direct measure of alignment… so why not invent one?&lt;/p&gt;
+
+&lt;p&gt;I needed a formula that I could sum pairwise over all the crystals (ellipses). Ideally the measure should be 0 if all the ellipses are totally unaligned and 1 if totally aligned. Taking two ellipses first, the obvious choice matching these criteria is the cosine of the angle between them, basically cosine similarity. This gives exactly 1 if ellipses are aligned and exactly 0 if they are perpendicular. The ellipses have a symmetry where they should also be measured as aligned if the angle is 180º. I this case the cosine is -1 when it should be 1. A simple way to achieve this is to take either the absolute value of the cosine or its square. This latter option has a nice symmetry to it. Averaging over the $n^2$ terms we have a first stab at an alignment formula, $A$:&lt;/p&gt;
+
+\[A = \frac{1}{n^2}\sum_{i,j = 1}^n cos^2(\theta_i-\theta_j)\]
+
+&lt;p&gt;Where $i$ an $j$ enumerate over the $n$ ellipses to be measured and $\theta$ is their respective orientation. To test my formula I generated different configurations and tested their alignment. If all the angles where the same then the alignment did indeed come out as exactly 1. However I realised that there is no way to make more than 2 ellipse totally perpendicular in 2 dimensions. They will always align somewhat with the first or the second. When there are more ellises the situation is worse.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;minumum-3-alignment&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;minumum-3-alignment&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/liquidcrystalmontecarlo/alignment3.png&quot; /&gt;&lt;br /&gt;Figure 2: Minimum alignment for 3 ellipses.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Obviously, the minimum posible alignment of 2 ellipses is when the angle between them is $\frac{\pi}{2}$ radians, orthogonal. After scratching my head for a while and running different tests, I realised that 3 ellipses is when the angle between them is exactly $\frac{\pi}{3}$ radians (see Figure 2).&lt;/p&gt;
+
+&lt;p&gt;A similar thing happens with larger numbers of particles where the minimum has then dividing the circle equally. This is obviously true for 2 ellipses and I can prove it for 3. I’m taking it to be the case for now.&lt;/p&gt;
+
+&lt;p&gt;After a bit of thinking the way to calculate this minimum, $M$, is to make the following sum:&lt;/p&gt;
+
+\[M = \frac{2}{n(n-1)}\sum_{k=1}^n (n-k)cos^2(\frac{k\pi}{n})\]
+
+&lt;p&gt;Where $\frac{k\pi}{n}$ is the angle of the kth ellipse and there are $(n-k)$ ellipses with that angular separation. We divide by the number of pairs counted. With a bit of help from the internet this is solvable and has a simple closed form. Using the identity:&lt;/p&gt;
+
+\[cos^2x = \frac{1+cos 2x}{2}\]
+
+&lt;p&gt;and the orthogonality of the cosine funtions we have:&lt;/p&gt;
+
+\[\begin{aligned} 
+M&amp;amp;= \frac{2}{n(n-1)}\sum_{k=1}^n (n-k)(1+cos \frac{2k\pi}{n}) \\
+&amp;amp;= \frac{2}{n(n-1)}\left(\sum_{k=1}^n (n-k) + n\sum_{k=1}^n cos \frac{2k\pi}{n} - \sum_{k=1}^n k \cdot cos \frac{2k\pi}{n}\right) \\
+&amp;amp;= \frac{2}{n(n-1)}\left(\frac{1}{2}(n - 1) n - n - \frac{-n}{2}\right) \\
+&amp;amp;= \frac{1}{n(n-1)}\left(n^2-n - 2n + n\right) \\
+&amp;amp;= \frac{1}{2}\left(\frac{n-2}{n-1}\right) \\
+\end{aligned}\]
+
+&lt;p&gt;Validate: $n=2 \implies M=0$, $n=3 \implies M=¼$, $n=4 \implies M=⅓$, etc.&lt;/p&gt;
+
+&lt;p&gt;Also: $\displaystyle \lim_{n \rightarrow \infty}M=½$ as required.&lt;/p&gt;
+
+&lt;p&gt;I wanted to factor out this minimum alignment bias from the calculation so that the alignment would always be in the range from 0 to 1. To do that we calculate the proportion between $1-M$ and $A-M$. So the new formula is:&lt;/p&gt;
+
+\[A&apos; = \frac{A-M}{1-M} = \frac{2 A (n - 1) - (n - 2)}{n}\]
+
+&lt;p&gt;I’ve tested this with different distributions of angles and it gives a reliable indicator of the alignment. The only thing is that the cosine squared makes it quite non-linear having a tendency to be closer to the extremes, 0 and 1. To counteract this an inverse straightens out the results for a smoother gradient, so&lt;/p&gt;
+
+\[A&apos;&apos; = 1 -\frac{2}{\pi}cos^{-1} \sqrt{A&apos;}\]
+
+&lt;p&gt;might give better results depending on the application.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 24 Aug 2024 19:30:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/a-measure-of-alignment</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/a-measure-of-alignment</guid>
+        
+        <category>physics</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>On not having a map</title>
+        <description>&lt;p&gt;&lt;label for=&quot;map-grid&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;map-grid&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/having-a-map/map_grid.png&quot; /&gt;&lt;br /&gt;Dora and Boots are on one side of an island and they want to get to the other side.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Dora the Exploradora and her monkey friend Boots are on a mission. They are on one side of a magical island and they need to get to the other.&lt;/p&gt;
+
+&lt;p&gt;She gets out her trusty map from her purple rucksack and sees that there are no roads or paths so she carefully plans the very best route she can with the information she has, avoiding the scary dark forest valley and skirting the rocky mountains. On the way they are met with unexpected obstacles: gullies, fallen trees and riddling trolls. Undeterred and with a little of our help, they finally get to their destination. We did it! We did it!&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/map_planned.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Some time later, Diego (and Baby Jaguar, presumably) are faced with the same challenge. Unfortunately it’s now really foggy. (“Niebla”, you say it!) Poor chap doesn’t have a map and only has a compass to guide him roughly in the right direction. Diego looks around and bravely heads along the easiest route he can see, roughly east, feeling his way across the island the best he can, avoiding only the obstacles he can see around him. He makes it to the other side.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/map_diego.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Dora did great, she feels lucky she had her map! However, Diego made it too. They wonder how much having the map helped. Now that they’re across the island they look back at the route they took. With the benefit of hindsight they can see that perhaps the route she took based on the map wasn’t the best one and, in fact, it might have been better to go a different way.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/map_hindsight.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;It turns out that in this case Diego actually did better than Dora, even without the map. In fact he’s not far from the best route in hindsight.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/map_all.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;By not sticking to a predefined plan he was able to navigate around those fallen trees and even some of those pesky trolls.&lt;/p&gt;
+
+&lt;p&gt;Is this true in general or just a fluke. Let’s try and find out.&lt;/p&gt;
+
+&lt;h2 id=&quot;so-how-much-did-the-map-help&quot;&gt;So how much did the map help?&lt;/h2&gt;
+
+&lt;p&gt;To answer this question I had an idea for a toy model to compare Dora’s and Diego’s adventures and did a bit of programming to try it out. The images above are actual screenshots. Here’s the setup.&lt;/p&gt;
+
+&lt;p&gt;The island is a grid. Getting from one point on the grid to an adjacent point has a difficulty representing the lie of the land (the difficulty of movement). One grid is set up like a map, an idealised representation of the contours of valleys and mountains and a few of the largest features. Another grid represents the actual terrain, with additional detail of smaller obstacles which are not marked on the map. &lt;label for=&quot;ruggedness&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;ruggedness&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;The use of the word “ruggedness” here may seem a bit awkward but there’s a reason to think about it this way. We can draw on some sophisticated resources from science to crystallise this idea and give it real meaning. &lt;/span&gt; The &lt;em&gt;ruggedness&lt;/em&gt; is applied randomly but its magnitude is parametrisable.&lt;/p&gt;
+
+&lt;p&gt;For different levels of ruggedness, I ran a shortest path finding algorithm across the map (Dora’s planned route) and across the terrain using step sizes of varying lengths corresponding to different amounts of fog for Diego. &lt;em&gt;Visibility&lt;/em&gt; is the second parameter. In every case calculating the total difficulty over the whole journey.&lt;/p&gt;
+
+&lt;p&gt;Since this is a numerical model we can get a feeling for what’s happening by looking at the results as the parameters (&lt;em&gt;ruggedness&lt;/em&gt; and &lt;em&gt;visibility&lt;/em&gt;) change. I ran the model thousands of times to get a distribution of results for different parameter settings.&lt;/p&gt;
+
+&lt;h2 id=&quot;diego-vs-dora&quot;&gt;Diego vs Dora&lt;/h2&gt;
+
+&lt;p&gt;First let’s see how Diego’s and Dora’s experience compares in general as the ruggedness of the terrain changes.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;This graph shows the difficulty of the route followed as the ruggedness of the terrain increases. The width of the ribbon represents the variability of the results over thousands of runs of the model.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/dora vs diego.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;As you might guess, Dora did well when the map was highly accurate (the far left of the graph), but, unfortunately for her, any additional ruggedness of the terrain which was not marked on the map made her experience much more difficult than expected when following the route she planned in advance.&lt;/p&gt;
+
+&lt;p&gt;Diego on the other hand didn’t stick to a predefined route so sometimes was able to adapt to obstacles not on the map. As the ruggedness of the terrain increases past a certain point he consistently does better than Dora.&lt;/p&gt;
+
+&lt;p&gt;This is the first observation: &lt;strong&gt;there is a trade-off between following a plan and adapting as you go and it depends (at least) on the &lt;em&gt;ruggedness&lt;/em&gt; of your terrain&lt;/strong&gt;. There is a book in that statement&lt;label for=&quot;plan-vs-muddle&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;plan-vs-muddle&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Just as a teaser, Simon Wardley talks at great length about how &lt;a href=&quot;https://blog.gardeviance.org/2015/06/why-agile-lean-and-six-sigma-must-die.html&quot;&gt;novelty generates uncertainty&lt;/a&gt;, leading to a rugged terrain while mature components can be planned more confidently. Bent Flyvbjerg has researched &lt;a href=&quot;https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4924942&quot;&gt;uniqueness bias&lt;/a&gt; and a tendency for us to believe that our situation is different from any other, &lt;em&gt;over&lt;/em&gt;estimating the uncertainty. Or Chris Rodgers’ Wiggly &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;A second observation here, often overlooked, is predictability. This can be interpreted on the graph as the width of the ribbon. A narrow ribbon means low variability which corresponds to greater predictability. Again Dora’s progress is very predictable when the map matches reality but that predictability decreases rapidly as reality bites. Interestingly, &lt;strong&gt;Diego’s progress is much more predictable than Dora’s as the terrain becomes more and more unpredictable; the variability in his routes is, in fact, fairly constant&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;More predictability means being able to have greater confidence in the final outcome. In many projects involving multiple external stakeholders this predictability is actually more important than the details of any plan itself. Read that again.&lt;/p&gt;
+
+&lt;p&gt;Third observation: &lt;strong&gt;Past a certain point of ruggedness, not only does Diego consistently do better than Dora, he also tends to pick a path close to the best route in hindsight&lt;/strong&gt;. Let’s see this on a graph.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Although rarely finding the absolute best route, Diego’s route deviates in a relatively small and consistent way.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/diego vs hindsight.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Intuition holds in the sense that the best route also gets more and more difficult (and variable) as the ruggedness of the actual terrain increases. Diego hardly ever finds perfection but, interestingly, his experience tracks surprisingly closely the best possible one. Again we can see that Diego’s strategy is more predictable than Dora’s as he can “think on his feet” and avoid any trouble encountered on the way.&lt;/p&gt;
+
+&lt;h2 id=&quot;so-how-much-does-doras-experience-deviate-from-her-best-made-plans&quot;&gt;So how much does Dora’s experience deviate from her best made plans?&lt;/h2&gt;
+
+&lt;p&gt;The relationship between the plan and reality has become a cliché. As  Field Marshal Helmuth von Moltke is &lt;a href=&quot;https://quoteinvestigator.com/2021/05/04/no-plan/&quot;&gt;said&lt;/a&gt; to have said:&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;plans-hit&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;plans-hit&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;Often shorted to “&lt;em&gt;No plan survives first contact with the enemy.&lt;/em&gt;”. Also compare with Mike Tyson’s rather more &lt;a href=&quot;https://quoteinvestigator.com/2021/08/25/plans-hit/&quot;&gt;pithy&lt;/a&gt; version. I’m not a big fan of quotes related to violence but they do seem to abound in this context. &lt;/span&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“&lt;em&gt;No plan of operations extends with any certainty beyond the first encounter with the main enemy forces.&lt;/em&gt;”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Can we see this in our little model? The answer is yes and very strikingly.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Dora made the very best plan with the information available to her. Nonetheless she typically ends up deviating a lot from the plan.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/dora plan vs reality.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;When the map perfectly matches the terrain then her experience is as expected but as the map fails to show the detail, the difficulty and variability of her experience increases enormously. Compare this to Diego’s experience compared to the very best route. Field Marshal Helmuth von Moltke was definitely right.&lt;/p&gt;
+
+&lt;p&gt;There is another maxim which is usually &lt;a href=&quot;https://quoteinvestigator.com/2017/11/18/planning/&quot;&gt;attributed&lt;/a&gt; to Eisenhower:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“&lt;em&gt;Plans are worthless, but planning is everything.&lt;/em&gt;”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The strategies used by Dora and Diego are two extremes but they can be combined. We can plan and we can adapt too. What happens if we lift the fog on Diego to allow him to “look ahead” with greater visibility to the future.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Diego’s experience improves as the fog lifts and he has greater visibility of the future.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/diego fog.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;If we give Diego predictive superpowers he gets closer and closer to the best possible route. Perfect prediction is equivalent to 20/20 hindsight.&lt;/p&gt;
+
+&lt;p&gt;If we believe Winston Churchill who said:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“&lt;em&gt;…the best generals are those who arrive at the results of planning without being tied to plans.&lt;/em&gt;”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Then Diego would have made a pretty good general!&lt;/p&gt;
+
+&lt;h1 id=&quot;a-model-is-just-a-model&quot;&gt;A model is just a model&lt;/h1&gt;
+
+&lt;p&gt;Erica Thomson, in her book &lt;em&gt;Escape from Model Land: How Mathematical Models Can Lead Us Astray and What We Can Do About It (2022)&lt;/em&gt; wrote:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“&lt;em&gt;Models are not simple tools that we can take up, use and put down again. The process of generating a model changes the way that we think about a situation, encourages rationalisation and storytelling, strengthens some concepts and weakens others.&lt;/em&gt;”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is a model with many implicit assumptions, for example, there are no existing paths or roads on the map. Assuming these were clear of obstacles then these would potentially give Dora a much more significant advantage. What roads would do in effect is to reduce uncertainty making her strategy more effective. Likewise dead ends like impassable cliffs or rivers are unlikely. Also there is some flexibility in the destination, it’s not a specific location. If it were then Diego would have a more difficult time finding it because he wouldn’t be able to “go roughly east”. There is some scope here for further study. Are there strategies that Diego could follow to get to a specific spot in a reliable way?&lt;/p&gt;
+
+&lt;p&gt;There are no units on the axes. That’s because it’s not clear to me how those units would map to the real world anyway. By removing the units I’m saying that I don’t know&lt;label for=&quot;carveth&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;carveth&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;“&lt;em&gt;It is better to be vaguely right than exactly wrong.&lt;/em&gt;” ― Carveth Read, Logic: Deductive and Inductive (1920) &lt;/span&gt;. I could attempt to build them in but then it would be a different model.&lt;/p&gt;
+
+&lt;p&gt;In fact, where did the the parameters of &lt;em&gt;ruggedness&lt;/em&gt; and &lt;em&gt;visibility&lt;/em&gt; even come from? Well, they came from my intuition and I had to play around with the model to see if my intuition was valid or not. It turned out that it was but it doesn’t preclude other parametrisations and observations.&lt;/p&gt;
+
+&lt;p&gt;As it stand, it does do two things, however. Firstly, it reifies my intuition. It’s not just some fuzzy idea in my head, or me being persuaded by appeal to authority. It’s a numerical model that has built-in assumptions and a story to tell. You might have another.&lt;/p&gt;
+
+&lt;p&gt;Secondly, it uses data to demonstrate the results, not hand wavy suppositions. Assumptions in, observations of data out. Both ends require a certain leap of faith but at least it’s an honest, transparent and verifiable one. That’s one way to escape Model Land.&lt;/p&gt;
+
+&lt;p&gt;It took me a couple of full days to create this model and another couple to write up the results. My intuition is stronger now and I have a model which generates interpretable data. When someone says Alfred Korzybski’s phrase “&lt;em&gt;the map is not the terrain&lt;/em&gt;” again, I will think back to this model. The next time someone asks me why we need a plan, I’ll have an honest answer.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 22 Aug 2024 21:30:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/on-not-having-a-map</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/on-not-having-a-map</guid>
+        
+        <category>models</category>
+        
+        <category>map-is-not-terrain</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Flow and Cognitive Load</title>
+        <description>&lt;p&gt;“Maximise flow by minimising cognitive load”. Wait a minute…&lt;/p&gt;
+
+&lt;p&gt;I’ve had a bad back recently and have been scrolling LinkedIn more than I usually do. One thing I noticed was the words “flow” and “cognitive load” coming up a lot, quite often together. Now I’ve heard three people in real life saying almost the exact phrase above and I think it warrants a bit of extra thought.&lt;/p&gt;
+
+&lt;p&gt;I guess the first whiff of something fishy is that it smacks a bit of our old friend and adversary Mr Frederick Winslow Taylor. The suggestion of optimisation and words like “cognitive”, sound quite sciency, don’t they? Scientific management has been around a long time. It tends to get sidelined during times of boom to be wheeled out again during the bust. We are no longer in a boom cycle so fair enough but the deserved concern around its dehumanising aspect still remains and we need to be careful. (Also, to me, cognitive load and flow seem to have something vaguely reminiscent of time and motion. Probably my imagination.)&lt;/p&gt;
+
+&lt;p&gt;There’s also something fishy about the use of the phrase “cognitive load” itself. Are we talking about an individual’s capacity for learning the skills required to do the work or the whole team’s ability to assimilate that knowledge as a group? It seems quite confused. In either case, there is no better formula to demotivate a skilled person than to remove the need for their skill, especially if you say it’s for their own good. I hope that what is really being meant by “cognitive load” is to minimise the bureaucracy, the burdensome tools, the handoff coordination, the form filling, the approval seeking, all the stuff that really gets in the way of flow.&lt;/p&gt;
+
+&lt;p&gt;And talking of flow… secondly, and obviously, flow means so many things. It could just mean not being blocked. It could refer to a simple experience like an easy payment process. It could imply a certain grace and ease such as the flow of a passage of text or a piece of music while at the same time, and less elegantly, it could mean a slicker pipe through which material can be discharged quickly.&lt;/p&gt;
+
+&lt;p&gt;Most interestingly to me, “flow” could mean a mental disposition such as the one conceived by Mihály Csíkszentmihályi where work is energising, engaging and enjoyable. Everyone from programmers to PowerPoint wranglers know and enjoy that feeling. However Csíkszentmihályi proposed that the most productive and satisfying work wasn’t done by minimising the difficulty of the task, but by balancing the difficulty with the skill of the person or people involved. If that were the case we don’t want to minimise cognitive load but to balance it.&lt;/p&gt;
+
+&lt;p&gt;Whatever the case, whatever maximising fast flow means to you and whatever minimising cognitive load means to you, we’ve been saying for years that it’s velocity, not speed that’s important, that is direction and purpose over how fast you go. We’ve also said that we need skilled and motivated employees fully engaged in the work they are doing. Maximising flow and minimising cognitive load sounds like it could be a recipe for the best possible feature factory.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 06 Feb 2024 13:30:00 +0100</pubDate>
+        <link>https://johnhearn.github.io//articles/flow-and-cognitive-load</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/flow-and-cognitive-load</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>A Little Every Day</title>
+        <description>&lt;p&gt;People have given me a lot of advise over the years. “Do what you love.” Ha ha. “Measure twice, cut once.” Well, that would depend, wouldn’t it.&lt;/p&gt;
+
+&lt;p&gt;In the end there are only a couple of phrases which stick with me. One was “Always run to something, not from something.” Run to a new job, not from an old one. Run to safety, not from a fire. Maybe I’ll write about why that helps sometime.&lt;/p&gt;
+
+&lt;p&gt;Another piece of advice which I still apply is “Do a bit every day.” Let me explain.&lt;/p&gt;
+
+&lt;p&gt;This was given to me by a friend of my parents when I had a young family and I was renovating our home. The size of the task ahead was daunting and time was in short supply because nappies needed changing, bread needed winning and the basic necessities of life needed attending to. It was overwhelming.&lt;/p&gt;
+
+&lt;p&gt;I tried planning the work and sticking to the plan but I always slipped behind which was stressful in itself, just adding to the problem. I suffered and the family suffered.&lt;/p&gt;
+
+&lt;p&gt;Then I tried to “do one job every day” and it changed everything. The “one job”, Joe told me, needn’t be big, in fact it could be as simple as placing a single tile or laying a single floorboard. Sometimes the job was just 5 minutes when everyone else was in bed. No pressure to finish, no schedule to keep to.&lt;/p&gt;
+
+&lt;p&gt;The amazing thing was that as the days passed, stuff got done. As if by magic walls were tiled and floors were laid. And the stress was gone.&lt;/p&gt;
+
+&lt;p&gt;I put the success of this “technique” down to two things. First, sometimes just getting started is the hardest part. After that the job becomes easier than you thought and it’s done before you know it. The other factor is that as the days pass you maintain some momentum. A couple of times I stopped doing a job everyday and it became harder to get that momentum back. Each and every day something gets done and you move closer to your goal.&lt;/p&gt;
+
+&lt;p&gt;When the house was finally complete it turned out to be an immensely rewarding experience.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 22 Feb 2023 10:30:00 +0100</pubDate>
+        <link>https://johnhearn.github.io//articles/a-little-every-day</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/a-little-every-day</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Inverse Markov</title>
+        <description>&lt;p&gt;Markov chains are a fantastic tool for modelling how stuff moves about over a network of possible states. Think about them as probabilistic state machines. Its uses are widespread, from Google’s &lt;a href=&quot;https://saattrupdan.github.io/2020-08-07-pagerank/&quot;&gt;PageRank algorithm&lt;/a&gt; which models the way users move about the internet to analysing the ways players move around a &lt;a href=&quot;http://www.bewersdorff-online.de/amonopoly/&quot;&gt;Monopoly board&lt;/a&gt;. We can also use it as a simple model of workload in a distributed system or team.&lt;/p&gt;
+
+&lt;p&gt;In my case I had some economic data and I wanted to see if I could make a fortune finding a trend in the market&lt;label for=&quot;notrich&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;notrich&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;Needless to say the result was negative and my wealth has increased only in terms of knowledge. &lt;/span&gt; so I found myself wanting to determine a Markov chain model from real-world data.&lt;/p&gt;
+
+&lt;p&gt;It turns out that this topic was studied extensively in the last century&lt;sup id=&quot;fnref:Lee1965&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:Lee1965&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;’&lt;sup id=&quot;fnref:Lee1968&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:Lee1968&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; and, although simple and well understood, it took me a while to get my head around it. I’m writing it up here to help me remember.&lt;/p&gt;
+
+&lt;p&gt;For the background of the maths behind Markov chains in general there are numerous resources &lt;a href=&quot;https://www.google.com/search?q=markov+chain&quot;&gt;online&lt;/a&gt;. Basically we repeatedly apply a transformation to the current state to turn it into a new state. We then apply the same transformation to the new state to create the next state and so on. Remarkably, no matter which state we start in, while conditions stay constant the system &lt;em&gt;always&lt;/em&gt; converges to the same steady state (plus a bit of noise). We can use this fact to work backwards from observations of the sequence of states and infer the model that would have generated them.&lt;/p&gt;
+
+&lt;p&gt;Say we have a state represented by a vector $\nu$ and a transformation represented by a matrix $P$. Based on a sequence of noisy observations of the state, $\left(\nu_1, \nu_2…\nu_n\right)$, what is our best estimate of $P$?&lt;/p&gt;
+
+&lt;p&gt;We’ll need plenty of observations so let’s put them together into the same matrix: \(V = \left[\nu_1, \nu_2...\nu_{n-1}\right]\)&lt;/p&gt;
+
+&lt;p&gt;Each application of $P$ takes us to the subsequent state so we have \(VP = \left[\nu_2, \nu_3...\nu_n\right] = U\)&lt;/p&gt;
+
+&lt;p&gt;We end up with an equation involving $\nu_1, \nu_2…\nu_n$.&lt;/p&gt;
+
+&lt;p&gt;Since $P$ is a square matrix we will need $n$ to be at least equal to the number of states. If we have more then even better. Using the &lt;a href=&quot;https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse&quot;&gt;&lt;em&gt;pseudo-inverse&lt;/em&gt;&lt;/a&gt; of the states we can get the &lt;a href=&quot;https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse#Linear_least-squares&quot;&gt;least squares&lt;/a&gt; best estimate for P.
+\(\hat P = V^+ \times U\)&lt;/p&gt;
+
+&lt;p&gt;Where the $^+$ symbol represents the generalised inverse which in fact is easy enough to calculate, $V^+ = (V’V)^{-1}V’$.&lt;/p&gt;
+
+&lt;p&gt;In Julia, assuming we already have the state data in the variable $\nu$, this becomes&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ν&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ν&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;V⁺&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inv&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&apos;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Pest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V⁺&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This works fairly well but it has problem. The peudo-inverse knows nothing of the contraint on the probabilities which must all be positive. Various workarounds exist but in the end we end up having to fiddle with the numbers to get them all positive in the optimal way.&lt;/p&gt;
+
+&lt;p&gt;Luckily for us, optimisation algorithms for situations like these have also been studied extensively. Julia’s &lt;a href=&quot;https://jump.dev/&quot;&gt;JuMP eco-system&lt;/a&gt;, for instance, provides tools which eat these kinds problems for breakfast.&lt;/p&gt;
+
+&lt;p&gt;We are optimising for the minimum square difference between $U$ and $VP$ where the entries in $P$, always positive, are the variables we are trying to determine, $p_{ij} &amp;gt; 0 \space \forall i,j$&lt;/p&gt;
+
+&lt;p&gt;Specifically, we are finding values for $p_{ij}$ with the objective of minimising
+\((U-VP)^2 = (U-VP)&apos; \cdot (U-VP)\)&lt;/p&gt;
+
+&lt;p&gt;We also have the condition that the entries must be positive and the constraint that the rows must sum to 1, $\sum_{j}{p_{ij}} = 1$.&lt;/p&gt;
+
+&lt;p&gt;Assuming $r$ is the number of states, in JuMP we can define the problem like this:&lt;/p&gt;
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Ipopt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Optimizer&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@variable&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@objective&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Min&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@constraint&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;optimize!&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Pest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reshape&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With this code I’ve been able to recover a good approximation to the transition matrix in testing, the approximation becomming better with increasing sample size.&lt;/p&gt;
+
+&lt;p&gt;We could give the algorithm an initial hint based on the pseudo-inverse described above but in my experiments the optimisation algorithm is fast enough to not require it.&lt;/p&gt;
+
+&lt;p&gt;The method could be improved by quantifying the uncertainty in the results. On way would be to batch observations and look at the distribution of results. Another might be to apply a bayesian approach using a Dirichlet multinomial as the prior and updating with the observations. A problem for another time.&lt;/p&gt;
+
+&lt;p&gt;References&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:Lee1965&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;&lt;sup&gt;&lt;sub&gt;Lee, T. C., Judge, George G., Takayama, T., 1965. On Estimating the Transition Probabilities of a Markov Process. American Journal of Agricultural Economics 47, 742–762. &lt;a href=&quot;https://doi.org/10.2307/1236285&quot;&gt;https://doi.org/10.2307/1236285&lt;/a&gt;&lt;/sub&gt;&lt;/sup&gt; &lt;a href=&quot;#fnref:Lee1965&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:Lee1968&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;&lt;sup&gt;&lt;sub&gt;Lee, T. C., Judge, George G., Zellner, A., 1968. Maximum Likelihood and Bayesian Estimation of Transition Probabilities. Journal of the American Statistical Association 63, 1162–1179. &lt;a href=&quot;https://doi.org/10.1080/01621459.1968.10480918&quot;&gt;https://doi.org/10.1080/01621459.1968.10480918&lt;/a&gt;&lt;/sub&gt;&lt;/sup&gt; &lt;a href=&quot;#fnref:Lee1968&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 29 Oct 2022 08:46:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/inverse-markov</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/inverse-markov</guid>
+        
+        <category>estimation</category>
+        
+        <category>modelling</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Accelerate and Farmers&apos; Gates</title>
+        <description>&lt;p&gt;&lt;label for=&quot;accelerate-book&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;accelerate-book&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/accelerate-book.jpg&quot; /&gt;&lt;br /&gt;&lt;a href=&quot;https://www.goodreads.com/book/show/35747076-accelerate&quot;&gt;Accelerate: Building and Scaling High-Performing Technology Organizations&lt;/a&gt; by Nicole Forsgren, Jez Humble, Gene Kim&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;farm-gate&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;farm-gate&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;https://upload.wikimedia.org/wikipedia/commons/b/bd/Farm_gate_-_geograph.org.uk_-_538713.jpg&quot; /&gt;&lt;br /&gt;The kind of gate I’m talking about.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;In the rural community where I grew up there was a common aphorism: “&lt;em&gt;A good farmer has good gates&lt;/em&gt;” and generations of experience showed that this is a pretty good rule of thumb.&lt;/p&gt;
+
+&lt;p&gt;If you took a group of researchers and surveyed the local farmers’ general habits, including how well maintained their gates are, do you think they could infer a relation? Could they even &lt;strong&gt;predict&lt;/strong&gt; which were the better farmers based on their gates? Yes they probably could, because &lt;em&gt;a good farmer has good gates&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the jargon, this is &lt;em&gt;predictive inference&lt;/em&gt;, and it is the kind of inference that &lt;em&gt;Accelerate&lt;/em&gt; describes&lt;label for=&quot;chapter12&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;chapter12&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;In chapter 12 they go into some detail. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Does having good gates &lt;em&gt;make&lt;/em&gt; you a good farmer? Of course not. The relation between gates and the type of farmer is &lt;strong&gt;not causal&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Can a farmer become a better farmer through better maintenance of his gates? Hmm. &lt;em&gt;Accelerate&lt;/em&gt; might say that “good gates &lt;em&gt;drive&lt;/em&gt; good farming”. IMO the word “drive” is bearing quite a lot of weight to make that statement.&lt;/p&gt;
+
+&lt;p&gt;The unfortunate situation is that predictive inference explains nothing. It may validate a hypothesis based on a theory but the scientific literature is littered with such validations that later turned out to be false&lt;label for=&quot;phack&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;phack&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Try &lt;a href=&quot;https://projects.fivethirtyeight.com/p-hacking/&quot;&gt;this website&lt;/a&gt; to demonstrate your political point. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;For explanation you need, at least, &lt;em&gt;causal inference&lt;/em&gt; and that is much much harder. Causal inference requires a causal statistical model which is notoriously hard to get right.&lt;/p&gt;
+
+&lt;p&gt;My feeling is that some of the key indicators in &lt;em&gt;Accelerate&lt;/em&gt; really are causal but others are just the equivalent of good gates.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 08 Jul 2022 20:01:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/accelerate-and-farmers-gates</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/accelerate-and-farmers-gates</guid>
+        
+        <category>probability</category>
+        
+        
+      </item>
+    
   </channel>
 </rss>
