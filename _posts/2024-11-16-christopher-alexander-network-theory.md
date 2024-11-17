@@ -27,21 +27,25 @@ In this work, the clusters of variables Alexander calls "_diagrams_" (which he w
 
 What does modern network science tell us about this? To answer this we can use the example described in depth at the end of NotSoF.
 
-{% marginnote assets/images/alexander/village.jpg "The example from the book NotSoF which in turn is taken from the study \"_The De­termination of Components for an Indian Village_\" - Conference on Design Method (Oxford : Pergamon, 1963). The layout is force directed, meaning that related nodes are attracted toward each other and unconnected nodes are pushed apart. Sometimes clusters appear naturally but in this case none are easily identified. "%}
+{% marginnote assets/images/alexander/village.jpg "The example from the book NotSoF which in turn is taken from the study \"_The De­termination of Components for an Indian Village_\" - Conference on Design Method (Oxford : Pergamon, 1963). The layout is force directed, meaning that related nodes are attracted toward each other and unconnected nodes are pushed apart. Sometimes clusters appear naturally but in this case none are easily identified. The graph is interactive, feel free to try and pull the clusters apart yourself. "%}
 
-![Network from "The De­termination of Components for an Indian Village"](/assets/images/alexander/village.jpg){:width="60%"}
+<iframe width="55%" height="400" frameborder="0"
+  src="https://observablehq.com/embed/e954fd2bd1ba27cb@219?cells=chart"></iframe>
 
-This is the full and extensive design problem that Alexander studies. Although he was able to group this into 12 hierarchical clusters, the real independence of those clusters is questionable. Force directed layouts such as this one sometimes identify underlying structure but not in this case. Even so, visually it might be deceiving so we can apply modern summary statistics to this network and see the difficulty in clustering this network at all.
+This is the full and extensive design problem that Alexander studied. Although he was able to group this into 12 hierarchical clusters (represented by the colours off the nodes), the nature of the _independence_ of those clusters is far from clear. Force directed layouts such as this one sometimes identify underlying structure but not in this case. Even so, visually it might be deceiving so we can apply modern summary statistics to this network and see the difficulty in clustering this network at all.
 
 <br/>
 
+{:style="width:70%"}
 | **Average degree**    | ~20    | Each node, on average, interacts with 20 other nodes. |
 | **Edge density**  | 0.14 | About 1 in 7 of all possible interactions are present. This is a dense graph.|
-| **[Average Path Length](https://en.wikipedia.org/wiki/Average_path_length)** | 2.0 | On average there are just 2 hops between each node. |
-| **[Global&nbsp;clustering&nbsp;coefficient](https://en.wikipedia.org/wiki/Clustering_coefficient#Global_clustering_coefficient)** | 0.06 | Higher values mean better clusters. This is a very low value. |
-| **[Algebraic connectivity](https://en.wikipedia.org/wiki/Algebraic_connectivity)**    | >6 | By comparison tree-like graphs, scale-free and small-world networks have this typically less then 1.0. |
+| **[Average&nbsp;Path&nbsp;Length](https://en.wikipedia.org/wiki/Average_path_length)** | 2.0 | On average there are just 2 hops between each node. |
+| **[Global&nbsp;clustering coefficient](https://en.wikipedia.org/wiki/Clustering_coefficient#Global_clustering_coefficient)** | 0.06 | Higher values mean better clusters. This is a very low value. |
+| **[Algebraic connectivity](https://en.wikipedia.org/wiki/Algebraic_connectivity)**    | >6 | Very high. By comparison tree-like graphs, scale-free and small-world networks have this typically less then 1.0. |
 
-These metrics all point at this being a highly connected network without any clear clusters or community structure. It can be validated directly that there are no leaves (nodes connected to only one parent) nor even any nodes connecting to only a subset of those of a neighbour. This means that no two nodes can be contracted without creating new dependencies. Although the _diagrams_ suggested by Alexander in the book do, by some measure, minimise the links between clusters, the result is still very far from the tree-like structure that is espoused. 
+<br/>
+
+These metrics all point at this being a highly connected network without any clear clusters or community structure. Although the _diagrams_ suggested by Alexander in the book do, to some measure, minimise the links between clusters, the result is still very far from the tree-like structure that is espoused.
 
 Alexander realised this, of course, and the beginnings of a perspective shift are clear in his essay the very next year "_A City is Not a Tree (1965)_", where he claimed that cities and urban structures cannot be fully explained by hierarchical models or purely tree-like networks. He argued that successful cities are not trees but are "semi-lattices" — networks with overlapping connections that resemble the organic, intertwined complexity of real-life. Here, Alexander is reflecting on and challenging his own reductionist assumptions, positing that cities function best with fluid, overlapping, and non-hierarchical connections, allowing diverse elements to interrelate dynamically. 
 
@@ -73,5 +77,5 @@ I am more optimistic. I wonder if we will be able to complete the circle and det
 
 A nice example of a similar circularity has happened in chess. Many believed that computers could not play chess due to the unfathomable number of possible moves while others believed that even if they did, the game would become boring and predictable. Nonetheless modern engines have far surpassed humans and are now helping professional players to develop new intuitions. Rather than mechanising the game, modern encounters are quick to leave theory behind and explore more novel openings than they did before the engines existed.
 
-The evolution of Christopher Alexander’s design philosophy also has an interesting analogy with the modern tension between systems thinking and complexity theory. When viewed through the lens of network theory we can place his journey in a firm conceptual framework and show his battles in a modern light. He moved from clustering design variables to a more holistic, fluid approach. This is very similar to the comparison by some of traditional and structural systems thinking approaches (such as lines and circles and systems dynamics) to more fluid approaches from Complexity Theory. Bearing in mind Alexander's philosophical journey, I am eager to see the evolution of both of these subjects.
+The evolution of Christopher Alexander’s design philosophy also has an interesting analogy with the modern tension between systems thinking and complexity theory. When viewed through the lens of network theory we can place his journey in a firm conceptual framework and show his battles in a modern light. He moved from clustering design variables to a more holistic, fluid approach. This is very similar to the comparison by some of traditional and structural systems thinking approaches (such as lines and circles and systems dynamics) to more fluid approaches from Complexity Theory. Bearing in mind Alexander's philosophical journey, I am eager to see the evolution and synthesis of both of these subjects.
 
