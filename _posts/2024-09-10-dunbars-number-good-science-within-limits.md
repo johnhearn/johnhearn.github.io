@@ -18,6 +18,7 @@ Since working with real data and reading the work of different research groups i
 
 ## Fitting the data
 
+> On a double log-log plot, my grandmother fits on a straight line - [Fritz Houtermans](https://en.wikiquote.org/wiki/Fritz_Houtermans)
 
 {% marginnote "rayner-1985" "Much of the mathematics of this section can be found in Rayner, J. M. V. ‘Linear Relations in Biomechanics: The Statistics of Scaling Functions’. Journal of Zoology 206, no. 3 (July 1985): 415–39. [10.1111/j.1469-7998.1985.tb05668.x](https://doi.org/10.1111/j.1469-7998.1985.tb05668.x)." %}
 
