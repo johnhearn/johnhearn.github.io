@@ -8,6 +8,7 @@ modified_time: '2017-08-04T20:36:31.172+02:00'
 thumbnail: https://2.bp.blogspot.com/-t34_2_GX_zw/WS25HAVgWrI/AAAAAAAANVs/hZZ5k2OoRq8Vf9vNIcRlSw1GWu5wWwbHgCLcB/s72-c/uno%2Bsimulation.png
 blogger_id: tag:blogger.com,1999:blog-525051364647796957.post-7278705496644260718
 blogger_orig_url: http://john-hearn.blogspot.com/2017/05/notes-on-machine-learning-playing-uno.html
+category: notes-on-uno
 ---
 
 I was playing [Uno](https://en.wikipedia.org/wiki/Uno_%28card_game%29) with my daughter last weekend and wondering about the best strategies. I had also been looking into [TensorFlow](https://www.tensorflow.org/) and, while the ideas and maths is relatively easy, a lack of practical knowledge about machine learning in general was making the reading difficult. So, as so often happens, two became one and I set about using Uno to learn about machine learning using TDD along the way.
@@ -126,7 +127,7 @@ $$\textbf{z} = \textbf{w} \cdot \textbf{x} + \textbf{b}$$
 
 Where **z** is the output list (as a vector of doubles) and **x** is the input list, also a vector. The input list is also known as a feature vector because it represents the features or characteristics of some _thing_ to be classified by the perceptron. The parameters **w** (another vector) and **b** (a scalar) control the weighting factors and bias (offsets from 0) of the perceptron model respectively. It looks like this:
 
-[![](https://i.stack.imgur.com/VqOpE.jpg)](https://i.stack.imgur.com/VqOpE.jpg)
+![Perceptron](/assets/images/uno/perceptron.jpg)
 
 In our case **x** is a vector representing a potential card to be played and the output vector will have one element which gives us a number indicating the strength of that card. Using this model we'll play the card with the highest strength. It should be possible to model both the offensive and defensive strategies with suitable choices of the parameters.
 
@@ -297,7 +298,7 @@ DefensivePlayer 0  22(1)
 RandomPlayer 2     22(1)
 ```
 
-![Screenshot](https://2.bp.blogspot.com/-t34_2_GX_zw/WS25HAVgWrI/AAAAAAAANVs/hZZ5k2OoRq8Vf9vNIcRlSw1GWu5wWwbHgCLcB/s1600/uno%2Bsimulation.png)
+![Screenshot](/assets/images/uno/uno%20simulation.png)
 
 Well we haven't made it worse, but we haven't made it a whole lot better either. It may or may not be worth tuning the new perceptron but time is running out.
 

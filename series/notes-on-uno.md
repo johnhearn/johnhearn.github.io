@@ -1,7 +1,7 @@
 ---
-title: Notes on TDD series
+title: Notes on Uno series
 layout: page
-category: notes-on-tdd
+category: notes-on-uno
 ---
 
 {{ content }}

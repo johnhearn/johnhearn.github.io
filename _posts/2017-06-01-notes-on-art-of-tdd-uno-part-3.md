@@ -10,7 +10,7 @@ tags:
 modified_time: '2017-06-04T10:47:10.577+02:00'
 blogger_id: tag:blogger.com,1999:blog-525051364647796957.post-8169991096469027570
 blogger_orig_url: http://john-hearn.blogspot.com/2017/06/notes-on-art-of-tdd-uno-part-3.html
-category: notes-on-tdd
+category: notes-on-uno
 ---
 
 [Next day - continued from [here](notes-on-art-of-tdd-uno-part-2.html)]

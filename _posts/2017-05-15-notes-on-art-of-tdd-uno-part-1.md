@@ -10,7 +10,7 @@ tags:
 modified_time: '2017-05-15T13:25:23.410+02:00'
 blogger_id: tag:blogger.com,1999:blog-525051364647796957.post-1955770504499029972
 blogger_orig_url: http://john-hearn.blogspot.com/2017/05/notes-on-art-of-tdd-uno-part-1.html
-category: notes-on-tdd
+category: notes-on-uno
 ---
 
 Playing Uno with my daughter the other day I was wondering about the best strategies. I thought I'd build a Uno game not only to answer that question but also (and mainly) to improve my OO and TDD skills. These notes were taken during the process of creating the game model using TDD and contain not only good practice but also the mistakes. Some of the mistakes have been labelled as such in the notes. The exercise has taught me a lot. The post became quite long so it's split into various parts. I'll try and summarise the lessons learn in the final installment. All the code in this blog is available on GitHub [here](https://github.com/johnhearn/uno). Anyway this is how I started....
