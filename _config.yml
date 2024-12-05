@@ -37,3 +37,8 @@ linkedin_username: john-hearn-599762b
 graphviz:
   options: "-Tsvg" # command option
   executable: "circo"   # execute this string. specify full path to 'dot' if you need
+
+collections:
+  series:
+    output: true
+    permalink: /:collection/:categories:output_ext
