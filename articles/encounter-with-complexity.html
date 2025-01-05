@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>An Encounter with ℂ𝕠𝕞𝕡𝕝𝕖𝕩𝕚𝕥𝕪</title>
+
+  
+  <meta name="description" content="From the Game of Life to Cynefin, systems flourish on the edge of chaos.">
+  
+  
+  <meta name="keywords" content="complexity, cynefin, systems"/>
+  
+  
+  <meta property="og:title" content="An Encounter with ℂ𝕠𝕞𝕡𝕝𝕖𝕩𝕚𝕥𝕪">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/encounter-with-complexity/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="From the Game of Life to Cynefin, systems flourish on the edge of chaos.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="An Encounter with ℂ𝕠𝕞𝕡𝕝𝕖𝕩𝕚𝕥𝕪">
+
+  
+  <meta name="twitter:description" content="From the Game of Life to Cynefin, systems flourish on the edge of chaos.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/encounter-with-complexity">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>An Encounter with ℂ𝕠𝕞𝕡𝕝𝕖𝕩𝕚𝕥𝕪</h1>
+<div class="subtitle">April 20, 2019</div>
+<div class="smaller">six minutes.</div>
+
+<p><label for="artificial-life" class="margin-toggle">⊕</label><input type="checkbox" id="artificial-life" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="https://images.gr-assets.com/books/1335347065l/2307953.jpg" /><br /><a href="https://www.goodreads.com/book/show/2307953.Artificial_Life">Artificial Life</a> (1992) by <a href="https://www.goodreads.com/author/show/32131.Steven_Levy">Steven Levy</a> was a summary of the work done by visionaries like <a href="https://en.wikipedia.org/wiki/John_von_Neumann">von Neumann</a>, <a href="https://en.wikipedia.org/wiki/John_Horton_Conway">Conway</a> and <a href="https://en.wikipedia.org/wiki/Christopher_Langton">Langton</a> who, sometimes accidentally, studied complexity in simple rule based-systems.</span>
+It seems to be a theme of recent posts to go back over books I read more than two decades ago and realise how they formed an integral part of the way I think today, and, by realising where they came from, potentially help me to explain the ideas to others.</p>
+
+<p>Another such book was <a href="https://www.goodreads.com/book/show/2307953.Artificial_Life">Artificial Life</a>.</p>
+
+<p>I read this book when I was a teenager in the early to mid-nineties and I can still remember being awestruck by the ideas inside it. One of the ideas was the <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Game of Life</a>, which I was proud to be able to reproduce on my Amstrad CPC<label for="game-of-life" class="margin-toggle sidenote-number"></label><input type="checkbox" id="game-of-life" class="margin-toggle" /><span class="sidenote">It has now become a popular <a href="http://codingdojo.org/kata/GameOfLife/">programming kata</a>, but at that time was somewhat niche to say the least. </span> but the idea that struck me most was that of <strong>𝕔𝕠𝕞𝕡𝕝𝕖𝕩𝕚𝕥𝕪</strong>, not just in the everyday sense of <em>very complicated</em><label for="complexity" class="margin-toggle sidenote-number"></label><input type="checkbox" id="complexity" class="margin-toggle" /><span class="sidenote">It’s unfortunate that we use this heavily overloaded word. The special font is supposed to reinforce the difference between this type of complexity and the types of complexity normally associated with software such as <a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity">cyclomatic</a> complexity or <a href="http://faculty.salisbury.edu/~xswang/Research/Papers/SERelated/no-silver-bullet.pdf">essential vs accidental</a> complexity, or simply <a href="https://dictionary.cambridge.org/dictionary/english/complexity"><em>really</em> complicated</a>. </span> but with a new and very special meaning: a type of behaviour <strong>between simple and chaotic</strong> where a lot of interesting stuff happens.</p>
+
+<p>The book demonstrates this most clearly with <a href="https://en.wikipedia.org/wiki/Langton%27s_ant">Langton’s Ant</a>, a similar idea to the game of life but involving an “ant” moving around a grid. Based on his research, Christopher Langton, its inventor, proposed the λ parameter as a kind of life and death measure of how a simple rule based system evolves. At low values the system might be static or periodic and easy to predict. At high values the system might become chaotic, essentially noise. But at a certain point, if <strong>given the right rules and the right initial conditions, <a href="https://youtu.be/w7ESrgpQH4k?t=152">complex patterns <em>emerge</em></a></strong>. In fact it was later proved that some of the rules that he found in the complex region, the so called <a href="https://en.wikipedia.org/wiki/Edge_of_chaos"><em>edge of chaos</em></a>, were exactly those that turned out to be Turing complete, that is able to reproduce any tractable computation.</p>
+
+<p>Stephen Wolfram (the creator of the Mathematica) a few years later published a mighty tome on this subject called <a href="https://en.wikipedia.org/wiki/A_New_Kind_of_Science">A New Kind of Science</a><label for="artificial-life" class="margin-toggle">⊕</label><input type="checkbox" id="artificial-life" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/complexity/nks_cover.jpg" /><br /><a href="https://www.goodreads.com/book/show/238558.A_New_Kind_of_Science">A New Kind of Science</a> (1997) by <a href="https://www.goodreads.com/author/show/139599.Stephen_Wolfram">Stephen Wolfram</a> a rather hefty and laborious read.</span>, much of which based on his own laborious <a href="https://www.stephenwolfram.com/publications/academic/universality-complexity-cellular-automata.pdf">experiments</a> on a certain kind of one-dimensional cellular automata, performed during the 80s.</p>
+
+<p>Wolfram <a href="https://en.wikipedia.org/wiki/Cellular_automaton#Classification">classified his results</a> into <a href="https://www.wolframscience.com/nks/p231--four-classes-of-behavior/">4 separate behaviours</a>, very similar to those rediscovered by Langton in his artificial life experiments.</p>
+
+<p><img src="/assets/images/complexity/langton_lambda2.png" alt="Classes of Cellular automa" /></p>
+
+<p>Class 1 and class 2 are the fixed and cyclic phases, class 3 chaotic and noisy and class 4 the interesting complex behaviour, which again is where the Turing complete rules can be found.</p>
+
+<p>This is a different way of looking at not only science, but also the way we study any non-trivial system, from which the world, as it turns out, is mostly constituted. Reductionist analysis is not always enough.</p>
+
+<p>Fast-forward to today and we have learnt, and are continuing to learn, that not only we are surrounded by these kinds of systems but, in fact, we are actually part of them.</p>
+
+<p>Researchers are discovering how ants, bird flocks, social networks, biological reactions and any number of other phenomena display <a href="https://www.quantamagazine.org/emergence-how-complex-wholes-emerge-from-simple-parts-20181220/">complex behaviours through self-interactions</a>. It turns out that we live and work within complexity everyday. Society itself sometimes appears chaotic but emergent patterns persist. Our built-in human behaviours<label for="dunbar-number" class="margin-toggle sidenote-number"></label><input type="checkbox" id="dunbar-number" class="margin-toggle" /><span class="sidenote">For example, <a href="https://en.wikipedia.org/wiki/Dunbar%27s_number">Dunbar’s number</a>, although heuristics like these must be taken with a sizeable pinch of salt. </span> seem to keep us in the sweet spot. Once again these phases<label for="phase-transitions" class="margin-toggle sidenote-number"></label><input type="checkbox" id="phase-transitions" class="margin-toggle" /><span class="sidenote">There has always been much <a href="https://arxiv.org/pdf/adap-org/9303003.pdf">debate</a> about whether the different states really do represent <em>phases</em>, in the same way as the phases of matter, for example. Recent <a href="https://www.quantamagazine.org/beyond-the-bell-curve-a-new-universal-law-20141015/">research</a> is providing some interesting insights. </span> emerge spontaneously, and complex behaviour flourishes between the predictable and the chaotic.</p>
+
+<p>At about the same time that Wolfram was publishing his book, <a href="https://cognitive-edge.com/our-people/dave-snowden/">Dave Snowden</a> was creating the <a href="https://cognitive-edge.com/videos/cynefin-framework-introduction/">Cynefin Framework</a> which draws on complexity as a means to help decision making. As we might expect, the framework has a landscape with essentially the same 4 classes (or <em>domains</em>), with the addition of <em>disorder</em> in the middle where there is simply confusion:</p>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Cynefin_as_of_1st_June_2014.png" alt="Cynefin Framework" /></p>
+
+<p>Each domain in this framework has a set of techniques and methods which can be applied on a contextual basis. There is a clockwise drift associated with improved methods and experience and a counter-clockwise drift when knowledge is lost.</p>
+
+<p>
+<iframe style="width: 273px;height: 154px;" class="marginnote" src="https://www.youtube.com/embed/4o_TnYmDHsg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</p>
+<p><label for="moon" class="margin-toggle"> ⊕</label><input type="checkbox" id="moon" class="margin-toggle" /><span class="marginnote"><strong>Doctrine, domesticity and delinquency; returning Agile to the Wild</strong> - One of Dave Snowden’s many interesting talks  - ´<em>The cat is domestic but still wild, switch to agility instead of Agile</em>´. </span></p>
+
+<p>Interesting, <a href="https://www.youtube.com/watch?v=l4-vpegxYPg">according to Snowden</a>, agile organisations tend to be constantly on the transition between the complex and complicated domains, and in fact this is necessarily so: complex systems are where the interesting things tend to happen but they are also unpredictable. Agile practices pull pieces of work from the complex domain, back into the complicated domain, or even into the obvious one, so that it can be treated in a single, small step, played-out and evaluated. This is what agility means. Small teams are employed, again to reduce self-interactions and, hence, simplify the system.</p>
+
+<p>On the other hand, some algorithms are complicated and remain complicated. Machine learning is an example. This is the realm of the experts who can apply learned good practice and know when those practices may or may not be suitable.</p>
+
+<p>Sometimes, however, the simplest projects are situated in the obvious phase already where basic “plan-act-verify” techniques (e.g. waterfall) are perfectly adequate and systematic best practices are possible.</p>
+
+<p>So, from the Game of Life to the Cynefin framework we have seen how systems theory and, in particular, complexity help give us a better understand the world around us. <strong>Reductionist and one-size-fits-all arguments, pervasive in our industry, don’t always hold</strong>. It provides us a landscape on which to map out the systems in which we find ourselves, including in our everyday lives and the projects we work on, and respond in an appropriate, non-dogmatic way.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=An Encounter with ℂ𝕠𝕞𝕡𝕝𝕖𝕩𝕚𝕥𝕪&url=https://johnhearn.github.io//articles/encounter-with-complexity"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/encounter-with-complexity&title=An Encounter with ℂ𝕠𝕞𝕡𝕝𝕖𝕩𝕚𝕥𝕪&summary=From the Game of Life to Cynefin, systems flourish on the edge of chaos.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=An Encounter with ℂ𝕠𝕞𝕡𝕝𝕖𝕩𝕚𝕥𝕪&amp;body=Check out this site https://johnhearn.github.io//articles/encounter-with-complexity"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">An Encounter with ℂ𝕠𝕞𝕡𝕝𝕖𝕩𝕚𝕥𝕪 - April 20, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

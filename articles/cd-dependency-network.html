@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Technical Practices for Continuous Delivery</title>
+
+  
+  <meta name="description" content="Looking at the relationships between the different technical practices in the DORA model.">
+  
+  
+  <meta name="keywords" content="continuous delivery"/>
+  
+  
+  <meta property="og:title" content="Technical Practices for Continuous Delivery">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/cd-dependency-network/">
+  <meta property="og:image" content="https://johnhearn.github.io//assets/images/cicd/cd-dependency-graph.svg">
+  <meta property="og:description" content="Looking at the relationships between the different technical practices in the DORA model.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Technical Practices for Continuous Delivery">
+
+  
+  <meta name="twitter:description" content="Looking at the relationships between the different technical practices in the DORA model.">
+  
+
+  
+  <meta name="twitter:card"  content="summary">
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/cd-dependency-network">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Technical Practices for Continuous Delivery</h1>
+<div class="subtitle">February 3, 2020</div>
+<div class="smaller">four minutes.</div>
+
+<p><a href="https://cloud.google.com/devops/#technical">DORA</a> recommends strengthening a core set of <a href="https://cloud.google.com/devops#technical"><strong>technical practices</strong></a><label for="technical-practices" class="margin-toggle sidenote-number"></label><input type="checkbox" id="technical-practices" class="margin-toggle" /><span class="sidenote">Go to the <a href="https://www.devops-research.com/research.html">website</a> and click on the “Technical Practices” node. Alternatively take a look at their book Accelerate which lays all of this out in detail. </span> to “drive”<label for="drive" class="margin-toggle sidenote-number"></label><input type="checkbox" id="drive" class="margin-toggle" /><span class="sidenote">Causal inference is a stated assumption. It’s debatable whether this is the case but that’s for another time. </span> Continuous Delivery, which in turn “drives” business performance.</p>
+
+<p>They clearly have internal relationships and, like XP<label for="xp-web" class="margin-toggle sidenote-number"></label><input type="checkbox" id="xp-web" class="margin-toggle" /><span class="sidenote">See, for example, <a href="https://vanderburg.org/writing/xpannealed.pdf">Extreme Programming Annealed</a> - Glenn Vanderburg </span>, there is a dependency graph of interlocking practices. For example, it’s difficult to image trunk-based development without some kind of version control. I was curious what it looked like so I gave it a first stab.</p>
+
+<p><img src="/assets/images/cicd/cd-dependency-graph.svg" alt="CD Dependency Web" /></p>
+
+<p>Arrows represent a “supports” relationship. For example: “trunk-based development <em>supports</em> continuous integration”. Some comments:</p>
+
+<hr class="slender" width="50%" />
+
+<p><strong>Version control is at the root of the practices</strong>. This is obvious to any practitioner and hardly worth saying. Is anyone not using a VCS in 2020?</p>
+
+<hr class="slender" width="50%" />
+
+<p><strong>A loosely coupled architecture <em>supports</em> deployment automation</strong>.<label for="contracts" class="margin-toggle"> ⊕</label><input type="checkbox" id="contracts" class="margin-toggle" /><span class="marginnote">Contracts between distributed components and multiple teams can be nicely understood through <a href="https://twitter.com/hashtag/PromiseTheory">#PromiseTheory</a> which also gives us a model for scaling. A subject for another time. </span> Difficulties arise with deployment automation when the <a href="https://www.thoughtworks.com/en-es/insights/blog/architecting-continuous-delivery">codebase is overly monolithic</a> or if distributed components are coupled. Monolithic codebases, even when properly modularised, can result in conflicts. Also overly coupled components result in so called “distributed monoliths” and require complicated deployment sequences. Here we need to distinguish deployment coupling from runtime coupling and talk more about contracts and DDD-style strategic integration patterns.</p>
+
+<hr class="slender" width="50%" />
+
+<p><strong>Database change management <em>supports</em> deployment automation</strong>. If you’ve worked in projects without DB change management you’ll know that it can lead to many problems. Before tools such as Flyway and Liquibase were available maintaining database schema in line with the code base was a serious headache. Database changes had to be synchronised with code changes, often resulting in outages, cache problems and delays.</p>
+
+<hr class="slender" width="50%" />
+
+<p>I’ve said that <strong>shifting left on security <em>supports</em> continuous testing</strong>. Testing is not just about features. How many of us have been stung by security concerns appearing late in the development cycle which could have been solved so much more easily if detected earlier? For example penetration testing is nearly always done as late as possible, for whatever reasons. Exposed services or plain text parameters in a development environment are not an issue but penetration tests flag them immediately.</p>
+
+<hr class="slender" width="50%" />
+
+<p>Though not listed amongst the main practices, performance concerns appear in two separate guises. First, <strong>comprehensive monitoring and observability</strong> enables performance issues to be made visible and picked up quickly. Second, performance testing is part of any <strong>continuous testing</strong> strategy.</p>
+
+<p>In common with security, performance concerns raised early in development can actually be an antidote to premature optimisation and lead to better design choices through real feedback. For example, if a query is correct but too slow under production load then that can be dealt with early rather than unnecessary DB scaling in production<label for="tuning" class="margin-toggle sidenote-number"></label><input type="checkbox" id="tuning" class="margin-toggle" /><span class="sidenote">DB level scaling in the presence of slow queries often goes under the euphemism of “tuning”. </span>. A box for <strong>shifting left on performance</strong> would fit beautifully between <strong>comprehensive monitoring and observability</strong> and <strong>continuous testing</strong>.</p>
+
+<hr class="slender" width="50%" />
+
+<p>It’s no use building releasable binaries after every commit, multiple times a day, if you are going to deploy to production once a month. This breaks the feedback mechanism and will result in a call for hot-fixes. Hot fixes require separate branches, break TBD and require separate deployment pipelines. Rollback becomes more difficult because ALL the commits in the release will be rolled-back even if they are giving value.</p>
+
+<p>In general I prefer to have a single binary for any version of the software. The corollary is that configuration should be done externally to the binary. There are two main ways to do that. (1) by externalising everything, for example in a properties file in a well know location or (2) packaging configuration inside the binary for ALL environments and configuring a variable with the name of the configuration to load.
+The first is usually the preferred, if nothing else it means that worries about the security of production keys etc. can be separated from the management of the build itself.</p>
+
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Technical Practices for Continuous Delivery&url=https://johnhearn.github.io//articles/cd-dependency-network"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/cd-dependency-network&title=Technical Practices for Continuous Delivery&summary=Looking at the relationships between the different technical practices in the DORA model.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Technical Practices for Continuous Delivery&amp;body=Check out this site https://johnhearn.github.io//articles/cd-dependency-network"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Technical Practices for Continuous Delivery - February 3, 2020 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

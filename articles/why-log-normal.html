@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Why Lognormal?</title>
+
+  
+  <meta name="description" content="The distribution of latencies in a system is often approximately log-normal. Why?">
+  
+  
+  <meta name="keywords" content="probability"/>
+  
+  
+  <meta property="og:title" content="Why Lognormal?">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/why-log-normal/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="The distribution of latencies in a system is often approximately log-normal. Why?">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Why Lognormal?">
+
+  
+  <meta name="twitter:description" content="The distribution of latencies in a system is often approximately log-normal. Why?">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/why-log-normal">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Why Lognormal?</h1>
+<div class="subtitle">August 19, 2021</div>
+<div class="smaller">two minutes.</div>
+
+<p>The <a href="https://en.wikipedia.org/wiki/Log-normal_distribution">log-normal distribution</a> is <a href="https://www.semanticscholar.org/paper/What-Do-You-Mean-Revisiting-Statistics-for-Web-Time-Ciemiewicz/65162028a420dbefdcb71c6def616e4aa1b126b1?p2df">sometimes</a> used as a simple model for the distribution of latencies from real-world systems. <label for="careful" class="margin-toggle"> ⊕</label><input type="checkbox" id="careful" class="margin-toggle" /><span class="marginnote">It’s important to understand that models are just models. Under different situations the latency distributions may be completely different. </span>By no means is it a perfect model and sometimes <a href="https://newrelic.com/blog/best-practices/expected-distributions-website-response-times">alternatives</a> are better, especially when the load is far below maximum capacity but at high load I’ve empirically found it to be a reasonable fit.</p>
+
+<figure><figcaption><span>Real world data from proprietary production system under high load.</span></figcaption><img src="/assets/images/latency/log-normal-fit.png" /></figure>
+
+<p>One reason that this is important is that the log-normal is long-tailed. This means that while the average response time under these conditions might be excellent, the top percentiles might be totally unacceptable so we end up having to oversize more than we might like.</p>
+
+<p>I’ve often wondered why this might be the case and answers to this question are often very hand-wavey. Here I attempt a totally unscientific explanation.</p>
+
+<p>Let’s take a <a href="https://erikbern.com/2018/03/27/waiting-time-load-factor-and-queueing-theory.html">standard result</a> from queueing theory and say that the latency is a function of the load factor,$f$, defined as the ratio of arrival rate to service rate.</p>
+
+\[Latency \propto \frac{1}{1-f}\]
+
+<p>Latencies fly off to infinity when the load factor approaches 1. Makes sense because if the requests arrive faster than they can be serviced then the queue will grow until something else gives.</p>
+
+<p>Now we might assume there is some dispersal in the load factor due to the natural burstiness of incoming traffic. We don’t want to model this noise with a normal distribution because our load factor is strictly between 0 and 1. A better choice is the <a href="https://en.wikipedia.org/wiki/Beta_distribution">beta distribution</a> which has exactly that property and just so happens to nicely approximate the normal distribution if we <a href="https://www.johndcook.com/blog/normal_approx_to_beta/">choose the right parameters</a>.</p>
+
+<p>Now what happens to the distribution of latencies? Well, luck would have it that the transformation of the beta distribution by the formula above gives us the so called <a href="https://en.wikipedia.org/wiki/Beta_prime_distribution">beta-prime distribution</a>. And that approximates a LogNormal distribution surprisingly well, especially around the tail.</p>
+
+<figure><figcaption><span>Beta-prime distribution compared to the Log Normal distribution by method of moments.</span></figcaption><img src="/assets/images/latency/log-normal-vs-beta-prime.png" /></figure>
+
+<figure><figcaption><span>Absolute error tapers away.</span></figcaption><img src="/assets/images/latency/log-normal-vs-beta-prime-error.png" /></figure>
+
+<p>What does this mean? Absolutely nothing and it’s wrong for all kinds of reasons. Nonetheless it might give a clue to the usefulness of the LogNormal distribution and its tail and why the Erlang/Gamma distributions sometimes are more indicative.</p>
+
+<p>The intuition would be that the natural variance in the load produces latencies heavily skewed by the <a href="https://www.r-bloggers.com/2015/07/hockey-elbow-and-other-response-time-injuries/">elbow curve</a> of the latency formula, especially when under high load, producing the long tail. Under lower loads the skewing effect is less and the distribution loses it’s long tail, in fact becoming more like an Erlang distribution after all.</p>
+
+<p>Source code for the graphs is <a href="https://github.com/johnhearn/notebooks/blob/master/beta-prime.ipynb">here</a>.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Why Lognormal?&url=https://johnhearn.github.io//articles/why-log-normal"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/why-log-normal&title=Why Lognormal?&summary=The distribution of latencies in a system is often approximately log-normal. Why?&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Why Lognormal?&amp;body=Check out this site https://johnhearn.github.io//articles/why-log-normal"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Why Lognormal? - August 19, 2021 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

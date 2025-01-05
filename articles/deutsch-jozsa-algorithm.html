@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>The Deutsch-Jozsa Algorithm</title>
+
+  
+  <meta name="description" content="One of the first quantum algorithms which was shown to be significantly better that any classical counterpart.">
+  
+  
+  <meta name="keywords" content="quantum computing"/>
+  
+  
+  <meta property="og:title" content="The Deutsch-Jozsa Algorithm">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/deutsch-jozsa-algorithm/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="One of the first quantum algorithms which was shown to be significantly better that any classical counterpart.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="The Deutsch-Jozsa Algorithm">
+
+  
+  <meta name="twitter:description" content="One of the first quantum algorithms which was shown to be significantly better that any classical counterpart.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/deutsch-jozsa-algorithm">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>The Deutsch-Jozsa Algorithm</h1>
+<div class="subtitle">October 1, 2018</div>
+<div class="smaller">three minutes.</div>
+
+<p>This was one of the first quantum algorithms to be discovered that gave a theoretically significant improvement over the classical equivalent. Having said that it’s not useful at all, its main value was that it served as inspiration for other more practical algorithms such as Grover’s search and Shor’s factoring.</p>
+
+<h2 id="simplest-case">Simplest case</h2>
+
+<p>The simplest statement of the problem is to determine if a boolean function, \(f\), always results in the same <em>constant</em> value or if it is <em>balanced</em> and returns both true and false depending on the input.</p>
+
+<p>In programming terms this means evaluating the function:</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="p">:</span> <span class="p">(</span><span class="nc">Boolean</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Boolean</span>
+</code></pre></div></div>
+<p>for both possible inputs and checking the results.</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">result</span> <span class="p">=</span> <span class="nf">f</span><span class="p">(</span><span class="k">false</span><span class="p">)</span> <span class="n">xor</span> <span class="nf">f</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>In the classical world this will obviously require <strong>two</strong> evaluations of the function however in the quantum version only <strong>one</strong> evaluation is ever required.</p>
+
+<p>Imagine we are given a gate \(U_f\) which is based on the function we are interested in. This gate can be constructed in various ways but we’ll assume that it’s given.</p>
+
+<p>Then a circuit for the algorithm can be represented by the following diagram:</p>
+
+<p><img src="/assets/images/quantum-computing/deutschs-circuit.png" alt="Deutsch's algorithm circuit" width="320px" /></p>
+
+<p>This equates in quko to the following snippet:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Qubits</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">not</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">hadamard</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">hadamard</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">oracle</span><span class="p">)</span>
+
+    <span class="p">.</span><span class="nf">hadamard</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">measure</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>If the function is <em>balanced</em> then the measurement will always be <code class="language-plaintext highlighter-rouge">true</code>, if constant then the measurement will always be <code class="language-plaintext highlighter-rouge">false</code>.</p>
+
+<p>One way to think about how this works is that the \(U_f\) gate transforms the superposition of both possible input values. The resulting interference patter provides us with the information we require.</p>
+
+<h2 id="extending-to-multiple-bits">Extending to multiple bits</h2>
+
+<p>Other researchers extended to algorithm to multiple bits which corresponds to the function taking an integer argument.</p>
+
+<p>The function becomes:</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="p">:</span> <span class="p">(</span><span class="nc">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Int</span>
+</code></pre></div></div>
+<p>and will, on average, need many more evaluations of the function to test be able to determine if it is <em>constant</em> or not.</p>
+
+<p>The quantum circuit in this case becomes:</p>
+
+<p><img src="/assets/images/quantum-computing/deutsch-jozsa-circuit.png" alt="Deutsch-Jozsa algorithm circuit" width="400px" /></p>
+
+<p>We can build this circuit in quko as follows:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">fun</span> <span class="nf">isBalanced</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="p">(</span><span class="nc">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Int</span><span class="p">)</span> 
+    <span class="p">=</span> <span class="nc">Qubits</span><span class="p">(</span><span class="n">n</span> <span class="p">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">not</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">hadamard</span><span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="p">)</span>
+
+            <span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nf">oracle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="p">-&gt;</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">xor</span> <span class="n">y</span> <span class="p">})</span>
+
+            <span class="p">.</span><span class="nf">hadamard</span><span class="p">(</span><span class="mi">0</span> <span class="n">until</span> <span class="n">n</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">measureFirst</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">toInt</span><span class="p">()</span> <span class="p">!=</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>This will give us a boolean result for the given function, assuming the function works on \(n\) bit integers. Note: <code class="language-plaintext highlighter-rouge">oracle</code> is a utility function of quko for building the appropriate gate \(U_f\) from the function \(f\).</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=The Deutsch-Jozsa Algorithm&url=https://johnhearn.github.io//articles/deutsch-jozsa-algorithm"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/deutsch-jozsa-algorithm&title=The Deutsch-Jozsa Algorithm&summary=One of the first quantum algorithms which was shown to be significantly better that any classical counterpart.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=The Deutsch-Jozsa Algorithm&amp;body=Check out this site https://johnhearn.github.io//articles/deutsch-jozsa-algorithm"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">The Deutsch-Jozsa Algorithm - October 1, 2018 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

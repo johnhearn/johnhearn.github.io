@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Polynomial Chaos</title>
+
+  
+  <meta name="description" content="Approximating probability distributions with polynomials.">
+  
+  
+  <meta name="keywords" content="maths"/>
+  
+  
+  <meta property="og:title" content="Polynomial Chaos">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/polynomial-chaos/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Approximating probability distributions with polynomials.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Polynomial Chaos">
+
+  
+  <meta name="twitter:description" content="Approximating probability distributions with polynomials.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/polynomial-chaos">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Polynomial Chaos</h1>
+<div class="subtitle">May 1, 2020</div>
+<div class="smaller">six minutes.</div>
+
+<p>
+<iframe style="width: 273px;height: 154px;" class="marginnote" src="https://www.youtube.com/embed/Z-Qio-n6yPc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</p>
+<p><label for="talk" class="margin-toggle"> ⊕</label><input type="checkbox" id="talk" class="margin-toggle" /><span class="marginnote"><strong>Emily Gorcenski - Polynomial Chaos: A technique for modeling uncertainty</strong> - <em>Polynomial chaos is a somewhat obscure technique that leverages a natural connection between probability distributions and orthogonal polynomial families. This talk demonstrates the technique and its applications</em>. </span></p>
+
+<p><em>(The Julia code for this blog is available in my GitHub notebooks repo and online <a href="https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/master/Poly%20Chaos%20Approximation.ipynb" target="_blank">here</a>.)</em></p>
+
+<p>This talk appeared recently in my YouTube recommendations and with a title like “Polynomial Chaos” I had to take a look. This is a summary of what I learnt mainly to help my own understanding.</p>
+
+<p><strong>Polynomial Chaos Expansion</strong> (aka PCE, also known as Wiener Chaos Expansion.) was a technique introduced just before the second world war by Norbert Wiener. The use of the word chaos is different from the way we understand it today and seems to come from its application to the statistical study of white noise.</p>
+
+<p>In a very similar way to how the <a href="https://en.wikipedia.org/wiki/Fourier_series#Hilbert_space_interpretation">Fourier</a> and <a href="https://en.wikipedia.org/wiki/Laplace_transform">Laplace</a> transforms are related to the exponential functions, there are <strong>strong relationships</strong> between certain <strong>probability distributions</strong> and corresponding families<label for="schema" class="margin-toggle sidenote-number"></label><input type="checkbox" id="schema" class="margin-toggle" /><span class="sidenote">Catalogued in the <a href="https://en.wikipedia.org/wiki/Askey_scheme">Wiener-Askey scheme</a>. </span> of <strong>orthogonal polynomials</strong>.</p>
+
+<p><label for="hermite" class="margin-toggle">⊕</label><input type="checkbox" id="hermite" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/polychaos/hermite-polynomials.png" /><br />I’m imagining it in a similar way to how a continuous oscillation can be parameterised by only its frequency and amplitude in the Fourier case, though I’m not sure how far that analogy goes. This plot of the polynomials themselves does seem a bit sine-wavey.</span></p>
+
+<p>Also like the Fourier and Laplace versions, the transformed version of the distribution has many useful properties which can be used for similar purposes, like <strong>approximation</strong> and <strong>solving differential equations</strong>.</p>
+
+<p>In these notes, and following closely the talk mentioned above, I’ll try and describe how you might approximate a general probability distributions using this technique.</p>
+
+<p>Polynomial chaos extends from the fact<label for="theorem" class="margin-toggle sidenote-number"></label><input type="checkbox" id="theorem" class="margin-toggle" /><span class="sidenote">The <a href="https://en.wikipedia.org/wiki/Karhunen%E2%80%93Lo%C3%A8ve_theorem">Kosambi–Karhunen–Loève theorem</a> states that a stochastic process can be represented as an infinite linear combination of orthogonal functions, analogous to a Fourier series representation of a function on a bounded interval. </span> that any stochastic variable (within reason) can be transformed into a system of orthogonal polynomials: $X = \sum_{i=0}^\infty X_i \phi_i(\zeta)$.</p>
+
+<p>If the polynomials are chosen correctly then they can represent certain probability distributions very compactly. For example, for a normally distributed random variable the polynomials are <a href="https://en.wikipedia.org/wiki/Hermite_polynomials">Hermite polynomials</a>, $\phi_i(\zeta) \equiv H_i(\zeta)$, and the transformed random variable can be written $X = \mu H_0(\zeta) + \sigma H_1(\zeta) = \mu + \sigma \zeta$, where $\mu$ and $\sigma$ are the mean and standard deviation respectively, which makes sense.</p>
+
+<p>The relationship between the distribution and the polynomials can be seen most clearly in the definition of the inner product of the polynomials themselves. In this case the Hermite polynomial inner product is defined like this:</p>
+
+\[\langle H_i(\zeta)\, H_j(\zeta) \rangle  = \int_{-\infty}^\infty H_i(\zeta) H_j(\zeta) \color{red}{e^{-\frac{\zeta^2}{2}}}\, d\zeta = \color{red}{\sqrt{2\pi}} i! \delta_{ij}\]
+
+<p>The elements in $\color{red}{red}$ being both the weighting function for the product and the distribution itself.</p>
+
+<p>We want to approximate a general probability distribution, $F(k)$ by expanding in terms of a chosen set of polynomials belonging to another distribution, say $G(\zeta)$. To do this the trick is to transform both $F(k)$ and $G(\zeta)$ into the same, uniform distribution using an inverse transformation of both:</p>
+
+\[k = F^{-1}(u) \stackrel{\small{\textrm{def}}}{=} h(u)\]
+
+\[\zeta = G^{-1}(u) \stackrel{\small{\textrm{def}}}{=} l(u)\]
+
+<p>Then use the Galerkin projection to compute the individual coefficients:</p>
+
+\[k_i = \frac{\langle k H_i(\zeta) \rangle}{\langle H_i^2(\zeta) \rangle} = \frac{1}{\langle H_i^2 \rangle} \int_{-\infty}^\infty k H_i(\zeta) e^{-\frac{\zeta^2}{2}}\, d\zeta = \frac{1}{\langle H_i^2 \rangle}\int_0^1 h(u) H_i(l(u))\, du\]
+
+<p>All this is verbatim from the talk. I also planned to transcribe her code (to Julia of course) but I found a better plan.</p>
+
+<p>Dealing with the polynomials from scratch is pretty tedious so I looked for a package that would do it for me. As it turns out there is a Julia package called <a href="https://timueh.github.io/PolyChaos.jl/stable">PolyChaos</a> which does most of this. Looking through the documentation I didn’t see this actual use case so I did it myself.</p>
+
+<p>Using the PolyChaos package we can easily define our Hermite polynomials. In PolyChaos they are called <code class="language-plaintext highlighter-rouge">GaussOrthPoly</code><label for="physics" class="margin-toggle sidenote-number"></label><input type="checkbox" id="physics" class="margin-toggle" /><span class="sidenote">The name Hermite is used for the variant of the Hermite polynomials used by physicists. I remember they appear as part of the study of the quantum linear harmonic oscillator which I studied in university. </span><label for="harmonicosc" class="margin-toggle">⊕</label><input type="checkbox" id="harmonicosc" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="https://upload.wikimedia.org/wikipedia/commons/9/9e/HarmOsziFunktionen.png" /><br />They look something <a href="https://en.wikipedia.org/wiki/Quantum_harmonic_oscillator">like this</a>.</span>:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">PolyChaos</span>
+
+<span class="n">op_gauss</span> <span class="o">=</span> <span class="n">GaussOrthoPoly</span><span class="x">(</span><span class="mi">20</span><span class="x">)</span>
+<span class="n">H</span><span class="x">(</span><span class="n">i</span><span class="x">,</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="n">evaluate</span><span class="x">(</span><span class="n">i</span><span class="x">,</span> <span class="n">x</span><span class="x">,</span> <span class="n">op_gauss</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>We also compute the inner (scalar) products, $\langle H_i^2(\zeta) \rangle$ for our polynomials, PolyChaos conveniently does this for us:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sp</span> <span class="o">=</span> <span class="n">computeSP2</span><span class="x">(</span><span class="n">op_gauss</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>Then we define our inverse functions for testing:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Distributions</span>
+
+<span class="n">inv_cdf</span><span class="x">(</span><span class="n">dist</span><span class="x">)</span> <span class="o">=</span> <span class="n">u</span> <span class="o">-&gt;</span> <span class="n">quantile</span><span class="x">(</span><span class="n">dist</span><span class="x">,</span> <span class="n">u</span><span class="x">)</span>
+
+<span class="n">h</span> <span class="o">=</span> <span class="n">inv_cdf</span><span class="x">(</span><span class="n">Exponential</span><span class="x">())</span>
+<span class="n">l</span> <span class="o">=</span> <span class="n">inv_cdf</span><span class="x">(</span><span class="n">Normal</span><span class="x">())</span>
+
+<span class="n">integrand</span><span class="x">(</span><span class="n">i</span><span class="x">)</span> <span class="o">=</span> <span class="n">u</span> <span class="o">-&gt;</span> <span class="n">h</span><span class="x">(</span><span class="n">u</span><span class="x">)</span><span class="o">*</span><span class="n">H</span><span class="x">(</span><span class="n">i</span><span class="x">,</span> <span class="n">l</span><span class="x">(</span><span class="n">u</span><span class="x">))</span>
+</code></pre></div></div>
+
+<p>In this case the distribution we want to approximate if the <code class="language-plaintext highlighter-rouge">Exponential</code> distribution, <code class="language-plaintext highlighter-rouge">h</code>, and is defined as a partial function. The Gassian we will approximate it with is defined as the partial function <code class="language-plaintext highlighter-rouge">l</code>. Finally de define our integrand in terms of <code class="language-plaintext highlighter-rouge">h(u)</code>, <code class="language-plaintext highlighter-rouge">H</code> and <code class="language-plaintext highlighter-rouge">l(u)</code>, for a particular index, <code class="language-plaintext highlighter-rouge">i</code>.</p>
+
+<p>Now we perform the integration, for which PolyChaos also has us covered.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">int_op</span> <span class="o">=</span> <span class="n">Uniform01OrthoPoly</span><span class="x">(</span><span class="mi">1000</span><span class="x">,</span> <span class="n">addQuadrature</span><span class="o">=</span><span class="nb">true</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>We’ll truncate the approximation to <code class="language-plaintext highlighter-rouge">p</code> polynomials:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">p</span> <span class="o">=</span> <span class="mi">21</span>
+<span class="n">ki</span> <span class="o">=</span> <span class="x">[</span><span class="n">integrate</span><span class="x">(</span><span class="n">integrand</span><span class="x">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="x">),</span> <span class="n">int_op</span><span class="x">)</span> <span class="o">/</span> <span class="n">sp</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">p</span><span class="x">]</span>
+</code></pre></div></div>
+
+<p>Then we can reconstitute the approximated distribution using 5000 Gaussian random variables, $\zeta_i$:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ζ</span> <span class="o">=</span> <span class="n">randn</span><span class="x">(</span><span class="mi">5000</span><span class="x">)</span>
+<span class="n">Σ</span> <span class="o">=</span> <span class="n">zeros</span><span class="x">(</span><span class="mi">5000</span><span class="x">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">p</span>
+    <span class="n">Σ</span> <span class="o">+=</span> <span class="n">ki</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">*</span> <span class="n">H</span><span class="x">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="x">,</span><span class="n">ζ</span><span class="x">)</span>
+<span class="k">end</span>
+<span class="n">histogram</span><span class="x">(</span><span class="n">Σ</span><span class="x">,</span> <span class="n">normed</span><span class="o">=</span><span class="nb">true</span><span class="x">)</span>
+</code></pre></div></div>
+
+<figure><figcaption><span>Exponential distribution constituted as a sum of transformed gaussian random variables.</span></figcaption><img src="/assets/images/polychaos/reconstitutes-exponential-5000.png" /></figure>
+
+<p>With this same code we can now approximate any distribution using random variables drawn from a more manageable distribution of our choice. This would allow us to perform other transformations or analysis which may have been difficult in the original form. It may also be a faster alternative to sampling techniques, like Monte Carlo variants.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Polynomial Chaos&url=https://johnhearn.github.io//articles/polynomial-chaos"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/polynomial-chaos&title=Polynomial Chaos&summary=Approximating probability distributions with polynomials.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Polynomial Chaos&amp;body=Check out this site https://johnhearn.github.io//articles/polynomial-chaos"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Polynomial Chaos - May 1, 2020 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

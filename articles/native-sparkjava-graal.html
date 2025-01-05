@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Native µservices with SparkJava and Graal</title>
+
+  
+  <meta name="description" content="By keeping Java simple and avoiding unnecessary (hidden) complexity we can natively compile SparkJava services with Graal with no fuss at all.">
+  
+  
+  <meta name="keywords" content=""/>
+  
+  
+  <meta property="og:title" content="Native µservices with SparkJava and Graal">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/native-sparkjava-graal/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="By keeping Java simple and avoiding unnecessary (hidden) complexity we can natively compile SparkJava services with Graal with no fuss at all.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Native µservices with SparkJava and Graal">
+
+  
+  <meta name="twitter:description" content="By keeping Java simple and avoiding unnecessary (hidden) complexity we can natively compile SparkJava services with Graal with no fuss at all.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/native-sparkjava-graal">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Native µservices with SparkJava and Graal</h1>
+<div class="subtitle">November 12, 2018</div>
+<div class="smaller">four minutes.</div>
+
+<p>When annotations were introduced to Java people jumped on the bandwagon, as is the wont of the IT industry. Before long we were to a large extent programming with annotations, even to do things that were easy in plain Java. One of the main problems with this is that we end up <strong>adding complexity in an attempt to hide it</strong>.</p>
+
+<p>One perfect example of this is Spring Mvc / REST framework. Spring allows you to create microservices very easily using a couple of annotations but at the cost of adding a whole eco-system of libraries to your application and an extensive family of Spring specific annotations to your code-base.</p>
+
+<p>SparkJava takes an another approach. Microservices written in SparkJava are just plain Java code which use a plain Java library. No annotation magic just plain, simple code. The advantage of this simple style of programming is that it is, well, simpler. It’s so simple that <strong>the Graal native compiler just compiles it and runs it without batting an eye-lid</strong>. Something which is currently<label for="currently" class="margin-toggle sidenote-number"></label><input type="checkbox" id="currently" class="margin-toggle" /><span class="sidenote">I’m sure that someone will come up with the <a href="https://jira.spring.io/browse/SPR-16991">appropriate workarounds</a> to overcome this problem, a problem that doesn’t even need to exist. </span> <strong>impossible</strong> with Spring.</p>
+
+<p>This short post shows how easy it is.</p>
+
+<p>First you’ll need to install the latest version of the Graal SDK. As of writing this is <code class="language-plaintext highlighter-rouge">1.0.0-rc9</code>. I did it using SdkMan:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sdk install java 1.0.0-rc9-graal
+</code></pre></div></div>
+<p>And from then on</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sdk use java 1.0.0-rc9-graal
+</code></pre></div></div>
+
+<p>Then create a basic Maven<label for="maven" class="margin-toggle sidenote-number"></label><input type="checkbox" id="maven" class="margin-toggle" /><span class="sidenote">I chose to use Maven because I know it better. I’d like to do it also with Gradle. </span> project and add the minimum dependencies:</p>
+
+<p><label for="slf4j-version" class="margin-toggle"> ⊕</label><input type="checkbox" id="slf4j-version" class="margin-toggle" /><span class="marginnote">It’s important that the Slf4j implementation you choose matches the version specified by <code class="language-plaintext highlighter-rouge">sparkjava</code>. I had trouble when it didn’t. </span></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>com.sparkjava<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>spark-core<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>2.7.2<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>slf4j-simple<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.7.13<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div></div>
+
+<p>With SparkJava a microservice is crazily simple.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">static</span> <span class="n">spark</span><span class="o">.</span><span class="na">Spark</span><span class="o">.*;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloWorld</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">get</span><span class="o">(</span><span class="s">"/sayHello"</span><span class="o">,</span> <span class="o">(</span><span class="n">req</span><span class="o">,</span> <span class="n">res</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="s">"Hello world!"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>To run it as a command line program it’s convenient to copy all the dependencies together into the same directory. We can do that with Maven.</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>maven-dependency-plugin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;executions&gt;</span>
+        <span class="nt">&lt;execution&gt;</span>
+            <span class="nt">&lt;id&gt;</span>copy-dependencies<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;phase&gt;</span>prepare-package<span class="nt">&lt;/phase&gt;</span>
+            <span class="nt">&lt;goals&gt;</span>
+                <span class="nt">&lt;goal&gt;</span>copy-dependencies<span class="nt">&lt;/goal&gt;</span>
+            <span class="nt">&lt;/goals&gt;</span>
+            <span class="nt">&lt;configuration&gt;</span>
+                <span class="nt">&lt;outputDirectory&gt;</span>${project.build.directory}/lib<span class="nt">&lt;/outputDirectory&gt;</span>
+            <span class="nt">&lt;/configuration&gt;</span>
+        <span class="nt">&lt;/execution&gt;</span>
+    <span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div></div>
+
+<p>Build the service with Maven and run it to check it works.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> mvn clean package
+</code></pre></div></div>
+
+<p>An run it:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> java <span class="nt">-cp</span> <span class="s2">"target/sparkjava-graal-1.0-SNAPSHOT.jar:target/lib/*"</span> HelloWorld
+...
+<span class="o">[</span>Thread-0] INFO org.eclipse.jetty.server.Server - Started @383ms
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> curl localhost:4567/sayHello
+Hello World!
+</code></pre></div></div>
+
+<p>Let’s compile it natively. The command is thankfully very similar to <code class="language-plaintext highlighter-rouge">java</code>:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> native-image <span class="nt">-cp</span> <span class="s2">"target/sparkjava-graal-1.0-SNAPSHOT.jar:target/lib/*"</span> HelloWorld
+...
+Build on Server<span class="o">(</span>pid: 31197, port: 52737<span class="o">)</span><span class="k">*</span>
+<span class="o">[</span>helloworld:31197]    classlist:   2,142.65 ms
+<span class="o">[</span>helloworld:31197]        <span class="o">(</span>cap<span class="o">)</span>:   2,154.21 ms
+...
+...
+<span class="o">[</span>helloworld:31197]        write:     443.13 ms
+<span class="o">[</span>helloworld:31197]      <span class="o">[</span>total]:  56,525.52 ms
+</code></pre></div></div>
+
+<p>And run it:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> ./helloworld
+...
+<span class="o">[</span>Thread-2] INFO org.eclipse.jetty.server.Server - Started @2ms
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> curl localhost:4567/sayHello
+Hello World!
+</code></pre></div></div>
+
+<p>The executable is 14Mb but look at that start time! <strong>2ms</strong>, basically instantaneous.</p>
+
+<p>Memorywise, according to <code class="language-plaintext highlighter-rouge">top</code> the memory it takes is 7Mb. The <code class="language-plaintext highlighter-rouge">java</code> version consumes 151Mb (granted without tuning). It would not be wise to pay too much heed to those numbers but it is clear that there is a considerable improvement from removing the JVM from the runtime<label for="link" class="margin-toggle sidenote-number"></label><input type="checkbox" id="link" class="margin-toggle" /><span class="sidenote">Compare these results with a Go microservice from a <a href="notes-on-go-go-kit-for-java-programmer.html">previous post</a>. </span>. This is especially important in microservices systems where a large number of independent processes are deployed.</p>
+
+<p>Obviously there is a lot more to do to make this a fully functional service but if we choose to keep using simple, static Java code then problems will be minimised.</p>
+
+<p>The next step will be to convert to Kotlin and then Gradle. That sounds like a very nice combination :)</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Native µservices with SparkJava and Graal&url=https://johnhearn.github.io//articles/native-sparkjava-graal"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/native-sparkjava-graal&title=Native µservices with SparkJava and Graal&summary=By keeping Java simple and avoiding unnecessary (hidden) complexity we can natively compile SparkJava services with Graal with no fuss at all.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Native µservices with SparkJava and Graal&amp;body=Check out this site https://johnhearn.github.io//articles/native-sparkjava-graal"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Native µservices with SparkJava and Graal - November 12, 2018 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

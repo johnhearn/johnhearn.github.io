@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Notes on Go - Go-kit for a Java programmer</title>
+
+  
+  
+  <meta name="keywords" content=""/>
+  
+  
+  <meta property="og:title" content="Notes on Go - Go-kit for a Java programmer">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/notes-on-go-go-kit-for-java-programmer/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Personal site for blogging and about science, software and such">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Notes on Go - Go-kit for a Java programmer">
+
+  
+  <meta name="twitter:description" content="Personal site for blogging and about science, software and such">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/notes-on-go-go-kit-for-java-programmer">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Notes on Go - Go-kit for a Java programmer</h1>
+<div class="subtitle">November 1, 2017</div>
+<div class="smaller">12 minutes.</div>
+
+<p>We’re using a lot of Java/Spring Boot based microservices where I work and the memory footprint is somewhat worrying from a production scalability perspective.</p>
+
+<p>The aim of this experiment is to take some first steps into Go to see if there is potential in exploring Go as an alternative to Java for some microservices. The aim here is take into account factors such as resource consumption, as compared to an identical service implemented in Java, and developer productivity but not not to take into account other factors like developer availability.</p>
+
+<p>One promising Go library to aid in the creation of microservices is <a href="https://gokit.io/">Go kit</a> . At first glance the simplest example seemed quite complicated. I decided to apply Go kit microservice design decisions to Java to be able to do a direct comparison. Lets take a look at the <a href="https://gokit.io/examples/stringsvc.html">simplest example</a> from the Go kit website. I’ll copy the Go kit article’s section headers, comments in the original webpage also apply here. We start with an interface and its implementation.</p>
+
+<h2 id="your-business-logic">Your business logic</h2>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">StringService</span> <span class="k">interface</span> <span class="p">{</span>
+  <span class="n">sayHi</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">stringService</span> <span class="k">struct</span><span class="p">{}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">stringService</span><span class="p">)</span> <span class="n">sayHi</span><span class="p">(</span><span class="n">_</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span> <span class="n">s</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="s">""</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s">""</span><span class="p">,</span> <span class="n">ErrEmpty</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="s">"Hello "</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s">"!"</span><span class="p">,</span> <span class="no">nil</span>
+<span class="p">}</span>
+
+<span class="k">var</span> <span class="n">ErrEmpty</span> <span class="o">=</span> <span class="n">errors</span><span class="o">.</span><span class="n">New</span><span class="p">(</span><span class="s">"Empty string"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The Java version is very similar. Nothing really needs to be said here.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">StringService</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="nf">sayHi</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">static</span> <span class="kd">class</span> <span class="nc">StringServiceImpl</span> <span class="kd">implements</span> <span class="nc">StringService</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">sayHi</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="s">""</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">s</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">InvalidArgumentException</span><span class="o">(</span><span class="s">"Empty string"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="s">"Hello "</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s">"!"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="requests-and-responses">Requests and responses</h2>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">sayHiRequest</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">S</span> <span class="kt">string</span> <span class="s">`json:"s"`</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">sayHiResponse</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">V</span> <span class="kt">string</span> <span class="s">`json:"v"`</span>
+    <span class="n">Err</span> <span class="kt">string</span> <span class="s">`json:"err,omitempty"`</span> <span class="c">// errors don't JSON-marshal, so we use a string</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Java version is almost identical:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="kd">class</span> <span class="nc">SayHiRequest</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">s</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">SayHiResponse</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">v</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Notice that error handling in Java is done using exceptions, a concept that Go does not have, instead relying on error results in return tuples.</p>
+
+<h2 id="endpoints">Endpoints</h2>
+
+<p>Go kit provides much of its functionality through an abstraction called an <strong>endpoint</strong>. Now we must construct an instance of this abstraction:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">makeSayHiEndpoint</span><span class="p">(</span><span class="n">svc</span> <span class="n">stringService</span><span class="p">)</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">Endpoint</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">func</span><span class="p">(</span><span class="n">ctx</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span> <span class="n">request</span> <span class="k">interface</span><span class="p">{})</span> <span class="p">(</span><span class="k">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">req</span> <span class="o">:=</span> <span class="n">request</span><span class="o">.</span><span class="p">(</span><span class="n">sayHiRequest</span><span class="p">)</span>
+        <span class="n">v</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">svc</span><span class="o">.</span><span class="n">sayHi</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">S</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">sayHiResponse</span><span class="p">{</span><span class="n">v</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">Error</span><span class="p">()},</span> <span class="no">nil</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">sayHiResponse</span><span class="p">{</span><span class="n">v</span><span class="p">,</span> <span class="s">""</span><span class="p">},</span> <span class="no">nil</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We can emulate the Endpoint abstraction with a functional interface in Java.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@FunctionalInterface</span>
+<span class="kd">interface</span> <span class="nc">Endpoint</span> <span class="o">{</span>
+    <span class="nc">Object</span> <span class="nf">func</span><span class="o">(</span><span class="nc">Object</span> <span class="n">request</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The use of IOException here is to avoid the need to translate checked exceptions to unchecked ones in the handler code. However, the use of unchecked exceptions would facilitate the use of the Java standard functional library and eliminate the need to specific functional interfaces. We create an instance of the lambda, copying the Go implementation very closely. Error handling is done by exceptions which simplifies the code.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="nc">Endpoint</span> <span class="nf">makeSayHiEndpoint</span><span class="o">(</span><span class="nc">StringService</span> <span class="n">svc</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">req</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="nc">SayHiRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="o">(</span><span class="nc">SayHiRequest</span><span class="o">)</span><span class="n">req</span><span class="o">;</span>
+        <span class="nc">SayHiResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SayHiResponse</span><span class="o">();</span>
+        <span class="n">response</span><span class="o">.</span><span class="na">v</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="na">sayHi</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">s</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">;</span>
+    <span class="o">};</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="transports">Transports</h2>
+
+<p>In the example the service is published as JSON over HTTP.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">func</span> <span class="nf">main</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">svc</span> <span class="o">:=</span> <span class="n">stringService</span><span class="o">{}</span>
+
+    <span class="n">sayHiHandler</span> <span class="o">:=</span> <span class="n">httptransport</span><span class="o">.</span><span class="na">NewServer</span><span class="o">(</span>
+        <span class="n">makeSayHiEndpoint</span><span class="o">(</span><span class="n">svc</span><span class="o">),</span>
+        <span class="n">decodeSayHiRequest</span><span class="o">,</span>
+        <span class="n">encodeResponse</span><span class="o">,</span>
+    <span class="o">)</span>
+
+    <span class="n">http</span><span class="o">.</span><span class="na">Handle</span><span class="o">(</span><span class="s">"/sayHi"</span><span class="o">,</span> <span class="n">sayHiHandler</span><span class="o">)</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="na">Fatal</span><span class="o">(</span><span class="n">http</span><span class="o">.</span><span class="na">ListenAndServe</span><span class="o">(</span><span class="s">":8080"</span><span class="o">,</span> <span class="n">nil</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="n">func</span> <span class="nf">decodeSayHiRequest</span><span class="o">(</span><span class="n">_</span> <span class="n">context</span><span class="o">.</span><span class="na">Context</span><span class="o">,</span> <span class="n">r</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="na">Request</span><span class="o">)</span> <span class="o">(</span><span class="kd">interface</span><span class="err">{},</span> <span class="nc">error</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">var</span> <span class="n">request</span> <span class="n">sayHiRequest</span>
+
+    <span class="k">if</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="na">NewDecoder</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="na">Body</span><span class="o">).</span><span class="na">Decode</span><span class="o">(&amp;</span><span class="n">request</span><span class="o">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="n">nil</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">nil</span><span class="o">,</span> <span class="n">err</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">request</span><span class="o">,</span> <span class="n">nil</span>
+<span class="o">}</span>
+
+<span class="n">func</span> <span class="nf">encodeResponse</span><span class="o">(</span><span class="n">_</span> <span class="n">context</span><span class="o">.</span><span class="na">Context</span><span class="o">,</span> <span class="n">w</span> <span class="n">http</span><span class="o">.</span><span class="na">ResponseWriter</span><span class="o">,</span> <span class="n">response</span> <span class="kd">interface</span><span class="err">{})</span> <span class="nc">error</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="na">NewEncoder</span><span class="o">(</span><span class="n">w</span><span class="o">).</span><span class="na">Encode</span><span class="o">(</span><span class="n">response</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>To convert this to Java we’re going to use Oracle’s built-in HttpServer classes. Since Java does not have a built-in Json serialisation library we’ll marshal the JSON with the Gson to provide a realistic comparison.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="c1">// ListenAndServe starts an HTTP server on the given port.</span>
+    <span class="nc">HttpServer</span> <span class="n">server</span> <span class="o">=</span> <span class="nc">HttpServer</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="nc">InetSocketAddress</span><span class="o">(</span><span class="mi">8080</span><span class="o">),</span> <span class="mi">0</span><span class="o">);</span>
+
+    <span class="c1">// Attach the handler function to the context</span>
+    <span class="nc">StringService</span> <span class="n">svc</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringServiceImpl</span><span class="o">();</span>
+
+    <span class="nc">HttpHandler</span> <span class="n">sayHiHandler</span> <span class="o">=</span> <span class="nc">HttpTransport</span><span class="o">.</span><span class="na">newServer</span><span class="o">(</span>
+        <span class="n">makeSayHiEndpoint</span><span class="o">(</span><span class="n">svc</span><span class="o">),</span>
+        <span class="nl">simplest_gokit_service:</span><span class="o">:</span><span class="n">decodeSayHiRequest</span><span class="o">,</span>
+        <span class="nl">simplest_gokit_service:</span><span class="o">:</span><span class="n">encodeResponse</span>
+    <span class="o">);</span>
+    <span class="n">server</span><span class="o">.</span><span class="na">createContext</span><span class="o">(</span><span class="s">"/"</span><span class="o">,</span> <span class="n">sayHiHandler</span><span class="o">);</span>
+    <span class="n">server</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">static</span> <span class="nc">SayHiRequest</span> <span class="nf">decodeSayHiRequest</span><span class="o">(</span><span class="nc">HttpExchange</span> <span class="n">t</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="k">try</span><span class="o">(</span><span class="nc">InputStreamReader</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">InputStreamReader</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">getRequestBody</span><span class="o">()))</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Gson</span><span class="o">().</span><span class="na">fromJson</span><span class="o">(</span><span class="n">r</span><span class="o">,</span> <span class="nc">SayHiRequest</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">static</span> <span class="kt">void</span> <span class="nf">encodeResponse</span><span class="o">(</span><span class="nc">HttpExchange</span> <span class="n">t</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="k">try</span><span class="o">(</span><span class="nc">OutputStream</span> <span class="n">w</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="na">getResponseBody</span><span class="o">())</span> <span class="o">{</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Gson</span><span class="o">().</span><span class="na">toJson</span><span class="o">(</span><span class="n">response</span><span class="o">).</span><span class="na">getBytes</span><span class="o">();</span>
+        <span class="n">t</span><span class="o">.</span><span class="na">sendResponseHeaders</span><span class="o">(</span><span class="mi">200</span><span class="o">,</span> <span class="n">bytes</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
+        <span class="n">w</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Again the code is very similar. To emulate the Go kit functionality we add functional interfaces and a method which binds them together to provide the decoder-endpoint-encoder chain. Note that this emulates the entire Go kit library up to this point.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@FunctionalInterface</span>
+<span class="kd">interface</span> <span class="nc">Endpoint</span> <span class="o">{</span>
+    <span class="nc">Object</span> <span class="nf">func</span><span class="o">(</span><span class="nc">Object</span> <span class="n">request</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@FunctionalInterface</span>
+<span class="kd">interface</span> <span class="nc">Decoder</span> <span class="o">{</span>
+    <span class="nc">Object</span> <span class="nf">func</span><span class="o">(</span><span class="nc">HttpExchange</span> <span class="n">t</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@FunctionalInterface</span>
+<span class="kd">interface</span> <span class="nc">Encoder</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">func</span><span class="o">(</span><span class="nc">HttpExchange</span> <span class="n">t</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">HttpTransport</span> <span class="o">{</span>
+    <span class="kd">static</span> <span class="nc">HttpHandler</span> <span class="nf">newServer</span><span class="o">(</span><span class="nc">Endpoint</span> <span class="n">endpoint</span><span class="o">,</span> <span class="nc">Decoder</span> <span class="n">decoder</span><span class="o">,</span> <span class="nc">Encoder</span> <span class="n">encoder</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="n">t</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">encoder</span><span class="o">.</span><span class="na">func</span><span class="o">(</span><span class="n">t</span><span class="o">,</span> <span class="n">endpoint</span><span class="o">.</span><span class="na">func</span><span class="o">(</span><span class="n">decoder</span><span class="o">.</span><span class="na">func</span><span class="o">(</span><span class="n">t</span><span class="o">)));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Run the Go version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> go run simplest_gokit_service.go &amp;
+<span class="o">&gt;</span> curl <span class="nt">-d</span><span class="s1">'{"s":"Donald"}'</span> localhost:8080/sayHi
+<span class="o">{</span><span class="s2">"v"</span>:<span class="s2">"Hello Donald!"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>Run the Java version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> java <span class="nt">-cp</span> .:gson-2.8.2.jar simplest_gokit_service &amp;
+<span class="o">&gt;</span> curl <span class="nt">-d</span><span class="s1">'{"s":"Donald"}'</span> localhost:8080/sayHi
+<span class="o">{</span><span class="s2">"v"</span>:<span class="s2">"Hello Donald!"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="middlewares">Middlewares</h1>
+
+<p>No service can be considered production-ready without thorough logging and instrumentation.</p>
+
+<h2 id="transport-logging">Transport logging</h2>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="n">loggingMiddleware</span><span class="p">(</span><span class="n">name</span> <span class="kt">string</span><span class="p">,</span> <span class="n">w</span> <span class="n">io</span><span class="o">.</span><span class="n">Writer</span><span class="p">)</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">Middleware</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">func</span><span class="p">(</span><span class="n">next</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">Endpoint</span><span class="p">)</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">Endpoint</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">func</span><span class="p">(</span><span class="n">ctx</span> <span class="n">context</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span> <span class="n">request</span> <span class="k">interface</span><span class="p">{})</span> <span class="p">(</span><span class="k">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">io</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s">"calling "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">" endpoint</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+            <span class="k">defer</span> <span class="n">io</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s">"called "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">" endpoint</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">next</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here we see the “defer” keyword in action. In Java we use finally: </p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="nc">Middleware</span> <span class="nf">loggingMiddleware</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="nc">PrintStream</span> <span class="n">writer</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">next</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="n">request</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">writer</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"calling "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"endpoint"</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">next</span><span class="o">.</span><span class="na">func</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">finally</span> <span class="o">{</span>
+                <span class="n">writer</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"called "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"endpoint"</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+    <span class="o">};</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Once again we create a functional interface to emulate the Go Middleware type:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@FunctionalInterface</span>
+<span class="kd">interface</span> <span class="nc">Middleware</span> <span class="o">{</span>
+    <span class="nc">Endpoint</span> <span class="nf">func</span><span class="o">(</span><span class="nc">Endpoint</span> <span class="n">next</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Wiring it up is virtually the same in both languages:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">var</span> <span class="n">sayHi</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">Endpoint</span>
+<span class="n">sayHi</span> <span class="o">=</span> <span class="n">makeSayHiEndpoint</span><span class="p">(</span><span class="n">svc</span><span class="p">);</span>
+<span class="n">sayHi</span> <span class="o">=</span> <span class="n">loggingMiddleware</span><span class="p">(</span><span class="s">"sayHi"</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">Stderr</span><span class="p">)(</span><span class="n">sayHi</span><span class="p">)</span>
+<span class="n">sayHiHandler</span> <span class="o">:=</span> <span class="n">httptransport</span><span class="o">.</span><span class="n">NewServer</span><span class="p">(</span><span class="n">sayHi</span><span class="p">,</span> <span class="o">...</span>
+</code></pre></div></div>
+
+<p>And in Java:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Endpoint</span> <span class="n">sayHi</span> <span class="o">=</span> <span class="n">makeSayHiEndpoint</span><span class="o">(</span><span class="n">svc</span><span class="o">);</span>
+<span class="n">sayHi</span> <span class="o">=</span> <span class="n">loggingMiddleware</span><span class="o">(</span><span class="s">"sayHi"</span><span class="o">,</span> <span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">).</span><span class="na">func</span><span class="o">(</span><span class="n">sayHi</span><span class="o">);</span>
+<span class="nc">HttpHandler</span> <span class="n">sayHiHandler</span> <span class="o">=</span> <span class="nc">HttpTransport</span><span class="o">.</span><span class="na">newServer</span><span class="o">(</span><span class="n">sayHi</span><span class="o">,</span> <span class="o">...</span>
+</code></pre></div></div>
+
+<p>Run the Go version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> go run simplest_gokit_service.go &amp;
+<span class="o">&gt;</span> curl <span class="nt">-d</span><span class="s1">'{"s":"Donald"}'</span> localhost:8080/sayHi
+calling sayHi endpoint
+called sayHi endpoint
+<span class="o">{</span><span class="s2">"v"</span>:<span class="s2">"Hello Donald!"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>Run the Java version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> java <span class="nt">-cp</span> .:gson-2.8.2.jar simplest_gokit_service &amp;
+<span class="o">&gt;</span> curl <span class="nt">-d</span><span class="s1">'{"s":"Donald"}'</span> localhost:8080/sayHi
+calling sayHi endpoint
+called sayHi endpoint
+<span class="o">{</span><span class="s2">"v"</span>:<span class="s2">"Hello Donald!"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>Benchmarking response times would be pointless in this simple scenario. Taking a look the the memory footprint however, without any kind of runtime optimisation, the Java implementation is close to 23Mb while the Go binary runs in a little over 1Mb. This difference by itself would be worth investigating in a system with many microservice instances.</p>
+
+<h2 id="conclusions">Conclusions</h2>
+
+<p>The Go kit abstractions lend themselves well to composition. It has been possible to recreate the same experience in Java with almost a line for line translation using Java’s lambda syntax. The abstractions are quite low level but I can’t help feeling that it takes a step too far in terms of developer productivity compared to something like Spring REST Controllers.</p>
+
+<p>On the other hand memory use is many times smaller for the Go binary, as would be expected. I would also expect Java libraries like Spring would bloat the Java version even more.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Notes on Go - Go-kit for a Java programmer&url=https://johnhearn.github.io//articles/notes-on-go-go-kit-for-java-programmer"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/notes-on-go-go-kit-for-java-programmer&title=Notes on Go - Go-kit for a Java programmer&summary=&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Notes on Go - Go-kit for a Java programmer&amp;body=Check out this site https://johnhearn.github.io//articles/notes-on-go-go-kit-for-java-programmer"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Notes on Go - Go-kit for a Java programmer - November 1, 2017 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

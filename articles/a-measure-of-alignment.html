@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>A Measure of Alignment</title>
+
+  
+  <meta name="description" content="A little mathematical formula for measuring the angular alignment of things">
+  
+  
+  <meta name="keywords" content="physics"/>
+  
+  
+  <meta property="og:title" content="A Measure of Alignment">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/a-measure-of-alignment/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="A little mathematical formula for measuring the angular alignment of things">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="A Measure of Alignment">
+
+  
+  <meta name="twitter:description" content="A little mathematical formula for measuring the angular alignment of things">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/a-measure-of-alignment">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>A Measure of Alignment</h1>
+<div class="subtitle">August 24, 2024</div>
+<div class="smaller">four minutes.</div>
+
+<p>During the summer holidays I stumbled on a printed copy of my old degree dissertation. It’s over 25 years old and I was pleasantly surprised by the writing style but no so much about the structure - no clear explanation of what was being demonstrated and the conclusions were a bit lacking.</p>
+
+<p>The project itself was to use Monte Carlo simulation techniques to discover things about the phases of idealised liquid crystals, modelled as ellipses and ellipsoids in 2 and 3 dimensions. The original code was written in C (much to my tutors chagrin who wanted me to use FORTRAN).</p>
+
+<p>For some reason, last weekend I though it would be a good idea to rewrite it Julia. So I did and it worked so much better (faster) than back in 1997. Maybe I’ll be able to finish the original aims of the dissertation, 25 years later!</p>
+
+<p><label for="liquidcrystalnematicphase" class="margin-toggle">⊕</label><input type="checkbox" id="liquidcrystalnematicphase" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/liquidcrystalmontecarlo/nematic-phase.png" /><br />Figure 1: Nematic phase of partially aligned liquid crystals, modelled as ellipses.</span></p>
+
+<p>One of the properties of liquid crystals is that, at low enough temperatures and high enough pressures, they align with each other in much the same way they do on LCD displays when a voltage is applied. My simulations were able to recreate this effect (see Figure 1). They measured the density of the simulated material, which obviously increases the more the crystals align. I did notice that there wasn’t a direct measure of alignment… so why not invent one?</p>
+
+<p>I needed a formula that I could sum pairwise over all the crystals (ellipses). Ideally the measure should be 0 if all the ellipses are totally unaligned and 1 if totally aligned. Taking two ellipses first, the obvious choice matching these criteria is the cosine of the angle between them, basically cosine similarity. This gives exactly 1 if ellipses are aligned and exactly 0 if they are perpendicular. The ellipses have a symmetry where they should also be measured as aligned if the angle is 180º. I this case the cosine is -1 when it should be 1. A simple way to achieve this is to take either the absolute value of the cosine or its square. This latter option has a nice symmetry to it. Averaging over the $n^2$ terms we have a first stab at an alignment formula, $A$:</p>
+
+\[A = \frac{1}{n^2}\sum_{i,j = 1}^n cos^2(\theta_i-\theta_j)\]
+
+<p>Where $i$ an $j$ enumerate over the $n$ ellipses to be measured and $\theta$ is their respective orientation. To test my formula I generated different configurations and tested their alignment. If all the angles where the same then the alignment did indeed come out as exactly 1. However I realised that there is no way to make more than 2 ellipse totally perpendicular in 2 dimensions. They will always align somewhat with the first or the second. When there are more ellises the situation is worse.</p>
+
+<p><label for="minumum-3-alignment" class="margin-toggle">⊕</label><input type="checkbox" id="minumum-3-alignment" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/liquidcrystalmontecarlo/alignment3.png" /><br />Figure 2: Minimum alignment for 3 ellipses.</span></p>
+
+<p>Obviously, the minimum posible alignment of 2 ellipses is when the angle between them is $\frac{\pi}{2}$ radians, orthogonal. After scratching my head for a while and running different tests, I realised that 3 ellipses is when the angle between them is exactly $\frac{\pi}{3}$ radians (see Figure 2).</p>
+
+<p>A similar thing happens with larger numbers of particles where the minimum has then dividing the circle equally. This is obviously true for 2 ellipses and I can prove it for 3. I’m taking it to be the case for now.</p>
+
+<p>After a bit of thinking the way to calculate this minimum, $M$, is to make the following sum:</p>
+
+\[M = \frac{2}{n(n-1)}\sum_{k=1}^n (n-k)cos^2(\frac{k\pi}{n})\]
+
+<p>Where $\frac{k\pi}{n}$ is the angle of the kth ellipse and there are $(n-k)$ ellipses with that angular separation. We divide by the number of pairs counted. With a bit of help from the internet this is solvable and has a simple closed form. Using the identity:</p>
+
+\[cos^2x = \frac{1+cos 2x}{2}\]
+
+<p>and the orthogonality of the cosine funtions we have:</p>
+
+\[\begin{aligned} 
+M&amp;= \frac{2}{n(n-1)}\sum_{k=1}^n (n-k)(1+cos \frac{2k\pi}{n}) \\
+&amp;= \frac{2}{n(n-1)}\left(\sum_{k=1}^n (n-k) + n\sum_{k=1}^n cos \frac{2k\pi}{n} - \sum_{k=1}^n k \cdot cos \frac{2k\pi}{n}\right) \\
+&amp;= \frac{2}{n(n-1)}\left(\frac{1}{2}(n - 1) n - n - \frac{-n}{2}\right) \\
+&amp;= \frac{1}{n(n-1)}\left(n^2-n - 2n + n\right) \\
+&amp;= \frac{1}{2}\left(\frac{n-2}{n-1}\right) \\
+\end{aligned}\]
+
+<p>Validate: $n=2 \implies M=0$, $n=3 \implies M=¼$, $n=4 \implies M=⅓$, etc.</p>
+
+<p>Also: $\displaystyle \lim_{n \rightarrow \infty}M=½$ as required.</p>
+
+<p>I wanted to factor out this minimum alignment bias from the calculation so that the alignment would always be in the range from 0 to 1. To do that we calculate the proportion between $1-M$ and $A-M$. So the new formula is:</p>
+
+\[A' = \frac{A-M}{1-M} = \frac{2 A (n - 1) - (n - 2)}{n}\]
+
+<p>I’ve tested this with different distributions of angles and it gives a reliable indicator of the alignment. The only thing is that the cosine squared makes it quite non-linear having a tendency to be closer to the extremes, 0 and 1. To counteract this an inverse straightens out the results for a smoother gradient, so</p>
+
+\[A'' = 1 -\frac{2}{\pi}cos^{-1} \sqrt{A'}\]
+
+<p>might give better results depending on the application.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=A Measure of Alignment&url=https://johnhearn.github.io//articles/a-measure-of-alignment"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/a-measure-of-alignment&title=A Measure of Alignment&summary=A little mathematical formula for measuring the angular alignment of things&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=A Measure of Alignment&amp;body=Check out this site https://johnhearn.github.io//articles/a-measure-of-alignment"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">A Measure of Alignment - August 24, 2024 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Native µservices with Graal and Gradle</title>
+
+  
+  <meta name="description" content="Moving from Maven to Gradle for the Kotlin/SparkJava. Spoiler it&#39;s almost too easy.">
+  
+  
+  <meta name="keywords" content="graalvm, jvm, kotlin, microservices"/>
+  
+  
+  <meta property="og:title" content="Native µservices with Graal and Gradle">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/native-services-with-graal-gradle/">
+  <meta property="og:image" content="https://johnhearn.github.io/{"src"=>"/assets/custom/img/blog/graalvm-banner.png"}">
+  <meta property="og:description" content="Moving from Maven to Gradle for the Kotlin/SparkJava. Spoiler it&#39;s almost too easy.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Native µservices with Graal and Gradle">
+
+  
+  <meta name="twitter:description" content="Moving from Maven to Gradle for the Kotlin/SparkJava. Spoiler it's almost too easy.">
+  
+
+  
+  <meta name="twitter:card"  content="summary">
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/native-services-with-graal-gradle">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Native µservices with Graal and Gradle</h1>
+<div class="subtitle">December 9, 2018</div>
+<div class="smaller">1 minute.</div>
+
+<p>In the <a href="native-kotlin-sparkjava-graal">last post</a> we built the simplest native microservice in Kotlin with SparkJava and Graal. This time we’ll do the same thing with Gradle instead of Maven.</p>
+
+<p>First we need to add our libraries to the Gradle project, including the Kotlin library dependency (as of writing the version is v1.3.10).</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">compile</span> <span class="s2">"com.sparkjava:spark-core:2.7.2"</span>
+    <span class="n">compile</span> <span class="s2">"org.slf4j:slf4j-simple:1.7.13"</span>
+    <span class="n">compile</span> <span class="s2">"org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.10"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>And to use the Kotlin compiler plugin again becomes more concise compared to Maven.</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">'org.jetbrains.kotlin.jvm'</span> <span class="n">version</span> <span class="s1">'1.3.10'</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>To copy the resources we can use this task:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">task</span> <span class="nf">copyDependencies</span><span class="o">(</span><span class="nl">type:</span> <span class="n">Copy</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">from</span> <span class="n">configurations</span><span class="o">.</span><span class="na">default</span>
+    <span class="n">into</span> <span class="s1">'build/libs'</span>
+    <span class="n">shouldRunAfter</span> <span class="n">jar</span>
+<span class="o">}</span>
+
+<span class="n">assemble</span><span class="o">.</span><span class="na">dependsOn</span> <span class="n">copyDependencies</span>
+</code></pre></div></div>
+
+<p>Build the service with Gradle and run it to check it works.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> ./gradlew clean assemble
+<span class="o">&gt;</span> java <span class="nt">-cp</span> <span class="s2">"build/libs/*"</span> HelloWorldKt
+...
+<span class="o">[</span>Thread-0] INFO org.eclipse.jetty.server.Server - Started @363ms
+<span class="o">&gt;</span> curl localhost:4567/sayHello
+Hello World!
+</code></pre></div></div>
+
+<p>Building the native executable is just the same as before.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Native µservices with Graal and Gradle&url=https://johnhearn.github.io//articles/native-services-with-graal-gradle"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/native-services-with-graal-gradle&title=Native µservices with Graal and Gradle&summary=Moving from Maven to Gradle for the Kotlin/SparkJava. Spoiler it's almost too easy.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Native µservices with Graal and Gradle&amp;body=Check out this site https://johnhearn.github.io//articles/native-services-with-graal-gradle"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Native µservices with Graal and Gradle - December 9, 2018 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

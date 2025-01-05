@@ -1,31 +1,1116 @@
----
-layout: null
-nav_exclude: true
----
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.title | xml_escape }}</title>
-    <description>{{ site.description | xml_escape }}</description>
-    <link>{{ site.url }}{{ site.baseurl }}/</link>
-    <atom:link href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" rel="self" type="application/rss+xml"/>
-    <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
-    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
-    <generator>Jekyll v{{ jekyll.version }}</generator>
-    {% for post in site.posts limit:10 %}
+    <title>John Hearn</title>
+    <description>Personal site for blogging and about science, software and such</description>
+    <link>https://johnhearn.github.io//</link>
+    <atom:link href="https://johnhearn.github.io//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 05 Jan 2025 22:55:46 +0100</pubDate>
+    <lastBuildDate>Sun, 05 Jan 2025 22:55:46 +0100</lastBuildDate>
+    <generator>Jekyll v4.3.3</generator>
+    
       <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>{{ post.content | xml_escape }}</description>
-        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        <link>{{ post.url | prepend: site.baseurl | prepend: site.url }}</link>
-        <guid isPermaLink="true">{{ post.url | prepend: site.baseurl | prepend: site.url }}</guid>
-        {% for tag in post.tags %}
-        <category>{{ tag | xml_escape }}</category>
-        {% endfor %}
-        {% for cat in post.categories %}
-        <category>{{ cat | xml_escape }}</category>
-        {% endfor %}
+        <title>Matrices of Boolean Nets</title>
+        <description>&lt;p&gt;When studying the boolean networks on the &lt;a href=&quot;kauffman-networks&quot;&gt;last post&lt;/a&gt; I wondered what the state update rule would look like as a matrix. These things can &lt;a href=&quot;https://en.wikipedia.org/wiki/Representation_theory&quot;&gt;always be represented by matrices&lt;/a&gt;. Working out how to do it led to some nice links to quantum computing and category theory.&lt;/p&gt;
+
+&lt;p&gt;A few things led me to the way to construct the boolean net matrices. I knew that representation theory says it should be so but that doesn’t make it easier to construct them. Trial and error didn’t really get me anywhere. &lt;label for=&quot;paper&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;paper&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;Later found this paper describing a different encoding: &lt;a href=&quot;https://academic.oup.com/comjnl/article/15/3/247/480639&quot;&gt;&lt;em&gt;The logic of Boolean matrices&lt;/em&gt;&lt;/a&gt; - C. R. Edwards. It might be worth reviewing this to see if this method maintains the same categorical structure. &lt;/span&gt; Then I found &lt;a href=&quot;https://ozaner.github.io/boolean-logic-with-matrices/&quot;&gt;this article&lt;/a&gt; describing a simple boolean matrix construction which reminded me that this is deeply related to quantum computing qubit circuit construction that I already know something about, but without all the annoying quantum restrictions.&lt;/p&gt;
+
+&lt;h2 id=&quot;boolean-algebra&quot;&gt;Boolean algebra&lt;/h2&gt;
+
+&lt;p&gt;The thing to notice is that a bit ($0$ or $1$) can be represented as a vector:
+\(F = \begin{pmatrix}
+  1 \\
+  0
+ \end{pmatrix}\) and \(T = \begin{pmatrix}
+  0 \\
+  1
+ \end{pmatrix}\)&lt;/p&gt;
+
+&lt;p&gt;An identity (NoOp) gate is then \(\begin{pmatrix}
+  1 &amp;amp; 0 \\
+  0 &amp;amp; 1
+ \end{pmatrix}\) and a NOT gate is \(\begin{pmatrix}
+  0 &amp;amp; 1 \\
+  1 &amp;amp; 0
+ \end{pmatrix}\).&lt;/p&gt;
+
+&lt;p&gt;To operate on multiple bits at the same time we &lt;em&gt;tensor&lt;/em&gt; them together by applying the &lt;a href=&quot;https://en.wikipedia.org/wiki/Kronecker_product&quot;&gt;Krondecker product&lt;/a&gt;. So the boolean number $01_b$ is equal to $F \otimes T$, for example. We end up with a vector of length $2^n$ with an entry for each possible value of the binary number, in order&lt;label for=&quot;msb&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;msb&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Note the most significant bit is on the left in these expressions. The ordering tripped me up a couple of times. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Higher order operators are easier here than in the quantum case. We can just write out the result that we want as columns in a matrix, where each column represents $00_b$, $01_b$, $10_b$, $11_b$, respectively. So for example the $AND$ gate is simply: 
+\(AND = \begin{pmatrix}
+  1 &amp;amp; 1 &amp;amp; 1 &amp;amp; 0 \\
+  0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+ \end{pmatrix}\).&lt;/p&gt;
+
+&lt;p&gt;When we multiply a pair of binary digits (tensored together) by this matrix then we get the answer we want. Example: $ AND * (T \otimes F) \equiv F$.&lt;/p&gt;
+
+&lt;p&gt;The beautiful thing is that we can then use &lt;a href=&quot;https://arxiv.org/pdf/0908.3347&quot;&gt;wiring diagrams&lt;/a&gt; to build more elaborate calculations, like we do in quantum computing circuits. It works because this boolean algebra is an example of a &lt;a href=&quot;https://en.wikipedia.org/wiki/Symmetric_monoidal_category&quot;&gt;symmetric monoidal category&lt;/a&gt; having a braiding that is essentially a SWAP operation between bits. This category allows us to compose operations by &lt;em&gt;shifting&lt;/em&gt; bits into place with an appropriate sequence of swaps. This is very similar to the quantum computing equivalents but without the restriction to unitary (reversible) operations. Dropping this restriction means that we can give the category &lt;em&gt;copy&lt;/em&gt;&lt;label for=&quot;copy&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;copy&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Also sometimes called &lt;em&gt;clone&lt;/em&gt;, as in the &lt;em&gt;no-cloning theorem&lt;/em&gt;. &lt;/span&gt; and &lt;em&gt;discard&lt;/em&gt;&lt;label for=&quot;copy&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;copy&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Or &lt;em&gt;drop&lt;/em&gt; or &lt;em&gt;delete&lt;/em&gt;, as in the &lt;em&gt;no-deleting theorem&lt;/em&gt;. &lt;/span&gt; operations, turning it into a &lt;em&gt;copy-discard category&lt;/em&gt;&lt;label for=&quot;cd-category&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;cd-category&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Also called a &lt;em&gt;garbage share category&lt;/em&gt; but whoever thought up that name should take a deep look at themselves. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Examples like this make applied category theory such a powerful thinking tool.&lt;/p&gt;
+
+&lt;h2 id=&quot;kauffmans-example&quot;&gt;Kauffman’s example&lt;/h2&gt;
+
+&lt;p&gt;A simple circuit for Kauffman’s 3 node example is fairly easy to construct. The three operators correspond to the three truth tables, one for each node. The $Y$ node value is cloned/copied. This is not allowed in quantum computing circuits but no problem here.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/booleanmatrices/kauffman-circuit.png&quot; alt=&quot;Kauffman&apos;s example circuit&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This circuit does a trick to avoid an extra copy. The copied bit is dropped at the end to make a routine with matching inputs and outputs. This allows multiple similar operations to be chained together to evolve the system.&lt;/p&gt;
+
+&lt;p&gt;Some more tricks are required&lt;label for=&quot;lifting&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;lifting&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;I went back again to &lt;a href=&quot;https://arxiv.org/abs/1608.03355&quot;&gt;this paper&lt;/a&gt; which I found helpful to understand this process. &lt;/span&gt; to implement the swapping and shifting of registers in code but luckily I had already done &lt;a href=&quot;building-a-qpu-simulator-in-julia-part-2&quot;&gt;something similar&lt;/a&gt; for the quantum computing simulator I wrote some years ago. The $COPY$ and $DROP$ gates were relatively easy to think through and the tensor product just worked perfectly for all these unfamiliar operations (there are &lt;a href=&quot;https://en.wikipedia.org/wiki/No-cloning_theorem&quot;&gt;no-cloning&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/No-deleting_theorem&quot;&gt;no-deleting&lt;/a&gt; restrictions in quantum circuits which make things harder in that context).&lt;/p&gt;
+
+&lt;p&gt;Of course with this simple example (and the benefit of hindsight) the matrix corresponding to this entire circuit could have been been constructed from scratch from the extended truth table. However this way the actual relations themselves are baked into the circuit. The final matrix, let’s call it $M$,
+will be the same anyway. Here’s what it looks like in code (note that matrix multiplication is from the right, the opposite of the circuit diagram):&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;OPX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;op&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kauffman_truth_table&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;OPY&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;op&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kauffman_truth_table&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;OPZ&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;op&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kauffman_truth_table&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DROP&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OPZ&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OPY&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row_swap&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row_swap&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OPX&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row_swap&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CLONE&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row_swap&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;×8&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;SparseMatrixCSC&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int64&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int64&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stored&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;
+    &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;⋅&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Quite a lot of work went into getting that matrix mostly full of zeros!&lt;/p&gt;
+
+&lt;p&gt;Testing out the circuit we do get back the results from the original paper:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;digits&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pad&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;S&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transform&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;measure&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So now the whole point of doing this wasn’t just to build the circuit in a new way. It was to use the power of linear algebra to tell us something about the network and its properties. Being a matrix we can calculate its eigenvalues and eigenvectors. If we can find eigenvalues with a value of exactly 1 then we will have found stationary points in the network, i.e. cycles.&lt;/p&gt;
+
+&lt;p&gt;The eigenvalues $\lambda = { \lambda_1, \lambda_2, …, \lambda_8 } $ of $M$ turn out to be:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;λ&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eigvals&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;element&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vector&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;ComplexF64&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.8660254037844388&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;im&lt;/span&gt;
+   &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.8660254037844388&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;im&lt;/span&gt;
+    &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;im&lt;/span&gt;
+    &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;im&lt;/span&gt;
+    &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;im&lt;/span&gt;
+    &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;im&lt;/span&gt;
+    &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;im&lt;/span&gt;
+    &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;im&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now it just so happens that those non-zero values are the cube roots of unity. Using the fact that the cubes of the eigenvalues of a matrix are the eigenvalues of the matrix cubed then we should get all ones.&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;λ&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eigvals&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;element&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vector&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Float64&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;
+   &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;
+   &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;
+   &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;
+   &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;
+   &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;
+   &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;
+   &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The last 3 eigenvalues are now exactly one! So let’s look at the last 3 eigenvectors and convert them back to the corresponding states:&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;kauffman-kimatograph-3-2&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;kauffman-kimatograph-3-2&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/kauffman/kauffman-kimatograph-3-2.png&quot; /&gt;&lt;br /&gt;The &lt;em&gt;kimatograph&lt;/em&gt; depicted in the original paper. In more mordern language we might call this a &lt;a href=&quot;https://en.wikipedia.org/wiki/State_diagram&quot;&gt;&lt;em&gt;state (transition) diagram&lt;/em&gt;&lt;/a&gt;, a &lt;a href=&quot;https://en.wikipedia.org/wiki/Pseudoforest#Graphs_of_functions&quot;&gt;&lt;em&gt;pseudoforest&lt;/em&gt;&lt;/a&gt; or a &lt;a href=&quot;https://en.wikipedia.org/wiki/Pseudoforest#Graphs_of_functions&quot;&gt;&lt;em&gt;functional graph&lt;/em&gt;&lt;/a&gt;. The states $001_b$, $101_b$ and $110_b$ are in the cycle. $000_b$ is missing 🤷.&lt;/span&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;measure&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ν&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ν&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;eachcol&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eigvecs&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;])]&lt;/span&gt;
+
+&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;element&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vector&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Vector&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;}}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+ &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+ &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+ &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;These are exactly the states which form the only cycle in the example kimatograph.&lt;/p&gt;
+
+&lt;p&gt;It is not coincidence that the other eigenvalues are zero. The fact that $rank(M) &amp;lt; 8$ is also no coincidence. There is much more to learn about the spectral properties of these matrices.&lt;/p&gt;
+
+&lt;h2 id=&quot;wolframs-cellular-automata&quot;&gt;Wolfram’s cellular automata&lt;/h2&gt;
+
+&lt;p&gt;Once that had worked, I was interested in matrix operations for bigger boolean networks. As before we can apply the same process to Wolfram’s cellular automata which are just specialisations of the general boolean network. This network can be as big as you like. How can we go about building it systematically? This was an interesting problem to mull over and I eventually worked it out. First we can come up with a trinary operator representing the rule.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/booleanmatrices/wolfram-rule-op.png&quot; alt=&quot;Wolfram rule operation&quot; width=&quot;200px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This operator has 3 inputs, two of which just pass through to the outputs. The other output is the result of the &lt;a href=&quot;https://en.wikipedia.org/wiki/Wolfram_code&quot;&gt;Wolfram coded rule&lt;/a&gt;. The reason for passing through the two outputs is to be able to chain them together easily. Of course we could just copy the values but this way seems neater. To create the complete circuit it also has to wrap around the ends to form a periodic boundary. That’s done by just copying the bottom bit to the top and the top bit to the bottom. The extra two bits are dropped at the end to make a composable operation. So we’re left with this circuit:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/booleanmatrices/wolfram-circuit.png&quot; alt=&quot;Wolfram circuit&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note that there are $n$ input states and $n$ output states so the operation can again be chained by matrix multiplication on the left.&lt;/p&gt;
+
+&lt;p&gt;What does this look like in code? Something like this although I expect there are many ways to do it:&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt; Rule&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;outputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;binary&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Z&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reverse&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;binary&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;transform&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outputs&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Z&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sb&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt; update&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rule&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# Clone the ends and shift to top or bottom respectively&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;WRAP&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row_shift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CLONE&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row_shift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CLONE&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c&quot;&gt;# Build the rule gate&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Rule&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rule&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c&quot;&gt;# Chain the rule N times from the left&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Rᴺ&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foldl&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c&quot;&gt;# Drop the last two bits&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;PRUNE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DROP&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lift&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DROP&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c&quot;&gt;# Build the full circuit&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;PRUNE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Rᴺ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WRAP&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Took a while to get the &lt;a href=&quot;https://en.wikipedia.org/wiki/Bit_numbering#Order&quot;&gt;bit order&lt;/a&gt; of all this right but the idea was right. I did some nice testing and got it working as it should. As a big test I used the circuit to build and run different systems and compare to existing catalogues. This was the result and I’m pretty happy with it.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;kauffman-network-3-2&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;kauffman-network-3-2&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/booleanmatrices/ref_wolframca.png&quot; /&gt;&lt;br /&gt;Excerpt from &lt;a href=&quot;https://atlas.wolfram.com/01/01/views/87/TableView.html&quot;&gt;summary grid&lt;/a&gt; on the Wolfram website. The slight differences are due only to slight modifications to the starting states.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/booleanmatrices/wolframca.png&quot; alt=&quot;My results&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Looking at the spectra of the update matrices is pretty interesting. As a simple example we can discover eigensystem of the different rules.&lt;/p&gt;
+
+&lt;p&gt;In fact we can look at all the eigenvalues of the same group of rules as above. These are plots of the complex plane from (-1,1) in both axes. 
+&lt;img src=&quot;/assets/images/booleanmatrices/wolfram-eigenvalues.png&quot; alt=&quot;Wolfram eigenvalue plots&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A few interesting things immediately jump out. First, &lt;strong&gt;every rule has zero eigenvalues&lt;/strong&gt; and &lt;strong&gt;the rest are on the unit circle&lt;/strong&gt;. This is consistent with what we saw for the simple boolean network above.&lt;/p&gt;
+
+&lt;p&gt;The rules with eigenvalues in $ \lbrace -1,0,1 \rbrace $ correspond to the simplest rules: 123, 127, 128, 132, 136. In fact, rules with widely and evenly spaced eigenvalues seems to lead to simple periodic behaviour. Rules 130 and 134 are examples.&lt;/p&gt;
+
+&lt;p&gt;Rules 122, 126 and 129 share the same eigenvalue distributions have triangular run-in evolutions although all different in detail. Rule 131 also has uneven eigenvalues and a triangular update rule.&lt;/p&gt;
+
+&lt;p&gt;Rules known to be complex like 124 and 137 have a large number of eigenvalues. There can be a maximum of $2^{11} = 2048$ eigenvalues so the natural question is if any reach this maximum? Rule 120 has many eigenvalues but the pattern is simple. I suspect that in this case the behaviour is highly dependent on the initial state.&lt;/p&gt;
+
+&lt;p&gt;There is a strong resemblance here with the permutation matrices and that’s not surprising. The update rules are, in a sense, permutations with degeneracies. Those degeneracies are the “spider’s legs” in the state diagram. The results suggest that those degeneracies correspond to the zero eigenvalues of the matrix. The degeneracies are zero rows in the transition matrix. Powers of the transition matrix essentially &lt;em&gt;zero out&lt;/em&gt; rows associated with the spider’s legs of the permutations, eventually converging on the cycles of a true permutation.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-spectrum-of-the-update-rule&quot;&gt;The spectrum of the update rule&lt;/h3&gt;
+
+&lt;p&gt;We can remove zero rows and the corresponding columns from the transition matrix without changing the cycle dynamics. This essentially means removing the “leaves” of the state diagram. The outer leaves are sometimes called “Eden” states because they can only be initial states and cannot be reached by any other transition. Continuing this process will result in a &lt;strong&gt;permutation matrix with specific cycle characteristics&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;We can formalise this: let $Q_k$ be the matrix that, when multiplied with another matrix, removes its $k$th row. The matrix which does this has $n-1$ rows and $n$ columns. To construct it, take the $n \times n$ identity matrix, remove row $k$ and set the $k$th column to zeros. The result looks something like this for the case where $n=6$ and $k=3$:&lt;/p&gt;
+
+\[Q = \begin{pmatrix}
+    1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0\\
+    0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0\\
+    0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0\\
+    0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0\\
+    0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1
+\end{pmatrix}\]
+
+&lt;p&gt;If we have a $n \times n$ matrix, $M$, then multiplying it from the left by $Q_k$ will remove one row. To remove the corresponding column it turns out that we have to multiply from the &lt;em&gt;right&lt;/em&gt; by the &lt;em&gt;transpose&lt;/em&gt;. So the final $(n-1) \times (n-1)$ matrix is given as $ M^{\prime} = Q_k M Q_k^T $.&lt;/p&gt;
+
+&lt;p&gt;To remove multiple rows and columns, indexed as $a,b,c,…$, just repeat the process: $… Q_c Q_b Q_a M Q_a^T Q_b^T Q_c^T …$. Of course, the sequence can be combined so that $Q = … Q_c Q_b Q_a$ and by basic matrix rules&lt;label for=&quot;transpose&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;transpose&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;$(A_1A_2…A_{k−1}A_k)^T = A_k^TA_{k−1}^T…A_2^TA_1^T$ (&lt;a href=&quot;https://en.wikipedia.org/wiki/Transpose#Properties&quot;&gt;wiki&lt;/a&gt;) &lt;/span&gt; we have $ M^{\prime} = Q M Q^T $.&lt;/p&gt;
+
+&lt;p&gt;This matrix operation is different from the operations we’ve seen before. It doesn’t discard bits but rather &lt;strong&gt;discards individual states&lt;/strong&gt; or, more specifically, unreachable states. I’m not sure what the categorical construction is for this but it’s hard to see how it would fit on the kinds of a wiring diagram we’ve been using.&lt;/p&gt;
+
+&lt;p&gt;This procedure might result in more rows with all zeros. These are the new unreachable leaf states that replace the removed one. This procedure is essentially pruning the leaf states one by one until we’re left with a pure permutation matrix and its cyclic structure. This construction has the effect of removing the zero eigenvalues from the matrix $M$.&lt;/p&gt;
+
+&lt;p&gt;I &lt;em&gt;think&lt;/em&gt; that this is related to &lt;a href=&quot;https://en.wikipedia.org/wiki/Krohn%E2%80%93Rhodes_theory&quot;&gt;Krohn–Rhodes theory&lt;/a&gt; somehow. That theory relates this kind of cellular automata with &lt;a href=&quot;https://en.wikipedia.org/wiki/Semigroup_action&quot;&gt;actions of semigroups&lt;/a&gt;. I’m trying to learn about that stuff but it’s &lt;em&gt;hard&lt;/em&gt;. There is a categorical treatment of the Krohn–Rhodes theory&lt;label for=&quot;kr-category&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;kr-category&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Wells, Charles. ‘A Krohn-Rhodes Theorem for Categories’. Journal of Algebra 64, no. 1 (May 1980): 37–45. &lt;a href=&quot;https://doi.org/10.1016/0021-8693(80)90130-1&quot;&gt;doi.org/10.1016/0021-8693(80)90130-1&lt;/a&gt;. &lt;/span&gt; that I would like to look at. This stuff spirals off into all kinds of directions that I find fascinating but time is finite. Nevertheless it’s something to put on the todo list.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;reinventing-organizations&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;reinventing-organizations&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1348612346i/8667274.jpg&quot; /&gt;&lt;br /&gt;I bought the book by John Rhodes which tries to explain this and the scientific and philosophical ramifications. It’s called &lt;em&gt;Applications of Automata Theory and Algebra via the Mathematical Theory of Complexity to Biology, Physics, Psychology, Philosophy, and Games&lt;/em&gt;  - John Rhodes; Chrystopher L. Nehaniv (Ed.) (2009)&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;So what? The useful thing about this is only seen when considering processes more generally. There is an argument that says that processes can be designed to naturally be attracted towards desired behaviour, wherever they may start. We might say that an particular iterative approach, akin to the update rule, might be likely to result in a stable end state (which may be cyclic but identifiably stable). This has been investigated and used in the field. For example, Barry O’Reilly work on &lt;a href=&quot;https://leanpub.com/residuality&quot;&gt;Residuality Theory&lt;/a&gt; bases some his philosophy this kind of stability.&lt;/p&gt;
+
+&lt;h3 id=&quot;nothing-is-black-and-white&quot;&gt;Nothing is black and white&lt;/h3&gt;
+
+&lt;p&gt;Another interesting thing that comes out naturally from the categorial approach (and the semigroup approach actually) is that the states don’t have to be restricted to $0$s and $1$s. It turns out that not only are our update rules examples of cd-categories, they are also examples of &lt;a href=&quot;https://ncatlab.org/nlab/show/Markov+category&quot;&gt;Markov categories&lt;/a&gt;. The additional restriction here is that the weights of the states sum to $1$. This means that rather than apply boolean logic to our circuits we can apply &lt;a href=&quot;https://golem.ph.utexas.edu/category/2024/08/introduction_to_categorical_pr.html&quot;&gt;probabilistic (fuzzy) logic&lt;/a&gt;. Take the $AND$ operator. In category theory this is often called the &lt;em&gt;conjunction&lt;/em&gt; or &lt;em&gt;join&lt;/em&gt; operator and it’s fundamental to these (&lt;a href=&quot;https://ncatlab.org/nlab/show/semicartesian+monoidal+category&quot;&gt;cartesian&lt;/a&gt;) monoidal categories. In the world of probabilities this same construction represents the probability of two events occurring together. Likewise the $OR$ operation corresponds to the probability of either event happening or both. The complement rule is the NOT operator&lt;label for=&quot;conditional-probability&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;conditional-probability&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;What we don’t have with this construction is conditionals. I think it’s &lt;a href=&quot;https://ncatlab.org/nlab/show/Markov+category#conditionals&quot;&gt;possible&lt;/a&gt; just haven’t needed it. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;The beautiful thing about these categories is that they automatically capture dependence between probabilities. Take a look at this:
+&lt;img src=&quot;/assets/images/booleanmatrices/and-prob.png&quot; alt=&quot;AND probability&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The AND gate has two inputs and they are both ½. So then why does it output ½ in one case and ¼ oin the other? The reason the outputs are different is because the COPY operation has created a dependency between them. In the first case there are two independent variables and therefore 4 possibilities 
+\(00_b,01_b,10_b,11_b\) and hence the probability of both being 1 is 1 in 4 or ¼. In the other case, since the inputs are effectively the &lt;em&gt;same&lt;/em&gt; variable, they necessarily have the same value so the only possibilities are $00_b$ or $11_b$ and therefore the probability of both being 1 is ½. I think that’s pretty nice.&lt;/p&gt;
+
+&lt;p&gt;Anyway, the upshot is that we can create variables as real numbers in the form \(S = \begin{pmatrix}
+  1-p \\
+  p
+ \end{pmatrix}\) where $p \in [0,1]$. $T$ and $F$ (as defined above) correspond to the special cases where $p=1$ and $p=0$ respectively. The construction automatically ensures that the state elements sum to 1. The tensoring ensures that this is honoured for any number of variables.&lt;/p&gt;
+
+&lt;p&gt;Now that we’ve done it we can just plug real numbers into our cellular automata and see what happens:
+&lt;img src=&quot;/assets/images/booleanmatrices/wolframca-prob.png&quot; alt=&quot;Wolfram probability&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The update rule is exactly the same. It just works. In this case the initial state in each case is set to a single value of $0.6$ in the center cell, rather than $1$ as in the diagram above. The cells are grey-scaled, 0 is white and 1 is black, so 0.6 is a medium grey. Notice that the grey cells emanate away from the starting cell and seem to be superimposed onto a background pattern. I think this nicely shows how the update rule permeates through the cells.&lt;/p&gt;
+
+&lt;p&gt;There are all kinds of experiments to be done with this. What if multiple cells are initialised to 0.6 in the initial state?
+&lt;img src=&quot;/assets/images/booleanmatrices/wolframca-prob2.png&quot; alt=&quot;Wolfram probability2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You can see how the effects of the initial state radiate and seem to interact with each other and create interference patterns.&lt;/p&gt;
+
+&lt;p&gt;Talking of interference patterns, this category will work on complex numbers too, a sort of analog to a quantum state. Of course, true quantum states don’t have copy and delete operators so let’s just call them complex states? Our bits will be defined this time as \(S = \begin{pmatrix}
+  \sqrt{1-a^2} \\
+  a
+ \end{pmatrix}\) where $a$ is complex and $|a| &amp;lt; 1$. In this case their square sum to 1 and the tensor product will honour the L2 norm here too. Let’s generate the same diagrams with this new input state. Remember the update rules are still boolean matrices and haven’t changed at all.&lt;/p&gt;
+
+&lt;p&gt;This first one shows the magnitude of the complex states with a simple initial state of \(0.6 \times e^{2\pi √2}\). Again a 60% magnitude but with an irrational phase:
+&lt;img src=&quot;/assets/images/booleanmatrices/wolframca-cplx-mag1.png&quot; alt=&quot;Wolfram complex magnitudes 1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And this one shows the phases:
+&lt;img src=&quot;/assets/images/booleanmatrices/wolframca-cplx-ang1.png&quot; alt=&quot;Wolfram complex phases 1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There is a very similar kind of pattern emerging from in both the magnitude and phase of the state vector. What if we have two cells set in the initial state?
+&lt;img src=&quot;/assets/images/booleanmatrices/wolframca-cplx-mag2.png&quot; alt=&quot;Wolfram complex magnitudes 2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And this one shows the phases:
+&lt;img src=&quot;/assets/images/booleanmatrices/wolframca-cplx-ang2.png&quot; alt=&quot;Wolfram complex phases 2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Some nice patterns emerging as the two initialised elements interfere with each other. You could play with this all day long. I haven’t looked at all on what patterns come out of this but I suspect that the phases sort of x-ray into the patterns, seeing through static or repeating background behaviour.&lt;/p&gt;
+
+&lt;h2 id=&quot;more-questions&quot;&gt;More questions&lt;/h2&gt;
+
+&lt;p&gt;Some things that have occurred to me as I was doing this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Curious now for a deeper understanding of the Krohn-Rhodes theorem, to understand it and to see it in the light of category theory. What, if any, is the relation to &lt;a href=&quot;https://en.wikipedia.org/wiki/Signal-flow_graph&quot;&gt;signal-flow diagrams&lt;/a&gt;?&lt;/li&gt;
+  &lt;li&gt;What would the phase space of a probability or complex state be like as different operators are applied to them. Do they tend to go be attracted to the fixed points or do they spins about in other ways? It would be quite easy to set up a 2D (or maybe 3D is minimum?) state and just apply random operators to it and display the path. It would be quite cool if there were strange attractors hidden there somewhere.&lt;/li&gt;
+  &lt;li&gt;Intuition is telling me that we could use cycles to represent classical probabilities and “compress” deterministic algorithms to probabilistic ones. In other words, move computation from the time domain into a wider state space. I’m not sure if $\epsilon$-machine&lt;label for=&quot;esilon&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;esilon&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Shalizi, Cosma Rohilla, and James P. Crutchfield. ‘Computational Mechanics: Pattern and Prediction, Structure and Simplicity’. Journal of Statistical Physics 104, no. 3/4 (2001): 817–79. &lt;a href=&quot;https://doi.org/10.1023/A:1010388907793&quot;&gt;doi.org/10.1023/A:1010388907793&lt;/a&gt;.
+ &lt;/span&gt; does something similar. Curious to look more at this.&lt;/li&gt;
+  &lt;li&gt;Can we construct a &lt;strong&gt;fourier transform operator&lt;/strong&gt; by combining cycles of lengths $2^k$ and working backwards from the transition matrix to a boolean network? Is there there anything like a Shor’s algorithm, for example?&lt;/li&gt;
+  &lt;li&gt;Is there such a thing as an “indivisible” permutation which would link this to probability in the way that indivisible unitary matrices link probability to Hilbert spaces? See Barandes.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;so-what&quot;&gt;So what?&lt;/h2&gt;
+
+&lt;p&gt;I spent quite a few hours on this, actually whole days, over several weeks. It’s been a fascinating journey and I’ve come away with a much deeper understanding of boolean networks and Wolfram’s cellular automata. I’ve got some additional intuition and respect about it relates to category theory and a renewed interest in the Applied Category Theory book I bought some time ago but have been slow to read. Nothing i this article is particularly useful in itself. The categorial construction of the update rules are far too inefficient to be practical but the string diagram reasoning and formalisms have become more familiar and I can see the real power. I didn’t really belive David Spivak when he said somewhere that category theory can be used even for philosophical reasoning, but I think I’m starting to see what he means. It’s a very powerful language but also formal and mathematical. That’s the sort of thing I should like, I guess. ANyway I’m going to leave it there, this write up is never ending. Glad it’s done now.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 17 Dec 2024 17:03:00 +0100</pubDate>
+        <link>https://johnhearn.github.io//articles/boolean-matrices</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/boolean-matrices</guid>
+        
+        
       </item>
-    {% endfor %}
+    
+      <item>
+        <title>Kauffmann&apos;s Basic Gene Nets</title>
+        <description>&lt;p&gt;Stuart Kauffman’s 1969 paper &lt;em&gt;&lt;a href=&quot;https://citeseerx.ist.psu.edu/document?repid=rep1&amp;amp;type=pdf&amp;amp;doi=93e430fc351766b408c39a89c4421546d12632d0&quot;&gt;Metabolic Stability and Epigenesis in Randomly Constructed Genetic Nets&lt;/a&gt;&lt;/em&gt; introduced a simple model of gene interaction which seemed to capture certain characteristics of real biological systems. It was a precursor for later work on &lt;a href=&quot;https://en.wikipedia.org/wiki/NK_model&quot;&gt;NK-models&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Cellular_automaton&quot;&gt;cellular automata&lt;/a&gt;. They have come up recently in different forms such as Stephen Wolfram’s work on biological computability&lt;label for=&quot;wolfram-1&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;wolfram-1&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;&lt;a href=&quot;https://writings.stephenwolfram.com/2024/05/why-does-biological-evolution-work-a-minimal-model-for-biological-evolution-and-other-adaptive-processes/&quot;&gt;Why Does Biological Evolution Work? A Minimal Model for Biological Evolution and Other Adaptive Processes&lt;/a&gt; (Wolfram - May 2024). &lt;/span&gt;&lt;label for=&quot;wolfram-2&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;wolfram-2&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;&lt;a href=&quot;https://writings.stephenwolfram.com/2024/12/foundations-of-biological-evolution-more-results-more-surprises/&quot;&gt;Foundations of Biological Evolution: More Results &amp;amp; More Surprises&lt;/a&gt; (Wolfram - December 2024). &lt;/span&gt; and Barry O’Reilly’s &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/S1877050922004975&quot;&gt;Residuality Theory&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I’m going to take the approach of just reproducing Kauffman’s initial results, as I like to do, including some additional work to link it to Wolfram’s classes. I have also done some work on the separability, divisibility and reversibility of these nets but that will be in another post.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-setup&quot;&gt;The setup&lt;/h2&gt;
+
+&lt;p&gt;The paper begins like this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Proto-organisms probably were randomly aggregated nets of chemical
+reactions. The hypothesis that contemporary organisms are also randomly
+constructed molecular automata is examined by modeling the gene as a
+binary (on-off) device and studying the behavior of large, randomly constructed nets of these binary “genes”.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;First some terminology. Kauffman refers to his net as “&lt;em&gt;a binary (on-off) device&lt;/em&gt;”. We will call this a &lt;a href=&quot;https://en.wikipedia.org/wiki/Boolean_network&quot;&gt;boolean network&lt;/a&gt; because each node has a boolean value attached to it, on or off. When he uses the word “gene” (in quotes) he’s referring to the individual nodes of the network.&lt;/p&gt;
+
+&lt;p&gt;There are $N$ nodes and each node is attached to $K$ other nodes. By way of example Kauffman uses a simple network with 3 nodes and 2 connections.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;network-3-2&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;network-3-2&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;The example that Kauffman uses in the paper is a (N=3,K=2) network. By necessity it is a complete graph and is small enough to be worked through by hand. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;kauffman-network-3-2&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;kauffman-network-3-2&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/kauffman/kauffman-network-3-2.png&quot; /&gt;&lt;br /&gt;Comparison with figure from the original paper which includes the truth table for each node.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/kauffman/network-3-2.png&quot; alt=&quot;Example network from paper&quot; width=&quot;250px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The network is allowed to evolve in a particular way:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;… the inputs to each binary “gene” may be chosen at random; the effect of those inputs on the recipient element’s output behavior may be randomly decided by assigning at random to each element one of the possible Boolean functions of its inputs.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;For example, if a node has two inputs A and B (K=2) then the rule might be or $A$ AND $B$ or $A$ XOR $B$, assigned at random, and the node’s value would be updated accordingly.&lt;/p&gt;
+
+&lt;p&gt;Alternatively, these rules can be represented in full generality as a &lt;a href=&quot;xhttps://en.wikipedia.org/wiki/Truth_table&quot;&gt;truth table&lt;/a&gt;. Since for this study we don’t care what the actual rules are in terms of ANDs and ORs, we will construct the update rules simply by taking a random truth table.&lt;/p&gt;
+
+&lt;p&gt;To reproduce Kauffman’s simple example in the paper we assign the following truth table to the network:&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;tensor&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;tensor&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;As an aside, there are $2^K \times N$ entries in the truth table. This suggests to me that a tensor representation might be more efficient for simulation, especially for larger values of $K$. &lt;/span&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Node&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Inputs&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;$00$&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;$01$&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;$10$&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;$11$&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;$X_{T+1}$&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;$YZ$&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;$Y_{T+1}$&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;$XZ$&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;$Z_{T+1}$&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;$XY$&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Enumerating the small number of possible states in this example we find the following update rule:&lt;/p&gt;
+
+&lt;p&gt;$f: X \times Y \times Z \rightarrow X \times Y \times Z$&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;kauffman-network-3-2&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;kauffman-network-3-2&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/kauffman/kauffman-truth_table-3-2.png&quot; /&gt;&lt;br /&gt;Comparison with truth table depicted in the original paper.&lt;/span&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-julia highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+ &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+ &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+ &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+ &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+ &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+ &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+ &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;x&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;!---
+| T&lt;br/&gt;X Y Z || T+1&lt;br/&gt;X Y Z|
+|:-:|:-:|:-:|
+| 0 0 0 | $\rightarrow$ | 0 0 1|
+| 0 0 1 | $\rightarrow$ | 1 0 1|
+| 0 1 0 | $\rightarrow$ | 0 0 1|
+| 0 1 1 | $\rightarrow$ | 0 0 1|
+| 1 0 0 | $\rightarrow$ | 0 0 0|
+| 1 0 1 | $\rightarrow$ | 1 1 0|
+| 1 1 0 | $\rightarrow$ | 0 0 1|
+| 1 1 1 | $\rightarrow$ | 0 1 1|
+--&gt;
+
+&lt;p&gt;When the update rule is applied multiple times, the values of the nodes enter a dynamic wholly defined by the truth table. Since this is a finite system, at some point the values will enter a cycle. The maximum possible cycle length is $2^N$ (or $2^3=8$ in our small example) but often the cycles will be shorter. By tracing the dynamics for each of the possible state values we can draw a graph of their trajectories&lt;label for=&quot;kimatograph&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;kimatograph&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Kauffman calls these diagrams &lt;em&gt;kimatograph&lt;/em&gt; in the paper but it doesn’t seem to be a term that caught on, although I quite like it. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;kauffman-kimatograph-3-2&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;kauffman-kimatograph-3-2&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/kauffman/kauffman-kimatograph-3-2.png&quot; /&gt;&lt;br /&gt;The &lt;em&gt;kimatograph&lt;/em&gt; depicted in the original paper. The state $000$ has been omitted for some reason.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/kauffman/kimatograph-3-2.png&quot; alt=&quot;Example kimatograph from paper&quot; width=&quot;450px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;By looking at the diagram and following the arrows, it’s clear that all the states eventually fall into the same cyclic behaviour. There is a &lt;em&gt;transient&lt;/em&gt; (or &lt;em&gt;run-in&lt;/em&gt;) period between the initial state and the first state encountered on a cycle. Kauffman defines a &lt;em&gt;confluent&lt;/em&gt; as the set of states leading into, or on, a cycle. In this case there is only one.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-results&quot;&gt;The results&lt;/h2&gt;
+
+&lt;p&gt;In the paper, Kauffman studied the dynamics of large networks, keeping $K=2$. Just by way of example a graph representation of a network with $N=14,K=2$ might look like the following diagram.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;random-network-14-2&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;random-network-14-2&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;This network has 14 nodes labelled from 1 to 14 ($N=14$). Each node has two incoming connections ($K=2$). &lt;/span&gt;
+&lt;img src=&quot;/assets/images/kauffman/random-network-14-2.png&quot; alt=&quot;Random boolean network&quot; width=&quot;450px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The situation clearly becomes more complicated very quickly and you’d expect the dynamics to be equally complicated. However, Kauffman goes on to say:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The results suggest that, if each “gene” is directly affected by two or three other “genes”, then such random nets: behave with great order and stability.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is the crux of the study and mostly borne out but we will see that there are important exceptions. Kauffman realised this and the nuance became of central importance in the development of complex systems theory although it is understated in this early paper.&lt;/p&gt;
+
+&lt;p&gt;Take, for example the histogram of cycle length. Kauffman discovered that the average cycle length for ($N=400,K=2$) nets with random truth tables was smaller than might be expected. We can reproduce the result fairly well.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;cycles-hist-400-2&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;cycles-hist-400-2&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;A histogram of cycles detected in 400 node random boolean nets. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;kauffman-cycles-hist-400-2&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;kauffman-cycles-hist-400-2&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/kauffman/kauffman-cycles-hist-400-2.png&quot; /&gt;&lt;br /&gt;The histogram of cycle length depicted in the original paper. Note the cut-off at 55 and the preponderance of cycles of length 2.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/kauffman/cycles-hist-400-2.png&quot; alt=&quot;Histogram nets N=400&quot; width=&quot;350px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are immediately some things to note. First the &lt;strong&gt;similarity is remarkable&lt;/strong&gt;, especially considering that this is a run of 200 random samples out of a possible $2^{400}$ states. There are peaks at 1, 2, 4, 6, 8, 10, 12, 16, 20, 24, etc. and the trend is decreasing with larger cycle lengths.&lt;/p&gt;
+
+&lt;p&gt;There are two important caveats, though.&lt;/p&gt;
+
+&lt;p&gt;The preponderance of cycles of length two in Kauffman’s results is not present in mine. Initially, I thought this was a bug in my code but I checked and double checked the calculations by hand and couldn’t find a problem. Moreover, closer study reveals a second, related caveat worth mentioning.&lt;/p&gt;
+
+&lt;p&gt;I have artificially chopped the histogram at the value of 55 to match Kauffman’s. However, my results include cycles of lengths much greater then 55, some having exceeded the limit of 10,000 which I had to add to stop the simulations running forever. I have individual instances of cycle lengths of 60, 62, 72, 78, 80, 84, 96, 102, 111, 116, 168, 186, 248, 282, 292, 320, 381, 438, 458, 482, 508, 1017, 1260, 1281, 1552, 3066, 3500, 3628, 6527 and eight more reaching the upper limit.&lt;/p&gt;
+
+&lt;p&gt;Suspiciously, my results typically show a similar number of cycle lengths above 55 as the difference in Kauffman’s and my results for 2-cycles. For example, the 2-cycle count from my experiment shown in the figure, was 9. The number of cycles of length greater than 55 was 39. Kauffman’s 2-cycle count was 40.&lt;/p&gt;
+
+&lt;p&gt;I don’t have Kauffman’s original code and I can’t formally prove my code is correct. Nonetheless I have found an interesting way of testing it which is instructive in itself. The idea is to narrow in on Stephen Wolfram’s well-known 1D cellular automata as a &lt;em&gt;special case&lt;/em&gt; of Kauffman’s boolean nets.&lt;/p&gt;
+
+&lt;h2 id=&quot;wolframs-classes&quot;&gt;Wolfram’s classes&lt;/h2&gt;
+
+&lt;p&gt;It turns out that Wolfram’s famous study of &lt;a href=&quot;https://en.wikipedia.org/wiki/Elementary_cellular_automaton&quot;&gt;elementary 1D cellular automata&lt;/a&gt; (which he discusses in great depth in his book “&lt;em&gt;A New Kind of Science&lt;/em&gt; (2002)”) can easily be modelled as a boolean net. The good thing is that the results are visually quite distinctive and can serve as a reference.&lt;/p&gt;
+
+&lt;p&gt;To build it, start with the $N$ nodes arranged in a line. Connect each node to itself and its two immediate neighbours, making $K=3$. The system is closed by wrapping around the ends of the line so that the nodes at both extremes are connected together&lt;label for=&quot;periodic&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;periodic&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;These are sometimes called &lt;em&gt;periodic boundaries&lt;/em&gt;. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Make a truth table based on one of the $2^3$ possible rules. Wolfram &lt;a href=&quot;https://en.wikipedia.org/wiki/Wolfram_code&quot;&gt;codified&lt;/a&gt; them as numbers from 0 to 255. The truth table is identical for each of the nodes.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;rule26&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;rule26&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/kauffman/rule26.png&quot; /&gt;&lt;br /&gt;Example of the history of evolution of a boolean net with 100 nodes arranged in a line. Each time step is a row on the image. The pattern is cyclic and, in fact, is classified as “class 2” in Wolfram’s scheme.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Allow the system to evolve, keeping records on the history of states as the rows of an image. This is what you get, for example for rule 26:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/9/94/Rule26rand.png&quot; width=&quot;150&quot; height=&quot;150&quot; style=&quot;padding:25px; background-color:white;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Wolfram and others have studies these nets in depth and famously found that they exhibit behaviour that fits into 4 classes:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://files.wolframcdn.com/pub/www.wolframscience.com/nks/page0231a-600.png&quot; alt=&quot;Wolfram&apos;s four classes&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The first class leads to a single terminal, stationary state. All 0s or all 1s. In terms of Kauffman’s nets, the cycle length in this class is 1 and we have seen that many rules lead to this outcome. Kauffman notes that removing rules which always resolve to 0 or 1&lt;label for=&quot;tc&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;tc&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;He calls them &lt;em&gt;contradictions&lt;/em&gt; and &lt;em&gt;tautologies&lt;/em&gt; respectively. &lt;/span&gt; significantly reduces the occurrence of this class.&lt;/p&gt;
+
+&lt;p&gt;The second class reduces to fixed patterns with simple periodic behaviour. &lt;a href=&quot;https://conwaylife.com/wiki/One-dimensional_cellular_automaton/Wolfram_rule&quot;&gt;Rule 26 shown above falls into this class&lt;/a&gt;. While it is a fairly complicated (using the term advisedly) pattern it is periodic and predictable.&lt;/p&gt;
+
+&lt;p&gt;The third class is entirely chaotic. The pattern does not converge and is only periodic to the extent of the finite state space (which may be extremely large). The appearance is of white noise and randomness and, in fact, is &lt;a href=&quot;https://reference.wolfram.com/language/tutorial/RandomNumberGeneration.html#185956823&quot;&gt;available as a  random number generator&lt;/a&gt; in Mathematica.&lt;/p&gt;
+
+&lt;p&gt;The fourth class demonstrates complexity. The patterns are non-periodic but also not chaotic. These configurations are on the &lt;em&gt;edge of chaos&lt;/em&gt;, neither periodic nor chaotic. One interesting property that at least two of the rules in this category have is &lt;em&gt;universality&lt;/em&gt;&lt;label for=&quot;universality&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;universality&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;&lt;a href=&quot;https://wpmedia.wolfram.com/sites/13/2018/02/15-1-1.pdf&quot;&gt;Universality in Elementary Cellular Automata&lt;/a&gt; - Matthew Cook &lt;/span&gt;, or in other words the ability to perform any calculation.&lt;/p&gt;
+
+&lt;p&gt;What’s the relevance of all this? Well, by converting the well-documented Wolfram rules to Boolean nets I’m much more comfortable saying that my simulation is working as expected. I’ve tried many different rules and the patterns are identical to the published ones.&lt;/p&gt;
+
+&lt;p&gt;On top of that, since the simple cellular automata studied by Wolfram is an example of very simple Kauffman network then the Kauffman networks in general must necessarily admit such classes of behaviour, including class 3 and 4, the chaotic and universal ones. In this light, Kauffman’s discovery that the average cycle length remains smaller than might be expected is just a part of a much richer picture.&lt;/p&gt;
+
+&lt;p&gt;At this point I got side tracked onto a parallel way of modelling the networks which has some promise. The write up of that will have to wait until the next post.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 05 Dec 2024 07:53:00 +0100</pubDate>
+        <link>https://johnhearn.github.io//articles/kauffman-networks</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/kauffman-networks</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Christopher Alexander and Network Theory</title>
+        <description>&lt;p&gt;&lt;label for=&quot;aim&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;aim&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;The aim of this article is not to give a complete picture of 60 years of his work. I suggest you read his books for that. Rather it is to explain just enough to see the arc and place it in context. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;In his early work, “&lt;em&gt;Notes on the Synthesis of Form (1964)&lt;/em&gt;” (abbreviated in the following as &lt;em&gt;NotSoF&lt;/em&gt;), Christopher Alexander explored a mathematical, network-based approach to design. He conceptualised design as an interrelated network of “misfit variables” to be optimised through computational analysis, algorithmically &lt;em&gt;solving&lt;/em&gt; conflicts between interconnected elements.&lt;/p&gt;
+
+&lt;p&gt;His thesis was that to solve a design problem it should be reduced to multiple smaller problems and that, crucially, we have been limited to using existing concepts that have come down to us as “&lt;em&gt;arbitrary historical accidents&lt;/em&gt;” rather than being an optimal description of the situation at hand. At this stage, Alexander’s approach was reductionist and analytical, believing that a design could be synthesised and studied through rigorous structural optimization. He suggested algorithms (precursors to &lt;a href=&quot;https://en.wikipedia.org/wiki/Community_structure&quot;&gt;community structure&lt;/a&gt; algorithms) to cluster elements together in such a way as to reduce the overall design problem to a hierarchical tree of simpler ones which in turn could be solved and optimised &lt;em&gt;independently&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;assets/images/alexander/diagrams.jpg&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;assets/images/alexander/diagrams.jpg&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;A figure from NotSoF which shows design variables (small black circles, so-called &lt;em&gt;nodes&lt;/em&gt; in the network) and their interactions (lines). The nodes are grouped into clusters (represented as the larger circles). &lt;/span&gt;
+&lt;img src=&quot;/assets/images/alexander/diagrams.jpg&quot; alt=&quot;Diagrams&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In this work, the clusters of variables Alexander calls “&lt;em&gt;diagrams&lt;/em&gt;” (which he would later rename to the “&lt;em&gt;patterns&lt;/em&gt;” which he became famous for) and this is where his thinking began to change. As he states in the preface to later editions:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;As you can see, it is the independence of the diagrams which gives them these powers. At the time I wrote this book, I was very much concerned with the formal definition of “independence,” and the idea of using a mathematical method to discover systems of forces and diagrams which are independent. But once the book was written, I discovered that it is quite unnecessary to use such a complicated and formal way of getting at the independent diagrams.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;What does modern network science tell us about this? To answer this we can use the example described in depth at the end of NotSoF.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;assets/images/alexander/village.jpg&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;assets/images/alexander/village.jpg&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;The example from the book NotSoF which in turn is taken from the study “&lt;em&gt;The De­termination of Components for an Indian Village&lt;/em&gt;” - Conference on Design Method (Oxford : Pergamon, 1963). The layout is force directed, meaning that related nodes are attracted toward each other and unconnected nodes are pushed apart. Sometimes clusters appear naturally but in this case none are easily identified. The graph is interactive, feel free to try and pull the clusters apart yourself.  &lt;/span&gt;&lt;/p&gt;
+
+&lt;iframe width=&quot;55%&quot; height=&quot;400&quot; frameborder=&quot;0&quot; src=&quot;https://observablehq.com/embed/e954fd2bd1ba27cb@219?cells=chart&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;This is the full and extensive design problem that Alexander studied. Although he was able to group this into 12 hierarchical clusters (represented by the colours off the nodes), the nature of the &lt;em&gt;independence&lt;/em&gt; of those clusters is far from clear. Force directed layouts such as this one sometimes identify underlying structure but not in this case. Even so, visually it might be deceiving so we can apply modern summary statistics to this network and see the difficulty in clustering this network at all.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;table style=&quot;width:70%&quot;&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Average degree&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;~20&lt;/td&gt;
+      &lt;td&gt;Each node, on average, interacts with 20 other nodes.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Edge density&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;0.14&lt;/td&gt;
+      &lt;td&gt;About 1 in 7 of all possible interactions are present. This is a dense graph.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Average_path_length&quot;&gt;Average Path Length&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;2.0&lt;/td&gt;
+      &lt;td&gt;On average there are just 2 hops between each node.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Clustering_coefficient#Global_clustering_coefficient&quot;&gt;Global clustering coefficient&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;0.06&lt;/td&gt;
+      &lt;td&gt;Higher values mean better clusters. This is a very low value.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Algebraic_connectivity&quot;&gt;Algebraic connectivity&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&amp;gt;6&lt;/td&gt;
+      &lt;td&gt;Very high. By comparison tree-like graphs, scale-free and small-world networks have this typically less then 1.0.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;These metrics all point at this being a highly connected network without any clear clusters or community structure. Although the &lt;em&gt;diagrams&lt;/em&gt; suggested by Alexander in the book do, to some measure, minimise the links between clusters, the result is still very far from the tree-like structure that is espoused.&lt;/p&gt;
+
+&lt;p&gt;Alexander realised this, of course, and the beginnings of a perspective shift are clear in his essay the very next year “&lt;em&gt;A City is Not a Tree (1965)&lt;/em&gt;”, where he claimed that cities and urban structures cannot be fully explained by hierarchical models or purely tree-like networks. He argued that successful cities are not trees but are “semi-lattices” — networks with overlapping connections that resemble the organic, intertwined complexity of real-life. Here, Alexander is reflecting on and challenging his own reductionist assumptions, positing that cities function best with fluid, overlapping, and non-hierarchical connections, allowing diverse elements to interrelate dynamically.&lt;/p&gt;
+
+&lt;p&gt;Alexander’s reflexivity is to be admired. Remember he was writing this 60 years ago, when hard science was a raging success explaining the unexplainable and we were still optimistic for “Grand Theories of Everything” even though computers filled an entire room.&lt;/p&gt;
+
+&lt;p&gt;By the time Alexander finished “&lt;em&gt;A Pattern Language (1977)&lt;/em&gt;”, his thinking had moved even further away from strict optimization schemes toward a more life-centered philosophy. He recognized that human environments thrive on the richness of overlapping networks rather than static or strictly hierarchical arrangements. Rather than optimizing individual design problems, he focused on identifying “patterns” — recurring, archetypal solutions that reflect timeless principles of habitability. Each pattern addressed a design aspect that could contribute to a “whole” design when combined with others in rich and intricate ways. Patterns were interconnected in what Alexander saw as a more organic network, linked by relationships that encouraged cohesion and harmony within the design. Rather than algorithmic clustering, these patterns represented design wisdom drawn from observation and experience, creating environments that intuitively supported human needs and preferences.&lt;/p&gt;
+
+&lt;p&gt;Taking this idea further, in “&lt;em&gt;The Nature of Order series (2002–2005)&lt;/em&gt;”, Alexander considers “centers,” a concept intended to capture essential order that appears naturally within vibrant environments. Alexander believed these centers were interrelated and overlapping, embedded in a “living” structure that achieved harmony through wholeness rather than quantifiable connections.&lt;/p&gt;
+
+&lt;p&gt;By this point Alexander’s perspective has shifted entirely to a holistic one. He is no longer using tree structures and prefers using words like &quot;&lt;em&gt;wholeness&lt;/em&gt;&quot; to describe this shift requiring experience and expertise to understand the full picture.&lt;/p&gt;
+
+&lt;hr class=&quot;slender&quot; width=&quot;50%&quot; /&gt;
+
+&lt;p&gt;I will admit that the mathematical approach of Alexander’s early work still very much appeals to the logical side of my brain and 30+ years of western education: if I follow this procedure, I can solve the problem in the abstract using maths and computers. This is one extreme of a philosophical framework which emphasises narrowing the vision and focusing in on breaking down and solving component problems and then reintegrating them. Some people use the left-hemisphere as a metaphor for this kind of thinking.&lt;/p&gt;
+
+&lt;p&gt;This is also the thinking that leads us to search for optimal efficiency through gradient descent to cost reduction and maximal productivity.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;left-right&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;left-right&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;Ironically the left-right distinction is itself a left-hemisphere concept. Using such terms encumbers us with a recursive limitation. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;However, shifting too dramatically from a left-hemisphere to right-hemisphere approach (System A to System B, as he called them) causes unresolvable tension, poles so far apart that there simply is no sweet spot. Christopher Alexander himself documented these problems in the book “&lt;em&gt;The Battle for the Life and Beauty of the Earth: A Struggle between Two World-Systems (2012)&lt;/em&gt;”. System A drives for cold, modern efficiency and System B for life and harmony. I live in a System A building. How much better it could have been with a little System B. Too much System B and it wouldn’t even exist. As Daniel Schmachtenberger says “&lt;em&gt;we’re creating a future that &lt;strong&gt;nobody&lt;/strong&gt; wants&lt;/em&gt;”.&lt;/p&gt;
+
+&lt;p&gt;Can we apply modern efficiency to find life and harmony and get the best of both worlds? It doesn’t seem like an impossible goal to me.&lt;/p&gt;
+
+&lt;p&gt;In modern network theory, &lt;em&gt;patterns&lt;/em&gt;, &lt;em&gt;diagrams&lt;/em&gt; and even &lt;em&gt;centres&lt;/em&gt; might be better considered as &lt;a href=&quot;https://en.wikipedia.org/wiki/Network_motif&quot;&gt;motifs&lt;/a&gt; rather than clusters determined by the density of their interactions. Motifs are repeating, stable structures with the potential to identify key functional properties embedded within a network of a particular type - certain configurations that always seem to work well together. Importantly, they do not need to be disconnected from the rest of the network but can mix and overlap with other nodes and motifs while maintaining their own essential structure. Although there are modern algorithms for detecting motifs, just like clusters, at this point Alexander was arguing that algorithms could not capture the fundamental quality of “&lt;em&gt;life&lt;/em&gt;” that great designs embody; only an intuitive, holistic understanding could bring the sense of harmony aspired to.&lt;/p&gt;
+
+&lt;p&gt;There is a certain circularity in Alexander’s story. With the aim of trying to get away from subjective, accidental concepts to a more objective approach he ended up saying that only through expertise are we able to detect and evaluate the concepts in the first place.&lt;/p&gt;
+
+&lt;p&gt;I am more optimistic. I wonder if we will be able to complete the circle and detect natural but explainable motifs. For example, new language models seem to be able to glean underlying patterns that maybe even the experts are not aware of. I can envision a world, not too far away, where we will need both the algorithmic tools &lt;em&gt;and&lt;/em&gt; expert evaluation to keep things in check.&lt;/p&gt;
+
+&lt;p&gt;A nice example of a similar circularity has happened in chess. Many believed that computers could not play chess due to the unfathomable number of possible moves while others believed that even if they did, the game would become boring and predictable. Nonetheless modern engines have far surpassed humans and are now helping professional players to develop new intuitions. Rather than mechanising the game, modern encounters are quick to leave theory behind and explore more novel openings than they did before the engines existed.&lt;/p&gt;
+
+&lt;p&gt;The evolution of Christopher Alexander’s design philosophy also has an interesting analogy with the modern tension between systems thinking and complexity theory. When viewed through the lens of network theory we can place his journey in a firm conceptual framework and show his battles in a modern light. He moved from clustering design variables to a more holistic, fluid approach. This is very similar to the comparison by some of traditional and structural systems thinking approaches (such as lines and circles and systems dynamics) to more fluid approaches from Complexity Theory. Bearing in mind Alexander’s philosophical journey, I am eager to see the evolution and synthesis of both of these subjects.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 16 Nov 2024 08:30:00 +0100</pubDate>
+        <link>https://johnhearn.github.io//articles/christopher-alexander-network-theory</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/christopher-alexander-network-theory</guid>
+        
+        <category>design</category>
+        
+        <category>alexander</category>
+        
+        <category>network theory</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Predictability and batch size</title>
+        <description>&lt;p&gt;Some results from a little Monte Carlo simulation of delivery times &lt;a href=&quot;https://www.linkedin.com/posts/phil-ledgerwood_in-my-last-post-on-this-httpslnkdin-activity-7245467832489046017-sk_N&quot;&gt;posted on LinkedIn&lt;/a&gt; showed that &lt;strong&gt;predictability decreases with larger batch sizes&lt;/strong&gt;. A little maths shows clearly why this is the case.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-model&quot;&gt;The model&lt;/h3&gt;
+
+&lt;p&gt;The post compared a team delivering one work item per day with a team delivering 5 work items together every 5 days. The teams have a batch size of 1 and 5 respectively. In this situation we’d expect the mean delivery rate to be the same, namely 1 item per day on average. We’ll call the batch size $b$.&lt;/p&gt;
+
+&lt;p&gt;In our model, a team will deliver $W$ work items (doesn’t matter the size of each item, we’re only using the finishing rate in this model) in batches with $\frac{W}{b}$ items in each batch. Let’s call the number of batches $r=\frac{W}{b}$.&lt;/p&gt;
+
+&lt;p&gt;In this idealised model, Team 1’s probability of delivering each day is close to 1, so for this case let’s say $p=1$. Team 2’s probability of delivering 5 work items on any particular day is $p=\frac{1}{5}$. So in general on a given day a team delivers $b$ work items with a probability of $p=\frac{1}{b}$.&lt;/p&gt;
+
+&lt;p&gt;We want to know the probability of delivering $W$ items of work in $n$ days. This requirement is captured by a &lt;a href=&quot;https://en.wikipedia.org/wiki/Negative_binomial_distribution&quot;&gt;Negative Binomial&lt;/a&gt; distribution and, luckily for us, all the maths has been previously worked out. We’ll break the total delivery time down into two parts. First, the the number of times that a team &lt;em&gt;fails&lt;/em&gt; to deliver on a specific day, that is the gaps between deliveries. We’ll call that number $k$. Secondly, we need the number of days that it does deliver, this is $r$. We can then say that the total number of days is the sum of the delivery days, $r$, plus the non-delivery days, $k$. In other words, $n=k+r$. In this case then $k$ follows:&lt;/p&gt;
+
+\[n-r = k \sim NegativeBinomial(r, p)\]
+
+&lt;p&gt;And from this we can work out the distribution of $n$.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-does-the-model-tell-us&quot;&gt;What does the model tell us?&lt;/h3&gt;
+
+&lt;p&gt;Given the distribution defined above, and remembering that $r$ is a constant, then the expected value of $n$ is:&lt;/p&gt;
+
+\[E[n] = E[k+r] = E[k] + r = \frac{r(1-p)}{p} + r = \frac{r}{p} = \frac{\frac{W}{b}}{\frac{1}{b}} = W\]
+
+&lt;p&gt;So, in this model, to deliver $W$ work items &lt;strong&gt;the average total delivery time is independent of the batch size&lt;/strong&gt;, as expected.&lt;/p&gt;
+
+&lt;p&gt;What about its variance? The variance of the mean (a measure of predictability) is:&lt;/p&gt;
+
+\[Var[n] = Var[k+r] = Var[k] = \frac{r(1-p)}{p^2} = \frac{W}{b} \frac{(1-\frac{1}{b})}{\left( \frac{1}{b} \right)^2} = W(b-1)\]
+
+&lt;p&gt;So &lt;strong&gt;the variance &lt;em&gt;increases linearly&lt;/em&gt; with batch size&lt;/strong&gt;. Since the greater the variance the less predictable the result we can say that the predictability &lt;em&gt;decreases&lt;/em&gt; with batch size.&lt;/p&gt;
+
+&lt;p&gt;The variance &lt;strong&gt;also increases linearly with the amount of work&lt;/strong&gt;. This captures the fact that the predictability decreases the further into the future you look, even if the delivery rate remains constant. This is just one of the factors comprising the &lt;a href=&quot;https://en.wikipedia.org/wiki/Cone_of_uncertainty&quot;&gt;cone of uncertainty&lt;/a&gt; that results solely from batch size.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-model-is-a-model&quot;&gt;A model is a model&lt;/h3&gt;
+
+&lt;p&gt;In any real team the batch size won’t be constant but, all other things being equal, this model is good enough to tell us that regular delivery of smaller batches is preferable to larger ones.&lt;label for=&quot;other reasons&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;other reasons&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;There are other reasons too, like the accumulation of changes increasing the probability of bugs but that is not covered in this model. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Also in real teams the work items are generally not completely independent. This can be due to internal team dynamics, one piece of work being a prerequisite of another, etc. The practical effect of this is to increase the variance further. One nice thing about the negative binomial as a modelling tool is that it can easily be tuned to the teams actual data by increasing its variance slightly while keeping the mean constant. In the past I have found this to be a very good approximation of data gathered from real teams.&lt;/p&gt;
+
+&lt;p&gt;Another nice thing about using a known distribution is that we can go beyond normal Monte Carlo and use Bayesian inference for forecasting. Having a Bayesian model has the advantage of being deterministic and smoother, regulating and reducing noise or small sample effects that are sometimes evident in Monte Carlo simulations.&lt;/p&gt;
+
+&lt;p&gt;As always these results need to be used with caution and a full understanding of what they mean. Nonetheless having models to help us understand the mechanisms and principles behind our intuitions can be very handy at times.&lt;/p&gt;
+
+&lt;h3 id=&quot;validation&quot;&gt;Validation&lt;/h3&gt;
+
+&lt;p&gt;Just to check that the model we’ve described actually works, the shaded area in the plot below shows 100,000 live results from Monte Carlo simulations of delivery times for 40 pieces of work when 5 items are delivered together. The red line represents the negative binomial model described here. Hopefully, they match as perfectly now as they did when I wrote this.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;iframe width=&quot;780&quot; height=&quot;470&quot; src=&quot;https://johnhearn.github.io//assets/frames/negative-binomial-plot.html&quot;&gt;
+
+&lt;/iframe&gt;
+</description>
+        <pubDate>Sat, 28 Sep 2024 18:30:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/predictability-and-batch-size</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/predictability-and-batch-size</guid>
+        
+        <category>probability</category>
+        
+        <category>forecasting</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Dunbar&apos;s number deconstructed (again)</title>
+        <description>&lt;p&gt;&lt;a href=&quot;dunbars-number-good-science-within-limits&quot;&gt;Last week&lt;/a&gt; I was looking at how Dunbar arrived at his famous number and learnt a lot about the effects of different types of linear regression and the limits of their predictive power. I concluded that, while the science was good, the wide error margin in the linear regression over log transformed data means that we need to apply a good deal of caution about arriving at any specific number.&lt;/p&gt;
+
+&lt;p&gt;The data I used was from one of his more recent papers&lt;label for=&quot;dunbar-2021&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbar-2021&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Dunbar, Robin I. M., and Susanne Shultz. ‘Social Complexity and the Fractal Structure of Group Size in Primate Social Evolution’. Biological Reviews 96, no. 5 (October 2021): 1889–1906. &lt;a href=&quot;https://doi.org/10.1111/brv.12730&quot;&gt;doi.org/10.1111/brv.12730&lt;/a&gt;. &lt;/span&gt; so my results were slightly different from his. It was tabulated in the paper and I was just too lazy to copy it out. Nevertheless I was left with some curiosity about how the results might have changed using the original data.&lt;/p&gt;
+
+&lt;h2 id=&quot;reproducing-dunbars-exact-results&quot;&gt;Reproducing Dunbar’s exact results&lt;/h2&gt;
+
+&lt;p&gt;So yesterday, with a combination of OCR and careful copying, I recovered Dunbar’s original data from his paper. Here’s a reproduction of a plot of the data - satisfyingly similar to the original.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;dunbars-data&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbars-data&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/dunbar/dunbars data.png&quot; /&gt;&lt;br /&gt;Comparison with Dunbar’s data taken from his original paper.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 1. Mean group size for individual genera plotted against neocortex ratio (relative to rest of brain; i.e., total brain volume less neocortex). (●) Polygamous anthropoids; (+) monogamous anthropoids; (○) diurnal prosimians; (□) nocturnal prosimians; (△) hominoids.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/dunbars data original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Not sure why those axis limits were chosen, maybe just rounding to orders of ten. In any case group sizes less than 1 make no sense and neocortex ratios beyond that of humans are not useful. From now on the plots will focus on the meaningful ranges. They’ll also have the vertical axis on the right so that predicted values are easier to read off.&lt;/p&gt;
+
+&lt;p&gt;To this graph Dunbar’s original fit is overlaid. One again his famous number, 150, appears as the predicted value for human group size.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 2: Same plot restricting the axes to a meaningful range and extending Dunbar’s fit to the measured neocortex ratio for humans (4.102).&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/dunbars result original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Using this data and using exactly the same RMA (aka Geometric) linear regression we can recover his results almost&lt;label for=&quot;almost&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;almost&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;I believe there are some minor transcription errors in the original paper (or my reading of it) which produce a very slightly different line but the difference is minimal and changes nothing. &lt;/span&gt; exactly. The next plot shows the agreement along with the 95% confidence interval as calculated following Rayner&lt;label for=&quot;rayner-1985&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;rayner-1985&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Rayner, J. M. V. ‘Linear Relations in Biomechanics: The Statistics of Scaling Functions’. Journal of Zoology 206, no. 3 (July 1985): 415–39. &lt;a href=&quot;https://doi.org/10.1111/j.1469-7998.1985.tb05668.x&quot;&gt;10.1111/j.1469-7998.1985.tb05668.x&lt;/a&gt;. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 3: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102), confirming agreement with Dunbar’s original results.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/my result original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;This agreement was exactly what I was hoping for by using the original data and reproduces Dunbar’s result satisfactorily.&lt;/p&gt;
+
+&lt;h2 id=&quot;residuals&quot;&gt;Residuals&lt;/h2&gt;
+
+&lt;p&gt;One again we can apply simple residual checks on the data to ensure we are satisfying the linear regression assumptions. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot&quot;&gt;qqplot&lt;/a&gt; shows the residuals close to a normal distribution.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 4: Q-Q plot comparing the standardised residuals with a standard normal distribution.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/residuals distribution original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;The residuals plot itself shows some variance but no obvious &lt;a href=&quot;https://en.wikipedia.org/wiki/Homoscedasticity_and_heteroscedasticity&quot;&gt;heteroscedasticity&lt;/a&gt;.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 5: Plot of the residuals.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/residuals plot original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;confidence-in-the-mean&quot;&gt;Confidence in the mean&lt;/h2&gt;
+
+&lt;p&gt;While the fit itself is statistically sound, if we look again at Figure 3, we can see that the logarithmic scale underplays the numerical range. Looking at the same graph with the vertical axis scaled linearly then the problem is clear.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 6: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102).&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/predict original.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;The confidence interval (which is &lt;em&gt;only for the mean itself&lt;/em&gt;) is from under 100 to nearly 250. This is worse than the previous data because the slope is greater. I think you will agree that this is a wide error margin which is partially obscured by the log-log view. If we don’t believe the confidence interval calculation (and we shouldn’t, some doubt has been placed on it&lt;label for=&quot;dunbar-2021&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbar-2021&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Changyong Feng, Hongyue Wang, Naiji Lu, Tian Chen, Hua He, Ying Lü, and Xin Tu. ‘Log-Transformation and Its Implications for Data Analysis’. Shanghai Archives of Psychiatry 26, no. 2 (1 April 2014): 105–9. &lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4120293/&quot;&gt;10.3969/j.issn.1002-0829.2014.02.009&lt;/a&gt;. &lt;/span&gt;, see below) then let’s take a different approach and compare.&lt;/p&gt;
+
+&lt;p&gt;Assuming the parameters of the fit are normal, &lt;em&gt;as we must because it was an assumption of the regression itself and has been somewhat confirmed empirically&lt;/em&gt;, then we can generate random samples of regression lines drawn from those distributions. This is a so-called Monte-Carlo simulation of the regression distributions and gives us an alternative way to histogram the predicted values. The following plot shows 3000 such samples together with a histogram of the predicted values for human group size.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 7: plot of Monte Carlo random samples of the regression line together with a histogram of the predicted value for human group size.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/ncr vs gs mc.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Again we find an average in the right range (see below) but once more with very wide error margins for the prediction. Actually it’s worse. The distribution is clearly heavy tailed towards higher group sizes. This is an expected effect of converting a Normal distribution on a log scale to a linear scale where it becomes Log Normal and therefore long tailed. Taking 1 million such predictions it’s evident that it conforms very closely.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 8: histogram of 1 million predictions fitting very closely with a LogNormal distribution. 95% quantiles are shown as vertical lines at 71 and 368 respectively. Mean is 176.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/prediction histogram.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Taking these results we can confirm that the 95% confidence interval has widened further, from 71 as a lower bound to 368 as the upper. Remember that this is still the range for the mean itself and does not take into account the variability in the samples.&lt;/p&gt;
+
+&lt;p&gt;There is another insight here too. The mean of the LogNormal distribution is &lt;strong&gt;not 150 but rather 176&lt;/strong&gt;. The reason for this is exactly as stated in &lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4120293/&quot;&gt;Feng et al.&lt;/a&gt; and can be confirmed by direct calculation. The mean of the distribution when transformed back into natural units is &lt;em&gt;not&lt;/em&gt; $exp(\mu) = 150$ but rather $exp(\mu + \sigma^2/2) = 176$. The variance shifts the mean.&lt;/p&gt;
+
+&lt;h1 id=&quot;confidence-in-the-prediction&quot;&gt;Confidence in the prediction&lt;/h1&gt;
+
+&lt;p&gt;We’ve stated several times that until now we have been looking at inferences related only to the prediction of the mean of the regression line, not including the variance in the data itself. Let’s take that into account now. We know the variance in the residuals and under the assumption they are normally distributed in log space then, in principle, we can model the residuals in the predicted value.&lt;/p&gt;
+
+&lt;p&gt;The normal distribution of the mean regression and the normal distribution of the residuals is combined using the relation: $𝒩(\mu_1, \sigma_1^2)+𝒩(\mu_2,\sigma_2^2) = 𝒩(\mu_1+\mu_2, \sigma_1^2+\sigma_2^2)$. We can then carefully extend this to linear space by expressing as a &lt;em&gt;Lognormal&lt;/em&gt; distribution with parameters $\mu = ln(10)(\mu_1+\mu_2)$ and $\sigma = ln(10)\sqrt{\sigma_1^2+\sigma_2^2}$. &lt;label for=&quot;ln10&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;ln10&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;The $ln(10)$ factors are necessary because the original data was transformed base 10 and the relation between the normal and the Lognormal is via the natural logarithm. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Using this new distribution the confidence interval has now widened still further. The 95% interval ranging between 31 to over 740. The mean now is above 200 due to the upward effect of the increased variance.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;With the original data it’s been possible to reproduce Dunbar’s famous results almost perfectly.&lt;/p&gt;
+
+&lt;p&gt;However it has become even clearer that the extrapolation of the regression line to human scales is highly questionable. The prediction is well outside the existing data, leading to wide error margins, and the log transformation exaggerates the error still further. If we also take into account the residual variance in the data, the confidence interval of any prediction widens beyond useful limits (according to my analysis, the 95% interval is from 71 up to 740).&lt;/p&gt;
+
+&lt;p&gt;This is not an issue related to the type of regression nor any internal structure in the samples but rather the overwhelming error margins that make sensible prediction based on the available data unreasonable.&lt;/p&gt;
+
+&lt;p&gt;This is all consistent with the Stockholm University group’s “deconstruction”&lt;label for=&quot;Lindenfors-2021&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;Lindenfors-2021&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Patrik Lindenfors, Patrik Lindenfors, Andreas Wartel, Andreas Wartel, Johan Lind, and Johan Lind. ‘“Dunbar’s Number” Deconstructed’. Biology Letters 17, no. 5 (1 May 2021): 20210158–20210158. &lt;a href=&quot;https://doi.org/10.1098/rsbl.2021.0158&quot;&gt;10.1098/rsbl.2021.0158&lt;/a&gt;. &lt;/span&gt; of not only the number itself, but the notion that such a number is even sensible to talk about.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 17 Sep 2024 08:30:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/dunbars-number-deconstructed-again-copy</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/dunbars-number-deconstructed-again-copy</guid>
+        
+        <category>science</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Investigating Dunbar&apos;s number</title>
+        <description>&lt;p&gt;In a seminal paper&lt;label for=&quot;dunbar-1992&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbar-1992&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Dunbar, R. I. M. ‘Neocortex Size as a Constraint on Group Size in Primates’. Journal of Human Evolution 22, no. 6 (1 June 1992): 469–93. doi: &lt;a href=&quot;https://doi.org/10.1016/0047-2484(92)90081-j&quot;&gt;10.1016/0047-2484(92)90081-j&lt;/a&gt;. &lt;/span&gt; from 1992, &lt;a href=&quot;https://en.wikipedia.org/wiki/Robin_Dunbar&quot;&gt;Robin Dunbar&lt;/a&gt; extrapolated from the brain measurements of different animal species and their typical social group sizes, to make a now famous prediction about human social group size. His analysis led him to what has become known as &lt;em&gt;Dunbar’s number&lt;/em&gt;, 150, which has had multiple &lt;a href=&quot;https://en.wikipedia.org/wiki/Dunbar%27s_number#Applications&quot;&gt;applications&lt;/a&gt; in different organisational contexts.&lt;/p&gt;
+
+&lt;p&gt;Prompted by a definition in this &lt;a href=&quot;https://martyoo.medium.com/stop-team-topologies-fd954ea26eca&quot;&gt;blog post&lt;/a&gt;, and out of pure curiosity, I searched for a bit more information and stumbled on an relatively recent &lt;a href=&quot;https://theconversation.com/dunbars-number-why-my-theory-that-humans-can-only-maintain-150-friendships-has-withstood-30-years-of-scrutiny-160676&quot;&gt;article by him&lt;/a&gt; in which he gives an overview of his research. The article sounded a little snarky to me and snarkiness continued in the comments. It seems he was responding to some research&lt;label for=&quot;dunbar-1992&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbar-1992&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Patrik Lindenfors, Patrik Lindenfors, Andreas Wartel. ‘“Dunbar’s Number” Deconstructed’. Biology Letters 17, no. 5 (1 May 2021): 20210158–20210158. &lt;a href=&quot;https://doi.org/10.1098/rsbl.2021.0158&quot;&gt;10.1098/rsbl.2021.0158&lt;/a&gt;. &lt;/span&gt; published by a group at Stockholm University who ran a set of modern statistical tools over the original dataset and were unable to draw the same conclusions that Mr Dunbar had. This group then responded to Dunbar’s article by writing another &lt;a href=&quot;https://theconversation.com/why-we-dispute-dunbars-number-the-claim-humans-can-only-maintain-150-friendships-161944&quot;&gt;article&lt;/a&gt; explaining their position in more detail.&lt;/p&gt;
+
+&lt;p&gt;Since working with real data and reading the work of different research groups is a fantastic way to learn, I decided to do a bit of amateur data analysis. I learned &lt;em&gt;a lot&lt;/em&gt; and hopefully by writing down what I saw, I’ll learn even more.&lt;/p&gt;
+
+&lt;h2 id=&quot;fitting-the-data&quot;&gt;Fitting the data&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;On a double log-log plot, my grandmother fits on a straight line - &lt;a href=&quot;https://en.wikiquote.org/wiki/Fritz_Houtermans&quot;&gt;Fritz Houtermans&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;label for=&quot;rayner-1985&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;rayner-1985&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;Much of the mathematics of this section can be found in Rayner, J. M. V. ‘Linear Relations in Biomechanics: The Statistics of Scaling Functions’. Journal of Zoology 206, no. 3 (July 1985): 415–39. &lt;a href=&quot;https://doi.org/10.1111/j.1469-7998.1985.tb05668.x&quot;&gt;10.1111/j.1469-7998.1985.tb05668.x&lt;/a&gt;. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Here’s an example of a similar data set to the one used in the original studies. The data is tabulated in the paper but it’s a lot to copy out so I took a similar data set published by the same author in a later paper. Figure 1 is a plot of the data. For multiple species of animal, it shows the ratio of the size of the neocortext to the size of the rest of the brain ($C_r$) on the horizontal axis and the average social group size ($N$) for that species on the vertical axis.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 1: a plot of neocortext ratio $N_r$ against average social group size $G$ for 39 animal species.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/ncr vs gs.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Neither Dunbar nor his critics used the data in this form however, they used its logarithm. This is a common technique used under the assumption that it will make skewed data (as this is) appear more symmetrical (normal). There is no explanation of the reasons for the transform in this particular case. Nonetheless it has an important effect on the results. We’ll come back to this point later. Here’s the transformed data.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;dunbars-data&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;dunbars-data&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/dunbar/dunbars data.png&quot; /&gt;&lt;br /&gt;Comparison with Dunbar’s data taken from his original paper.&lt;/span&gt;&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 2: a plot of $log_{10}N_r$ against $log_{10}G$ for the same 39 animal species.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/log10ncr vs log10gs.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;I’ve presented it in exactly the same way as Dunbar’s paper. Although the data is slightly different the similarity is clear. Also, it does &lt;em&gt;look&lt;/em&gt; a bit more like a straight line now and the variance is a little less pronounced. I’m not sure how valid this kind of subjective judgement is.&lt;/p&gt;
+
+&lt;p&gt;Figure 3 overlays Dunbar’s original result onto this data set and there is no surprise. The line (the equation for which is given explicitly in the paper) is projected out to  show the predicted human mean group size which can be seen to be close to 150. This is the source of Dunbar’s number.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 3: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102).&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/dunbars result.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;I’m tried to reproduce this result but for now we note that for the analysis to work we have to make the strong assumption that an errors in the measurements are normally distributed. The choice of using the log-log transformation another strong assumption that we’re taking as fact for the moment but we will return to it.&lt;/p&gt;
+
+&lt;p&gt;The parameters of the line are determined using linear regression which attempts to find the best straight line through the points. The question arises: what is the best straight line? It turns out that there are multiple ways of defining best fit and depending on which you chose you can get different results.&lt;/p&gt;
+
+&lt;p&gt;The most common type of linear regression is most commonly called &lt;strong&gt;Ordinary Least Squares&lt;/strong&gt;&lt;label for=&quot;lsr&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;lsr&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Dunbar calls it LSR (Least Squares Regression) in his paper. &lt;/span&gt; (OLS) where the the best line is chosen to be the one that minimises the squares of the vertical difference between each point and itself. This is the most basic regression technique taught in statistics classes.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;york-2004&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;york-2004&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;For more discussion about regression with &lt;em&gt;known&lt;/em&gt; error weights in both axes for each sample see this &lt;a href=&quot;https://doi.org/10.1119/1.1632486&quot;&gt;paper&lt;/a&gt;. In this case we don’t know the error margins in the data. &lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;The problem with OLS, as Dunbar points out in his original paper and again in his recent article, is that by minimising only the vertical distances there is an implicit assumption that there are no errors in the measurements on the x-axis, which is not true in this case.&lt;/p&gt;
+
+&lt;p&gt;To take these (unknown) error margins into account in both axes we can choose to minimise the &lt;em&gt;geometric&lt;/em&gt; distance between the points and the line. This is called &lt;strong&gt;Geometric Mean Regression&lt;/strong&gt;&lt;label for=&quot;rma&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;rma&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Dunbar calls it RMA (Reduced Major Axis) but just as heads up it turns out the the web page that Dunbar references in his article to explain RMA is wrong. For a neat overview of the main types of regression I’d recommend the paper by Xu, S. (2014). A Property of Geometric Mean Regression. The American Statistician, 68(4), 277–281. doi:&lt;a href=&quot;https://doi.org/10.1080/00031305.2014.962763&quot;&gt;10.1080/00031305.2014.962763&lt;/a&gt;. &lt;/span&gt; in much of the modern literature. The geometric distance is the &lt;em&gt;area&lt;/em&gt; between the point and the line, the triangle spanning both the distance along the x-axis and the distance along the y-axis.&lt;/p&gt;
+
+&lt;p&gt;One &lt;a href=&quot;https://doi.org/10.1016/0096-3003(94)00161-V&quot;&gt;cited&lt;/a&gt; problem with geometric regression is the extra difficulty in the interpretation of confidence intervals for the parameters. I haven’t seen that as being any more of a problem for this type of regression than for any other but I might be wrong. Please read the paper if you are interested.&lt;/p&gt;
+
+&lt;p&gt;I did both geometric and OLS regression to compare the difference. Figure 4 shows the results of both types of linear regression transformed back into the original, untransformed scales.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 4: plot showing the regression results of both OLS and Geometric regressions with a 95% confidence interval.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/ols vs gmr.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;This confirms Dunbar’s assertion that OLS considerably &lt;em&gt;underestimates&lt;/em&gt; the slope of the regression line, as compared to geometric one.&lt;/p&gt;
+
+&lt;p&gt;There are two other important things to note here beyond the difference between the two lines. First notice the upward curve of the regression lines over the original data. This is a result of the log transformations, essentially producing an approximately exponential fit due to the differing scales of the two axes.&lt;/p&gt;
+
+&lt;p&gt;The second thing to notice is the wide spread of the confidence interval for this line. This is also exaggerated by the log transformation. In fact, the validity of the confidence intervals after transformation is highly questionable. See &lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4120293/&quot;&gt;Feng et al.&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;p&gt;Notwithstanding the above caveats, what happens if we extrapolate the curve in an attempt to predict a typical group size for humans?&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 5: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102).&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/predict.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;A direct extrapolation of this data using the geometric fit gives a group size prediction for humans as very approximately ~100. This well below Dunbar’s result but some difference should be expected due to the different data. It does however highlight the disproportionate effect of the log-log transformation on the prediction. It also puts into question the conceptual validity of extrapolating so far outside the available data. Remember that this is the spread of the confidence interval of just the mean itself and does not extrapolate from the variance seen in the rest of the data. This is a key point and an interesting realisation for me personally.&lt;/p&gt;
+
+&lt;p&gt;Until now we have collected a series of assumptions about the data that we’ll look at in turn in light of the analysis.&lt;/p&gt;
+
+&lt;h3 id=&quot;log-log-transformation&quot;&gt;Log-log transformation&lt;/h3&gt;
+
+&lt;p&gt;It is evident that by taking the log-log transformation of the data we have made the confidence intervals of the predictions extremely wide. Was this choice justified? Let’s take a look at the distributions of the data before and after the transformation.
+&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 6: Distribution of original and log transformed neocortex ratio, $N_r$, and mean group size, $G$.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/data distributions.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;They show that the transformation has gone some way to make the distributions more symmetrical, especially the group size. It might be interesting to see the results without taking the log of the neocortex ratio but it’s confirmed that this transformation does make sense in this case, even though it does introduce other problems elsewhere. It’s a trade-off I guess.&lt;/p&gt;
+
+&lt;h3 id=&quot;distribution-of-errors&quot;&gt;Distribution of errors&lt;/h3&gt;
+&lt;p&gt;It was assumed that the errors in the measurements in both axes were normally distributed. Figure 7 takes a closer look at the distributions of the residuals of the  log transformed data against their regression line.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 7: Q-Q plot comparing the standardised residuals with a normal distribution N(0,1).&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/residuals distribution.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;This residuals are reasonably close to a normal distribution which is one possible justification for the log-log transformation on the data.&lt;/p&gt;
+
+&lt;p&gt;We would like to check for the presence of &lt;a href=&quot;https://en.wikipedia.org/wiki/Homoscedasticity_and_heteroscedasticity&quot;&gt;heteroscedasticity&lt;/a&gt; which can cause ordinary least squares estimates of the variance (and, thus, standard errors) of the coefficients to be biased, possibly above or below the true of population variance. A quick plot of the residuals doesn’t give us too much cause for concern.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Figure 8: Plot of the residuals.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/dunbar/residuals plot.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;We might like to check that more formally with a Breusch-Pagan test. Again this can be taken as further justification for the log-log transformation.&lt;/p&gt;
+
+&lt;h2 id=&quot;confirmation-bias&quot;&gt;Confirmation bias&lt;/h2&gt;
+
+&lt;p&gt;More recently additional evidence has been gathered to support the original Dunbar number of 150. As we’ve seen, this number is at best a very rough guess of the mean and doesn’t include the potential variance over the extrapolated range. Nonetheless there is a very real possibility of confirmation bias in later results. The phenomena starts when people latch on to these specific numbers and then &lt;a href=&quot;https://teamtopologies.com/news-blogs-newsletters/dunbars-numbers-and-communities-of-practice-q-and-a-with-emily-webber&quot;&gt;send&lt;/a&gt; their correlates to Dunbar who then catalogues them as supporting evidence.&lt;/p&gt;
+
+&lt;p&gt;What have military units got to do with Christmas card lists? Christmas card lists are definitely a social phenomenon but it if far from clear which band they should be in. If the results had been 50, say, then it would have been taken as evidence for that smaller group size. It’s a post-hoc correlation.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;So, after all this analysis, I learnt a great deal about regression considerations. Least squares never seemed so controversial until I started this. My results came in below Dunbar’s original results. This means nothing, of course, but it does lend some credence to the critics suspicions which would be compatible with my little investigation here.&lt;/p&gt;
+
+&lt;p&gt;I also learnt a lot about what can and can’t be said about Dunbar’s number as a concept.&lt;/p&gt;
+
+&lt;p&gt;First, none of this says anything about the nested structure of the group sizes and other predictions made subsequently, which have also been used widely&lt;label for=&quot;team-topologies-definition&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;team-topologies-definition&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;The Team Topologies book uses Dunbar’s work as a basis for team size discussions. For them, “Dunbar’s number” (as defined in the glossary) actually refers to results from Dunbar’s &lt;a href=&quot;https://onlinelibrary.wiley.com/doi/pdf/10.1111/brv.12730&quot;&gt;later work on nested group sizes&lt;/a&gt; and is related but different to Dunbar’s number as usually understood. &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Secondly, it is most &lt;strong&gt;definitely not a maximum or upper limit&lt;/strong&gt;, as often &lt;a href=&quot;https://martyoo.medium.com/stop-team-topologies-fd954ea26eca&quot;&gt;stated&lt;/a&gt;. We need to be careful not to confuse the confidence interval of the sample mean with a measure of confidence of the prediction.&lt;/p&gt;
+
+&lt;p&gt;It is clear to me now that stating Dunbar’s number as 150 is misleading and misses a great deal of context. Even assuming the validity of the model and the regression, it is a predicted mean value extrapolated far outside the underlying data with extremely wide error bars and &lt;strong&gt;needs to be treated with a great deal of caution&lt;/strong&gt;. The prediction has even wider margins to the point of losing some of its meaning as a useful concept.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 10 Sep 2024 09:30:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/dunbars-number-good-science-within-limits</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/dunbars-number-good-science-within-limits</guid>
+        
+        <category>science</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>A Measure of Alignment</title>
+        <description>&lt;p&gt;During the summer holidays I stumbled on a printed copy of my old degree dissertation. It’s over 25 years old and I was pleasantly surprised by the writing style but no so much about the structure - no clear explanation of what was being demonstrated and the conclusions were a bit lacking.&lt;/p&gt;
+
+&lt;p&gt;The project itself was to use Monte Carlo simulation techniques to discover things about the phases of idealised liquid crystals, modelled as ellipses and ellipsoids in 2 and 3 dimensions. The original code was written in C (much to my tutors chagrin who wanted me to use FORTRAN).&lt;/p&gt;
+
+&lt;p&gt;For some reason, last weekend I though it would be a good idea to rewrite it Julia. So I did and it worked so much better (faster) than back in 1997. Maybe I’ll be able to finish the original aims of the dissertation, 25 years later!&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;liquidcrystalnematicphase&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;liquidcrystalnematicphase&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/liquidcrystalmontecarlo/nematic-phase.png&quot; /&gt;&lt;br /&gt;Figure 1: Nematic phase of partially aligned liquid crystals, modelled as ellipses.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;One of the properties of liquid crystals is that, at low enough temperatures and high enough pressures, they align with each other in much the same way they do on LCD displays when a voltage is applied. My simulations were able to recreate this effect (see Figure 1). They measured the density of the simulated material, which obviously increases the more the crystals align. I did notice that there wasn’t a direct measure of alignment… so why not invent one?&lt;/p&gt;
+
+&lt;p&gt;I needed a formula that I could sum pairwise over all the crystals (ellipses). Ideally the measure should be 0 if all the ellipses are totally unaligned and 1 if totally aligned. Taking two ellipses first, the obvious choice matching these criteria is the cosine of the angle between them, basically cosine similarity. This gives exactly 1 if ellipses are aligned and exactly 0 if they are perpendicular. The ellipses have a symmetry where they should also be measured as aligned if the angle is 180º. I this case the cosine is -1 when it should be 1. A simple way to achieve this is to take either the absolute value of the cosine or its square. This latter option has a nice symmetry to it. Averaging over the $n^2$ terms we have a first stab at an alignment formula, $A$:&lt;/p&gt;
+
+\[A = \frac{1}{n^2}\sum_{i,j = 1}^n cos^2(\theta_i-\theta_j)\]
+
+&lt;p&gt;Where $i$ an $j$ enumerate over the $n$ ellipses to be measured and $\theta$ is their respective orientation. To test my formula I generated different configurations and tested their alignment. If all the angles where the same then the alignment did indeed come out as exactly 1. However I realised that there is no way to make more than 2 ellipse totally perpendicular in 2 dimensions. They will always align somewhat with the first or the second. When there are more ellises the situation is worse.&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;minumum-3-alignment&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;minumum-3-alignment&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/liquidcrystalmontecarlo/alignment3.png&quot; /&gt;&lt;br /&gt;Figure 2: Minimum alignment for 3 ellipses.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Obviously, the minimum posible alignment of 2 ellipses is when the angle between them is $\frac{\pi}{2}$ radians, orthogonal. After scratching my head for a while and running different tests, I realised that 3 ellipses is when the angle between them is exactly $\frac{\pi}{3}$ radians (see Figure 2).&lt;/p&gt;
+
+&lt;p&gt;A similar thing happens with larger numbers of particles where the minimum has then dividing the circle equally. This is obviously true for 2 ellipses and I can prove it for 3. I’m taking it to be the case for now.&lt;/p&gt;
+
+&lt;p&gt;After a bit of thinking the way to calculate this minimum, $M$, is to make the following sum:&lt;/p&gt;
+
+\[M = \frac{2}{n(n-1)}\sum_{k=1}^n (n-k)cos^2(\frac{k\pi}{n})\]
+
+&lt;p&gt;Where $\frac{k\pi}{n}$ is the angle of the kth ellipse and there are $(n-k)$ ellipses with that angular separation. We divide by the number of pairs counted. With a bit of help from the internet this is solvable and has a simple closed form. Using the identity:&lt;/p&gt;
+
+\[cos^2x = \frac{1+cos 2x}{2}\]
+
+&lt;p&gt;and the orthogonality of the cosine funtions we have:&lt;/p&gt;
+
+\[\begin{aligned} 
+M&amp;amp;= \frac{2}{n(n-1)}\sum_{k=1}^n (n-k)(1+cos \frac{2k\pi}{n}) \\
+&amp;amp;= \frac{2}{n(n-1)}\left(\sum_{k=1}^n (n-k) + n\sum_{k=1}^n cos \frac{2k\pi}{n} - \sum_{k=1}^n k \cdot cos \frac{2k\pi}{n}\right) \\
+&amp;amp;= \frac{2}{n(n-1)}\left(\frac{1}{2}(n - 1) n - n - \frac{-n}{2}\right) \\
+&amp;amp;= \frac{1}{n(n-1)}\left(n^2-n - 2n + n\right) \\
+&amp;amp;= \frac{1}{2}\left(\frac{n-2}{n-1}\right) \\
+\end{aligned}\]
+
+&lt;p&gt;Validate: $n=2 \implies M=0$, $n=3 \implies M=¼$, $n=4 \implies M=⅓$, etc.&lt;/p&gt;
+
+&lt;p&gt;Also: $\displaystyle \lim_{n \rightarrow \infty}M=½$ as required.&lt;/p&gt;
+
+&lt;p&gt;I wanted to factor out this minimum alignment bias from the calculation so that the alignment would always be in the range from 0 to 1. To do that we calculate the proportion between $1-M$ and $A-M$. So the new formula is:&lt;/p&gt;
+
+\[A&apos; = \frac{A-M}{1-M} = \frac{2 A (n - 1) - (n - 2)}{n}\]
+
+&lt;p&gt;I’ve tested this with different distributions of angles and it gives a reliable indicator of the alignment. The only thing is that the cosine squared makes it quite non-linear having a tendency to be closer to the extremes, 0 and 1. To counteract this an inverse straightens out the results for a smoother gradient, so&lt;/p&gt;
+
+\[A&apos;&apos; = 1 -\frac{2}{\pi}cos^{-1} \sqrt{A&apos;}\]
+
+&lt;p&gt;might give better results depending on the application.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 24 Aug 2024 19:30:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/a-measure-of-alignment</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/a-measure-of-alignment</guid>
+        
+        <category>physics</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>On not having a map</title>
+        <description>&lt;p&gt;&lt;label for=&quot;map-grid&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;map-grid&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/assets/images/having-a-map/map_grid.png&quot; /&gt;&lt;br /&gt;Dora and Boots are on one side of an island and they want to get to the other side.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;Dora the Exploradora and her monkey friend Boots are on a mission. They are on one side of a magical island and they need to get to the other.&lt;/p&gt;
+
+&lt;p&gt;She gets out her trusty map from her purple rucksack and sees that there are no roads or paths so she carefully plans the very best route she can with the information she has, avoiding the scary dark forest valley and skirting the rocky mountains. On the way they are met with unexpected obstacles: gullies, fallen trees and riddling trolls. Undeterred and with a little of our help, they finally get to their destination. We did it! We did it!&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/map_planned.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Some time later, Diego (and Baby Jaguar, presumably) are faced with the same challenge. Unfortunately it’s now really foggy. (“Niebla”, you say it!) Poor chap doesn’t have a map and only has a compass to guide him roughly in the right direction. Diego looks around and bravely heads along the easiest route he can see, roughly east, feeling his way across the island the best he can, avoiding only the obstacles he can see around him. He makes it to the other side.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/map_diego.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Dora did great, she feels lucky she had her map! However, Diego made it too. They wonder how much having the map helped. Now that they’re across the island they look back at the route they took. With the benefit of hindsight they can see that perhaps the route she took based on the map wasn’t the best one and, in fact, it might have been better to go a different way.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/map_hindsight.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;It turns out that in this case Diego actually did better than Dora, even without the map. In fact he’s not far from the best route in hindsight.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/map_all.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;By not sticking to a predefined plan he was able to navigate around those fallen trees and even some of those pesky trolls.&lt;/p&gt;
+
+&lt;p&gt;Is this true in general or just a fluke. Let’s try and find out.&lt;/p&gt;
+
+&lt;h2 id=&quot;so-how-much-did-the-map-help&quot;&gt;So how much did the map help?&lt;/h2&gt;
+
+&lt;p&gt;To answer this question I had an idea for a toy model to compare Dora’s and Diego’s adventures and did a bit of programming to try it out. The images above are actual screenshots. Here’s the setup.&lt;/p&gt;
+
+&lt;p&gt;The island is a grid. Getting from one point on the grid to an adjacent point has a difficulty representing the lie of the land (the difficulty of movement). One grid is set up like a map, an idealised representation of the contours of valleys and mountains and a few of the largest features. Another grid represents the actual terrain, with additional detail of smaller obstacles which are not marked on the map. &lt;label for=&quot;ruggedness&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;ruggedness&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;The use of the word “ruggedness” here may seem a bit awkward but there’s a reason to think about it this way. We can draw on some sophisticated resources from science to crystallise this idea and give it real meaning. &lt;/span&gt; The &lt;em&gt;ruggedness&lt;/em&gt; is applied randomly but its magnitude is parametrisable.&lt;/p&gt;
+
+&lt;p&gt;For different levels of ruggedness, I ran a shortest path finding algorithm across the map (Dora’s planned route) and across the terrain using step sizes of varying lengths corresponding to different amounts of fog for Diego. &lt;em&gt;Visibility&lt;/em&gt; is the second parameter. In every case calculating the total difficulty over the whole journey.&lt;/p&gt;
+
+&lt;p&gt;Since this is a numerical model we can get a feeling for what’s happening by looking at the results as the parameters (&lt;em&gt;ruggedness&lt;/em&gt; and &lt;em&gt;visibility&lt;/em&gt;) change. I ran the model thousands of times to get a distribution of results for different parameter settings.&lt;/p&gt;
+
+&lt;h2 id=&quot;diego-vs-dora&quot;&gt;Diego vs Dora&lt;/h2&gt;
+
+&lt;p&gt;First let’s see how Diego’s and Dora’s experience compares in general as the ruggedness of the terrain changes.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;This graph shows the difficulty of the route followed as the ruggedness of the terrain increases. The width of the ribbon represents the variability of the results over thousands of runs of the model.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/dora vs diego.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;As you might guess, Dora did well when the map was highly accurate (the far left of the graph), but, unfortunately for her, any additional ruggedness of the terrain which was not marked on the map made her experience much more difficult than expected when following the route she planned in advance.&lt;/p&gt;
+
+&lt;p&gt;Diego on the other hand didn’t stick to a predefined route so sometimes was able to adapt to obstacles not on the map. As the ruggedness of the terrain increases past a certain point he consistently does better than Dora.&lt;/p&gt;
+
+&lt;p&gt;This is the first observation: &lt;strong&gt;there is a trade-off between following a plan and adapting as you go and it depends (at least) on the &lt;em&gt;ruggedness&lt;/em&gt; of your terrain&lt;/strong&gt;. There is a book in that statement&lt;label for=&quot;plan-vs-muddle&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;plan-vs-muddle&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;Just as a teaser, Simon Wardley talks at great length about how &lt;a href=&quot;https://blog.gardeviance.org/2015/06/why-agile-lean-and-six-sigma-must-die.html&quot;&gt;novelty generates uncertainty&lt;/a&gt;, leading to a rugged terrain while mature components can be planned more confidently. Bent Flyvbjerg has researched &lt;a href=&quot;https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4924942&quot;&gt;uniqueness bias&lt;/a&gt; and a tendency for us to believe that our situation is different from any other, &lt;em&gt;over&lt;/em&gt;estimating the uncertainty. Or Chris Rodgers’ Wiggly &lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;A second observation here, often overlooked, is predictability. This can be interpreted on the graph as the width of the ribbon. A narrow ribbon means low variability which corresponds to greater predictability. Again Dora’s progress is very predictable when the map matches reality but that predictability decreases rapidly as reality bites. Interestingly, &lt;strong&gt;Diego’s progress is much more predictable than Dora’s as the terrain becomes more and more unpredictable; the variability in his routes is, in fact, fairly constant&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;More predictability means being able to have greater confidence in the final outcome. In many projects involving multiple external stakeholders this predictability is actually more important than the details of any plan itself. Read that again.&lt;/p&gt;
+
+&lt;p&gt;Third observation: &lt;strong&gt;Past a certain point of ruggedness, not only does Diego consistently do better than Dora, he also tends to pick a path close to the best route in hindsight&lt;/strong&gt;. Let’s see this on a graph.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Although rarely finding the absolute best route, Diego’s route deviates in a relatively small and consistent way.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/diego vs hindsight.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;Intuition holds in the sense that the best route also gets more and more difficult (and variable) as the ruggedness of the actual terrain increases. Diego hardly ever finds perfection but, interestingly, his experience tracks surprisingly closely the best possible one. Again we can see that Diego’s strategy is more predictable than Dora’s as he can “think on his feet” and avoid any trouble encountered on the way.&lt;/p&gt;
+
+&lt;h2 id=&quot;so-how-much-does-doras-experience-deviate-from-her-best-made-plans&quot;&gt;So how much does Dora’s experience deviate from her best made plans?&lt;/h2&gt;
+
+&lt;p&gt;The relationship between the plan and reality has become a cliché. As  Field Marshal Helmuth von Moltke is &lt;a href=&quot;https://quoteinvestigator.com/2021/05/04/no-plan/&quot;&gt;said&lt;/a&gt; to have said:&lt;/p&gt;
+
+&lt;p&gt;&lt;label for=&quot;plans-hit&quot; class=&quot;margin-toggle&quot;&gt; ⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;plans-hit&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;Often shorted to “&lt;em&gt;No plan survives first contact with the enemy.&lt;/em&gt;”. Also compare with Mike Tyson’s rather more &lt;a href=&quot;https://quoteinvestigator.com/2021/08/25/plans-hit/&quot;&gt;pithy&lt;/a&gt; version. I’m not a big fan of quotes related to violence but they do seem to abound in this context. &lt;/span&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“&lt;em&gt;No plan of operations extends with any certainty beyond the first encounter with the main enemy forces.&lt;/em&gt;”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Can we see this in our little model? The answer is yes and very strikingly.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Dora made the very best plan with the information available to her. Nonetheless she typically ends up deviating a lot from the plan.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/dora plan vs reality.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;When the map perfectly matches the terrain then her experience is as expected but as the map fails to show the detail, the difficulty and variability of her experience increases enormously. Compare this to Diego’s experience compared to the very best route. Field Marshal Helmuth von Moltke was definitely right.&lt;/p&gt;
+
+&lt;p&gt;There is another maxim which is usually &lt;a href=&quot;https://quoteinvestigator.com/2017/11/18/planning/&quot;&gt;attributed&lt;/a&gt; to Eisenhower:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“&lt;em&gt;Plans are worthless, but planning is everything.&lt;/em&gt;”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The strategies used by Dora and Diego are two extremes but they can be combined. We can plan and we can adapt too. What happens if we lift the fog on Diego to allow him to “look ahead” with greater visibility to the future.&lt;/p&gt;
+
+&lt;figure&gt;&lt;figcaption&gt;&lt;span&gt;Diego’s experience improves as the fog lifts and he has greater visibility of the future.&lt;/span&gt;&lt;/figcaption&gt;&lt;img src=&quot;/assets/images/having-a-map/diego fog.png&quot; /&gt;&lt;/figure&gt;
+
+&lt;p&gt;If we give Diego predictive superpowers he gets closer and closer to the best possible route. Perfect prediction is equivalent to 20/20 hindsight.&lt;/p&gt;
+
+&lt;p&gt;If we believe Winston Churchill who said:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“&lt;em&gt;…the best generals are those who arrive at the results of planning without being tied to plans.&lt;/em&gt;”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Then Diego would have made a pretty good general!&lt;/p&gt;
+
+&lt;h1 id=&quot;a-model-is-just-a-model&quot;&gt;A model is just a model&lt;/h1&gt;
+
+&lt;p&gt;Erica Thomson, in her book &lt;em&gt;Escape from Model Land: How Mathematical Models Can Lead Us Astray and What We Can Do About It (2022)&lt;/em&gt; wrote:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“&lt;em&gt;Models are not simple tools that we can take up, use and put down again. The process of generating a model changes the way that we think about a situation, encourages rationalisation and storytelling, strengthens some concepts and weakens others.&lt;/em&gt;”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is a model with many implicit assumptions, for example, there are no existing paths or roads on the map. Assuming these were clear of obstacles then these would potentially give Dora a much more significant advantage. What roads would do in effect is to reduce uncertainty making her strategy more effective. Likewise dead ends like impassable cliffs or rivers are unlikely. Also there is some flexibility in the destination, it’s not a specific location. If it were then Diego would have a more difficult time finding it because he wouldn’t be able to “go roughly east”. There is some scope here for further study. Are there strategies that Diego could follow to get to a specific spot in a reliable way?&lt;/p&gt;
+
+&lt;p&gt;There are no units on the axes. That’s because it’s not clear to me how those units would map to the real world anyway. By removing the units I’m saying that I don’t know&lt;label for=&quot;carveth&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;carveth&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;sidenote&quot;&gt;“&lt;em&gt;It is better to be vaguely right than exactly wrong.&lt;/em&gt;” ― Carveth Read, Logic: Deductive and Inductive (1920) &lt;/span&gt;. I could attempt to build them in but then it would be a different model.&lt;/p&gt;
+
+&lt;p&gt;In fact, where did the the parameters of &lt;em&gt;ruggedness&lt;/em&gt; and &lt;em&gt;visibility&lt;/em&gt; even come from? Well, they came from my intuition and I had to play around with the model to see if my intuition was valid or not. It turned out that it was but it doesn’t preclude other parametrisations and observations.&lt;/p&gt;
+
+&lt;p&gt;As it stand, it does do two things, however. Firstly, it reifies my intuition. It’s not just some fuzzy idea in my head, or me being persuaded by appeal to authority. It’s a numerical model that has built-in assumptions and a story to tell. You might have another.&lt;/p&gt;
+
+&lt;p&gt;Secondly, it uses data to demonstrate the results, not hand wavy suppositions. Assumptions in, observations of data out. Both ends require a certain leap of faith but at least it’s an honest, transparent and verifiable one. That’s one way to escape Model Land.&lt;/p&gt;
+
+&lt;p&gt;It took me a couple of full days to create this model and another couple to write up the results. My intuition is stronger now and I have a model which generates interpretable data. When someone says Alfred Korzybski’s phrase “&lt;em&gt;the map is not the terrain&lt;/em&gt;” again, I will think back to this model. The next time someone asks me why we need a plan, I’ll have an honest answer.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 22 Aug 2024 21:30:00 +0200</pubDate>
+        <link>https://johnhearn.github.io//articles/on-not-having-a-map</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/on-not-having-a-map</guid>
+        
+        <category>models</category>
+        
+        <category>map-is-not-terrain</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Flow and Cognitive Load</title>
+        <description>&lt;p&gt;“Maximise flow by minimising cognitive load”. Wait a minute…&lt;/p&gt;
+
+&lt;p&gt;I’ve had a bad back recently and have been scrolling LinkedIn more than I usually do. One thing I noticed was the words “flow” and “cognitive load” coming up a lot, quite often together. Now I’ve heard three people in real life saying almost the exact phrase above and I think it warrants a bit of extra thought.&lt;/p&gt;
+
+&lt;p&gt;I guess the first whiff of something fishy is that it smacks a bit of our old friend and adversary Mr Frederick Winslow Taylor. The suggestion of optimisation and words like “cognitive”, sound quite sciency, don’t they? Scientific management has been around a long time. It tends to get sidelined during times of boom to be wheeled out again during the bust. We are no longer in a boom cycle so fair enough but the deserved concern around its dehumanising aspect still remains and we need to be careful. (Also, to me, cognitive load and flow seem to have something vaguely reminiscent of time and motion. Probably my imagination.)&lt;/p&gt;
+
+&lt;p&gt;There’s also something fishy about the use of the phrase “cognitive load” itself. Are we talking about an individual’s capacity for learning the skills required to do the work or the whole team’s ability to assimilate that knowledge as a group? It seems quite confused. In either case, there is no better formula to demotivate a skilled person than to remove the need for their skill, especially if you say it’s for their own good. I hope that what is really being meant by “cognitive load” is to minimise the bureaucracy, the burdensome tools, the handoff coordination, the form filling, the approval seeking, all the stuff that really gets in the way of flow.&lt;/p&gt;
+
+&lt;p&gt;And talking of flow… secondly, and obviously, flow means so many things. It could just mean not being blocked. It could refer to a simple experience like an easy payment process. It could imply a certain grace and ease such as the flow of a passage of text or a piece of music while at the same time, and less elegantly, it could mean a slicker pipe through which material can be discharged quickly.&lt;/p&gt;
+
+&lt;p&gt;Most interestingly to me, “flow” could mean a mental disposition such as the one conceived by Mihály Csíkszentmihályi where work is energising, engaging and enjoyable. Everyone from programmers to PowerPoint wranglers know and enjoy that feeling. However Csíkszentmihályi proposed that the most productive and satisfying work wasn’t done by minimising the difficulty of the task, but by balancing the difficulty with the skill of the person or people involved. If that were the case we don’t want to minimise cognitive load but to balance it.&lt;/p&gt;
+
+&lt;p&gt;Whatever the case, whatever maximising fast flow means to you and whatever minimising cognitive load means to you, we’ve been saying for years that it’s velocity, not speed that’s important, that is direction and purpose over how fast you go. We’ve also said that we need skilled and motivated employees fully engaged in the work they are doing. Maximising flow and minimising cognitive load sounds like it could be a recipe for the best possible feature factory.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 06 Feb 2024 13:30:00 +0100</pubDate>
+        <link>https://johnhearn.github.io//articles/flow-and-cognitive-load</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/flow-and-cognitive-load</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>A Little Every Day</title>
+        <description>&lt;p&gt;People have given me a lot of advise over the years. “Do what you love.” Ha ha. “Measure twice, cut once.” Well, that would depend, wouldn’t it.&lt;/p&gt;
+
+&lt;p&gt;In the end there are only a couple of phrases which stick with me. One was “Always run to something, not from something.” Run to a new job, not from an old one. Run to safety, not from a fire. Maybe I’ll write about why that helps sometime.&lt;/p&gt;
+
+&lt;p&gt;Another piece of advice which I still apply is “Do a bit every day.” Let me explain.&lt;/p&gt;
+
+&lt;p&gt;This was given to me by a friend of my parents when I had a young family and I was renovating our home. The size of the task ahead was daunting and time was in short supply because nappies needed changing, bread needed winning and the basic necessities of life needed attending to. It was overwhelming.&lt;/p&gt;
+
+&lt;p&gt;I tried planning the work and sticking to the plan but I always slipped behind which was stressful in itself, just adding to the problem. I suffered and the family suffered.&lt;/p&gt;
+
+&lt;p&gt;Then I tried to “do one job every day” and it changed everything. The “one job”, Joe told me, needn’t be big, in fact it could be as simple as placing a single tile or laying a single floorboard. Sometimes the job was just 5 minutes when everyone else was in bed. No pressure to finish, no schedule to keep to.&lt;/p&gt;
+
+&lt;p&gt;The amazing thing was that as the days passed, stuff got done. As if by magic walls were tiled and floors were laid. And the stress was gone.&lt;/p&gt;
+
+&lt;p&gt;I put the success of this “technique” down to two things. First, sometimes just getting started is the hardest part. After that the job becomes easier than you thought and it’s done before you know it. The other factor is that as the days pass you maintain some momentum. A couple of times I stopped doing a job everyday and it became harder to get that momentum back. Each and every day something gets done and you move closer to your goal.&lt;/p&gt;
+
+&lt;p&gt;When the house was finally complete it turned out to be an immensely rewarding experience.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 22 Feb 2023 10:30:00 +0100</pubDate>
+        <link>https://johnhearn.github.io//articles/a-little-every-day</link>
+        <guid isPermaLink="true">https://johnhearn.github.io//articles/a-little-every-day</guid>
+        
+        
+      </item>
+    
   </channel>
 </rss>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Native µservices with Kotlin, Spark and Graal</title>
+
+  
+  <meta name="description" content="Combining SparkJava, Graal and Kotlin.">
+  
+  
+  <meta name="keywords" content=""/>
+  
+  
+  <meta property="og:title" content="Native µservices with Kotlin, Spark and Graal">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/native-kotlin-sparkjava-graal/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Combining SparkJava, Graal and Kotlin.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Native µservices with Kotlin, Spark and Graal">
+
+  
+  <meta name="twitter:description" content="Combining SparkJava, Graal and Kotlin.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/native-kotlin-sparkjava-graal">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Native µservices with Kotlin, Spark and Graal</h1>
+<div class="subtitle">November 14, 2018</div>
+<div class="smaller">three minutes.</div>
+
+<p>In the <a href="native-sparkjava-graal">last post</a> we built the simplest native microservice with SparkJava and Graal. This time we’ll take it a step further and use Kotlin instead of Java.</p>
+
+<p>First we need to add the Kotlin library dependency to the Maven project (as of writing the version is <code class="language-plaintext highlighter-rouge">v1.3.10</code>).</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependencies&gt;</span>
+    ...
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.jetbrains.kotlin<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>kotlin-stdlib<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>${kotlin.version}<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div></div>
+
+<p>And the Kotlin compiler plugin. This is all taken directly from the <a href="https://kotlinlang.org/docs/reference/using-maven.html">Kotlin documentation</a>.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>kotlin-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.jetbrains.kotlin<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${kotlin.version}<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;executions&gt;</span>
+        <span class="nt">&lt;execution&gt;</span>
+            <span class="nt">&lt;id&gt;</span>compile<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;goals&gt;</span> <span class="nt">&lt;goal&gt;</span>compile<span class="nt">&lt;/goal&gt;</span> <span class="nt">&lt;/goals&gt;</span>
+        <span class="nt">&lt;/execution&gt;</span>
+
+        <span class="nt">&lt;execution&gt;</span>
+            <span class="nt">&lt;id&gt;</span>test-compile<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;goals&gt;</span> <span class="nt">&lt;goal&gt;</span>test-compile<span class="nt">&lt;/goal&gt;</span> <span class="nt">&lt;/goals&gt;</span>
+        <span class="nt">&lt;/execution&gt;</span>
+    <span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div></div>
+
+<p>With Kotlin our crazily simple microservice becomes even simpler.</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">spark.Spark.*</span>
+
+<span class="k">fun</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;)</span> <span class="p">{</span>
+    <span class="k">get</span><span class="p">(</span><span class="s">"/sayHello"</span><span class="p">)</span> <span class="p">{</span> <span class="n">req</span><span class="p">,</span> <span class="n">res</span> <span class="p">-&gt;</span> <span class="s">"Hello World!"</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Build the service with Maven and run it to check it works.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> mvn clean package
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> java <span class="nt">-cp</span> <span class="s2">"target/sparkjava-graal-1.0-SNAPSHOT.jar:target/lib/*"</span> HelloWorldKt
+...
+<span class="o">[</span>Thread-0] INFO org.eclipse.jetty.server.Server - Started @363ms
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> curl localhost:4567/sayHello
+Hello World!
+</code></pre></div></div>
+
+<p>Let’s compile it natively. Because it <em>is</em> Java, the command is nearly identical to the Java version.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> native-image <span class="nt">-cp</span> <span class="s2">"target/sparkjava-graal-1.0-SNAPSHOT.jar:target/lib/*"</span> HelloWorldKt
+Build on Server<span class="o">(</span>pid: 53242, port: 51191<span class="o">)</span>
+<span class="o">[</span>helloworldkt:53242]    classlist:     783.03 ms
+<span class="o">[</span>helloworldkt:53242]        <span class="o">(</span>cap<span class="o">)</span>:   2,139.45 ms
+...
+<span class="o">[</span>helloworldkt:53242]        write:     591.88 ms
+<span class="o">[</span>helloworldkt:53242]      <span class="o">[</span>total]:  53,074.15 ms
+</code></pre></div></div>
+
+<p>And run it:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> ./helloworldkt
+...
+<span class="o">[</span>Thread-2] INFO org.eclipse.jetty.server.Server - Started @2ms
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> curl localhost:4567/sayHello
+Hello World!
+</code></pre></div></div>
+
+<p>The executable is nearly identical in size and startup speed to the Java version, as would be expected since it’s effectively the same code.</p>
+
+<p>This is a basic example but the combination of Kotlin for simplicity in implementation, SparkJava for microservice simplicity and Graal for deployment simplicity is a very attractive proposition for microservice development. However I do have some concerns about production use. Mainly if something were to go wrong there is very little information in the public domain to help you out, and still less for this specific combination. On the other hand these are all open source projects so nothing is hidden.</p>
+
+<p>Another limitation is that many libraries simply don’t work with Graal. This is not altogether negative because it will encourage us to go back to simple coding practices however you may have a dependency which you can’t change and this could cause major hassle. I think the main drawback initially will be reflection driven mapping, whether of the serialisation or ORM variety. The current options here are to use key/value type mappings (<a href="https://github.com/fangyidong/json-simple">JSON.simple</a>, <a href="https://github.com/json-path/JsonPath">JsonPath</a>, etc.) or compile-time annotation processing (<a href="https://github.com/Instagram/ig-json-parser">ig-json-parser</a>). Both have drawbacks. In spite of railing against annotations earlier I suspect that compile-time annotations (aka code generation) will have a place.</p>
+
+<p>A third practical consideration is the extremely slow compilation of the native image. Even this very simple example takes almost a minute to build. Of course you could do development without compiling but then compatibility problems could slip through. A continues build pipeline and comprehensive tests would be a way to mitigate this risk.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Native µservices with Kotlin, Spark and Graal&url=https://johnhearn.github.io//articles/native-kotlin-sparkjava-graal"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/native-kotlin-sparkjava-graal&title=Native µservices with Kotlin, Spark and Graal&summary=Combining SparkJava, Graal and Kotlin.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Native µservices with Kotlin, Spark and Graal&amp;body=Check out this site https://johnhearn.github.io//articles/native-kotlin-sparkjava-graal"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Native µservices with Kotlin, Spark and Graal - November 14, 2018 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

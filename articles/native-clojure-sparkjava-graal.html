@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Native µservices with Clojure, SparkJava and Graal</title>
+
+  
+  <meta name="description" content="Combining SparkJava, Graal and Clojure enables us to build dynamic, functional style native services.">
+  
+  
+  <meta name="keywords" content=""/>
+  
+  
+  <meta property="og:title" content="Native µservices with Clojure, SparkJava and Graal">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/native-clojure-sparkjava-graal/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Combining SparkJava, Graal and Clojure enables us to build dynamic, functional style native services.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Native µservices with Clojure, SparkJava and Graal">
+
+  
+  <meta name="twitter:description" content="Combining SparkJava, Graal and Clojure enables us to build dynamic, functional style native services.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/native-clojure-sparkjava-graal">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Native µservices with Clojure, SparkJava and Graal</h1>
+<div class="subtitle">December 24, 2018</div>
+<div class="smaller">three minutes.</div>
+
+<p>Using Clojure to build serve endpoints is an attractive proposition. Services are naturally functional in nature, in fact a service <em>is</em> a function. We’ll follow the same simple example we used for <a href="native-sparkjava-graal">Java</a> and <a href="native-kotlin-sparkjava-graal">Kotlin</a>. This is a continuation of those articles but please bear in mind that my Clojure skills do not (yet :) match Java and Kotlin.</p>
+
+<p>We start, as you might imagine, with a new project:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lein new hello-clojure
+</code></pre></div></div>
+
+<p>We need to add the dependencies to the main <code class="language-plaintext highlighter-rouge">project.clj</code> file as well as the name of the main class<label for="dashes" class="margin-toggle sidenote-number"></label><input type="checkbox" id="dashes" class="margin-toggle" /><span class="sidenote">Something happened with the dash in the name which became an underscore in some places for some reason. </span> that we’ll run to start the server:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="no">:dependencies</span><span class="w"> </span><span class="p">[[</span><span class="n">org.clojure/clojure</span><span class="w"> </span><span class="s">"1.9.0"</span><span class="p">]</span><span class="w">
+                 </span><span class="p">[</span><span class="n">com.sparkjava/spark-core</span><span class="w"> </span><span class="s">"2.7.2"</span><span class="p">]</span><span class="w">
+                 </span><span class="p">[</span><span class="n">org.slf4j/slf4j-simple</span><span class="w"> </span><span class="s">"1.7.13"</span><span class="p">]]</span><span class="w">
+  </span><span class="no">:main</span><span class="w"> </span><span class="n">hello_clojure.core</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Clojure is interoperable with Java but not to the same extent that Kotlin is. To overcome the differences I used a couple of adapters from neat clojure code to Spark’s Java classes<label for="clojure-spark" class="margin-toggle sidenote-number"></label><input type="checkbox" id="clojure-spark" class="margin-toggle" /><span class="sidenote">I later found a nice <a href="https://lispchronicles.com/shortn.html">article</a> with a complete service using Clojure and Spark. Their adapters were slightly better than mine so I’ve incorporated some ideas from that article in what follows. </span>.</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">hello_clojure.core</span><span class="w">
+  </span><span class="p">(</span><span class="no">:gen-class</span><span class="p">)</span><span class="w">
+  </span><span class="p">(</span><span class="no">:import</span><span class="w"> </span><span class="p">(</span><span class="nf">spark</span><span class="w"> </span><span class="n">Spark</span><span class="w"> </span><span class="n">Response</span><span class="w"> </span><span class="n">Request</span><span class="w"> </span><span class="n">Route</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">route</span><span class="w"> </span><span class="p">[</span><span class="n">handler</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w"> </span><span class="n">Route</span><span class="w">
+    </span><span class="p">(</span><span class="nf">handle</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="o">^</span><span class="n">Request</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">^</span><span class="n">Response</span><span class="w"> </span><span class="n">response</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">handler</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="n">response</span><span class="p">))))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="nb">get</span><span class="w"> </span><span class="p">[</span><span class="n">endpoint</span><span class="w"> </span><span class="n">routefn</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">Spark/get</span><span class="w"> </span><span class="n">endpoint</span><span class="w"> </span><span class="p">(</span><span class="nf">route</span><span class="w"> </span><span class="n">routefn</span><span class="p">)))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Then we’re ready to create the controller which we do from the main method so that it’s easy to invoke from the command line. Note also that in the above we used the <code class="language-plaintext highlighter-rouge">gen-class</code> directive to ensure the main class in the Manifest is correct:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">-main</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">get</span><span class="w"> </span><span class="s">"/sayHello"</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">req</span><span class="w"> </span><span class="n">resp</span><span class="p">]</span><span class="w"> </span><span class="s">"Hello World!!"</span><span class="p">)))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>To simplify the generation of the service we can build a self-contained jar using Leiningen.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> lein clean <span class="o">&amp;&amp;</span> lein uberjar
+</code></pre></div></div>
+
+<p>As before, we first check that the service works as normal Java:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>java <span class="nt">-cp</span> target/hello-clojure-0.1.0-SNAPSHOT-standalone.jar hello_clojure.core
+...
+<span class="o">[</span>Thread-0] INFO org.eclipse.jetty.server.Server - Started @1033ms
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> curl localhost:4567/sayHello
+Hello World!
+</code></pre></div></div>
+
+<p>Compiling to a native image is as simple as the previous examples with Java and Kotlin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> native-image <span class="nt">-cp</span> target/hello-clojure-0.1.0-SNAPSHOT-standalone.jar hello_clojure.core
+Build on Server<span class="o">(</span>pid: 35646, port: 53994<span class="o">)</span><span class="k">*</span>
+<span class="o">[</span>hello_clojure.core:35646]    classlist:   2,704.82 ms
+<span class="o">[</span>hello_clojure.core:35646]        <span class="o">(</span>cap<span class="o">)</span>:     909.58 ms
+...
+<span class="o">[</span>hello_clojure.core:35646]        write:     647.23 ms
+<span class="o">[</span>hello_clojure.core:35646]      <span class="o">[</span>total]:  54,900.61 ms
+</code></pre></div></div>
+
+<p>And run it:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> ./helloworld_clojure
+...
+<span class="o">[</span>Thread-2] INFO org.eclipse.jetty.server.Server - Started @2ms
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> curl localhost:4567/sayHello
+Hello World!
+</code></pre></div></div>
+
+<p>Once again the native binary is roughly 15M but again the start-up time is almost instantaneous. This is a very attractive combination of technologies and worth more investigation.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Native µservices with Clojure, SparkJava and Graal&url=https://johnhearn.github.io//articles/native-clojure-sparkjava-graal"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/native-clojure-sparkjava-graal&title=Native µservices with Clojure, SparkJava and Graal&summary=Combining SparkJava, Graal and Clojure enables us to build dynamic, functional style native services.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Native µservices with Clojure, SparkJava and Graal&amp;body=Check out this site https://johnhearn.github.io//articles/native-clojure-sparkjava-graal"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Native µservices with Clojure, SparkJava and Graal - December 24, 2018 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

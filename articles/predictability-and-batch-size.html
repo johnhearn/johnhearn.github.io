@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Predictability and batch size</title>
+
+  
+  <meta name="description" content="It turns out that delivery predictability decreases linearly with batch size.">
+  
+  
+  <meta name="keywords" content="probability, forecasting"/>
+  
+  
+  <meta property="og:title" content="Predictability and batch size">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/predictability-and-batch-size/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="It turns out that delivery predictability decreases linearly with batch size.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Predictability and batch size">
+
+  
+  <meta name="twitter:description" content="It turns out that delivery predictability decreases linearly with batch size.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/predictability-and-batch-size">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Predictability and batch size</h1>
+<div class="subtitle">September 28, 2024</div>
+<div class="smaller">four minutes.</div>
+
+<p>Some results from a little Monte Carlo simulation of delivery times <a href="https://www.linkedin.com/posts/phil-ledgerwood_in-my-last-post-on-this-httpslnkdin-activity-7245467832489046017-sk_N">posted on LinkedIn</a> showed that <strong>predictability decreases with larger batch sizes</strong>. A little maths shows clearly why this is the case.</p>
+
+<h3 id="the-model">The model</h3>
+
+<p>The post compared a team delivering one work item per day with a team delivering 5 work items together every 5 days. The teams have a batch size of 1 and 5 respectively. In this situation we’d expect the mean delivery rate to be the same, namely 1 item per day on average. We’ll call the batch size $b$.</p>
+
+<p>In our model, a team will deliver $W$ work items (doesn’t matter the size of each item, we’re only using the finishing rate in this model) in batches with $\frac{W}{b}$ items in each batch. Let’s call the number of batches $r=\frac{W}{b}$.</p>
+
+<p>In this idealised model, Team 1’s probability of delivering each day is close to 1, so for this case let’s say $p=1$. Team 2’s probability of delivering 5 work items on any particular day is $p=\frac{1}{5}$. So in general on a given day a team delivers $b$ work items with a probability of $p=\frac{1}{b}$.</p>
+
+<p>We want to know the probability of delivering $W$ items of work in $n$ days. This requirement is captured by a <a href="https://en.wikipedia.org/wiki/Negative_binomial_distribution">Negative Binomial</a> distribution and, luckily for us, all the maths has been previously worked out. We’ll break the total delivery time down into two parts. First, the the number of times that a team <em>fails</em> to deliver on a specific day, that is the gaps between deliveries. We’ll call that number $k$. Secondly, we need the number of days that it does deliver, this is $r$. We can then say that the total number of days is the sum of the delivery days, $r$, plus the non-delivery days, $k$. In other words, $n=k+r$. In this case then $k$ follows:</p>
+
+\[n-r = k \sim NegativeBinomial(r, p)\]
+
+<p>And from this we can work out the distribution of $n$.</p>
+
+<h3 id="what-does-the-model-tell-us">What does the model tell us?</h3>
+
+<p>Given the distribution defined above, and remembering that $r$ is a constant, then the expected value of $n$ is:</p>
+
+\[E[n] = E[k+r] = E[k] + r = \frac{r(1-p)}{p} + r = \frac{r}{p} = \frac{\frac{W}{b}}{\frac{1}{b}} = W\]
+
+<p>So, in this model, to deliver $W$ work items <strong>the average total delivery time is independent of the batch size</strong>, as expected.</p>
+
+<p>What about its variance? The variance of the mean (a measure of predictability) is:</p>
+
+\[Var[n] = Var[k+r] = Var[k] = \frac{r(1-p)}{p^2} = \frac{W}{b} \frac{(1-\frac{1}{b})}{\left( \frac{1}{b} \right)^2} = W(b-1)\]
+
+<p>So <strong>the variance <em>increases linearly</em> with batch size</strong>. Since the greater the variance the less predictable the result we can say that the predictability <em>decreases</em> with batch size.</p>
+
+<p>The variance <strong>also increases linearly with the amount of work</strong>. This captures the fact that the predictability decreases the further into the future you look, even if the delivery rate remains constant. This is just one of the factors comprising the <a href="https://en.wikipedia.org/wiki/Cone_of_uncertainty">cone of uncertainty</a> that results solely from batch size.</p>
+
+<h3 id="a-model-is-a-model">A model is a model</h3>
+
+<p>In any real team the batch size won’t be constant but, all other things being equal, this model is good enough to tell us that regular delivery of smaller batches is preferable to larger ones.<label for="other reasons" class="margin-toggle sidenote-number"></label><input type="checkbox" id="other reasons" class="margin-toggle" /><span class="sidenote">There are other reasons too, like the accumulation of changes increasing the probability of bugs but that is not covered in this model. </span></p>
+
+<p>Also in real teams the work items are generally not completely independent. This can be due to internal team dynamics, one piece of work being a prerequisite of another, etc. The practical effect of this is to increase the variance further. One nice thing about the negative binomial as a modelling tool is that it can easily be tuned to the teams actual data by increasing its variance slightly while keeping the mean constant. In the past I have found this to be a very good approximation of data gathered from real teams.</p>
+
+<p>Another nice thing about using a known distribution is that we can go beyond normal Monte Carlo and use Bayesian inference for forecasting. Having a Bayesian model has the advantage of being deterministic and smoother, regulating and reducing noise or small sample effects that are sometimes evident in Monte Carlo simulations.</p>
+
+<p>As always these results need to be used with caution and a full understanding of what they mean. Nonetheless having models to help us understand the mechanisms and principles behind our intuitions can be very handy at times.</p>
+
+<h3 id="validation">Validation</h3>
+
+<p>Just to check that the model we’ve described actually works, the shaded area in the plot below shows 100,000 live results from Monte Carlo simulations of delivery times for 40 pieces of work when 5 items are delivered together. The red line represents the negative binomial model described here. Hopefully, they match as perfectly now as they did when I wrote this.</p>
+
+<p><br /></p>
+
+<iframe width="780" height="470" src="https://johnhearn.github.io//assets/frames/negative-binomial-plot.html">
+
+</iframe>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Predictability and batch size&url=https://johnhearn.github.io//articles/predictability-and-batch-size"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/predictability-and-batch-size&title=Predictability and batch size&summary=It turns out that delivery predictability decreases linearly with batch size.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Predictability and batch size&amp;body=Check out this site https://johnhearn.github.io//articles/predictability-and-batch-size"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Predictability and batch size - September 28, 2024 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

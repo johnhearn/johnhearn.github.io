@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Notes on the Art of TDD - Uno (Part 4)</title>
+
+  
+  
+  <meta name="keywords" content="ood series, tdd"/>
+  
+  
+  <meta property="og:title" content="Notes on the Art of TDD - Uno (Part 4)">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/notes-on-art-of-tdd-uno-part-4/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Personal site for blogging and about science, software and such">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Notes on the Art of TDD - Uno (Part 4)">
+
+  
+  <meta name="twitter:description" content="Personal site for blogging and about science, software and such">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/notes-on-art-of-tdd-uno-part-4">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Notes on the Art of TDD - Uno (Part 4)</h1>
+<div class="subtitle">June 4, 2017</div>
+<div class="smaller">13 minutes.</div>
+
+<p>[Continued from <a href="notes-on-art-of-tdd-uno-part-3.html">Part 3</a>]</p>
+
+<p>Let’s get on to the final important part of the game - scoring.</p>
+
+<blockquote>
+  <p>At the end of the game all opponents’ cards are given to the winner and points are counted. All number cards are the same value as the number on the card (e.g. a 9 is 9 points). “Draw Two” – 20 Points, “Reverse” – 20 Points, “Skip” – 20 Points, “Wild” – 50 Points, and “Wild Draw Four” – 50 Points. The first player to attain 500 points wins the game.</p>
+</blockquote>
+
+<p>This should be straightforward to test, hopefully. As always, we test bit by bit. First card scores. The best place for this is in the cards themselves. Here’s a test for the Draw Two card.</p>
+
+<blockquote>
+  <p>All number cards are the same value as the number on the card</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testCardPoints</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">Card</span> <span class="n">card</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Card</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="nc">Colour</span><span class="o">.</span><span class="na">BLUE</span><span class="o">);</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">card</span><span class="o">.</span><span class="na">points</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">5</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Likewise the action cards:</p>
+
+<blockquote>
+  <p>“Draw Two” – 20 Points</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDrawTwoCardPoints</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">DrawTwoCard</span> <span class="n">drawTwoCard</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DrawTwoCard</span><span class="o">(</span><span class="nc">Colour</span><span class="o">.</span><span class="na">BLUE</span><span class="o">);</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">drawTwoCard</span><span class="o">.</span><span class="na">points</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>That’s trivial to implement. The others are similar. One interesting point though is how to ensure we’ve covered all the cards? We have used a hierarchy to model the different card types (I’m happy with that because <code class="language-plaintext highlighter-rouge">WildFourCard</code> <strong><em>is a</em></strong> <code class="language-plaintext highlighter-rouge">WildCard</code>, etc.) so the superclass may have a default implementation which may not necessarily be tested. The only way to ensure we cover all cases is to add tests systematically for each card type which is error prone.</p>
+
+<blockquote>
+  <p>All opponents’ cards are given to the winner and points are counted</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testAddUpScores</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">Player</span> <span class="n">winner</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="na">play</span><span class="o">();</span>
+  <span class="k">for</span> <span class="o">(</span><span class="nc">Player</span> <span class="n">player</span> <span class="o">:</span> <span class="n">players</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">player</span> <span class="o">==</span> <span class="n">winner</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">assertThat</span><span class="o">(</span><span class="n">player</span><span class="o">.</span><span class="na">score</span><span class="o">()).</span><span class="na">isGreaterThan</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">assertThat</span><span class="o">(</span><span class="n">player</span><span class="o">.</span><span class="na">score</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now the last point.</p>
+
+<blockquote>
+  <p>The first player to attain 500 points wins the game.</p>
+</blockquote>
+
+<p>Notice that the word “game” is being used in a different way - now to represent the entire game and earlier to represent a single round. We’re going to use the word “round” to represent a single hand and the word “game” for all the rounds until we get a final winner. Rename with the IDE and the tests still work. TDD gives you some confidence after a big refactor like this which is nice.  I also notice an unused method (originally created for testing, it seems). Delete that too. And the tests are still green.</p>
+
+<p>Now a test for the whole game.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testGame</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">Game</span> <span class="n">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Game</span><span class="o">(</span><span class="n">players</span><span class="o">);</span>
+  <span class="nc">Player</span> <span class="n">winner</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="na">play</span><span class="o">();</span>
+
+  <span class="k">for</span> <span class="o">(</span><span class="nc">Player</span> <span class="n">player</span> <span class="o">:</span> <span class="n">players</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">player</span> <span class="o">==</span> <span class="n">winner</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">assertThat</span><span class="o">(</span><span class="n">player</span><span class="o">.</span><span class="na">score</span><span class="o">()).</span><span class="na">isGreaterThanOrEqualTo</span><span class="o">(</span><span class="mi">500</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">assertThat</span><span class="o">(</span><span class="n">player</span><span class="o">.</span><span class="na">score</span><span class="o">()).</span><span class="na">isLessThan</span><span class="o">(</span><span class="mi">500</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The IDE generates the skeleton <code class="language-plaintext highlighter-rouge">Game</code> class. The play method is simple.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Player</span> <span class="nf">play</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Round</span> <span class="n">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Round</span><span class="o">(</span><span class="n">players</span><span class="o">);</span>
+    <span class="nc">Player</span> <span class="n">winner</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="na">play</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">winner</span><span class="o">.</span><span class="na">score</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">500</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">winner</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>That’s elegant and works great however a similar situation as before has occurred. I have found a bug not covered by the tests. This time, because we’re reusing the player objects, their hands are not being reset after each round. How can we ensure these oversights don’t happen? Once again the test is harder than the fix. One idea is to avoid creating a pack instance every time and reuse the same one. In that case the number of cards in the pack must always be the same at the start of a game. It also means the pack can be reused. At the end of a round, cards are replaced in the pack from the pile and each player’s hand, just as in a real game. We extract another protected method, <code class="language-plaintext highlighter-rouge">playRound()</code> which just plays the round. The outer <code class="language-plaintext highlighter-rouge">play()</code> method will put all cards back into the pack at the end of the round. The test is essentially the same as the existing <code class="language-plaintext highlighter-rouge">play()</code> test case.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testPlayRound</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">Player</span> <span class="n">winner</span> <span class="o">=</span> <span class="n">round</span><span class="o">.</span><span class="na">playRound</span><span class="o">();</span>
+  <span class="k">for</span> <span class="o">(</span><span class="nc">Player</span> <span class="n">player</span> <span class="o">:</span> <span class="n">players</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">player</span> <span class="o">==</span> <span class="n">winner</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">assertThat</span><span class="o">(</span><span class="n">player</span><span class="o">.</span><span class="na">numCards</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">assertThat</span><span class="o">(</span><span class="n">player</span><span class="o">.</span><span class="na">numCards</span><span class="o">()).</span><span class="na">isNotEqualTo</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>After refactoring, the play() method becomes.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Player</span> <span class="nf">play</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">Player</span> <span class="n">winner</span> <span class="o">=</span> <span class="n">playRound</span><span class="o">();</span>
+  <span class="k">return</span> <span class="n">winner</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Then we add a new test to make sure all the cards are put back in the pack</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testPlay</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="n">numCards</span> <span class="o">=</span> <span class="n">pack</span><span class="o">.</span><span class="na">numCards</span><span class="o">();</span>
+  <span class="n">round</span><span class="o">.</span><span class="na">play</span><span class="o">();</span>
+  <span class="k">for</span> <span class="o">(</span><span class="nc">Player</span> <span class="n">player</span> <span class="o">:</span> <span class="n">players</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">player</span><span class="o">.</span><span class="na">numCards</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">pile</span><span class="o">.</span><span class="na">numCards</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">pack</span><span class="o">.</span><span class="na">numCards</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">numCards</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Luckily we already have a method in pack that does nearly exactly what we want: <code class="language-plaintext highlighter-rouge">resetPack(pile)</code>. We rename it to <code class="language-plaintext highlighter-rouge">putCards()</code> and, by letting it take a <code class="language-plaintext highlighter-rouge">CardHolder</code> instead of a <code class="language-plaintext highlighter-rouge">Pile</code>, we can use it to make this latest test pass. </p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Player</span> <span class="nf">play</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">Player</span> <span class="n">winner</span> <span class="o">=</span> <span class="n">playRound</span><span class="o">();</span>
+  <span class="k">for</span><span class="o">(</span><span class="nc">Player</span> <span class="n">player</span> <span class="o">:</span> <span class="n">players</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">pack</span><span class="o">.</span><span class="na">putCards</span><span class="o">(</span><span class="n">player</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="n">pack</span><span class="o">.</span><span class="na">putCards</span><span class="o">(</span><span class="n">pile</span><span class="o">);</span>
+  <span class="k">return</span> <span class="n">winner</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>One last thing. Let’s take advantage of the reusable the <code class="language-plaintext highlighter-rouge">Pack</code> class to avoid creating a new one for every round. An improvement in memory use and nicer OO. A single <code class="language-plaintext highlighter-rouge">Pack</code> object is passed into the <code class="language-plaintext highlighter-rouge">Game</code> class and is reused for every round. <code class="language-plaintext highlighter-rouge">Pack</code> therefore becomes a dependency of <code class="language-plaintext highlighter-rouge">Game</code> and suddenly we have the possibility of playing a game with a different pack implementation, one with a reduced set of cards, for instance, or an alternative variant. Nice things like that happen when OO is done right :)</p>
+
+<p>Our Uno game model is now nearly complete. Out of interest we now have 48 tests and they run in milliseconds. That’s good. Taking a look at the overall design it’s quite good with a nice distribution of logic throughout the domain. There are a couple of <code class="language-plaintext highlighter-rouge">instanceof</code>s which I could probably refactor away. Overall a good design seems to have been driven out.</p>
+
+<p>To complete the Uno project we need an application to run it (we have got this far basically with only unit tests!) preferably with the option of using human players. We’ll do that now. As always we start with a test.</p>
+
+<blockquote>
+  <p>Run a game of Uno with 4 of our random card players and print the result.</p>
+</blockquote>
+
+<p>This is very similar to the actual <code class="language-plaintext highlighter-rouge">Game</code> tests but I guess in reality this class does little more that the test harness. We should be testing the main() method which is the entry point to the actual app. Our test should look something like this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testPlayUnoGame</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">PlayUno</span><span class="o">.</span><span class="na">main</span><span class="o">(</span><span class="k">new</span> <span class="nc">String</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>But we have no assertions and since this is a static call to a fixed method we can’t override any methods or pass any parameters. We’ll have to capture the stdout. For that I use a little utility called Capture. Here’s the test:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testPlayUnoGame</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+  <span class="k">try</span> <span class="o">(</span><span class="nc">Capture</span> <span class="n">capture</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Capture</span><span class="o">())</span> <span class="o">{</span>
+    <span class="nc">PlayUno</span><span class="o">.</span><span class="na">main</span><span class="o">(</span><span class="k">new</span> <span class="nc">String</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
+    <span class="nc">BufferedReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">capture</span><span class="o">.</span><span class="na">readBack</span><span class="o">();</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">()).</span><span class="na">matches</span><span class="o">(</span><span class="s">"Player 0 scored \\d+ points."</span><span class="o">);</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">()).</span><span class="na">matches</span><span class="o">(</span><span class="s">"Player 1 scored \\d+ points."</span><span class="o">);</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">()).</span><span class="na">matches</span><span class="o">(</span><span class="s">"Player 2 scored \\d+ points."</span><span class="o">);</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">()).</span><span class="na">matches</span><span class="o">(</span><span class="s">"Player 3 scored \\d+ points."</span><span class="o">);</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">()).</span><span class="na">matches</span><span class="o">(</span><span class="s">"Player \\d is the winner."</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This constitutes an acceptance test. Maybe we should have started with this right back at the beginning.</p>
+
+<p>That’s the model done. Some takeaways:</p>
+
+<ol>
+  <li>
+    <p><strong>Incremental testing is hard</strong>, especially when adding functionality that necessarily spans several classes. In a rich domain model, functional tests will inevitably span domain objects and so will have to be broken down into multiple unit tests. That was the case, for example, in this post when scoring was introduced - the <code class="language-plaintext highlighter-rouge">Round</code> class and every card class had to be changed, test first.</p>
+  </li>
+  <li>
+    <p>Even having developed the model from the beginning using pure TDD, I discovered <strong>several flaws</strong> that were not detected by the tests. I don’t think these particular bugs would have happened (or lasted long) in a traditional code-&gt;test scenario because the failure would have been obvious. For example, reusing player instances introduced initialisation errors that somehow got past the tests, probably in a way related to the previous point. This is the main problem that I have with TDD at the moment.</p>
+  </li>
+  <li>
+    <p>I expected to need a <code class="language-plaintext highlighter-rouge">Hand</code> class but in the end that has not been necessary. It would separate logic (the player) from data (the hand). TTD in this sense has had a positive impact on the design in the sense that an unnecessary class hasn’t been created. On the other hand, it has driven out the <code class="language-plaintext highlighter-rouge">CardHolder</code> class, something that I would have probably designed anyway.</p>
+  </li>
+  <li>
+    <p>Making the code testable has lead to a couple of <strong>test artifacts in the code</strong>. First the protected <code class="language-plaintext highlighter-rouge">numCards()</code> method in the end was necessary but earlier in the development it was added purely for test convenience. It doesn’t really constitute breaking encapsulation but it isn’t hiding as much information as it could. On the other hand the OOness of the design has been improved. Pushing logic out of the <code class="language-plaintext highlighter-rouge">Round</code>/<code class="language-plaintext highlighter-rouge">Game</code> classes into <code class="language-plaintext highlighter-rouge">Pack</code> and <code class="language-plaintext highlighter-rouge">Pile</code> made testing easier. I don’t think that the <code class="language-plaintext highlighter-rouge">Pile</code> and <code class="language-plaintext highlighter-rouge">Pack</code> classes would have been such rich domain abstractions if I had designed it without TDD.</p>
+  </li>
+  <li>
+    <p>On the other hand, having a rich domain means that game logic too is distributed around the model. That’s OK until we want to play by different rules. For example my daughter (who introduced me to this game) doesn’t play by the “official” rules on which I have based this model. According to her, you can play a Draw Two card on top of another Draw Two card to force the next player to pick up 4 cards. Making these kinds of changes to the rules with the current domain objects could be tricky. If I had designed the classes with this in mind would have made this easier.</p>
+  </li>
+  <li>
+    <p>It should also be said that it took me <strong>much longer</strong> to implement this model with TDD than it would have taken me in the traditional way. Having said that we have a solid code base and confidence when refactoring. That trade off exists and deciding whether it’s worth it should also be part of the TDD skill set.</p>
+  </li>
+</ol>
+
+<p>It’s not exactly state-of-the-art but it’s been a good exercise in TDD and that was the objective.</p>
+
+<p>To complete the Uno game it is missing some important ingredients.</p>
+
+<p>First we should supply better <code class="language-plaintext highlighter-rouge">Player</code> implementations with more intelligent game strategies, at the moment the random selection of a valid card is just enough to get a valid game. We’ll leave to creation of better players for another post where we’ll consider better strategies and even use machine learning techniques to improve the game play.</p>
+
+<p>Secondly we should add a human UI, even if it’s just a console based one for now. I’ll write that post one day ;)</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Notes on the Art of TDD - Uno (Part 4)&url=https://johnhearn.github.io//articles/notes-on-art-of-tdd-uno-part-4"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/notes-on-art-of-tdd-uno-part-4&title=Notes on the Art of TDD - Uno (Part 4)&summary=&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Notes on the Art of TDD - Uno (Part 4)&amp;body=Check out this site https://johnhearn.github.io//articles/notes-on-art-of-tdd-uno-part-4"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Notes on the Art of TDD - Uno (Part 4) - June 4, 2017 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

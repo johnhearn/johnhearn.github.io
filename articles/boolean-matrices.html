@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Matrices of Boolean Nets</title>
+
+  
+  <meta name="description" content="Matrices representing boolean nets can shed some light on their properties with nice links to quantum computing and category theory.">
+  
+  
+  <meta name="keywords" content=""/>
+  
+  
+  <meta property="og:title" content="Matrices of Boolean Nets">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/boolean-matrices/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Matrices representing boolean nets can shed some light on their properties with nice links to quantum computing and category theory.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Matrices of Boolean Nets">
+
+  
+  <meta name="twitter:description" content="Matrices representing boolean nets can shed some light on their properties with nice links to quantum computing and category theory.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/boolean-matrices">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Matrices of Boolean Nets</h1>
+<div class="subtitle">December 17, 2024</div>
+<div class="smaller">26 minutes.</div>
+
+<p>When studying the boolean networks on the <a href="kauffman-networks">last post</a> I wondered what the state update rule would look like as a matrix. These things can <a href="https://en.wikipedia.org/wiki/Representation_theory">always be represented by matrices</a>. Working out how to do it led to some nice links to quantum computing and category theory.</p>
+
+<p>A few things led me to the way to construct the boolean net matrices. I knew that representation theory says it should be so but that doesn’t make it easier to construct them. Trial and error didn’t really get me anywhere. <label for="paper" class="margin-toggle"> ⊕</label><input type="checkbox" id="paper" class="margin-toggle" /><span class="marginnote">Later found this paper describing a different encoding: <a href="https://academic.oup.com/comjnl/article/15/3/247/480639"><em>The logic of Boolean matrices</em></a> - C. R. Edwards. It might be worth reviewing this to see if this method maintains the same categorical structure. </span> Then I found <a href="https://ozaner.github.io/boolean-logic-with-matrices/">this article</a> describing a simple boolean matrix construction which reminded me that this is deeply related to quantum computing qubit circuit construction that I already know something about, but without all the annoying quantum restrictions.</p>
+
+<h2 id="boolean-algebra">Boolean algebra</h2>
+
+<p>The thing to notice is that a bit ($0$ or $1$) can be represented as a vector:
+\(F = \begin{pmatrix}
+  1 \\
+  0
+ \end{pmatrix}\) and \(T = \begin{pmatrix}
+  0 \\
+  1
+ \end{pmatrix}\)</p>
+
+<p>An identity (NoOp) gate is then \(\begin{pmatrix}
+  1 &amp; 0 \\
+  0 &amp; 1
+ \end{pmatrix}\) and a NOT gate is \(\begin{pmatrix}
+  0 &amp; 1 \\
+  1 &amp; 0
+ \end{pmatrix}\).</p>
+
+<p>To operate on multiple bits at the same time we <em>tensor</em> them together by applying the <a href="https://en.wikipedia.org/wiki/Kronecker_product">Krondecker product</a>. So the boolean number $01_b$ is equal to $F \otimes T$, for example. We end up with a vector of length $2^n$ with an entry for each possible value of the binary number, in order<label for="msb" class="margin-toggle sidenote-number"></label><input type="checkbox" id="msb" class="margin-toggle" /><span class="sidenote">Note the most significant bit is on the left in these expressions. The ordering tripped me up a couple of times. </span>.</p>
+
+<p>Higher order operators are easier here than in the quantum case. We can just write out the result that we want as columns in a matrix, where each column represents $00_b$, $01_b$, $10_b$, $11_b$, respectively. So for example the $AND$ gate is simply: 
+\(AND = \begin{pmatrix}
+  1 &amp; 1 &amp; 1 &amp; 0 \\
+  0 &amp; 0 &amp; 0 &amp; 1
+ \end{pmatrix}\).</p>
+
+<p>When we multiply a pair of binary digits (tensored together) by this matrix then we get the answer we want. Example: $ AND * (T \otimes F) \equiv F$.</p>
+
+<p>The beautiful thing is that we can then use <a href="https://arxiv.org/pdf/0908.3347">wiring diagrams</a> to build more elaborate calculations, like we do in quantum computing circuits. It works because this boolean algebra is an example of a <a href="https://en.wikipedia.org/wiki/Symmetric_monoidal_category">symmetric monoidal category</a> having a braiding that is essentially a SWAP operation between bits. This category allows us to compose operations by <em>shifting</em> bits into place with an appropriate sequence of swaps. This is very similar to the quantum computing equivalents but without the restriction to unitary (reversible) operations. Dropping this restriction means that we can give the category <em>copy</em><label for="copy" class="margin-toggle sidenote-number"></label><input type="checkbox" id="copy" class="margin-toggle" /><span class="sidenote">Also sometimes called <em>clone</em>, as in the <em>no-cloning theorem</em>. </span> and <em>discard</em><label for="copy" class="margin-toggle sidenote-number"></label><input type="checkbox" id="copy" class="margin-toggle" /><span class="sidenote">Or <em>drop</em> or <em>delete</em>, as in the <em>no-deleting theorem</em>. </span> operations, turning it into a <em>copy-discard category</em><label for="cd-category" class="margin-toggle sidenote-number"></label><input type="checkbox" id="cd-category" class="margin-toggle" /><span class="sidenote">Also called a <em>garbage share category</em> but whoever thought up that name should take a deep look at themselves. </span>.</p>
+
+<p>Examples like this make applied category theory such a powerful thinking tool.</p>
+
+<h2 id="kauffmans-example">Kauffman’s example</h2>
+
+<p>A simple circuit for Kauffman’s 3 node example is fairly easy to construct. The three operators correspond to the three truth tables, one for each node. The $Y$ node value is cloned/copied. This is not allowed in quantum computing circuits but no problem here.</p>
+
+<p><img src="/assets/images/booleanmatrices/kauffman-circuit.png" alt="Kauffman's example circuit" /></p>
+
+<p>This circuit does a trick to avoid an extra copy. The copied bit is dropped at the end to make a routine with matching inputs and outputs. This allows multiple similar operations to be chained together to evolve the system.</p>
+
+<p>Some more tricks are required<label for="lifting" class="margin-toggle sidenote-number"></label><input type="checkbox" id="lifting" class="margin-toggle" /><span class="sidenote">I went back again to <a href="https://arxiv.org/abs/1608.03355">this paper</a> which I found helpful to understand this process. </span> to implement the swapping and shifting of registers in code but luckily I had already done <a href="building-a-qpu-simulator-in-julia-part-2">something similar</a> for the quantum computing simulator I wrote some years ago. The $COPY$ and $DROP$ gates were relatively easy to think through and the tensor product just worked perfectly for all these unfamiliar operations (there are <a href="https://en.wikipedia.org/wiki/No-cloning_theorem">no-cloning</a> and <a href="https://en.wikipedia.org/wiki/No-deleting_theorem">no-deleting</a> restrictions in quantum circuits which make things harder in that context).</p>
+
+<p>Of course with this simple example (and the benefit of hindsight) the matrix corresponding to this entire circuit could have been been constructed from scratch from the extended truth table. However this way the actual relations themselves are baked into the circuit. The final matrix, let’s call it $M$,
+will be the same anyway. Here’s what it looks like in code (note that matrix multiplication is from the right, the opposite of the circuit diagram):</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">OPX</span> <span class="o">=</span> <span class="n">op</span><span class="x">(</span><span class="n">kauffman_truth_table</span><span class="x">[</span><span class="mi">1</span><span class="x">,</span><span class="o">:</span><span class="x">])</span>
+<span class="n">OPY</span> <span class="o">=</span> <span class="n">op</span><span class="x">(</span><span class="n">kauffman_truth_table</span><span class="x">[</span><span class="mi">2</span><span class="x">,</span><span class="o">:</span><span class="x">])</span>
+<span class="n">OPZ</span> <span class="o">=</span> <span class="n">op</span><span class="x">(</span><span class="n">kauffman_truth_table</span><span class="x">[</span><span class="mi">3</span><span class="x">,</span><span class="o">:</span><span class="x">])</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">lift</span><span class="x">(</span><span class="mi">3</span><span class="x">,</span><span class="mi">3</span><span class="x">,</span><span class="n">DROP</span><span class="x">)</span><span class="o">*</span><span class="n">lift</span><span class="x">(</span><span class="mi">3</span><span class="x">,</span><span class="mi">3</span><span class="x">,</span><span class="n">OPZ</span><span class="x">)</span><span class="o">*</span><span class="n">lift</span><span class="x">(</span><span class="mi">3</span><span class="x">,</span><span class="mi">2</span><span class="x">,</span><span class="n">OPY</span><span class="x">)</span>
+        <span class="o">*</span><span class="n">row_swap</span><span class="x">(</span><span class="mi">4</span><span class="x">,</span><span class="mi">2</span><span class="x">)</span><span class="o">*</span><span class="n">row_swap</span><span class="x">(</span><span class="mi">4</span><span class="x">,</span><span class="mi">1</span><span class="x">)</span><span class="o">*</span><span class="n">lift</span><span class="x">(</span><span class="mi">3</span><span class="x">,</span><span class="mi">2</span><span class="x">,</span><span class="n">OPX</span><span class="x">)</span>
+        <span class="o">*</span><span class="n">row_swap</span><span class="x">(</span><span class="mi">4</span><span class="x">,</span><span class="mi">2</span><span class="x">)</span><span class="o">*</span><span class="n">lift</span><span class="x">(</span><span class="mi">3</span><span class="x">,</span><span class="mi">3</span><span class="x">,</span><span class="n">CLONE</span><span class="x">)</span><span class="o">*</span><span class="n">row_swap</span><span class="x">(</span><span class="mi">3</span><span class="x">,</span><span class="mi">2</span><span class="x">)</span>
+
+<span class="o">&gt;</span> <span class="mi">8</span><span class="n">×8</span> <span class="kt">SparseMatrixCSC</span><span class="x">{</span><span class="kt">Int64</span><span class="x">,</span> <span class="kt">Int64</span><span class="x">}</span> <span class="n">with</span> <span class="mi">8</span> <span class="n">stored</span> <span class="n">entries</span><span class="o">:</span>
+    <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="mi">1</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>
+    <span class="mi">1</span>  <span class="n">⋅</span>  <span class="mi">1</span>  <span class="mi">1</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="mi">1</span>  <span class="n">⋅</span>
+    <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>
+    <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="mi">1</span>
+    <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>
+    <span class="n">⋅</span>  <span class="mi">1</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>
+    <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="mi">1</span>  <span class="n">⋅</span>  <span class="n">⋅</span>
+    <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>  <span class="n">⋅</span>
+</code></pre></div></div>
+
+<p>Quite a lot of work went into getting that matrix mostly full of zeros!</p>
+
+<p>Testing out the circuit we do get back the results from the original paper:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">state</span> <span class="k">in</span> <span class="mi">0</span><span class="o">:</span><span class="mi">7</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="kt">Bool</span><span class="o">.</span><span class="x">(</span><span class="n">digits</span><span class="x">(</span><span class="n">state</span><span class="x">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="x">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">3</span><span class="x">))</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">transform</span><span class="x">(</span><span class="n">s</span><span class="x">)</span>
+    <span class="n">println</span><span class="x">(</span><span class="n">s</span> <span class="o">=&gt;</span> <span class="n">measure</span><span class="x">(</span><span class="n">M</span><span class="o">*</span><span class="n">S</span><span class="x">))</span>
+<span class="k">end</span>
+
+<span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+<span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+<span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+<span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+<span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span>
+<span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span>
+<span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+<span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+</code></pre></div></div>
+
+<p>So now the whole point of doing this wasn’t just to build the circuit in a new way. It was to use the power of linear algebra to tell us something about the network and its properties. Being a matrix we can calculate its eigenvalues and eigenvectors. If we can find eigenvalues with a value of exactly 1 then we will have found stationary points in the network, i.e. cycles.</p>
+
+<p>The eigenvalues $\lambda = { \lambda_1, \lambda_2, …, \lambda_8 } $ of $M$ turn out to be:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">λ</span> <span class="o">=</span> <span class="n">eigvals</span><span class="x">(</span><span class="n">M</span><span class="x">)</span>
+
+<span class="mi">8</span><span class="o">-</span><span class="n">element</span> <span class="kt">Vector</span><span class="x">{</span><span class="kt">ComplexF64</span><span class="x">}</span><span class="o">:</span>
+   <span class="o">-</span><span class="mf">0.5</span> <span class="o">-</span> <span class="mf">0.8660254037844388</span><span class="nb">im</span>
+   <span class="o">-</span><span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.8660254037844388</span><span class="nb">im</span>
+    <span class="mf">0.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="nb">im</span>
+    <span class="mf">0.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="nb">im</span>
+    <span class="mf">0.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="nb">im</span>
+    <span class="mf">0.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="nb">im</span>
+    <span class="mf">0.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="nb">im</span>
+    <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.0</span><span class="nb">im</span>
+</code></pre></div></div>
+
+<p>Now it just so happens that those non-zero values are the cube roots of unity. Using the fact that the cubes of the eigenvalues of a matrix are the eigenvalues of the matrix cubed then we should get all ones.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">λ</span> <span class="o">=</span> <span class="n">eigvals</span><span class="x">(</span><span class="n">M</span><span class="o">^</span><span class="mi">3</span><span class="x">)</span>
+
+<span class="mi">8</span><span class="o">-</span><span class="n">element</span> <span class="kt">Vector</span><span class="x">{</span><span class="kt">Float64</span><span class="x">}</span><span class="o">:</span>
+   <span class="mf">0.0</span>
+   <span class="mf">0.0</span>
+   <span class="mf">0.0</span>
+   <span class="mf">0.0</span>
+   <span class="mf">0.0</span>
+   <span class="mf">1.0</span>
+   <span class="mf">1.0</span>
+   <span class="mf">1.0</span>
+</code></pre></div></div>
+
+<p>The last 3 eigenvalues are now exactly one! So let’s look at the last 3 eigenvectors and convert them back to the corresponding states:</p>
+
+<p><label for="kauffman-kimatograph-3-2" class="margin-toggle">⊕</label><input type="checkbox" id="kauffman-kimatograph-3-2" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/kauffman/kauffman-kimatograph-3-2.png" /><br />The <em>kimatograph</em> depicted in the original paper. In more mordern language we might call this a <a href="https://en.wikipedia.org/wiki/State_diagram"><em>state (transition) diagram</em></a>, a <a href="https://en.wikipedia.org/wiki/Pseudoforest#Graphs_of_functions"><em>pseudoforest</em></a> or a <a href="https://en.wikipedia.org/wiki/Pseudoforest#Graphs_of_functions"><em>functional graph</em></a>. The states $001_b$, $101_b$ and $110_b$ are in the cycle. $000_b$ is missing 🤷.</span></p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="x">[</span><span class="n">measure</span><span class="x">(</span><span class="n">ν</span><span class="x">)</span> <span class="k">for</span> <span class="n">ν</span> <span class="k">in</span> <span class="n">eachcol</span><span class="x">(</span><span class="n">eigvecs</span><span class="x">(</span><span class="n">M</span><span class="o">^</span><span class="mi">3</span><span class="x">)[</span><span class="o">:</span><span class="x">,</span><span class="mi">6</span><span class="o">:</span><span class="mi">8</span><span class="x">])]</span>
+
+<span class="mi">3</span><span class="o">-</span><span class="n">element</span> <span class="kt">Vector</span><span class="x">{</span><span class="kt">Vector</span><span class="x">{</span><span class="kt">Bool</span><span class="x">}}</span><span class="o">:</span>
+ <span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span>
+ <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+ <span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+</code></pre></div></div>
+
+<p>These are exactly the states which form the only cycle in the example kimatograph.</p>
+
+<p>It is not coincidence that the other eigenvalues are zero. The fact that $rank(M) &lt; 8$ is also no coincidence. There is much more to learn about the spectral properties of these matrices.</p>
+
+<h2 id="wolframs-cellular-automata">Wolfram’s cellular automata</h2>
+
+<p>Once that had worked, I was interested in matrix operations for bigger boolean networks. As before we can apply the same process to Wolfram’s cellular automata which are just specialisations of the general boolean network. This network can be as big as you like. How can we go about building it systematically? This was an interesting problem to mull over and I eventually worked it out. First we can come up with a trinary operator representing the rule.</p>
+
+<p><img src="/assets/images/booleanmatrices/wolfram-rule-op.png" alt="Wolfram rule operation" width="200px" /></p>
+
+<p>This operator has 3 inputs, two of which just pass through to the outputs. The other output is the result of the <a href="https://en.wikipedia.org/wiki/Wolfram_code">Wolfram coded rule</a>. The reason for passing through the two outputs is to be able to chain them together easily. Of course we could just copy the values but this way seems neater. To create the complete circuit it also has to wrap around the ends to form a periodic boundary. That’s done by just copying the bottom bit to the top and the top bit to the bottom. The extra two bits are dropped at the end to make a composable operation. So we’re left with this circuit:</p>
+
+<p><img src="/assets/images/booleanmatrices/wolfram-circuit.png" alt="Wolfram circuit" width="400px" /></p>
+
+<p>Note that there are $n$ input states and $n$ output states so the operation can again be chained by matrix multiplication on the left.</p>
+
+<p>What does this look like in code? Something like this although I expect there are many ways to do it:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> Rule</span><span class="x">(</span><span class="n">code</span><span class="o">::</span><span class="kt">Integer</span><span class="x">)</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">binary</span><span class="x">(</span><span class="n">code</span><span class="x">,</span> <span class="mi">8</span><span class="x">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">zeros</span><span class="x">(</span><span class="kt">Bool</span><span class="x">,</span> <span class="mi">8</span><span class="x">,</span> <span class="mi">8</span><span class="x">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="k">in</span> <span class="mi">0</span><span class="o">:</span><span class="mi">7</span>
+        <span class="n">X</span><span class="x">,</span><span class="n">Y</span><span class="x">,</span><span class="n">Z</span> <span class="o">=</span> <span class="n">reverse</span><span class="x">(</span><span class="n">binary</span><span class="x">(</span><span class="n">k</span><span class="x">,</span><span class="mi">3</span><span class="x">))</span>
+        <span class="n">R</span><span class="x">[</span><span class="o">:</span><span class="x">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="x">]</span> <span class="o">=</span> <span class="n">transform</span><span class="x">([</span><span class="n">outputs</span><span class="x">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="x">],</span> <span class="n">Y</span><span class="x">,</span> <span class="n">Z</span><span class="x">])</span>
+    <span class="k">end</span>
+    <span class="n">sb</span><span class="x">(</span><span class="n">R</span><span class="x">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span><span class="nf"> update</span><span class="x">(</span><span class="n">N</span><span class="x">,</span> <span class="n">rule</span><span class="x">)</span>
+    <span class="c"># Clone the ends and shift to top or bottom respectively</span>
+    <span class="n">WRAP</span> <span class="o">=</span> <span class="n">row_shift</span><span class="x">(</span><span class="n">N</span><span class="o">+</span><span class="mi">2</span><span class="x">,</span><span class="mi">1</span><span class="x">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="x">)</span><span class="o">*</span><span class="n">lift</span><span class="x">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="x">,</span><span class="n">N</span><span class="x">,</span><span class="n">CLONE</span><span class="x">)</span><span class="o">*</span><span class="n">row_shift</span><span class="x">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="x">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="x">,</span><span class="mi">2</span><span class="x">)</span><span class="o">*</span><span class="n">lift</span><span class="x">(</span><span class="n">N</span><span class="x">,</span><span class="mi">1</span><span class="x">,</span><span class="n">CLONE</span><span class="x">)</span>
+
+    <span class="c"># Build the rule gate</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">Rule</span><span class="x">(</span><span class="n">rule</span><span class="x">)</span>
+
+    <span class="c"># Chain the rule N times from the left</span>
+    <span class="n">Rᴺ</span> <span class="o">=</span> <span class="n">foldl</span><span class="x">(</span><span class="o">*</span><span class="x">,</span> <span class="n">lift</span><span class="x">(</span><span class="n">N</span><span class="o">+</span><span class="mi">2</span><span class="o">-</span><span class="mi">2</span><span class="x">,</span><span class="n">i</span><span class="x">,</span><span class="n">R</span><span class="x">)</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">N</span><span class="o">:-</span><span class="mi">1</span><span class="o">:</span><span class="mi">1</span><span class="x">)</span>
+
+    <span class="c"># Drop the last two bits</span>
+    <span class="n">PRUNE</span> <span class="o">=</span> <span class="n">lift</span><span class="x">(</span><span class="n">N</span><span class="x">,</span><span class="n">N</span><span class="x">,</span><span class="n">DROP</span><span class="x">)</span><span class="o">*</span><span class="n">lift</span><span class="x">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="x">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="x">,</span><span class="n">DROP</span><span class="x">)</span>
+
+    <span class="c"># Build the full circuit</span>
+    <span class="n">PRUNE</span><span class="o">*</span><span class="n">Rᴺ</span><span class="o">*</span><span class="n">WRAP</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Took a while to get the <a href="https://en.wikipedia.org/wiki/Bit_numbering#Order">bit order</a> of all this right but the idea was right. I did some nice testing and got it working as it should. As a big test I used the circuit to build and run different systems and compare to existing catalogues. This was the result and I’m pretty happy with it.</p>
+
+<p><label for="kauffman-network-3-2" class="margin-toggle">⊕</label><input type="checkbox" id="kauffman-network-3-2" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/booleanmatrices/ref_wolframca.png" /><br />Excerpt from <a href="https://atlas.wolfram.com/01/01/views/87/TableView.html">summary grid</a> on the Wolfram website. The slight differences are due only to slight modifications to the starting states.</span></p>
+
+<p><img src="/assets/images/booleanmatrices/wolframca.png" alt="My results" /></p>
+
+<p>Looking at the spectra of the update matrices is pretty interesting. As a simple example we can discover eigensystem of the different rules.</p>
+
+<p>In fact we can look at all the eigenvalues of the same group of rules as above. These are plots of the complex plane from (-1,1) in both axes. 
+<img src="/assets/images/booleanmatrices/wolfram-eigenvalues.png" alt="Wolfram eigenvalue plots" /></p>
+
+<p>A few interesting things immediately jump out. First, <strong>every rule has zero eigenvalues</strong> and <strong>the rest are on the unit circle</strong>. This is consistent with what we saw for the simple boolean network above.</p>
+
+<p>The rules with eigenvalues in $ \lbrace -1,0,1 \rbrace $ correspond to the simplest rules: 123, 127, 128, 132, 136. In fact, rules with widely and evenly spaced eigenvalues seems to lead to simple periodic behaviour. Rules 130 and 134 are examples.</p>
+
+<p>Rules 122, 126 and 129 share the same eigenvalue distributions have triangular run-in evolutions although all different in detail. Rule 131 also has uneven eigenvalues and a triangular update rule.</p>
+
+<p>Rules known to be complex like 124 and 137 have a large number of eigenvalues. There can be a maximum of $2^{11} = 2048$ eigenvalues so the natural question is if any reach this maximum? Rule 120 has many eigenvalues but the pattern is simple. I suspect that in this case the behaviour is highly dependent on the initial state.</p>
+
+<p>There is a strong resemblance here with the permutation matrices and that’s not surprising. The update rules are, in a sense, permutations with degeneracies. Those degeneracies are the “spider’s legs” in the state diagram. The results suggest that those degeneracies correspond to the zero eigenvalues of the matrix. The degeneracies are zero rows in the transition matrix. Powers of the transition matrix essentially <em>zero out</em> rows associated with the spider’s legs of the permutations, eventually converging on the cycles of a true permutation.</p>
+
+<h3 id="the-spectrum-of-the-update-rule">The spectrum of the update rule</h3>
+
+<p>We can remove zero rows and the corresponding columns from the transition matrix without changing the cycle dynamics. This essentially means removing the “leaves” of the state diagram. The outer leaves are sometimes called “Eden” states because they can only be initial states and cannot be reached by any other transition. Continuing this process will result in a <strong>permutation matrix with specific cycle characteristics</strong>.</p>
+
+<p>We can formalise this: let $Q_k$ be the matrix that, when multiplied with another matrix, removes its $k$th row. The matrix which does this has $n-1$ rows and $n$ columns. To construct it, take the $n \times n$ identity matrix, remove row $k$ and set the $k$th column to zeros. The result looks something like this for the case where $n=6$ and $k=3$:</p>
+
+\[Q = \begin{pmatrix}
+    1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+    0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+    0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}\]
+
+<p>If we have a $n \times n$ matrix, $M$, then multiplying it from the left by $Q_k$ will remove one row. To remove the corresponding column it turns out that we have to multiply from the <em>right</em> by the <em>transpose</em>. So the final $(n-1) \times (n-1)$ matrix is given as $ M^{\prime} = Q_k M Q_k^T $.</p>
+
+<p>To remove multiple rows and columns, indexed as $a,b,c,…$, just repeat the process: $… Q_c Q_b Q_a M Q_a^T Q_b^T Q_c^T …$. Of course, the sequence can be combined so that $Q = … Q_c Q_b Q_a$ and by basic matrix rules<label for="transpose" class="margin-toggle sidenote-number"></label><input type="checkbox" id="transpose" class="margin-toggle" /><span class="sidenote">$(A_1A_2…A_{k−1}A_k)^T = A_k^TA_{k−1}^T…A_2^TA_1^T$ (<a href="https://en.wikipedia.org/wiki/Transpose#Properties">wiki</a>) </span> we have $ M^{\prime} = Q M Q^T $.</p>
+
+<p>This matrix operation is different from the operations we’ve seen before. It doesn’t discard bits but rather <strong>discards individual states</strong> or, more specifically, unreachable states. I’m not sure what the categorical construction is for this but it’s hard to see how it would fit on the kinds of a wiring diagram we’ve been using.</p>
+
+<p>This procedure might result in more rows with all zeros. These are the new unreachable leaf states that replace the removed one. This procedure is essentially pruning the leaf states one by one until we’re left with a pure permutation matrix and its cyclic structure. This construction has the effect of removing the zero eigenvalues from the matrix $M$.</p>
+
+<p>I <em>think</em> that this is related to <a href="https://en.wikipedia.org/wiki/Krohn%E2%80%93Rhodes_theory">Krohn–Rhodes theory</a> somehow. That theory relates this kind of cellular automata with <a href="https://en.wikipedia.org/wiki/Semigroup_action">actions of semigroups</a>. I’m trying to learn about that stuff but it’s <em>hard</em>. There is a categorical treatment of the Krohn–Rhodes theory<label for="kr-category" class="margin-toggle sidenote-number"></label><input type="checkbox" id="kr-category" class="margin-toggle" /><span class="sidenote">Wells, Charles. ‘A Krohn-Rhodes Theorem for Categories’. Journal of Algebra 64, no. 1 (May 1980): 37–45. <a href="https://doi.org/10.1016/0021-8693(80)90130-1">doi.org/10.1016/0021-8693(80)90130-1</a>. </span> that I would like to look at. This stuff spirals off into all kinds of directions that I find fascinating but time is finite. Nevertheless it’s something to put on the todo list.</p>
+
+<p><label for="reinventing-organizations" class="margin-toggle">⊕</label><input type="checkbox" id="reinventing-organizations" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1348612346i/8667274.jpg" /><br />I bought the book by John Rhodes which tries to explain this and the scientific and philosophical ramifications. It’s called <em>Applications of Automata Theory and Algebra via the Mathematical Theory of Complexity to Biology, Physics, Psychology, Philosophy, and Games</em>  - John Rhodes; Chrystopher L. Nehaniv (Ed.) (2009)</span></p>
+
+<p>So what? The useful thing about this is only seen when considering processes more generally. There is an argument that says that processes can be designed to naturally be attracted towards desired behaviour, wherever they may start. We might say that an particular iterative approach, akin to the update rule, might be likely to result in a stable end state (which may be cyclic but identifiably stable). This has been investigated and used in the field. For example, Barry O’Reilly work on <a href="https://leanpub.com/residuality">Residuality Theory</a> bases some his philosophy this kind of stability.</p>
+
+<h3 id="nothing-is-black-and-white">Nothing is black and white</h3>
+
+<p>Another interesting thing that comes out naturally from the categorial approach (and the semigroup approach actually) is that the states don’t have to be restricted to $0$s and $1$s. It turns out that not only are our update rules examples of cd-categories, they are also examples of <a href="https://ncatlab.org/nlab/show/Markov+category">Markov categories</a>. The additional restriction here is that the weights of the states sum to $1$. This means that rather than apply boolean logic to our circuits we can apply <a href="https://golem.ph.utexas.edu/category/2024/08/introduction_to_categorical_pr.html">probabilistic (fuzzy) logic</a>. Take the $AND$ operator. In category theory this is often called the <em>conjunction</em> or <em>join</em> operator and it’s fundamental to these (<a href="https://ncatlab.org/nlab/show/semicartesian+monoidal+category">cartesian</a>) monoidal categories. In the world of probabilities this same construction represents the probability of two events occurring together. Likewise the $OR$ operation corresponds to the probability of either event happening or both. The complement rule is the NOT operator<label for="conditional-probability" class="margin-toggle sidenote-number"></label><input type="checkbox" id="conditional-probability" class="margin-toggle" /><span class="sidenote">What we don’t have with this construction is conditionals. I think it’s <a href="https://ncatlab.org/nlab/show/Markov+category#conditionals">possible</a> just haven’t needed it. </span>.</p>
+
+<p>The beautiful thing about these categories is that they automatically capture dependence between probabilities. Take a look at this:
+<img src="/assets/images/booleanmatrices/and-prob.png" alt="AND probability" /></p>
+
+<p>The AND gate has two inputs and they are both ½. So then why does it output ½ in one case and ¼ oin the other? The reason the outputs are different is because the COPY operation has created a dependency between them. In the first case there are two independent variables and therefore 4 possibilities 
+\(00_b,01_b,10_b,11_b\) and hence the probability of both being 1 is 1 in 4 or ¼. In the other case, since the inputs are effectively the <em>same</em> variable, they necessarily have the same value so the only possibilities are $00_b$ or $11_b$ and therefore the probability of both being 1 is ½. I think that’s pretty nice.</p>
+
+<p>Anyway, the upshot is that we can create variables as real numbers in the form \(S = \begin{pmatrix}
+  1-p \\
+  p
+ \end{pmatrix}\) where $p \in [0,1]$. $T$ and $F$ (as defined above) correspond to the special cases where $p=1$ and $p=0$ respectively. The construction automatically ensures that the state elements sum to 1. The tensoring ensures that this is honoured for any number of variables.</p>
+
+<p>Now that we’ve done it we can just plug real numbers into our cellular automata and see what happens:
+<img src="/assets/images/booleanmatrices/wolframca-prob.png" alt="Wolfram probability" /></p>
+
+<p>The update rule is exactly the same. It just works. In this case the initial state in each case is set to a single value of $0.6$ in the center cell, rather than $1$ as in the diagram above. The cells are grey-scaled, 0 is white and 1 is black, so 0.6 is a medium grey. Notice that the grey cells emanate away from the starting cell and seem to be superimposed onto a background pattern. I think this nicely shows how the update rule permeates through the cells.</p>
+
+<p>There are all kinds of experiments to be done with this. What if multiple cells are initialised to 0.6 in the initial state?
+<img src="/assets/images/booleanmatrices/wolframca-prob2.png" alt="Wolfram probability2" /></p>
+
+<p>You can see how the effects of the initial state radiate and seem to interact with each other and create interference patterns.</p>
+
+<p>Talking of interference patterns, this category will work on complex numbers too, a sort of analog to a quantum state. Of course, true quantum states don’t have copy and delete operators so let’s just call them complex states? Our bits will be defined this time as \(S = \begin{pmatrix}
+  \sqrt{1-a^2} \\
+  a
+ \end{pmatrix}\) where $a$ is complex and $|a| &lt; 1$. In this case their square sum to 1 and the tensor product will honour the L2 norm here too. Let’s generate the same diagrams with this new input state. Remember the update rules are still boolean matrices and haven’t changed at all.</p>
+
+<p>This first one shows the magnitude of the complex states with a simple initial state of \(0.6 \times e^{2\pi √2}\). Again a 60% magnitude but with an irrational phase:
+<img src="/assets/images/booleanmatrices/wolframca-cplx-mag1.png" alt="Wolfram complex magnitudes 1" /></p>
+
+<p>And this one shows the phases:
+<img src="/assets/images/booleanmatrices/wolframca-cplx-ang1.png" alt="Wolfram complex phases 1" /></p>
+
+<p>There is a very similar kind of pattern emerging from in both the magnitude and phase of the state vector. What if we have two cells set in the initial state?
+<img src="/assets/images/booleanmatrices/wolframca-cplx-mag2.png" alt="Wolfram complex magnitudes 2" /></p>
+
+<p>And this one shows the phases:
+<img src="/assets/images/booleanmatrices/wolframca-cplx-ang2.png" alt="Wolfram complex phases 2" /></p>
+
+<p>Some nice patterns emerging as the two initialised elements interfere with each other. You could play with this all day long. I haven’t looked at all on what patterns come out of this but I suspect that the phases sort of x-ray into the patterns, seeing through static or repeating background behaviour.</p>
+
+<h2 id="more-questions">More questions</h2>
+
+<p>Some things that have occurred to me as I was doing this:</p>
+
+<ul>
+  <li>Curious now for a deeper understanding of the Krohn-Rhodes theorem, to understand it and to see it in the light of category theory. What, if any, is the relation to <a href="https://en.wikipedia.org/wiki/Signal-flow_graph">signal-flow diagrams</a>?</li>
+  <li>What would the phase space of a probability or complex state be like as different operators are applied to them. Do they tend to go be attracted to the fixed points or do they spins about in other ways? It would be quite easy to set up a 2D (or maybe 3D is minimum?) state and just apply random operators to it and display the path. It would be quite cool if there were strange attractors hidden there somewhere.</li>
+  <li>Intuition is telling me that we could use cycles to represent classical probabilities and “compress” deterministic algorithms to probabilistic ones. In other words, move computation from the time domain into a wider state space. I’m not sure if $\epsilon$-machine<label for="esilon" class="margin-toggle sidenote-number"></label><input type="checkbox" id="esilon" class="margin-toggle" /><span class="sidenote">Shalizi, Cosma Rohilla, and James P. Crutchfield. ‘Computational Mechanics: Pattern and Prediction, Structure and Simplicity’. Journal of Statistical Physics 104, no. 3/4 (2001): 817–79. <a href="https://doi.org/10.1023/A:1010388907793">doi.org/10.1023/A:1010388907793</a>.
+ </span> does something similar. Curious to look more at this.</li>
+  <li>Can we construct a <strong>fourier transform operator</strong> by combining cycles of lengths $2^k$ and working backwards from the transition matrix to a boolean network? Is there there anything like a Shor’s algorithm, for example?</li>
+  <li>Is there such a thing as an “indivisible” permutation which would link this to probability in the way that indivisible unitary matrices link probability to Hilbert spaces? See Barandes.</li>
+</ul>
+
+<h2 id="so-what">So what?</h2>
+
+<p>I spent quite a few hours on this, actually whole days, over several weeks. It’s been a fascinating journey and I’ve come away with a much deeper understanding of boolean networks and Wolfram’s cellular automata. I’ve got some additional intuition and respect about it relates to category theory and a renewed interest in the Applied Category Theory book I bought some time ago but have been slow to read. Nothing i this article is particularly useful in itself. The categorial construction of the update rules are far too inefficient to be practical but the string diagram reasoning and formalisms have become more familiar and I can see the real power. I didn’t really belive David Spivak when he said somewhere that category theory can be used even for philosophical reasoning, but I think I’m starting to see what he means. It’s a very powerful language but also formal and mathematical. That’s the sort of thing I should like, I guess. ANyway I’m going to leave it there, this write up is never ending. Glad it’s done now.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Matrices of Boolean Nets&url=https://johnhearn.github.io//articles/boolean-matrices"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/boolean-matrices&title=Matrices of Boolean Nets&summary=Matrices representing boolean nets can shed some light on their properties with nice links to quantum computing and category theory.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Matrices of Boolean Nets&amp;body=Check out this site https://johnhearn.github.io//articles/boolean-matrices"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Matrices of Boolean Nets - December 17, 2024 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

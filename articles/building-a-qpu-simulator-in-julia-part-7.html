@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Building a QPU simulator in Julia - Part 7</title>
+
+  
+  <meta name="description" content="Using Julia to build the classical part of Shor&#39;s Algorithm.">
+  
+  
+  <meta name="keywords" content="quantum computing, julia"/>
+  
+  
+  <meta property="og:title" content="Building a QPU simulator in Julia - Part 7">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-7/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Using Julia to build the classical part of Shor&#39;s Algorithm.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Building a QPU simulator in Julia - Part 7">
+
+  
+  <meta name="twitter:description" content="Using Julia to build the classical part of Shor's Algorithm.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-7">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Building a QPU simulator in Julia - Part 7</h1>
+<div class="subtitle">July 26, 2019</div>
+<div class="smaller">five minutes.</div>
+
+<p>Unlike Deutsch’s algorithm, which merely shows the possibility of quantum speed-up but isn’t of any practical use, <a href="https://quantum-algorithms.herokuapp.com/299/paper/node1.html">Shor’s algorithm</a> has considerable practical applications. Indeed it excites many people because it could potentially be used to break much of the secure online communications which are used today.</p>
+
+<p>Using tools from number theory, the algorithm consists of a procedure which transforms the problem of prime factorings into a problem of period finding. The advantage of this is that the period finding part, which is exponentially hard on classical computers, can be implemented efficiently (i.e. in polynomial time) with a quantum computer.</p>
+
+<p>The details of the algorithm can be found across the internet. Here’s a <a href="https://www.youtube.com/watch?v=8EcLYB6VD4s">video of a talk</a> by James Birnie but I recommend you to also look for your own research material. There’s some non-trivial maths going on and it’s not easy to understand all of the different elements involved in the algorithm. It helps to read multiple different tutorials and explanations.</p>
+
+<p>Anyway, for the moment, let’s just implement the classical parts in Julia. It turns out to be quite simple. These are the steps:</p>
+
+<ul>
+  <li>Step 1: choose a random number 1 &lt; a &lt; N</li>
+  <li>Step 2: find r, the period of $a^x (mod N)$ with respect to x</li>
+  <li>Step 3: check that r is even and $a^{r/2}+1 \neq 0 (mod N)$</li>
+  <li>Step 4: calculate the factors (p,q) as
+  $p = gcd(a^{r/2}-1, N)$
+  $q = gcd(a^{r/2}+1, N)$</li>
+</ul>
+
+<p>Obviously before we can do anything we need a number to factor. Let’s use 37 * 41 = 1517.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Number to factor, a multiple of two prime factors &gt; 2</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">1517</span>
+</code></pre></div></div>
+
+<p>The first step is to choose a random number $a &lt; N$. Also we don’t want to use the degenerate case of $1$.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="kt">BigInt</span><span class="x">(</span><span class="n">rand</span><span class="x">(</span><span class="mi">2</span><span class="o">:</span><span class="n">N</span><span class="x">))</span>
+</code></pre></div></div>
+
+<p>We use Julia’s arbitrary precision integers (<code class="language-plaintext highlighter-rouge">BigInt</code>s) because the exponents get very big very quickly and even 64 bit integers will likely overflow.</p>
+
+<p>The next step is to find the period, say $r$, of $a^x mod N$ with respect to $x$. This is the operation that will be done with a quantum computation. For now we’ll do it with a brute force approach but remember that this would be prohibitively time-consuming when the number to factor is large.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">while</span> <span class="n">a</span><span class="o">^</span><span class="n">r</span> <span class="o">%</span> <span class="n">N</span> <span class="o">!=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">N</span>
+    <span class="kd">global</span> <span class="n">r</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>After running the above code let’s look at the results:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nd">@show</span> <span class="n">N</span><span class="x">,</span> <span class="n">a</span><span class="x">,</span> <span class="n">r</span>
+<span class="x">(</span><span class="n">N</span><span class="x">,</span> <span class="n">a</span><span class="x">,</span> <span class="n">r</span><span class="x">)</span> <span class="o">=</span> <span class="x">(</span><span class="mi">1517</span><span class="x">,</span> <span class="mi">1371</span><span class="x">,</span> <span class="mi">180</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>So we have our period, 180. Lucky we used arbitrary precision integers, $1371^{180}$ is a very, very big number!</p>
+
+<p>Next, for the calculation to work we need to check that the period is even and that: $a^{r/2}+1 \neq 0 (mod N)$. If it isn’t then we just try again with another value for $a$.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">r</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">a</span><span class="o">^</span><span class="x">(</span><span class="n">r</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="x">)</span> <span class="o">%</span> <span class="n">N</span> <span class="o">!=</span> <span class="mi">0</span>
+   <span class="o">...</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Finally we calculate the factors, $p$ and $q$. Julia gives us an implementation of the greatest common divisor algorithm as part of its base functions, so no need to worry about that. The factors are $p=gcd(a^{r/2}-1, N)$ and $q=gcd(a^{r/2}+1, N)$. To keep the types as integers we can use the bit shift operator rather then dividing by 2. In Julia this is simply:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">p</span> <span class="o">=</span> <span class="n">gcd</span><span class="x">(</span><span class="n">a</span><span class="o">^</span><span class="x">(</span><span class="n">r</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="x">)</span><span class="o">-</span><span class="mi">1</span><span class="x">,</span> <span class="n">N</span><span class="x">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">gcd</span><span class="x">(</span><span class="n">a</span><span class="o">^</span><span class="x">(</span><span class="n">r</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="x">)</span><span class="o">+</span><span class="mi">1</span><span class="x">,</span> <span class="n">N</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>So what’s the result?</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nd">@show</span> <span class="n">p</span><span class="x">,</span> <span class="n">q</span>
+<span class="x">(</span><span class="n">p</span><span class="x">,</span> <span class="n">q</span><span class="x">)</span> <span class="o">=</span> <span class="x">(</span><span class="mi">41</span><span class="x">,</span> <span class="mi">37</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>Which are the numbers we first thought of!</p>
+
+<p>Right, that’s the easy part and with Julia it was very straightforward due to the native arbitrary precision integers and exponent operators. The hard part is the actual quantum algorithm which we’ll come back to in a later post.</p>
+
+<p>So here’s the classical algorithm ion it’s entirety. There are some edge case that are not being checked but this is basically it.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Number to factor, a multiple of two prime factors &gt; 2</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">1517</span>
+
+<span class="c"># Step 1: choose a random number 1 &lt; a &lt; N</span>
+<span class="n">a</span> <span class="o">=</span> <span class="kt">BigInt</span><span class="x">(</span><span class="n">rand</span><span class="x">(</span><span class="mi">2</span><span class="o">:</span><span class="n">N</span><span class="x">))</span>
+
+<span class="c"># Step 2: find r, the period of a^x mod N</span>
+<span class="n">r</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="k">while</span> <span class="n">a</span><span class="o">^</span><span class="n">r</span> <span class="o">%</span> <span class="n">N</span> <span class="o">!=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">N</span>
+    <span class="kd">global</span> <span class="n">r</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">end</span>
+
+<span class="nd">@show</span> <span class="n">N</span><span class="x">,</span> <span class="n">a</span><span class="x">,</span> <span class="n">r</span>
+
+<span class="c"># Step 3: check that r is even and a^(r/2)+1 != 0 mod N</span>
+<span class="k">if</span> <span class="n">r</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">a</span><span class="o">^</span><span class="x">(</span><span class="n">r</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="x">)</span> <span class="o">%</span> <span class="n">N</span> <span class="o">!=</span> <span class="mi">0</span>
+
+    <span class="c"># Step 4: calculate the factors</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">gcd</span><span class="x">(</span><span class="n">a</span><span class="o">^</span><span class="x">(</span><span class="n">r</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="x">)</span><span class="o">-</span><span class="mi">1</span><span class="x">,</span> <span class="n">N</span><span class="x">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">gcd</span><span class="x">(</span><span class="n">a</span><span class="o">^</span><span class="x">(</span><span class="n">r</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="x">)</span><span class="o">+</span><span class="mi">1</span><span class="x">,</span> <span class="n">N</span><span class="x">)</span>
+
+    <span class="nd">@show</span> <span class="n">p</span><span class="x">,</span> <span class="n">q</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Building a QPU simulator in Julia - Part 7&url=https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-7"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-7&title=Building a QPU simulator in Julia - Part 7&summary=Using Julia to build the classical part of Shor's Algorithm.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Building a QPU simulator in Julia - Part 7&amp;body=Check out this site https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-7"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Building a QPU simulator in Julia - Part 7 - July 26, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Quality and Time</title>
+
+  
+  <meta name="description" content="Digging into the meaning of quality and its relationship with time.">
+  
+  
+  <meta name="keywords" content="semiotics, quality"/>
+  
+  
+  <meta property="og:title" content="Quality and Time">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/quality-and-time/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Digging into the meaning of quality and its relationship with time.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Quality and Time">
+
+  
+  <meta name="twitter:description" content="Digging into the meaning of quality and its relationship with time.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/quality-and-time">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Quality and Time</h1>
+<div class="subtitle">February 3, 2019</div>
+<div class="smaller">five minutes.</div>
+
+<blockquote>
+  <p><em>‘How long will it take?’ asked Edith, totally ignoring his objections. <br />
+’Do you want it quick, cheap, or good? I can give you any two.’</em><br /> Arthur C Clarke - the Ghost from the Green Banks</p>
+</blockquote>
+
+<p><label for="good-fast-cheap" class="margin-toggle">⊕</label><input type="checkbox" id="good-fast-cheap" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Project-triangle.svg" /><br />One version of the project management <a href="https://en.wikipedia.org/wiki/Trilemma#The_project-management_trilemma">trilemma</a></span>
+When we talk about quality, what do we mean? I’ve written before about <a href="the-good-programmer">quality in a professional setting</a> where it can take on an ethical dimension. This time is going to be more about the definition of quality itself, in particular in its relationship with time.</p>
+
+<p>Take, for example, the project management triangle. There are multiple versions of this triangle (something I’ll come back to in a moment) but the one I have in mind is the one often labelled <strong>Good-Fast-Cheap</strong> or preferably, in my opinion, the equivalent triplet of constraints <strong>Time-Cost-Quality</strong>. I believe it was an observation used in the manufacturing industry although some say it came from Hollywood but in any case the idea is that you must “<em>choose two</em>”. A better way of understanding the triangle, in less aphoristic terms, is that, <strong>all other things being equal, an improvement to one will negatively impact either or both of the other two</strong>.</p>
+
+<p>We see this, of course, throughout the software industry where <em>time</em> constraints very frequently have a serious negative impact on both cost and quality. You can practice your skills to be better and faster but that usually means you can ask for more money, increasing <em>costs</em>. NASA have different constraints and prefers <em>quality</em> over everything else because lives literally depend on it.</p>
+
+<p>Furthermore I’d say one of the main reasons for taking on agile practices is that they offset the effect of time constraints by instead focussing on maximal (estimated-business-)value within a given time interval<label for="jeffries" class="margin-toggle sidenote-number"></label><input type="checkbox" id="jeffries" class="margin-toggle" /><span class="sidenote"><a href="https://ronjeffries.com/xprog/articles/quality/">Quality vs Speed? I Don’t Think So!</a> </span>, fixing <em>time</em> in the multi-variate equation and allowing cost and quality to be managed more effectively. This is the key to ensuring a sustainable project and is seriously undermined if fixed deadlines are imposed without regard for to consequences on cost or quality, in effect pulling the carpet out from under the agile process.</p>
+
+<p>An alternative presentation of the time/quality relationship is that higher quality software is easier to maintain, has fewer bugs and is hence faster to deliver. I haven’t seen any data on this but it holds with my experience however only over the medium to long term. Long running projects with many changes over time will inevitably be slowed down by low quality designs and will not be sustainable. This is shown in this quintessential diagram:</p>
+
+<figure><figcaption><span>Taken from <a href="http://scrumreferencecard.com/scrum-reference-card/">here</a>, originally credited to <a href="https://twitter.com/RonJeffries">Ron Jeffries</a></span></figcaption><img src="/assets/images/early-and-sustainable-delivery.png" /></figure>
+
+<p>The “weak done” line will result in either slow and fragile changes or, even worse, the need for a rewrite. We must take care that our efforts are providing the maximum value <strong>for the lifetime of the product</strong> and if the project is long running then adjusting for time and cost makes perfect economic sense.</p>
+
+<p>If, however, the project is a short term, low requirement or throwaway project or its <strong>business value is realised only through timely delivery</strong> then we must be prepared to adjust our efforts accordingly.</p>
+
+<p>When discussing these ideas with colleagues some interesting ideas came up.</p>
+
+<p><label for="time-scope-cost" class="margin-toggle">⊕</label><input type="checkbox" id="time-scope-cost" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="https://upload.wikimedia.org/wikipedia/commons/8/88/Project-triangle-en.svg" /><br />Another version of the project management <a href="https://en.wikipedia.org/wiki/Project_management_triangle">triangle</a></span></p>
+
+<p>The first derailed me slightly because it concerned the definition of the project triangle itself and some preferred the labels <strong>Time-Scope-Cost</strong> defining quality as the overall relationship between them. This is another entry for the compendium of frequently confused ideas. There are multiple variants of the triangle with different perspectives and goals. Definitions of the form <strong>Time-Scope-Cost</strong> (or <strong>Speed-Feature-Cost</strong> and many others) use the concept of <em>quality</em> in a much broader sense than the concept of quality as we frequently use it as software engineers in terms of <em>code</em> quality or <em>design</em> quality<label for="ploek" class="margin-toggle sidenote-number"></label><input type="checkbox" id="ploek" class="margin-toggle" /><span class="sidenote"><a href="https://blog.ploeh.dk/2019/03/04/code-quality-is-not-software-quality/">Code quality isn’t software quality</a> </span>, and as used in the sense of sustainable delivery. This is a semantic problem but one to bear in mind with conversations with colleagues. Another thing about these models is the tight relationship between the ideas of features/scope/time and schedule. These are not cleanly separable ideas and leads to some overlap and confusion.</p>
+
+<p>A second point was that not all features are equal. Some features may be known to be fixed in scope and require less maintenance over time, or even be likely to be replaced. If we consider the diagram above on a feature by feature basis it again allows us to adjust or efforts for maximum overall value.</p>
+
+<p>A third point was that quality itself is a <a href="https://en.wikipedia.org/wiki/Eight_dimensions_of_quality">multidimensional measure</a>. This again is a broader and arguably much richer definition of quality than the one used to justify sustainable delivery. Bearing this in mind no doubt will make us better developers.</p>
+
+<h2 id="lessons-learnt">Lessons learnt</h2>
+<p>Providing value through high code and design quality has a <strong>direct and somewhat dynamic relationship with time</strong> and depends on <strong>project length and volatility</strong>. Things to bear in mind in our day to day work.</p>
+
+<p>The compendium of confused terms continues to grow. There are <strong>multiple ways of looking at quality</strong> and it’s easy to mix them up. I’ll be sure to qualify the word when I use it in the future - if we want to communicate ideas then we must have a shared experience of them.</p>
+
+<p>Not only are there multiple definitions of quality but, as we discovered, <strong>multiple definitions of the project management triangle</strong>, and even different names for it (the iron triangle, for example). Successful conversations rely on shared experience and it rests on us to understand different perspectives to avoid unproductive misunderstandings.</p>
+
+<p>Many thanks to my colleagues at <a href="codurance.com">Codurance</a> for their feedback and discussions. Generous and informative as always.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Quality and Time&url=https://johnhearn.github.io//articles/quality-and-time"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/quality-and-time&title=Quality and Time&summary=Digging into the meaning of quality and its relationship with time.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Quality and Time&amp;body=Check out this site https://johnhearn.github.io//articles/quality-and-time"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Quality and Time - February 3, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

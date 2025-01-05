@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Kauffmann's Basic Gene Nets</title>
+
+  
+  <meta name="description" content="Turns out that Kauffman&#39;s gene nets were more general than Wolfram&#39;s later elementary cellular automata and share some interesting properties.">
+  
+  
+  <meta name="keywords" content=""/>
+  
+  
+  <meta property="og:title" content="Kauffmann&#39;s Basic Gene Nets">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/kauffman-networks/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Turns out that Kauffman&#39;s gene nets were more general than Wolfram&#39;s later elementary cellular automata and share some interesting properties.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Kauffmann's Basic Gene Nets">
+
+  
+  <meta name="twitter:description" content="Turns out that Kauffman's gene nets were more general than Wolfram's later elementary cellular automata and share some interesting properties.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/kauffman-networks">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Kauffmann's Basic Gene Nets</h1>
+<div class="subtitle">December 5, 2024</div>
+<div class="smaller">13 minutes.</div>
+
+<p>Stuart Kauffman’s 1969 paper <em><a href="https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=93e430fc351766b408c39a89c4421546d12632d0">Metabolic Stability and Epigenesis in Randomly Constructed Genetic Nets</a></em> introduced a simple model of gene interaction which seemed to capture certain characteristics of real biological systems. It was a precursor for later work on <a href="https://en.wikipedia.org/wiki/NK_model">NK-models</a> and <a href="https://en.wikipedia.org/wiki/Cellular_automaton">cellular automata</a>. They have come up recently in different forms such as Stephen Wolfram’s work on biological computability<label for="wolfram-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="wolfram-1" class="margin-toggle" /><span class="sidenote"><a href="https://writings.stephenwolfram.com/2024/05/why-does-biological-evolution-work-a-minimal-model-for-biological-evolution-and-other-adaptive-processes/">Why Does Biological Evolution Work? A Minimal Model for Biological Evolution and Other Adaptive Processes</a> (Wolfram - May 2024). </span><label for="wolfram-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="wolfram-2" class="margin-toggle" /><span class="sidenote"><a href="https://writings.stephenwolfram.com/2024/12/foundations-of-biological-evolution-more-results-more-surprises/">Foundations of Biological Evolution: More Results &amp; More Surprises</a> (Wolfram - December 2024). </span> and Barry O’Reilly’s <a href="https://www.sciencedirect.com/science/article/pii/S1877050922004975">Residuality Theory</a>.</p>
+
+<p>I’m going to take the approach of just reproducing Kauffman’s initial results, as I like to do, including some additional work to link it to Wolfram’s classes. I have also done some work on the separability, divisibility and reversibility of these nets but that will be in another post.</p>
+
+<h2 id="the-setup">The setup</h2>
+
+<p>The paper begins like this:</p>
+
+<blockquote>
+  <p>Proto-organisms probably were randomly aggregated nets of chemical
+reactions. The hypothesis that contemporary organisms are also randomly
+constructed molecular automata is examined by modeling the gene as a
+binary (on-off) device and studying the behavior of large, randomly constructed nets of these binary “genes”.</p>
+</blockquote>
+
+<p>First some terminology. Kauffman refers to his net as “<em>a binary (on-off) device</em>”. We will call this a <a href="https://en.wikipedia.org/wiki/Boolean_network">boolean network</a> because each node has a boolean value attached to it, on or off. When he uses the word “gene” (in quotes) he’s referring to the individual nodes of the network.</p>
+
+<p>There are $N$ nodes and each node is attached to $K$ other nodes. By way of example Kauffman uses a simple network with 3 nodes and 2 connections.</p>
+
+<p><label for="network-3-2" class="margin-toggle"> ⊕</label><input type="checkbox" id="network-3-2" class="margin-toggle" /><span class="marginnote">The example that Kauffman uses in the paper is a (N=3,K=2) network. By necessity it is a complete graph and is small enough to be worked through by hand. </span></p>
+
+<p><label for="kauffman-network-3-2" class="margin-toggle">⊕</label><input type="checkbox" id="kauffman-network-3-2" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/kauffman/kauffman-network-3-2.png" /><br />Comparison with figure from the original paper which includes the truth table for each node.</span></p>
+
+<p><img src="/assets/images/kauffman/network-3-2.png" alt="Example network from paper" width="250px" /></p>
+
+<p>The network is allowed to evolve in a particular way:</p>
+
+<blockquote>
+  <p>… the inputs to each binary “gene” may be chosen at random; the effect of those inputs on the recipient element’s output behavior may be randomly decided by assigning at random to each element one of the possible Boolean functions of its inputs.</p>
+</blockquote>
+
+<p>For example, if a node has two inputs A and B (K=2) then the rule might be or $A$ AND $B$ or $A$ XOR $B$, assigned at random, and the node’s value would be updated accordingly.</p>
+
+<p>Alternatively, these rules can be represented in full generality as a <a href="xhttps://en.wikipedia.org/wiki/Truth_table">truth table</a>. Since for this study we don’t care what the actual rules are in terms of ANDs and ORs, we will construct the update rules simply by taking a random truth table.</p>
+
+<p>To reproduce Kauffman’s simple example in the paper we assign the following truth table to the network:</p>
+
+<p><label for="tensor" class="margin-toggle"> ⊕</label><input type="checkbox" id="tensor" class="margin-toggle" /><span class="marginnote">As an aside, there are $2^K \times N$ entries in the truth table. This suggests to me that a tensor representation might be more efficient for simulation, especially for larger values of $K$. </span></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Node</th>
+      <th style="text-align: center">Inputs</th>
+      <th style="text-align: center">$00$</th>
+      <th style="text-align: center">$01$</th>
+      <th style="text-align: center">$10$</th>
+      <th style="text-align: center">$11$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">$X_{T+1}$</td>
+      <td style="text-align: center">$YZ$</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">$Y_{T+1}$</td>
+      <td style="text-align: center">$XZ$</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">$Z_{T+1}$</td>
+      <td style="text-align: center">$XY$</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Enumerating the small number of possible states in this example we find the following update rule:</p>
+
+<p>$f: X \times Y \times Z \rightarrow X \times Y \times Z$</p>
+
+<p><label for="kauffman-network-3-2" class="margin-toggle">⊕</label><input type="checkbox" id="kauffman-network-3-2" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/kauffman/kauffman-truth_table-3-2.png" /><br />Comparison with truth table depicted in the original paper.</span></p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+ <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+ <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+ <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+ <span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span>
+ <span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span>
+ <span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">0</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+ <span class="x">[</span><span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="mi">0</span><span class="x">,</span> <span class="mi">1</span><span class="x">,</span> <span class="mi">1</span><span class="x">]</span>
+</code></pre></div></div>
+<!---
+| T<br/>X Y Z || T+1<br/>X Y Z|
+|:-:|:-:|:-:|
+| 0 0 0 | $\rightarrow$ | 0 0 1|
+| 0 0 1 | $\rightarrow$ | 1 0 1|
+| 0 1 0 | $\rightarrow$ | 0 0 1|
+| 0 1 1 | $\rightarrow$ | 0 0 1|
+| 1 0 0 | $\rightarrow$ | 0 0 0|
+| 1 0 1 | $\rightarrow$ | 1 1 0|
+| 1 1 0 | $\rightarrow$ | 0 0 1|
+| 1 1 1 | $\rightarrow$ | 0 1 1|
+-->
+
+<p>When the update rule is applied multiple times, the values of the nodes enter a dynamic wholly defined by the truth table. Since this is a finite system, at some point the values will enter a cycle. The maximum possible cycle length is $2^N$ (or $2^3=8$ in our small example) but often the cycles will be shorter. By tracing the dynamics for each of the possible state values we can draw a graph of their trajectories<label for="kimatograph" class="margin-toggle sidenote-number"></label><input type="checkbox" id="kimatograph" class="margin-toggle" /><span class="sidenote">Kauffman calls these diagrams <em>kimatograph</em> in the paper but it doesn’t seem to be a term that caught on, although I quite like it. </span>.</p>
+
+<p><label for="kauffman-kimatograph-3-2" class="margin-toggle">⊕</label><input type="checkbox" id="kauffman-kimatograph-3-2" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/kauffman/kauffman-kimatograph-3-2.png" /><br />The <em>kimatograph</em> depicted in the original paper. The state $000$ has been omitted for some reason.</span></p>
+
+<p><img src="/assets/images/kauffman/kimatograph-3-2.png" alt="Example kimatograph from paper" width="450px" /></p>
+
+<p>By looking at the diagram and following the arrows, it’s clear that all the states eventually fall into the same cyclic behaviour. There is a <em>transient</em> (or <em>run-in</em>) period between the initial state and the first state encountered on a cycle. Kauffman defines a <em>confluent</em> as the set of states leading into, or on, a cycle. In this case there is only one.</p>
+
+<h2 id="the-results">The results</h2>
+
+<p>In the paper, Kauffman studied the dynamics of large networks, keeping $K=2$. Just by way of example a graph representation of a network with $N=14,K=2$ might look like the following diagram.</p>
+
+<p><label for="random-network-14-2" class="margin-toggle"> ⊕</label><input type="checkbox" id="random-network-14-2" class="margin-toggle" /><span class="marginnote">This network has 14 nodes labelled from 1 to 14 ($N=14$). Each node has two incoming connections ($K=2$). </span>
+<img src="/assets/images/kauffman/random-network-14-2.png" alt="Random boolean network" width="450px" /></p>
+
+<p>The situation clearly becomes more complicated very quickly and you’d expect the dynamics to be equally complicated. However, Kauffman goes on to say:</p>
+
+<blockquote>
+  <p>The results suggest that, if each “gene” is directly affected by two or three other “genes”, then such random nets: behave with great order and stability.</p>
+</blockquote>
+
+<p>This is the crux of the study and mostly borne out but we will see that there are important exceptions. Kauffman realised this and the nuance became of central importance in the development of complex systems theory although it is understated in this early paper.</p>
+
+<p>Take, for example the histogram of cycle length. Kauffman discovered that the average cycle length for ($N=400,K=2$) nets with random truth tables was smaller than might be expected. We can reproduce the result fairly well.</p>
+
+<p><label for="cycles-hist-400-2" class="margin-toggle"> ⊕</label><input type="checkbox" id="cycles-hist-400-2" class="margin-toggle" /><span class="marginnote">A histogram of cycles detected in 400 node random boolean nets. </span></p>
+
+<p><label for="kauffman-cycles-hist-400-2" class="margin-toggle">⊕</label><input type="checkbox" id="kauffman-cycles-hist-400-2" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/kauffman/kauffman-cycles-hist-400-2.png" /><br />The histogram of cycle length depicted in the original paper. Note the cut-off at 55 and the preponderance of cycles of length 2.</span></p>
+
+<p><img src="/assets/images/kauffman/cycles-hist-400-2.png" alt="Histogram nets N=400" width="350px" /></p>
+
+<p>There are immediately some things to note. First the <strong>similarity is remarkable</strong>, especially considering that this is a run of 200 random samples out of a possible $2^{400}$ states. There are peaks at 1, 2, 4, 6, 8, 10, 12, 16, 20, 24, etc. and the trend is decreasing with larger cycle lengths.</p>
+
+<p>There are two important caveats, though.</p>
+
+<p>The preponderance of cycles of length two in Kauffman’s results is not present in mine. Initially, I thought this was a bug in my code but I checked and double checked the calculations by hand and couldn’t find a problem. Moreover, closer study reveals a second, related caveat worth mentioning.</p>
+
+<p>I have artificially chopped the histogram at the value of 55 to match Kauffman’s. However, my results include cycles of lengths much greater then 55, some having exceeded the limit of 10,000 which I had to add to stop the simulations running forever. I have individual instances of cycle lengths of 60, 62, 72, 78, 80, 84, 96, 102, 111, 116, 168, 186, 248, 282, 292, 320, 381, 438, 458, 482, 508, 1017, 1260, 1281, 1552, 3066, 3500, 3628, 6527 and eight more reaching the upper limit.</p>
+
+<p>Suspiciously, my results typically show a similar number of cycle lengths above 55 as the difference in Kauffman’s and my results for 2-cycles. For example, the 2-cycle count from my experiment shown in the figure, was 9. The number of cycles of length greater than 55 was 39. Kauffman’s 2-cycle count was 40.</p>
+
+<p>I don’t have Kauffman’s original code and I can’t formally prove my code is correct. Nonetheless I have found an interesting way of testing it which is instructive in itself. The idea is to narrow in on Stephen Wolfram’s well-known 1D cellular automata as a <em>special case</em> of Kauffman’s boolean nets.</p>
+
+<h2 id="wolframs-classes">Wolfram’s classes</h2>
+
+<p>It turns out that Wolfram’s famous study of <a href="https://en.wikipedia.org/wiki/Elementary_cellular_automaton">elementary 1D cellular automata</a> (which he discusses in great depth in his book “<em>A New Kind of Science</em> (2002)”) can easily be modelled as a boolean net. The good thing is that the results are visually quite distinctive and can serve as a reference.</p>
+
+<p>To build it, start with the $N$ nodes arranged in a line. Connect each node to itself and its two immediate neighbours, making $K=3$. The system is closed by wrapping around the ends of the line so that the nodes at both extremes are connected together<label for="periodic" class="margin-toggle"> ⊕</label><input type="checkbox" id="periodic" class="margin-toggle" /><span class="marginnote">These are sometimes called <em>periodic boundaries</em>. </span>.</p>
+
+<p>Make a truth table based on one of the $2^3$ possible rules. Wolfram <a href="https://en.wikipedia.org/wiki/Wolfram_code">codified</a> them as numbers from 0 to 255. The truth table is identical for each of the nodes.</p>
+
+<p><label for="rule26" class="margin-toggle">⊕</label><input type="checkbox" id="rule26" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/kauffman/rule26.png" /><br />Example of the history of evolution of a boolean net with 100 nodes arranged in a line. Each time step is a row on the image. The pattern is cyclic and, in fact, is classified as “class 2” in Wolfram’s scheme.</span></p>
+
+<p>Allow the system to evolve, keeping records on the history of states as the rows of an image. This is what you get, for example for rule 26:</p>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Rule26rand.png" width="150" height="150" style="padding:25px; background-color:white;" /></p>
+
+<p>Wolfram and others have studies these nets in depth and famously found that they exhibit behaviour that fits into 4 classes:</p>
+
+<p><img src="https://files.wolframcdn.com/pub/www.wolframscience.com/nks/page0231a-600.png" alt="Wolfram's four classes" /></p>
+
+<p>The first class leads to a single terminal, stationary state. All 0s or all 1s. In terms of Kauffman’s nets, the cycle length in this class is 1 and we have seen that many rules lead to this outcome. Kauffman notes that removing rules which always resolve to 0 or 1<label for="tc" class="margin-toggle sidenote-number"></label><input type="checkbox" id="tc" class="margin-toggle" /><span class="sidenote">He calls them <em>contradictions</em> and <em>tautologies</em> respectively. </span> significantly reduces the occurrence of this class.</p>
+
+<p>The second class reduces to fixed patterns with simple periodic behaviour. <a href="https://conwaylife.com/wiki/One-dimensional_cellular_automaton/Wolfram_rule">Rule 26 shown above falls into this class</a>. While it is a fairly complicated (using the term advisedly) pattern it is periodic and predictable.</p>
+
+<p>The third class is entirely chaotic. The pattern does not converge and is only periodic to the extent of the finite state space (which may be extremely large). The appearance is of white noise and randomness and, in fact, is <a href="https://reference.wolfram.com/language/tutorial/RandomNumberGeneration.html#185956823">available as a  random number generator</a> in Mathematica.</p>
+
+<p>The fourth class demonstrates complexity. The patterns are non-periodic but also not chaotic. These configurations are on the <em>edge of chaos</em>, neither periodic nor chaotic. One interesting property that at least two of the rules in this category have is <em>universality</em><label for="universality" class="margin-toggle sidenote-number"></label><input type="checkbox" id="universality" class="margin-toggle" /><span class="sidenote"><a href="https://wpmedia.wolfram.com/sites/13/2018/02/15-1-1.pdf">Universality in Elementary Cellular Automata</a> - Matthew Cook </span>, or in other words the ability to perform any calculation.</p>
+
+<p>What’s the relevance of all this? Well, by converting the well-documented Wolfram rules to Boolean nets I’m much more comfortable saying that my simulation is working as expected. I’ve tried many different rules and the patterns are identical to the published ones.</p>
+
+<p>On top of that, since the simple cellular automata studied by Wolfram is an example of very simple Kauffman network then the Kauffman networks in general must necessarily admit such classes of behaviour, including class 3 and 4, the chaotic and universal ones. In this light, Kauffman’s discovery that the average cycle length remains smaller than might be expected is just a part of a much richer picture.</p>
+
+<p>At this point I got side tracked onto a parallel way of modelling the networks which has some promise. The write up of that will have to wait until the next post.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Kauffmann's Basic Gene Nets&url=https://johnhearn.github.io//articles/kauffman-networks"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/kauffman-networks&title=Kauffmann's Basic Gene Nets&summary=Turns out that Kauffman's gene nets were more general than Wolfram's later elementary cellular automata and share some interesting properties.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Kauffmann's Basic Gene Nets&amp;body=Check out this site https://johnhearn.github.io//articles/kauffman-networks"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Kauffmann's Basic Gene Nets - December 5, 2024 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

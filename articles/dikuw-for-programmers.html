@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>DIKUW for Programmers</title>
+
+  
+  <meta name="description" content="An explanation for programmers of the concepts behind the decision-making information hierarchy.">
+  
+  
+  <meta name="keywords" content="semiotics"/>
+  
+  
+  <meta property="og:title" content="DIKUW for Programmers">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/dikuw-for-programmers/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="An explanation for programmers of the concepts behind the decision-making information hierarchy.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="DIKUW for Programmers">
+
+  
+  <meta name="twitter:description" content="An explanation for programmers of the concepts behind the decision-making information hierarchy.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/dikuw-for-programmers">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>DIKUW for Programmers</h1>
+<div class="subtitle">July 7, 2019</div>
+<div class="smaller">six minutes.</div>
+
+<p>One of the most interesting models that I’ve seen in recent months is from a talk on <a href="https://youtu.be/EbLh7rZ3rhU">Systems Thinking</a> by <a href="https://en.wikipedia.org/wiki/Russell_L._Ackoff">Dr. Russell Ackoff</a>. It’s variously called the <a href="https://en.wikipedia.org/wiki/DIKW_pyramid">DIKW Pyramid</a> (a mneumonic for <strong>D</strong>ata, <strong>I</strong>nformation, <strong>K</strong>nowledge, <strong>W</strong>isdom) or the Information Chain, amongst many other names. Dr. Ackoff also includes a category called “<strong>U</strong>nderstanding” which is avoided under some philosophical treatments but I’ll include it because I think it provides valuable insight. Hence and henceforth I’ll call it the <strong>DIKUW</strong> model.</p>
+
+<p>It’s one of those models which is hard to describe but easy to grasp. In a nutshell it’s this:</p>
+
+<p>Data⇒Information⇒Knowledge⇒Understanding⇒Wisdom</p>
+
+<p>How each of these layers is interpreted varies. I’m going to try and approach it from three angles: as a programmer with programming constructs, with de Bono’s Mechanics of Mind model and, finally, from an AI perspective.</p>
+
+<p>This first post treats it as a programmer.</p>
+
+<h2 id="data">Data</h2>
+<p>Imagine a random area of a memory chip full of transistors, each either on or off. One might suppose that those states mean something to someone but without any context it remains data and, actually,  <strong>does not provide information at all</strong>.</p>
+
+<p>That may seem counter intuitive because we are used to seeing data as information but, thinking about it, it can’t be. First, we don’t even know if it is a complete representation of anything. It’s just a state with no context. It might as well, in fact, be random<label for="extraction" class="margin-toggle sidenote-number"></label><input type="checkbox" id="extraction" class="margin-toggle" /><span class="sidenote">We may be able to apply techniques from the higher levels to extract more data from the data: average, variance, repeating patterns, etc. but until we apply the higher levels the data remains data. </span>.</p>
+
+<p>Often, as programmers we confuse data with information and pay the price with bugs and errors, as we’ll see in a moment.</p>
+
+<h2 id="information">Information</h2>
+<p>Let’s say we have observed the state of our transistors somehow and we know which states represent either 0s or 1s, and we know it’s an 8-bit representation. Then our random piece of RAM might look like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>01101100 01101001 01100110 01100101 11100010 10000110 10010000 01111011 
+11100010 10000110 10010001 00110001 00100000 11100010 10001101 10110101 
+11100010 10001000 10101000 00101110 11100010 10001000 10100111 00110011 
+00100000 00110100 00111101 00101011 00101111 00101100 11000010 10101111 
+00110001 00100000 00110000 00100000 00110001 11100010 10001000 10011000 
+00101110 11100010 10001010 10010110 11000010 10101111 00110001 00100000 
+00110000 00100000 00110001 11100010 10001000 10011000 00101110 11100010 
+10001100 10111101 11100010 10001010 10000010 11100010 10001101 10110101 
+01111101 00001101 00001010
+</code></pre></div></div>
+
+<p>So we have some information. Hurray! Or do we? Actually no. We’re still missing context. Is it part of the Chemical Brothers’ new album or an amusing cat video?</p>
+
+<p>Let’s say someone tells me it’s text. OK, great, no problem. <em>Looks online for binary text converter.</em>  This means we really do have some information, right?</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lifeâ{â1 âµâ¨.â§3 4=+/,Â¯1 0 1â.âÂ¯1 0 1â.â½ââµ}
+</code></pre></div></div>
+
+<p>Ups, something is still wrong. Nobody told us the encoding. This is a common programming error and due to a confusion over data and information. Let’s try with UTF-8 instead of ASCII.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>life←{↑1 ⍵∨.∧3 4=+/,¯1 0 1∘.⊖¯1 0 1∘.⌽⊂⍵}
+</code></pre></div></div>
+
+<p>Well, the encoding is now correct and <strong>we now finally have some information</strong> (yeah!). However, it’s still gobbledygook, at least to me. Even so, just to get this far we needed to know:</p>
+<ol>
+  <li><em>how</em> to observe some state (transistors on or off, in this case)</li>
+  <li><em>how</em> to read that state (0s or 1s)</li>
+  <li><em>what</em> it represents (image, text, audio, etc.)</li>
+  <li><em>how</em> it’s represented, the format (UTF-8, ASCII, etc.)</li>
+</ol>
+
+<p>The good news is that information, like energy, can be manipulated and changed in form. We could convert it to base-7 or EBCIDIC, if we wanted, and it wouldn’t lose it’s content, <strong>as long as we remember the context</strong>, the meta-data if you like, our information is safe. But what do we do with it?</p>
+
+<h2 id="knowledge">Knowledge</h2>
+
+<p>We still have a problem. <strong>We have no idea what the information means</strong>. It looks like we have some symbols and someone probably knows what those symbols mean but I’m going to guess that most people don’t. This is beyond encoding and into the area of semiotics and language. The symbols are <em>signifiers</em>.</p>
+
+<p>Now, let me tell you, that is actually a piece APL code. If you know something about APL maybe you can follow what it’s doing. If not, then I can point you towards the <a href="https://aplwiki.com/">APL wiki</a> or the <a href="https://en.wikipedia.org/wiki/APL_(programming_language)">Wikipedia</a> entry and maybe after (considerable) study you might be able to follow what it’s doing. You could even <a href="https://www.youtube.com/watch?v=a9xAKttWgP4">watch the video</a>. If you can then hat’s off to you sir! I personally have no idea.</p>
+
+<p>As it is given, this is a recipe which solves a problem. But then we might ask ourselves: what problem?</p>
+
+<h2 id="understanding">Understanding</h2>
+
+<p>Even when we know what the program <em>does</em> we might ask ourselves: why did someone write this code in the first place? What’s its purpose? There are no comments, the variables are greek (literally). The only clue is the name of the function….</p>
+
+<p>In actual fact it is a <a href="https://en.wikipedia.org/wiki/APL_(programming_language)#Game_of_Life">famous one-liner</a> for <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway’s Game of Life</a>. If you don’t know what the Game of Life is, it’s a famous programming toy from computer science which turns out to be in a class of systems which are Turing complete, that is universal computing machines. The person who wrote the code probably knew that.</p>
+
+<p>They also knew intimately <em>how</em> to solve the problem with the given language. That require a deeper level of reasoning than merely learning the language. It means many hours of experimentation and practice. That is why we do katas and continuous practice to hone these skills.</p>
+
+<p>Understanding why and how is very different from following the rules.</p>
+
+<h2 id="wisdom">Wisdom</h2>
+
+<p>OK, so we understand universal computation and the game of life, the APL language, the text encodings, the bytes and the transistors. We might understand the concepts but how do we know when and if to apply them? When would I consider APL over some other language? When should I use a programming language at all or and when should I be playing with my children?</p>
+
+<p>You might have noticed that the ideas become more abstract and general as we move along the chain. This last level is the most difficult of all and the subject of most debate. If understanding requires reflection then this require still more, even a personal philosophy about ones own values.</p>
+
+<p>This has been just one trivial example of the many levels of knowledge or understanding behind anything we do. We are knowledge workers, using information everyday. I wonder sometimes if we really stop to really understand some of the things we do (he says, copy/pasting from Wikipedia) or whether we are content with <em>just</em> knowledge.</p>
+
+<p>(That’s the first part. The next part will deal with applying mental models to the different stages to understand them better in general.)</p>
+
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=DIKUW for Programmers&url=https://johnhearn.github.io//articles/dikuw-for-programmers"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/dikuw-for-programmers&title=DIKUW for Programmers&summary=An explanation for programmers of the concepts behind the decision-making information hierarchy.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=DIKUW for Programmers&amp;body=Check out this site https://johnhearn.github.io//articles/dikuw-for-programmers"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">DIKUW for Programmers - July 7, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

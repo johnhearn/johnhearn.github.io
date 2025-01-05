@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Square root of 2x2 matrix using basic algebra</title>
+
+  
+  
+  <meta name="keywords" content="maths"/>
+  
+  
+  <meta property="og:title" content="Square root of 2x2 matrix using basic algebra">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/square-root-of-2x2-matrix/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Personal site for blogging and about science, software and such">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Square root of 2x2 matrix using basic algebra">
+
+  
+  <meta name="twitter:description" content="Personal site for blogging and about science, software and such">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/square-root-of-2x2-matrix">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Square root of 2x2 matrix using basic algebra</h1>
+<div class="subtitle">May 24, 2017</div>
+<div class="smaller">two minutes.</div>
+
+<p>We want to find some matrix $B$ where $ B = \sqrt{A} $ or, equivalently, $ A = B^2 $. We take</p>
+
+\[A = \begin{pmatrix}
+  a &amp; b \\
+  c &amp; d
+ \end{pmatrix}\]
+
+\[B = \begin{pmatrix}
+  a' &amp; b' \\
+  c' &amp; d'
+ \end{pmatrix}\]
+
+<p>Expand $B$ and equate terms.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">sympy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="nf">init_printing</span><span class="p">()</span>
+<span class="n">A</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="nf">symbols</span><span class="p">(</span><span class="sh">'</span><span class="s">A a b c d a</span><span class="se">\'</span><span class="s"> b</span><span class="se">\'</span><span class="s"> c</span><span class="se">\'</span><span class="s"> d</span><span class="se">\'</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="nc">Matrix</span><span class="p">([[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">],</span> <span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">]])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="nc">Matrix</span><span class="p">([[</span><span class="n">e</span><span class="p">,</span><span class="n">f</span><span class="p">],</span> <span class="p">[</span><span class="n">g</span><span class="p">,</span><span class="n">h</span><span class="p">]])</span>
+
+<span class="n">e1</span> <span class="o">=</span> <span class="nc">Eq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">e1</span>
+</code></pre></div></div>
+
+\[\left[\begin{matrix}a &amp; b\\c &amp; d\end{matrix}\right] = \left[\begin{matrix}a'^{2} + b' c' &amp; a' b' + b' d'\\a' c' + c' d' &amp; b' c' + d'^{2}\end{matrix}\right]\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">solve</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">))</span>
+</code></pre></div></div>
+
+\[\left \{ a : a'^{2} + b' c', \quad b : b' \left(a' + d'\right), \quad c : c' \left(a' + d'\right), \quad d : b' c' + d'^{2}\right \}\]
+
+<p>We can calculate the determinant $A$ and $B^2$ (confirming that $det(B^2) = det(B)^2$)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Eq</span><span class="p">(</span><span class="n">A</span><span class="p">.</span><span class="nf">det</span><span class="p">(),</span> <span class="nf">factor</span><span class="p">((</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span><span class="p">).</span><span class="nf">det</span><span class="p">()))</span>
+</code></pre></div></div>
+
+\[a d - b c = \left(a' d' - b' c'\right)^{2}\]
+
+<p>We can also calculate the trace of $A$ and $B^2$ \(trace(A) = trace(B^2)\)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Eq</span><span class="p">(</span><span class="n">A</span><span class="p">.</span><span class="nf">trace</span><span class="p">(),</span> <span class="p">(</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span><span class="p">).</span><span class="nf">trace</span><span class="p">())</span>
+</code></pre></div></div>
+
+\[a + d = a'^{2} + 2 b' c' + d'^{2}\]
+
+<p>But from the equation for the determinant we know that \(ad-bc=(a'd'-b'c')^2\) or \(b'c' = a'd'-\sqrt{ad-bc}\) so \(a+d = a'^2 + 2a'd' \pm 2\sqrt{ad-bc} +d'^2\) \(a+d = (a'+d')^2 \pm 2\sqrt{ad-bc}\) so \(trace(B) = a'+d' = \pm \sqrt{a+d \pm 2\sqrt{ad-bc}} = \pm \sqrt{trace(A) \pm 2\sqrt{det(A)}}\)</p>
+
+<p>Giving 4 solutions. Using these two relations we can calculate the expressions for $a’$,$b’$, $c’$ and $d’$ in terms of $a$, $b$, $c$ and $d$. For example, \(b=b'(a'+d')\) \(b=b'(\pm \sqrt{a+d \pm 2\sqrt{ad-bc}})\) \(b'=\pm \frac{b}{\sqrt{a+d \pm 2\sqrt{ad-bc}}}\) etc…</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Square root of 2x2 matrix using basic algebra&url=https://johnhearn.github.io//articles/square-root-of-2x2-matrix"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/square-root-of-2x2-matrix&title=Square root of 2x2 matrix using basic algebra&summary=&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Square root of 2x2 matrix using basic algebra&amp;body=Check out this site https://johnhearn.github.io//articles/square-root-of-2x2-matrix"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Square root of 2x2 matrix using basic algebra - May 24, 2017 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

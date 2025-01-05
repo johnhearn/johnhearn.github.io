@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Designing a Talk</title>
+
+  
+  <meta name="description" content="Do a talk at a conference, they said.">
+  
+  
+  <meta name="keywords" content=""/>
+  
+  
+  <meta property="og:title" content="Designing a Talk">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/designing-a-talk/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Do a talk at a conference, they said.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Designing a Talk">
+
+  
+  <meta name="twitter:description" content="Do a talk at a conference, they said.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/designing-a-talk">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Designing a Talk</h1>
+<div class="subtitle">September 14, 2019</div>
+<div class="smaller">five minutes.</div>
+
+<blockquote>
+  <p>Edit: I did the talk laid out in this post on the 10th of October 2019. It mostly followed the outline presented here but in the heat of the moment I accidentally skipped the ice-breaker and much of the introduction, I guess because of nerves. Of the feedback that I got, one person felt that it had lacked a better narrative structure, which is exactly what I did try to do, unsuccessfully it seems. Next talk will be about Conway’s Law at the “Papers We Love” Meetup group. Let’s see how that goes.</p>
+</blockquote>
+
+<hr class="slender" width="50%" />
+
+<p>One of the nicest things about working at Codurance<label for="codurcne" class="margin-toggle sidenote-number"></label><input type="checkbox" id="codurcne" class="margin-toggle" /><span class="sidenote">Edit: This was written before I left Codurance for pastures new. The content of the post regarding my time there still stands. </span> is the bi-weekly <em>catch-ups</em>. Those of us who are working mainly at client offices go to the Codurance office, meet other Codurancers who we haven’t seen for a while, eat together and share our experiences. We also do lightning talks about things that interest us and at the same time get a chance to practice our presentation skills. After doing many of these internal talks, someone said in a peer review that maybe I should take it up a notch and do a talk externally. Always trying to push out of my comfort zone (aka a sucker for punishment) I proposed a talk at the Barcelona Software Crafters conference, with a very short synopsis.</p>
+
+<blockquote>
+  <p>How predictable is your code? How predictable is your system, your project or your business? What does it mean to be predictable? Knowing this will help us write better code, create better systems and run better projects and help us understand why agile practices work and when they may not be enough…</p>
+</blockquote>
+
+<p>To my astonishment it was accepted.</p>
+
+<p>The theme of the talk was clear to me and I had (in my head) a clear narrative to explain.</p>
+
+<ul>
+  <li>Predictably unpredictable code (traditional complexity metrics)</li>
+  <li>Predictably unpredictable systems (Game of Life, deterministic complexity)</li>
+  <li>Predictably unpredictable complex adaptive systems (human systems, Systems Thinking and Cynefin)</li>
+</ul>
+
+<p>However, as I tried to nail down the actual slides I realised it wouldn’t be as easy as I had anticipated. For one, as I added individual ideas which I wanted to cover I couldn’t find a clean, linear arc for the presentation (things seem much cleaner in one’s head). What’s more, during the research, more and more related topics came up and I couldn’t cover them all. And all the while I still had to be true to the original proposal.</p>
+
+<p>So I wrote down a new possible arc:</p>
+
+<ul>
+  <li>Connection</li>
+  <li>Interaction</li>
+  <li>Systems/Adaptation</li>
+</ul>
+
+<p>With this outline I had the same problem, I had simply pivoted what was essentially a two-dimensional idea:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left"> </th>
+      <th>Code</th>
+      <th>System</th>
+      <th>CAS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>Connection</strong></td>
+      <td>x</td>
+      <td>x</td>
+      <td>x</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Interaction</strong></td>
+      <td> </td>
+      <td>x</td>
+      <td>x</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Adaptation</strong></td>
+      <td> </td>
+      <td> </td>
+      <td>x</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>So I can traverse this row-wise or column-wise, top-down or bottom-up, right to left or left to right. I chose column-wise, left-right, top-down.</p>
+
+<ul>
+  <li>Code - Connection (traditional complexity)</li>
+  <li>System - Connection - Interaction (dynamic complexity, Systems Thinking)</li>
+  <li>CAS - Connection - Interaction - Adaptation (adaptive complexity, Cynefin)</li>
+</ul>
+
+<p>Wrapping in an introduction and a final section which rewinds the talk, I have the high-level, linear arc I needed.</p>
+
+<ul>
+  <li>
+    <p>Ice breaker (local feedback demo with clapping)</p>
+  </li>
+  <li>
+    <p>Introduction</p>
+
+    <ul>
+      <li>drop pen</li>
+      <li>if only we could predict the future (BTTF II)</li>
+      <li>tireless search for predictability doesn’t always work</li>
+      <li>raising the bar (Alex Bolboaca)</li>
+      <li>recipes vs principles (Heston Blumenthal)</li>
+    </ul>
+  </li>
+  <li>
+    <p>Connections in code</p>
+
+    <ul>
+      <li>condition separation (coupling)</li>
+      <li>gilded rose</li>
+      <li>duplicated code</li>
+      <li><strong>first definition of complexity</strong></li>
+      <li>common in TDDed code</li>
+      <li>importance of refactoring to reduce implicit connections</li>
+      <li>doing things more than once</li>
+    </ul>
+  </li>
+  <li>
+    <p>Connections in systems</p>
+
+    <ul>
+      <li>system connections and coupling; <a href="https://www.youtube.com/watch?v=ARkLVvtxUZI">a system is not a tree</a> (Henney)</li>
+      <li>indirect coupling</li>
+      <li>Relationship between things as well as the things themselves (Mary Poppendick (<a href="http://www.leanessays.com/2019/07/grown-up-lean.html">here</a>) (The dance as opposed to the dancers)</li>
+      <li>“dynamic” (Scorpios quote) (monitoring)</li>
+    </ul>
+  </li>
+  <li>
+    <p>Interactions in systems</p>
+
+    <ul>
+      <li>self-reinforcing coupling (logging CPU -&gt; scaling -&gt; problems -&gt; logging CPU)</li>
+      <li>Netflix scale (vizceral screenshot)</li>
+      <li><strong>second definition of complexity</strong></li>
+      <li>many failures identified only in retrospect</li>
+      <li>resilience (modularity, redundancy, diversity, anti-fragile)</li>
+      <li>dangers of interfering with such a system (mosquitos, unexpected consequences, cobra effect)</li>
+      <li>Systems Thinking (outside looking in)</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<ul>
+  <li>
+    <p>More interactions in systems</p>
+
+    <ul>
+      <li>pushing complexity: Game of Life and friends</li>
+      <li><strong>third definition of complexity</strong></li>
+      <li>emergence; phases</li>
+      <li>in nature (you; weather, on Jupiter, sun spots, three-body problem, galactic filaments;  hexagonal columns, traffic jams, washboarding, ripples, petri dishes, gravity or even time itself)</li>
+      <li>The End of Certainty</li>
+    </ul>
+  </li>
+  <li>
+    <p>Connections in CASs</p>
+
+    <ul>
+      <li>crowd dynamics (eg. Mecca: “simulation is part but not enough”)</li>
+      <li>social systems are another level (families, communities, social networks, cities, countries) -The realm of policy and politics</li>
+      <li>adaptive, independent agents - inside looking out</li>
+      <li>
+        <p><strong>fourth definition of complexity</strong></p>
+      </li>
+      <li>predictable irrationality (confirmation bias, success bias, etc.) (computer learns to predict unpredictability)</li>
+      <li>Self-organising (back to <strong>clapping</strong>)</li>
+      <li>Cynefin; decision landscape (mapping), catastrophic fold, disorder domain; pre-scrum</li>
+      <li>agile in complicated or simple domain is wasteful; safe-to-plan</li>
+      <li>predicting things in the complex domain is futile. <strong>Design for serendipity</strong>, deliberate connections, coherent probes and experiments; safe-to-fail</li>
+      <li>Link with OODA, 3X</li>
+      <li>Dancing with systems; future of agility</li>
+    </ul>
+  </li>
+  <li>
+    <p>Summary</p>
+
+    <ul>
+      <li>Rewind back through different types of complexity</li>
+    </ul>
+  </li>
+  <li>
+    <p>Questions</p>
+  </li>
+</ul>
+
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Designing a Talk&url=https://johnhearn.github.io//articles/designing-a-talk"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/designing-a-talk&title=Designing a Talk&summary=Do a talk at a conference, they said.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Designing a Talk&amp;body=Check out this site https://johnhearn.github.io//articles/designing-a-talk"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Designing a Talk - September 14, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

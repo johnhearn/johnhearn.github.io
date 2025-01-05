@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>The Dangers of Abstraction</title>
+
+  
+  <meta name="description" content="Thoughts on the use of high-level abstractions where, if we are not careful, words easily loose their meaning.">
+  
+  
+  <meta name="keywords" content="critical thinking"/>
+  
+  
+  <meta property="og:title" content="The Dangers of Abstraction">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/dangers-of-abstraction/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Thoughts on the use of high-level abstractions where, if we are not careful, words easily loose their meaning.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="The Dangers of Abstraction">
+
+  
+  <meta name="twitter:description" content="Thoughts on the use of high-level abstractions where, if we are not careful, words easily loose their meaning.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/dangers-of-abstraction">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>The Dangers of Abstraction</h1>
+<div class="subtitle">September 30, 2018</div>
+<div class="smaller">four minutes.</div>
+
+<p>Abstraction is a powerful thing. It enables us to compose ever more elaborate ideas, as <a href="https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants">dwarves standing on the shoulders of giants</a>, and it is what has enabled us to build the immense edifices of religion, philosophy, economics, technology and science.</p>
+
+<p>Highly abstract concepts depend on other concepts which in turn depend on others and so it goes on. Turtles all the way down<label for="deep-learning" class="margin-toggle sidenote-number"></label><input type="checkbox" id="deep-learning" class="margin-toggle" /><span class="sidenote">It’s interesting to compare concepts with features extracted by deep learning algorithms. These algorithms are often criticised as being opaque but how many of us really know <em>why</em> we think what we think? </span>.</p>
+
+<p>In the modern age where complex ideas are stated in tweets, of which we receive hundreds per day, they can easily can loose their grounding and their original meaning. This opens the door to misinterpretation.</p>
+
+<p>As software engineers we are as prone this as anyone, maybe more. We talk endlessly, and it must be said sometimes carelessly, about <em>components</em> and <em>agile</em> and <em>quality</em> and <em>architecture</em> and a whole raft of other concepts<label for="more-concepts" class="margin-toggle sidenote-number"></label><input type="checkbox" id="more-concepts" class="margin-toggle" /><span class="sidenote">and <em>right</em> and <em>wrong</em> and <em>justice</em> and <em>value</em> and <em>religion</em> and <em>love</em> and … </span>. We go around in circles debating what these things actually mean and end up, in the best cases, agreeing that it depends on context, whatever <em>that</em> means, and in the worst cases we end up sticking to our ideas like glue and conclude by telling ourselves that other people are just stupid.</p>
+
+<p><span class="newthought">Mostly we assume that words will be interpreted by other people in the same way as we interpret them.</span>  Many times they don’t and, what’s worse, we usually don’t even know if they have or not. I once overheard an entire conversation<label for="open-plan-offices" class="margin-toggle sidenote-number"></label><input type="checkbox" id="open-plan-offices" class="margin-toggle" /><span class="sidenote">The <a href="https://m.signalvnoise.com/the-open-plan-office-is-a-terrible-horrible-no-good-very-bad-idea-42bd9cd294e3">joy</a> of open plan offices. </span> where the word “shadowing” was being used by each person with the opposite meaning, one to refer to the act of being shadowed and other to the act of doing the shadowing. It was a bit like listening to a <a href="https://www.youtube.com/watch?v=3VkjDSxBVqw">Two Ronnies</a> sketch.</p>
+
+<p>There can be more serious consequences. I know of a project that wasted thousands when a contractor was hired by a technical manager to build a <em>continuous deployment</em> environment. What the manager wanted was <em>continuous<label for="continuous" class="margin-toggle sidenote-number"></label><input type="checkbox" id="continuous" class="margin-toggle" /><span class="sidenote">*continual* would have been a much better word in this context but hey-ho </span> integration with automated deployment</em>, evidenced by the fact that they didn’t have a single automated test. However he had heard about <em>CD</em> (acronyms for enhanced confusion) and it sounded like just what he wanted. The contractor built what the manager asked for. Politics, saving-face and the <a href="https://www.logicallyfallacious.com/tools/lp/Bo/LogicalFallacies/173/Sunk_Cost_Fallacy">sunk cost fallacy</a> dictated that the project went ahead with serious consequences for the development teams.</p>
+
+<p>The continual process of debate and misunderstanding folds back into an evolving language. Consider the word REST<label for="rest-review" class="margin-toggle"> ⊕</label><input type="checkbox" id="rest-review" class="margin-toggle" /><span class="marginnote">I agree with my colleague <a href="https://codurance.com/2018/09/03/rest-review/">Jorge Gueorguiev Garcia</a> that “<em>REST is an architectural style defined to solve Network distributed hypermedia systems. Without Hypermedia there is no REST. If your API doesn’t work through the use of hypermedia, you don’t have a REST API. Maybe you don’t need hypermedia to solve your problems. But then use the correct term.</em>” </span>, familiar to us in software engineering. When this term was coined it had a very <a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">definite meaning</a> however it has evolved over the years and now has such a broad range of uses that it has lost a lot of its value. We need so called <a href="https://martinfowler.com/articles/richardsonMaturityModel.html">maturity models</a> just to understand which type of REST we are talking about!</p>
+
+<p>As teachers and mentors, not only must we be careful about how we communicate, we must also take extra care to understand that misinterpretations will happen, in fact there are often multiple alternative interpretations of the same word in circulation. I remember being baffled by a conversation with a colleague about “integration testing”. What he was saying seemed to make no sense. I knew he wasn’t an idiot so I really really tried to understand and apply his ideas. I later found out he was talking about a <a href="https://martinfowler.com/bliki/IntegrationTest.html">different kind of integration testing</a><label for="integration-tests" class="margin-toggle sidenote-number"></label><input type="checkbox" id="integration-tests" class="margin-toggle" /><span class="sidenote">As so often, Martin Fowler was ahead of us: “<em>And there is a large population of software developers for whom “integration test” only means “broad integration tests”, leading to plenty of confusion when they run into people who use the narrow approach.</em>” </span>. Basically we were talking about two separate things. If either of us had known <em>how</em> these words could be misinterpreted then that conversation would have been a lot shorter.</p>
+
+<p>An that’s the message I want to transmit. The ideas flying around the media are ever more complex and numerous, our communication is ever more frequent and short. There will always be alternative interpretations. It is no longer acceptable to restrict ourselves to our own definitions. We must endeavour to <em>simultaneously</em> understand different alternative perspectives of <em>agile</em>, <em>REST</em>, <em>DevOps</em>, and all the rest of it, to have a full picture of the current software engineering field.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=The Dangers of Abstraction&url=https://johnhearn.github.io//articles/dangers-of-abstraction"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/dangers-of-abstraction&title=The Dangers of Abstraction&summary=Thoughts on the use of high-level abstractions where, if we are not careful, words easily loose their meaning.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=The Dangers of Abstraction&amp;body=Check out this site https://johnhearn.github.io//articles/dangers-of-abstraction"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">The Dangers of Abstraction - September 30, 2018 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

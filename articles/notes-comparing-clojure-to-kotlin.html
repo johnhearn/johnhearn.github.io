@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Comparing Clojure to Kotlin</title>
+
+  
+  <meta name="description" content="Take an interesting Clojure example and convert it to Kotlin.">
+  
+  
+  <meta name="keywords" content=""/>
+  
+  
+  <meta property="og:title" content="Comparing Clojure to Kotlin">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/notes-comparing-clojure-to-kotlin/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Take an interesting Clojure example and convert it to Kotlin.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Comparing Clojure to Kotlin">
+
+  
+  <meta name="twitter:description" content="Take an interesting Clojure example and convert it to Kotlin.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/notes-comparing-clojure-to-kotlin">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Comparing Clojure to Kotlin</h1>
+<div class="subtitle">December 16, 2018</div>
+<div class="smaller">17 minutes.</div>
+
+<p>One way to learn a new language is to compare it to one you already know. Here I’m taking a program written in Clojure<label for="credit" class="margin-toggle sidenote-number"></label><input type="checkbox" id="credit" class="margin-toggle" /><span class="sidenote">The code is taken from my colleague <a href="https://codurance.com/publications/author/richard-wild/">Richard Wild</a>’s excellent series of articles on <a href="https://codurance.com/2018/11/02/the-functional-style-part-6/">Functional Programming</a>. </span> and comparing it with similar code in Kotlin. The objective is two-fold, firstly to help me learn Clojure and secondly to see the similarities and differences between these two languages. In the following I’ll assume some minimum knowledge of both.</p>
+
+<p>To warm up lets compare these two different ways of defining a function in Clojure:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">greet</span><span class="w"> </span><span class="p">[</span><span class="nb">name</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="s">"Hello, "</span><span class="w"> </span><span class="nb">name</span><span class="p">))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">greet</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="nb">name</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="s">"Hello, "</span><span class="w"> </span><span class="nb">name</span><span class="p">)))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>With the Kotlin equivalent:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">=</span> <span class="s">"Hello, "</span> <span class="p">+</span> <span class="n">name</span>
+
+<span class="kd">val</span> <span class="py">greet</span> <span class="p">=</span> <span class="p">{</span> <span class="n">name</span><span class="p">:</span> <span class="nc">String</span> <span class="p">-&gt;</span> <span class="s">"Hello, "</span> <span class="p">+</span> <span class="n">name</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The syntax is quite different, of course, and Kotlin requires typed parameters where Clojure is dynamically typed. This can be a blessing and a curse but that’s a discussion for another day. Idiomatic Kotlin would also use built-in string templates instead of concatenation but the similarities nonetheless stand out.</p>
+
+<p>Let’s get into the example. First define the neighbour offsets. In Clojure vector instantiation is quite neat (this is formatted manually to show the pattern).</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">neighbours</span><span class="w">
+  </span><span class="p">[[</span><span class="mi">-1</span><span class="n">,</span><span class="w">  </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="n">,</span><span class="w">  </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="n">,</span><span class="w">  </span><span class="mi">1</span><span class="p">]</span><span class="w">
+   </span><span class="p">[</span><span class="mi">-1</span><span class="n">,</span><span class="w">  </span><span class="mi">0</span><span class="p">]</span><span class="w">         </span><span class="p">[</span><span class="mi">1</span><span class="n">,</span><span class="w">  </span><span class="mi">0</span><span class="p">]</span><span class="w">
+   </span><span class="p">[</span><span class="mi">-1</span><span class="n">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="n">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="n">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">]])</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">neighbours-of</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">set</span><span class="w"> </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[[</span><span class="n">x-offs</span><span class="w"> </span><span class="n">y-offs</span><span class="p">]]</span><span class="w"> </span><span class="p">[(</span><span class="nb">+</span><span class="w"> </span><span class="n">x-offs</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">y-offs</span><span class="w"> </span><span class="n">y</span><span class="p">)])</span><span class="w">
+            </span><span class="n">neighbours</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">generate-cell</span><span class="w"> </span><span class="p">[</span><span class="n">neighbours</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">x</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">contains?</span><span class="w"> </span><span class="n">neighbours</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">])</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In Kotlin to do the same is slightly more verbose<label for="less-verbose-than-java" class="margin-toggle sidenote-number"></label><input type="checkbox" id="less-verbose-than-java" class="margin-toggle" /><span class="sidenote">But not as verbose a Java :) </span>. We can use <code class="language-plaintext highlighter-rouge">Pair</code>s (tuples) and <code class="language-plaintext highlighter-rouge">typealias</code>es here to improve the readability.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typealias</span> <span class="nc">Cell</span> <span class="p">=</span> <span class="nc">Pair</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">,</span> <span class="nc">Int</span><span class="p">&gt;</span>
+<span class="k">typealias</span> <span class="nc">Cells</span> <span class="p">=</span> <span class="nc">Collection</span><span class="p">&lt;</span><span class="nc">Cell</span><span class="p">&gt;</span>
+
+<span class="kd">var</span> <span class="py">neighbours</span> <span class="p">=</span>
+        <span class="nf">setOf</span><span class="p">(</span><span class="nc">Cell</span><span class="p">(-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span> <span class="nc">Cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span> <span class="nc">Cell</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span>
+              <span class="nc">Cell</span><span class="p">(-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">),</span>              <span class="nc">Cell</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">),</span>
+              <span class="nc">Cell</span><span class="p">(-</span><span class="mi">1</span><span class="p">,</span> <span class="p">-</span><span class="mi">1</span><span class="p">),</span> <span class="nc">Cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">-</span><span class="mi">1</span><span class="p">),</span> <span class="nc">Cell</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">-</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="k">fun</span> <span class="nf">neighboursOf</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">=</span>
+        <span class="n">neighbours</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="p">(</span><span class="n">xOff</span><span class="p">,</span> <span class="n">yOff</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Cell</span><span class="p">(</span><span class="n">xOff</span> <span class="p">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">yOff</span> <span class="p">+</span> <span class="n">y</span><span class="p">)</span> <span class="p">}</span>
+
+<span class="k">fun</span> <span class="nf">generateCell</span><span class="p">(</span><span class="n">neighbours</span><span class="p">:</span> <span class="nc">Cells</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">=</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">neighbours</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="nc">Cell</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>The thing to note is the use of the <code class="language-plaintext highlighter-rouge">map</code> function in both implementations. The parameters are effectively reversed. We’ll see some implications of this later. Next we’ll see some currying (the focus of the article):</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">generate-line</span><span class="w"> </span><span class="p">[</span><span class="n">neighbours</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="n">y</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="p">(</span><span class="nb">partial</span><span class="w"> </span><span class="n">generate-cell</span><span class="w"> </span><span class="n">neighbours</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w">
+       </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">width</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">generate-board</span><span class="w"> </span><span class="p">[</span><span class="n">dimensions</span><span class="w"> </span><span class="n">neighbours</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">mapcat</span><span class="w"> </span><span class="p">(</span><span class="nb">partial</span><span class="w"> </span><span class="n">generate-line</span><span class="w"> </span><span class="n">neighbours</span><span class="w"> </span><span class="p">(</span><span class="nf">dimensions</span><span class="w"> </span><span class="no">:w</span><span class="p">))</span><span class="w">
+          </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="nf">dimensions</span><span class="w"> </span><span class="no">:h</span><span class="p">))))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>And in Kotlin:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">generateLine</span><span class="p">(</span><span class="n">neighbours</span><span class="p">:</span> <span class="nc">Cells</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">=</span>
+        <span class="p">(</span><span class="mi">0</span> <span class="n">until</span> <span class="n">width</span><span class="p">).</span><span class="nf">map</span> <span class="p">{</span> <span class="n">x</span> <span class="p">-&gt;</span> <span class="nf">generateCell</span><span class="p">(</span><span class="n">neighbours</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="p">}</span>
+
+<span class="k">fun</span> <span class="nf">generateBoard</span><span class="p">(</span><span class="n">h</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span><span class="nc">Int</span><span class="p">,</span> <span class="n">neighbours</span><span class="p">:</span> <span class="nc">Cells</span> <span class="p">)</span> <span class="p">=</span>
+        <span class="p">(</span><span class="mi">0</span> <span class="n">until</span> <span class="n">h</span><span class="p">).</span><span class="nf">flatMap</span> <span class="p">{</span> <span class="n">y</span> <span class="p">-&gt;</span> <span class="nf">generateLine</span><span class="p">(</span><span class="n">neighbours</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Things to note:</p>
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">partial</code> function in Clojure translates naturally to lambda expressions in Kotlin.</li>
+  <li>While the <code class="language-plaintext highlighter-rouge">map</code> function is the same, <code class="language-plaintext highlighter-rouge">mapcat</code> becomes <code class="language-plaintext highlighter-rouge">flatMap</code> in Kotlin.</li>
+  <li>It seemed easier in Kotlin to pass <code class="language-plaintext highlighter-rouge">h</code> and <code class="language-plaintext highlighter-rouge">w</code> as simple parameters rather that inside map. I wonder what the reasoning behind this is and whether it’s a common style in Clojure.</li>
+  <li>We can use the range operators directly in Kotlin. I actually prefer <code class="language-plaintext highlighter-rouge">range</code> as a function too but it’s less idiomatic in Kotlin.</li>
+</ul>
+
+<p>The next bit is much the same:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">mine?</span><span class="w"> </span><span class="p">[</span><span class="n">cell</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="sc">\*</span><span class="w"> </span><span class="n">cell</span><span class="p">))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">board-for-cell</span><span class="w"> </span><span class="p">[</span><span class="n">dimensions</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">cell</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">generate-board</span><span class="w"> </span><span class="n">dimensions</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nf">mine?</span><span class="w"> </span><span class="n">cell</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">neighbours-of</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">y</span><span class="p">))))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">boards-for-line</span><span class="w"> </span><span class="p">[</span><span class="n">dimensions</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">y</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="p">(</span><span class="nb">partial</span><span class="w"> </span><span class="n">board-for-cell</span><span class="w"> </span><span class="n">dimensions</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w">
+       </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="nf">dimensions</span><span class="w"> </span><span class="no">:w</span><span class="p">))</span><span class="w">
+       </span><span class="n">line</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Compared to the Kotlin version:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">isMine</span><span class="p">(</span><span class="n">cell</span><span class="p">:</span> <span class="nc">Char</span><span class="p">)</span> <span class="p">=</span>
+        <span class="sc">'*'</span> <span class="p">==</span> <span class="n">cell</span>
+
+<span class="k">fun</span> <span class="nf">boardForCell</span><span class="p">(</span><span class="n">h</span><span class="p">:</span><span class="nc">Int</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span><span class="nc">Int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span><span class="nc">Int</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="nc">Int</span><span class="p">,</span> <span class="n">cell</span><span class="p">:</span><span class="nc">Char</span><span class="p">)</span> <span class="p">=</span>
+        <span class="nf">generateBoard</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="k">if</span><span class="p">(</span><span class="nf">isMine</span><span class="p">(</span><span class="n">cell</span><span class="p">))</span> <span class="nf">neighboursOf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="k">else</span> <span class="nf">emptyList</span><span class="p">())</span>
+
+<span class="k">fun</span> <span class="nf">boardsForLine</span><span class="p">(</span><span class="n">h</span><span class="p">:</span><span class="nc">Int</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span><span class="nc">Int</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span><span class="nc">CharSequence</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span><span class="nc">Int</span><span class="p">)</span> <span class="p">=</span>
+        <span class="p">(</span><span class="mi">0</span> <span class="n">until</span> <span class="n">w</span><span class="p">).</span><span class="nf">map</span> <span class="p">{</span> <span class="n">x</span> <span class="p">-&gt;</span> <span class="nf">boardForCell</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here we can again see the difference between the <code class="language-plaintext highlighter-rouge">map</code> functions mentioned earlier. Clojure allows multiple ranges for the map operation, essentially <code class="language-plaintext highlighter-rouge">zip</code>ing them together for you. It’s an interesting idea. Note that Kotlin also <em>requires</em> that <code class="language-plaintext highlighter-rouge">boardForCell()</code> return a result where Closure does not, defaulting to <code class="language-plaintext highlighter-rouge">nil</code>. Kotlin spurns <code class="language-plaintext highlighter-rouge">null</code>s and in any case I prefer this approach.</p>
+
+<p>Now the fun part.</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">sum-up</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="w"> </span><span class="nb">vals</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">reduce</span><span class="w"> </span><span class="nb">+</span><span class="w"> </span><span class="nb">vals</span><span class="p">))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">draw</span><span class="w"> </span><span class="p">[</span><span class="n">input-board</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">lines</span><span class="w"> </span><span class="p">(</span><span class="nf">str/split-lines</span><span class="w"> </span><span class="n">input-board</span><span class="p">)</span><span class="n">,</span><span class="w">
+        </span><span class="n">dimensions</span><span class="w"> </span><span class="p">{</span><span class="no">:h</span><span class="w"> </span><span class="p">(</span><span class="nb">count</span><span class="w"> </span><span class="n">lines</span><span class="p">)</span><span class="n">,</span><span class="w"> </span><span class="no">:w</span><span class="w"> </span><span class="p">(</span><span class="nb">count</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">lines</span><span class="p">))}]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">mapcat</span><span class="w"> </span><span class="p">(</span><span class="nb">partial</span><span class="w"> </span><span class="n">boards-for-line</span><span class="w"> </span><span class="n">dimensions</span><span class="p">)</span><span class="w">
+                 </span><span class="n">lines</span><span class="w">
+                 </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="nf">dimensions</span><span class="w"> </span><span class="no">:h</span><span class="p">)))</span><span class="w">
+         </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="nb">map</span><span class="w"> </span><span class="n">sum-up</span><span class="p">))))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This combines several concepts that were new to me, <code class="language-plaintext highlighter-rouge">-&gt;&gt;</code> and <code class="language-plaintext highlighter-rouge">apply</code> together with the tricky (for me) <code class="language-plaintext highlighter-rouge">map</code> function and some magic with the varadic arguments. It took a while to understand what was going on here and in fact my first couple of naïve attempts didn’t work at all. Since the aim was to get as close to the Clojure code as possible this is what I finally came up with:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">sumUp</span><span class="p">(</span><span class="k">vararg</span> <span class="n">vals</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">&gt;)</span> <span class="p">=</span>
+        <span class="n">vals</span><span class="p">.</span><span class="nf">reduce</span> <span class="p">{</span> <span class="n">acc</span><span class="p">,</span> <span class="n">v</span> <span class="p">-&gt;</span> <span class="n">acc</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="p">-&gt;</span> <span class="n">a</span> <span class="p">+</span> <span class="n">b</span> <span class="p">}</span> <span class="p">}</span>
+
+<span class="k">fun</span> <span class="nf">draw</span><span class="p">(</span><span class="n">inputBoard</span><span class="p">:</span> <span class="nc">CharSequence</span><span class="p">):</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">lines</span> <span class="p">=</span> <span class="n">inputBoard</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s">"\n"</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">h</span> <span class="p">=</span> <span class="n">lines</span><span class="p">.</span><span class="n">size</span>
+    <span class="kd">val</span> <span class="py">w</span> <span class="p">=</span> <span class="n">lines</span><span class="p">.</span><span class="nf">first</span><span class="p">().</span><span class="n">length</span>
+    <span class="kd">val</span> <span class="py">boards</span> <span class="p">=</span> <span class="p">(</span><span class="mi">0</span> <span class="n">until</span> <span class="n">h</span><span class="p">).</span><span class="nf">flatMap</span> <span class="p">{</span> <span class="n">y</span> <span class="p">-&gt;</span> <span class="nf">boardsForLine</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">y</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span> <span class="p">}</span>
+    <span class="k">return</span> <span class="nf">sumUp</span><span class="p">(*</span><span class="n">boards</span><span class="p">.</span><span class="nf">toTypedArray</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Things to note:</p>
+<ul>
+  <li>Spreading of varadic arguments (with the <code class="language-plaintext highlighter-rouge">*</code> operator) only works for arrays in Kotlin so I had to convert the list to a typed array. In Clojure it seems that it’s very easy to spread varadic arguments and there is a <em>big</em> difference between spreading a list and taking a single <code class="language-plaintext highlighter-rouge">List</code> argument although it appears very similar.</li>
+  <li>It doesn’t help that there are no types on the Clojure version of the <code class="language-plaintext highlighter-rouge">sumUp()</code> method. I have found that I lean heavily on strong typing but I’ll struggle on :)</li>
+  <li>There is something attractive about that Clojure code, as compared to the Kotlin version, that I’m not sure I’m fully appreciating yet. However if we don’t make the <code class="language-plaintext highlighter-rouge">sumUp</code> function variadic (and make it an extension function instead) then the implementation becomes simpler and matches the Clojure version a little more closely.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">List</span><span class="p">&lt;</span><span class="nc">List</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">&gt;&gt;.</span><span class="nf">sumUp</span><span class="p">()</span> <span class="p">=</span>
+        <span class="k">this</span><span class="p">.</span><span class="nf">reduce</span> <span class="p">{</span> <span class="n">acc</span><span class="p">,</span> <span class="n">v</span> <span class="p">-&gt;</span> <span class="n">acc</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="p">-&gt;</span> <span class="n">a</span> <span class="p">+</span> <span class="n">b</span> <span class="p">}</span> <span class="p">}</span>
+
+<span class="k">fun</span> <span class="nf">draw</span><span class="p">(</span><span class="n">inputBoard</span><span class="p">:</span> <span class="nc">CharSequence</span><span class="p">):</span> <span class="nc">String</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">lines</span> <span class="p">=</span> <span class="n">inputBoard</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s">"\n"</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">h</span> <span class="p">=</span> <span class="n">lines</span><span class="p">.</span><span class="n">size</span>
+    <span class="kd">val</span> <span class="py">w</span> <span class="p">=</span> <span class="n">lines</span><span class="p">.</span><span class="nf">first</span><span class="p">().</span><span class="n">length</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span> <span class="n">until</span> <span class="n">h</span><span class="p">).</span><span class="nf">flatMap</span> <span class="p">{</span> <span class="n">y</span> <span class="p">-&gt;</span> <span class="nf">boardsForLine</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">y</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span> <span class="p">}</span>
+            <span class="p">.</span><span class="nf">sumUp</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>The rest of the exercise consists of manipulating and merging the output to give the final result:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">cell-as-text</span><span class="w"> </span><span class="p">[</span><span class="n">cell-value</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">zero?</span><span class="w"> </span><span class="n">cell-value</span><span class="p">)</span><span class="w"> </span><span class="sc">\s</span><span class="n">pace</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="n">cell-value</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">overlay-cell</span><span class="w"> </span><span class="p">[</span><span class="n">top</span><span class="w"> </span><span class="n">bottom</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nf">mine?</span><span class="w"> </span><span class="n">top</span><span class="p">)</span><span class="w"> </span><span class="n">top</span><span class="w"> </span><span class="n">bottom</span><span class="p">))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">overlay-boards</span><span class="w"> </span><span class="p">[</span><span class="n">top</span><span class="w"> </span><span class="n">bottom</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">reduce</span><span class="w"> </span><span class="nb">str</span><span class="w"> </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="n">overlay-cell</span><span class="w"> </span><span class="n">top</span><span class="w"> </span><span class="n">bottom</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">draw</span><span class="w"> </span><span class="p">[</span><span class="n">input-board</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">lines</span><span class="w"> </span><span class="p">(</span><span class="nf">str/split-lines</span><span class="w"> </span><span class="n">input-board</span><span class="p">)</span><span class="n">,</span><span class="w">
+        </span><span class="n">dimensions</span><span class="w"> </span><span class="p">{</span><span class="no">:h</span><span class="w"> </span><span class="p">(</span><span class="nb">count</span><span class="w"> </span><span class="n">lines</span><span class="p">)</span><span class="n">,</span><span class="w"> </span><span class="no">:w</span><span class="w"> </span><span class="p">(</span><span class="nb">count</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">lines</span><span class="p">))}]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">mapcat</span><span class="w"> </span><span class="p">(</span><span class="nb">partial</span><span class="w"> </span><span class="n">boards-for-line</span><span class="w"> </span><span class="n">dimensions</span><span class="p">)</span><span class="w">
+                 </span><span class="n">lines</span><span class="w">
+                 </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="nf">dimensions</span><span class="w"> </span><span class="no">:h</span><span class="p">)))</span><span class="w">
+         </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="nb">map</span><span class="w"> </span><span class="n">sum-up</span><span class="p">)</span><span class="w">
+         </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="n">cell-as-text</span><span class="p">)</span><span class="w">
+         </span><span class="p">(</span><span class="nf">partition</span><span class="w"> </span><span class="p">(</span><span class="nf">dimensions</span><span class="w"> </span><span class="no">:w</span><span class="p">))</span><span class="w">
+         </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="p">(</span><span class="nb">partial</span><span class="w"> </span><span class="nb">reduce</span><span class="w"> </span><span class="nb">str</span><span class="p">))</span><span class="w">
+         </span><span class="p">(</span><span class="nf">interpose</span><span class="w"> </span><span class="sc">\n</span><span class="n">ewline</span><span class="p">)</span><span class="w">
+         </span><span class="p">(</span><span class="nb">reduce</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w">
+         </span><span class="p">(</span><span class="nf">overlay-boards</span><span class="w"> </span><span class="n">input-board</span><span class="p">))))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Translated directly to Kotlin’s built-in functions it looks something like this:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">cellAsText</span><span class="p">(</span><span class="n">cellValue</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">=</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">cellValue</span> <span class="p">==</span> <span class="mi">0</span><span class="p">)</span> <span class="s">" "</span> <span class="k">else</span> <span class="n">cellValue</span><span class="p">.</span><span class="nf">toString</span><span class="p">()</span>
+
+<span class="k">fun</span> <span class="nf">overlayCell</span><span class="p">(</span><span class="n">top</span><span class="p">:</span> <span class="nc">Char</span><span class="p">,</span> <span class="n">bottom</span><span class="p">:</span> <span class="nc">Char</span><span class="p">)</span> <span class="p">=</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nf">isMine</span><span class="p">(</span><span class="n">top</span><span class="p">))</span> <span class="n">top</span> <span class="k">else</span> <span class="n">bottom</span>
+
+<span class="k">fun</span> <span class="nf">draw</span><span class="p">(</span><span class="n">inputBoard</span><span class="p">:</span> <span class="nc">CharSequence</span><span class="p">):</span> <span class="nc">String</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">lines</span> <span class="p">=</span> <span class="n">inputBoard</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s">"\n"</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">h</span> <span class="p">=</span> <span class="n">lines</span><span class="p">.</span><span class="n">size</span>
+    <span class="kd">val</span> <span class="py">w</span> <span class="p">=</span> <span class="n">lines</span><span class="p">.</span><span class="nf">first</span><span class="p">().</span><span class="n">length</span>
+    <span class="k">return</span> <span class="nf">sumUp</span><span class="p">((</span><span class="mi">0</span> <span class="n">until</span> <span class="n">h</span><span class="p">).</span><span class="nf">flatMap</span> <span class="p">{</span> <span class="n">y</span> <span class="p">-&gt;</span> <span class="nf">boardsForLine</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">y</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span> <span class="p">})</span>
+            <span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="o">::</span><span class="n">cellAsText</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">chunked</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="n">it</span> <span class="p">-&gt;</span> <span class="n">it</span><span class="p">.</span><span class="nf">joinToString</span><span class="p">(</span><span class="s">""</span><span class="p">)</span> <span class="p">}</span>
+            <span class="p">.</span><span class="nf">joinToString</span><span class="p">(</span><span class="s">"\n"</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">zip</span><span class="p">(</span><span class="n">inputBoard</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nf">overlayCell</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="p">}</span>
+            <span class="p">.</span><span class="nf">joinToString</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here Clojure’s <code class="language-plaintext highlighter-rouge">partition</code> function is replaced by Kotlin’s <code class="language-plaintext highlighter-rouge">chunked</code> function and <code class="language-plaintext highlighter-rouge">str</code> with string functions like <code class="language-plaintext highlighter-rouge">joinToString</code>. Once again Clojure’s multi-argument <code class="language-plaintext highlighter-rouge">map</code> function does not have a direct translation in Kotlin so we use <code class="language-plaintext highlighter-rouge">zip</code> to merge the result with the initial board to generate the final results. To get something more closely resembling thr Clojure code we can take advantage of Kotlin’s extension methods. We’ll need to create some helper methods.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">str</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nc">CharSequence</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nc">CharSequence</span><span class="p">)</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">).</span><span class="nf">joinToString</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+
+<span class="k">fun</span> <span class="nf">List</span><span class="p">&lt;</span><span class="nc">CharSequence</span><span class="p">&gt;.</span><span class="nf">interpose</span><span class="p">(</span><span class="n">sep</span><span class="p">:</span> <span class="nc">CharSequence</span><span class="p">)</span> <span class="p">=</span>
+        <span class="k">this</span><span class="p">.</span><span class="nf">flatMap</span> <span class="p">{</span> <span class="n">it</span> <span class="p">-&gt;</span> <span class="nf">listOf</span><span class="p">(</span><span class="n">sep</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span> <span class="p">}.</span><span class="nf">drop</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>An then use them to build the data pipeline:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nc">CharSequence</span><span class="p">.</span><span class="nf">overlayBoards</span><span class="p">(</span><span class="n">other</span><span class="p">:</span> <span class="nc">CharSequence</span><span class="p">)</span> <span class="p">=</span>
+        <span class="n">other</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">::</span><span class="n">overlayCell</span><span class="p">).</span><span class="nf">joinToString</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+
+<span class="k">fun</span> <span class="nf">draw</span><span class="p">(</span><span class="n">inputBoard</span><span class="p">:</span> <span class="nc">CharSequence</span><span class="p">):</span> <span class="nc">String</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">lines</span> <span class="p">=</span> <span class="n">inputBoard</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s">"\n"</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">h</span> <span class="p">=</span> <span class="n">lines</span><span class="p">.</span><span class="n">size</span>
+    <span class="kd">val</span> <span class="py">w</span> <span class="p">=</span> <span class="n">lines</span><span class="p">.</span><span class="nf">first</span><span class="p">().</span><span class="n">length</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span> <span class="n">until</span> <span class="n">h</span><span class="p">).</span><span class="nf">flatMap</span> <span class="p">{</span> <span class="n">y</span> <span class="p">-&gt;</span> <span class="nf">boardsForLine</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">y</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span> <span class="p">}</span>
+            <span class="p">.</span><span class="nf">sumUp</span><span class="p">()</span>
+            <span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="o">::</span><span class="n">cellAsText</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">chunked</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="n">it</span> <span class="p">-&gt;</span> <span class="n">it</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(</span><span class="o">::</span><span class="n">str</span><span class="p">)</span> <span class="p">}</span>
+            <span class="p">.</span><span class="nf">interpose</span><span class="p">(</span><span class="s">"\n"</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">reduce</span><span class="p">(</span><span class="o">::</span><span class="n">str</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">overlayBoards</span><span class="p">(</span><span class="n">inputBoard</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Using extension methods has allowed us to put the other functions like <code class="language-plaintext highlighter-rouge">interpose</code> and <code class="language-plaintext highlighter-rouge">overlayBoards</code> into the pipeline giving us an effect similar to Clojure’s thread-last operator.</p>
+
+<p>We can check the output by calling the <code class="language-plaintext highlighter-rouge">draw</code> function from <code class="language-plaintext highlighter-rouge">main</code>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;)</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="nf">draw</span><span class="p">(</span><span class="s">"*   \n *  \n  * \n   *"</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And it does indeed, in case you’re wondering, give us the results we expect.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>*21 
+2*21
+12*2
+ 12*
+</code></pre></div></div>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>I was impressed by Clojure’s ability to simplify complex pipelines using the thread-last <code class="language-plaintext highlighter-rouge">-&gt;&gt;</code> operator. I needed to resort to extension methods to get the same effect in Kotlin. It’s a powerful thing and now I’m wondering why I haven’t seen it before. Maybe it’s only possible because of Clojure’s dynamic typing. The way the <code class="language-plaintext highlighter-rouge">map</code> operation is implemented is also very useful as compared to similar approaches in other languages.</p>
+
+<p>I’m starting to get the gist of Clojure’s syntax (if only scratching the surface of it runtime). This exercise has helped really understand some non-trivial Clojure code. Next step will be to convert some existing functional style Kotlin to Clojure. That’s for another day.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Comparing Clojure to Kotlin&url=https://johnhearn.github.io//articles/notes-comparing-clojure-to-kotlin"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/notes-comparing-clojure-to-kotlin&title=Comparing Clojure to Kotlin&summary=Take an interesting Clojure example and convert it to Kotlin.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Comparing Clojure to Kotlin&amp;body=Check out this site https://johnhearn.github.io//articles/notes-comparing-clojure-to-kotlin"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Comparing Clojure to Kotlin - December 16, 2018 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

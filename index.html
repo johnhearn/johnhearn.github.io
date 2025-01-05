@@ -1,17 +1,557 @@
----
-layout: page
-nav_exclude: true
----
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>John Hearn</title>
+
+  
+  
+  
+  <meta property="og:title" content="John Hearn">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io///">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Personal site for blogging and about science, software and such">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="">
+
+  
+  <meta name="twitter:description" content="Personal site for blogging and about science, software and such">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1></h1>
+<p class="subtitle"></p>
+
 
 <ul class="content-listing ">
-{% for post in site.posts %}      
-  {% if post.asset-type == "post" %}
+      
+  
     <li class="listing">
         <hr class="slender">
-        <a href="{{ post.url | prepend: site.baseurl }}"><h3 class="contrast">{{ post.title }}</h3></a>
-        <br><span class="smaller">{{ post.date | date: "%B %-d, %Y" }}</span>  <br/>
-        <div>{{ post.description }}</div> 
+        <a href="/articles/boolean-matrices"><h3 class="contrast">Matrices of Boolean Nets</h3></a>
+        <br><span class="smaller">December 17, 2024</span>  <br/>
+        <div>Matrices representing boolean nets can shed some light on their properties with nice links to quantum computing and category theory.</div> 
     </li>
-  {% endif %}
-{% endfor %}
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/kauffman-networks"><h3 class="contrast">Kauffmann's Basic Gene Nets</h3></a>
+        <br><span class="smaller">December 5, 2024</span>  <br/>
+        <div>Turns out that Kauffman's gene nets were more general than Wolfram's later elementary cellular automata and share some interesting properties.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/christopher-alexander-network-theory"><h3 class="contrast">Christopher Alexander and Network Theory</h3></a>
+        <br><span class="smaller">November 16, 2024</span>  <br/>
+        <div>Christopher Alexander's philosophy evolved from an algorithmic to an experience based framework. Can we get the best of both worlds?</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/predictability-and-batch-size"><h3 class="contrast">Predictability and batch size</h3></a>
+        <br><span class="smaller">September 28, 2024</span>  <br/>
+        <div>It turns out that delivery predictability decreases linearly with batch size.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/dunbars-number-deconstructed-again-copy"><h3 class="contrast">Dunbar's number deconstructed (again)</h3></a>
+        <br><span class="smaller">September 17, 2024</span>  <br/>
+        <div>When linear regression is taken too far.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/dunbars-number-good-science-within-limits"><h3 class="contrast">Investigating Dunbar's number</h3></a>
+        <br><span class="smaller">September 10, 2024</span>  <br/>
+        <div>Dunbar's number is widely references but also widely misunderstood.</div> 
+    </li>
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/on-not-having-a-map"><h3 class="contrast">On not having a map</h3></a>
+        <br><span class="smaller">August 22, 2024</span>  <br/>
+        <div>How much does having a map help when travelling over rugged terrain?</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/flow-and-cognitive-load"><h3 class="contrast">Flow and Cognitive Load</h3></a>
+        <br><span class="smaller">February 6, 2024</span>  <br/>
+        <div>Falling over our own terminology</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/a-little-every-day"><h3 class="contrast">A Little Every Day</h3></a>
+        <br><span class="smaller">February 22, 2023</span>  <br/>
+        <div>Tackling daunting challenges</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/inverse-markov"><h3 class="contrast">Inverse Markov</h3></a>
+        <br><span class="smaller">October 29, 2022</span>  <br/>
+        <div>Inferring a model about how stuff moves about</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/accelerate-and-farmers-gates"><h3 class="contrast">Accelerate and Farmers' Gates</h3></a>
+        <br><span class="smaller">July 8, 2022</span>  <br/>
+        <div>Predictive inference is not enough.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/why-log-normal"><h3 class="contrast">Why Lognormal?</h3></a>
+        <br><span class="smaller">August 19, 2021</span>  <br/>
+        <div>The distribution of latencies in a system is often approximately log-normal. Why?</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/load-balancing-strategies"><h3 class="contrast">Load Balancing Strategies and their Distributions</h3></a>
+        <br><span class="smaller">April 3, 2021</span>  <br/>
+        <div>A comparison of different load balancing strategies and the statistical distribution of requests.</div> 
+    </li>
+  
+      
+  
+      
+  
+      
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/polynomial-chaos"><h3 class="contrast">Polynomial Chaos</h3></a>
+        <br><span class="smaller">May 1, 2020</span>  <br/>
+        <div>Approximating probability distributions with polynomials.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/stop-using-autowire"><h3 class="contrast">Stop Using @Autowire</h3></a>
+        <br><span class="smaller">April 3, 2020</span>  <br/>
+        <div>Some reasons why Spring's @Autowire annotation could be considered a code smell.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/cd-dependency-network"><h3 class="contrast">Technical Practices for Continuous Delivery</h3></a>
+        <br><span class="smaller">February 3, 2020</span>  <br/>
+        <div>Looking at the relationships between the different technical practices in the DORA model.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/teams-systems-and-catastrophe"><h3 class="contrast">Teams, Systems and Catastrophe</h3></a>
+        <br><span class="smaller">January 26, 2020</span>  <br/>
+        <div>Examples of surprising cascading effects when increasing the rate or strength of interactions in a team or distributed system.</div> 
+    </li>
+  
+      
+  
+      
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/political-antifragility"><h3 class="contrast">Political Anti-Fragility</h3></a>
+        <br><span class="smaller">July 25, 2019</span>  <br/>
+        <div>Certain politicians have the ability to gain popularity even in the face of severe criticism.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/dikuw-for-programmers"><h3 class="contrast">DIKUW for Programmers</h3></a>
+        <br><span class="smaller">July 7, 2019</span>  <br/>
+        <div>An explanation for programmers of the concepts behind the decision-making information hierarchy.</div> 
+    </li>
+  
+      
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/hodgepodge-machine-in-julia"><h3 class="contrast">The Hodgepodge Machine</h3></a>
+        <br><span class="smaller">June 8, 2019</span>  <br/>
+        <div>A classic 2D cellular automa with Julia.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/simulate-chaotic-water-wheel-with-planck"><h3 class="contrast">Chaotic Waterwheel with Planck</h3></a>
+        <br><span class="smaller">June 2, 2019</span>  <br/>
+        <div>A simulation of a chaotic waterwheel with the Planck JavaScript physics engine.</div> 
+    </li>
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/communication-clarity-confidence"><h3 class="contrast">Communication Clarity Confidence</h3></a>
+        <br><span class="smaller">May 18, 2019</span>  <br/>
+        <div>A few ideas for improving leadership skills for technical people.</div> 
+    </li>
+  
+      
+  
+      
+  
+      
+  
+      
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/encounter-with-complexity"><h3 class="contrast">An Encounter with ℂ𝕠𝕞𝕡𝕝𝕖𝕩𝕚𝕥𝕪</h3></a>
+        <br><span class="smaller">April 20, 2019</span>  <br/>
+        <div>From the Game of Life to Cynefin, systems flourish on the edge of chaos.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/stability-of-systems"><h3 class="contrast">The Stability of Systems</h3></a>
+        <br><span class="smaller">April 19, 2019</span>  <br/>
+        <div>A quote from an ecologist regarding the stability of ecosystems could also apply to software systems.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/why-ask-why"><h3 class="contrast">Why ask why?</h3></a>
+        <br><span class="smaller">March 10, 2019</span>  <br/>
+        <div>A paradox of modern life - take charge of your life but go with the flow.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/consider-technical-documentation"><h3 class="contrast">Consider Technical Documentation</h3></a>
+        <br><span class="smaller">February 16, 2019</span>  <br/>
+        <div>Visualising a system can lead to more effective communication and better decisions.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/quality-and-time"><h3 class="contrast">Quality and Time</h3></a>
+        <br><span class="smaller">February 3, 2019</span>  <br/>
+        <div>Digging into the meaning of quality and its relationship with time.</div> 
+    </li>
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/the-nature-of-meaning"><h3 class="contrast">Some Perspectives on the Nature Of Meaning</h3></a>
+        <br><span class="smaller">January 13, 2019</span>  <br/>
+        <div>An understanding of how we arrive at meaning has great implications for learning and communication.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/serverless-is-the-new-mainframe"><h3 class="contrast">Serverless is the new Mainframe</h3></a>
+        <br><span class="smaller">December 29, 2018</span>  <br/>
+        <div>Many of the touted advantages of serverless architectures have been enjoyed on Mainframes for decades. What lessons can be learnt for the new serverless era?</div> 
+    </li>
+  
+      
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/native-services-with-graal-gradle"><h3 class="contrast">Native µservices with Graal and Gradle</h3></a>
+        <br><span class="smaller">December 9, 2018</span>  <br/>
+        <div>Moving from Maven to Gradle for the Kotlin/SparkJava. Spoiler it's almost too easy.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/professionalism-learning-at-work"><h3 class="contrast">Professionalism - Learning at Work</h3></a>
+        <br><span class="smaller">November 17, 2018</span>  <br/>
+        <div>The debate about where to learn your craft focuses on the professional on the one side or the employer on the other. We should be considering their relationship instead.</div> 
+    </li>
+  
+      
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/estimate-everything"><h3 class="contrast">Estimate Everything</h3></a>
+        <br><span class="smaller">November 3, 2018</span>  <br/>
+        <div>The power of estimation is widely denigrated or ignored. That is a shame.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/more-than-one-kind-of-project"><h3 class="contrast">There's More Than One Kind of Project</h3></a>
+        <br><span class="smaller">October 28, 2018</span>  <br/>
+        <div>Software engineering projects come in many shapes and this article lists some of them. Different skills apply to each one, however, and we need to be able to distinguish them and apply the right tools to each.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/what-happened-to-uml"><h3 class="contrast">What happened to UML?</h3></a>
+        <br><span class="smaller">October 14, 2018</span>  <br/>
+        <div>UML seems to have fallen out of favour with many software developers. It's understandable but maybe we have thrown the baby out with the bath water.</div> 
+    </li>
+  
+      
+  
+      
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/dangers-of-abstraction"><h3 class="contrast">The Dangers of Abstraction</h3></a>
+        <br><span class="smaller">September 30, 2018</span>  <br/>
+        <div>Thoughts on the use of high-level abstractions where, if we are not careful, words easily loose their meaning.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/teal-organisation-in-the-methodist-tradition"><h3 class="contrast">Teal Organisation In The Methodist Tradition</h3></a>
+        <br><span class="smaller">August 30, 2018</span>  <br/>
+        <div>Comments on the similarity between the way Methodists organise themselves and so-called Teal organisations.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/quantum-computing-primer-part-1a"><h3 class="contrast">Quantum Computing Primer</h3></a>
+        <br><span class="smaller">August 16, 2018</span>  <br/>
+        <div>Basic maths-free introduction to quantum computing for software engineers.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/argument-maps"><h3 class="contrast">Argument Maps</h3></a>
+        <br><span class="smaller">July 29, 2018</span>  <br/>
+        <div>Simple example of using argument maps to visualise and simplify claims and objections to a given argument.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/the-good-programmer"><h3 class="contrast">The Good Programmer</h3></a>
+        <br><span class="smaller">April 20, 2018</span>  <br/>
+        <div>Some notes on the different meanings of quality.</div> 
+    </li>
+  
+      
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/evolution-of-a-unit-test"><h3 class="contrast">Evolution of a Unit Test</h3></a>
+        <br><span class="smaller">June 15, 2017</span>  <br/>
+        <div>Example of the evolution of a real unit test over the course of a morning.</div> 
+    </li>
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/expected-loss-and-unit-tests"><h3 class="contrast">Expected Loss of a Unit Test</h3></a>
+        <br><span class="smaller">June 7, 2017</span>  <br/>
+        <div>Exploration of the concept of expected loss as a measure of the effectiveness of a unit testing.</div> 
+    </li>
+  
+      
+  
+      
+  
+      
+  
+      
+  
+      
+  
+    <li class="listing">
+        <hr class="slender">
+        <a href="/articles/solid-vs-cohesion-and-coupling"><h3 class="contrast">SOLID Principles, Cohesion and Coupling</h3></a>
+        <br><span class="smaller">May 15, 2017</span>  <br/>
+        <div>Some observations about the relationship between well known programming principles.</div> 
+    </li>
+  
+      
+  
+
 </ul>
+
+    </article>
+    <span class="print-footer"> - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Building a QPU simulator in Julia - Part 3</title>
+
+  
+  <meta name="description" content="Improving performance.">
+  
+  
+  <meta name="keywords" content="quantum computing, julia"/>
+  
+  
+  <meta property="og:title" content="Building a QPU simulator in Julia - Part 3">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-3/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Improving performance.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Building a QPU simulator in Julia - Part 3">
+
+  
+  <meta name="twitter:description" content="Improving performance.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-3">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Building a QPU simulator in Julia - Part 3</h1>
+<div class="subtitle">May 24, 2019</div>
+<div class="smaller">three minutes.</div>
+
+<p>In the <a href="building-a-qpu-simulator-in-julia-part-2">last post</a> we were able to build a functional quantum register and used it to create a simple circuit for a <a href="quantum-random-number-generator">quantum random number generator</a>. It worked directly with registers up to about 11 bits when the amount of memory required to represent the operations on the register surpassed the available resources.</p>
+
+<p>This short post is to see if we can improve the simple functions we wrote to increase the performance.</p>
+
+<p>The first obvious thing to try is to use sparse matrices instead of dense ones. This is especially important when lifting the operators over large registers because the dense matrices are full of zeros. For example take a hadamard operator lift into the 2rd position of a 3-bit register. The lifted matrix becomes:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">julia&gt;</span><span class="w"> </span>lift<span class="o">(</span>3, 2, H<span class="o">)</span>
+<span class="go">8×8 Array{Float32,2}:
+ 0.707107  0.0        0.707107   0.0       0.0       0.0        0.0        0.0     
+ 0.0       0.707107   0.0        0.707107  0.0       0.0        0.0        0.0     
+ 0.707107  0.0       -0.707107  -0.0       0.0       0.0       -0.0       -0.0     
+ 0.0       0.707107  -0.0       -0.707107  0.0       0.0       -0.0       -0.0     
+ 0.0       0.0        0.0        0.0       0.707107  0.0        0.707107   0.0     
+ 0.0       0.0        0.0        0.0       0.0       0.707107   0.0        0.707107
+ 0.0       0.0       -0.0       -0.0       0.707107  0.0       -0.707107  -0.0     
+ 0.0       0.0       -0.0       -0.0       0.0       0.707107  -0.0       -0.707107
+</span></code></pre></div></div>
+
+<p>This matrix has a high density of zeros, something which indicates that a sparce representation may be better. Luckily <a href="https://julialang.org/">Julia</a> includes support for sparce matrices as part of the <code class="language-plaintext highlighter-rouge">SparseArrays</code> package and then we can simply start creating sparse matrices with a couple of simple changes:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">SparseArrays</span>
+
+<span class="n">ZERO</span> <span class="o">=</span> <span class="n">sparsevec</span><span class="x">([</span><span class="mi">1</span><span class="x">],</span> <span class="x">[</span><span class="mf">1f0</span><span class="x">],</span> <span class="mi">2</span><span class="x">)</span>
+<span class="n">ONE</span> <span class="o">=</span> <span class="n">sparsevec</span><span class="x">([</span><span class="mi">2</span><span class="x">],</span> <span class="x">[</span><span class="mf">1f0</span><span class="x">],</span> <span class="mi">2</span><span class="x">)</span>
+
+<span class="n">eye</span> <span class="o">=</span> <span class="n">sparse</span><span class="x">(</span><span class="n">I</span><span class="x">,</span> <span class="mi">2</span><span class="x">,</span> <span class="mi">2</span><span class="x">)</span>
+</code></pre></div></div>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">julia&gt;</span><span class="w"> </span>lift<span class="o">(</span>3, 2, H<span class="o">)</span>
+<span class="go">8×8 SparseMatrixCSC{Float32,Int64} with 16 stored entries:
+  [1, 1]  =  0.707107
+  [3, 1]  =  0.707107
+  [2, 2]  =  0.707107
+  [4, 2]  =  0.707107
+  [1, 3]  =  0.707107
+  [3, 3]  =  -0.707107
+  [2, 4]  =  0.707107
+  [4, 4]  =  -0.707107
+  [5, 5]  =  0.707107
+  [7, 5]  =  0.707107
+  [6, 6]  =  0.707107
+  [8, 6]  =  0.707107
+  [5, 7]  =  0.707107
+  [7, 7]  =  -0.707107
+  [6, 8]  =  0.707107
+  [8, 8]  =  -0.707107
+</span></code></pre></div></div>
+
+<p>We have reduced the memory footprint of the matrix by a factor of 4. In fact the saving is exponential: a \(2^n \times 2^n\) array becomes a sparse representation with \(2^{n+1}\) entries.</p>
+
+<p>Trying the same benchmark again gives us much better results:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">n</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="mi">11</span>
+<span class="nd">@time</span> <span class="n">print</span><span class="x">(</span><span class="n">toInt</span><span class="x">(</span><span class="n">measureAll</span><span class="x">(</span><span class="n">n</span><span class="x">,</span> <span class="n">hadamard</span><span class="x">(</span><span class="n">n</span><span class="x">)</span> <span class="o">*</span> <span class="n">register</span><span class="x">(</span><span class="n">n</span><span class="x">))[</span><span class="mi">1</span><span class="x">]))</span>
+<span class="k">end</span>
+</code></pre></div></div>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">0  0.000075 seconds (23 allocations: 1.047 KiB)
+3  0.000034 seconds (41 allocations: 1.969 KiB)
+0  0.000019 seconds (51 allocations: 3.016 KiB)
+15  0.000029 seconds (73 allocations: 5.516 KiB)
+12  0.000030 seconds (84 allocations: 11.422 KiB)
+46  0.000038 seconds (102 allocations: 31.031 KiB)
+62  0.000103 seconds (119 allocations: 102.750 KiB)
+143  0.000190 seconds (134 allocations: 374.313 KiB)
+301  0.000605 seconds (150 allocations: 1.396 MiB)
+130  0.002381 seconds (159 allocations: 5.463 MiB)
+666  0.016114 seconds (202 allocations: 21.679 MiB)
+</span></code></pre></div></div>
+
+<p>Lets see how far we can go…</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">n</span> <span class="k">in</span> <span class="mi">12</span><span class="o">:</span><span class="mi">16</span>
+<span class="nd">@time</span> <span class="n">print</span><span class="x">(</span><span class="n">toInt</span><span class="x">(</span><span class="n">measureAll</span><span class="x">(</span><span class="n">n</span><span class="x">,</span> <span class="n">hadamard</span><span class="x">(</span><span class="n">n</span><span class="x">)</span> <span class="o">*</span> <span class="n">register</span><span class="x">(</span><span class="n">n</span><span class="x">))[</span><span class="mi">1</span><span class="x">]))</span>
+<span class="k">end</span>
+</code></pre></div></div>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">1131  0.064576 seconds (199 allocations: 85.922 MiB)
+430  0.296749 seconds (252 allocations: 342.593 MiB)
+12847  1.547630 seconds (285 allocations: 1.336 GiB, 32.59% gc time)
+24906  4.267627 seconds (317 allocations: 5.340 GiB, 4.51% gc time)
+63277 39.087846 seconds (787 allocations: 21.372 GiB, 6.12% gc time)
+</span></code></pre></div></div>
+
+<p>It turns out that we’ve improved the performance by a factor of about 32! Not a bad for a 3 line change :)</p>
+
+<p>There are more things to do like in-place multiplications but I’d like to implement some of the standard algorithms first to compare performance in more varied circumstances. That’ll be for next time.</p>
+
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Building a QPU simulator in Julia - Part 3&url=https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-3"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-3&title=Building a QPU simulator in Julia - Part 3&summary=Improving performance.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Building a QPU simulator in Julia - Part 3&amp;body=Check out this site https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-3"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Building a QPU simulator in Julia - Part 3 - May 24, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Inverse Markov</title>
+
+  
+  <meta name="description" content="Inferring a model about how stuff moves about">
+  
+  
+  <meta name="keywords" content="estimation, modelling"/>
+  
+  
+  <meta property="og:title" content="Inverse Markov">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/inverse-markov/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Inferring a model about how stuff moves about">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Inverse Markov">
+
+  
+  <meta name="twitter:description" content="Inferring a model about how stuff moves about">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/inverse-markov">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Inverse Markov</h1>
+<div class="subtitle">October 29, 2022</div>
+<div class="smaller">five minutes.</div>
+
+<p>Markov chains are a fantastic tool for modelling how stuff moves about over a network of possible states. Think about them as probabilistic state machines. Its uses are widespread, from Google’s <a href="https://saattrupdan.github.io/2020-08-07-pagerank/">PageRank algorithm</a> which models the way users move about the internet to analysing the ways players move around a <a href="http://www.bewersdorff-online.de/amonopoly/">Monopoly board</a>. We can also use it as a simple model of workload in a distributed system or team.</p>
+
+<p>In my case I had some economic data and I wanted to see if I could make a fortune finding a trend in the market<label for="notrich" class="margin-toggle"> ⊕</label><input type="checkbox" id="notrich" class="margin-toggle" /><span class="marginnote">Needless to say the result was negative and my wealth has increased only in terms of knowledge. </span> so I found myself wanting to determine a Markov chain model from real-world data.</p>
+
+<p>It turns out that this topic was studied extensively in the last century<sup id="fnref:Lee1965" role="doc-noteref"><a href="#fn:Lee1965" class="footnote" rel="footnote">1</a></sup>’<sup id="fnref:Lee1968" role="doc-noteref"><a href="#fn:Lee1968" class="footnote" rel="footnote">2</a></sup> and, although simple and well understood, it took me a while to get my head around it. I’m writing it up here to help me remember.</p>
+
+<p>For the background of the maths behind Markov chains in general there are numerous resources <a href="https://www.google.com/search?q=markov+chain">online</a>. Basically we repeatedly apply a transformation to the current state to turn it into a new state. We then apply the same transformation to the new state to create the next state and so on. Remarkably, no matter which state we start in, while conditions stay constant the system <em>always</em> converges to the same steady state (plus a bit of noise). We can use this fact to work backwards from observations of the sequence of states and infer the model that would have generated them.</p>
+
+<p>Say we have a state represented by a vector $\nu$ and a transformation represented by a matrix $P$. Based on a sequence of noisy observations of the state, $\left(\nu_1, \nu_2…\nu_n\right)$, what is our best estimate of $P$?</p>
+
+<p>We’ll need plenty of observations so let’s put them together into the same matrix: \(V = \left[\nu_1, \nu_2...\nu_{n-1}\right]\)</p>
+
+<p>Each application of $P$ takes us to the subsequent state so we have \(VP = \left[\nu_2, \nu_3...\nu_n\right] = U\)</p>
+
+<p>We end up with an equation involving $\nu_1, \nu_2…\nu_n$.</p>
+
+<p>Since $P$ is a square matrix we will need $n$ to be at least equal to the number of states. If we have more then even better. Using the <a href="https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse"><em>pseudo-inverse</em></a> of the states we can get the <a href="https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse#Linear_least-squares">least squares</a> best estimate for P.
+\(\hat P = V^+ \times U\)</p>
+
+<p>Where the $^+$ symbol represents the generalised inverse which in fact is easy enough to calculate, $V^+ = (V’V)^{-1}V’$.</p>
+
+<p>In Julia, assuming we already have the state data in the variable $\nu$, this becomes</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">V</span> <span class="o">=</span> <span class="n">ν</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="x">,</span><span class="o">:</span><span class="x">]</span>
+<span class="n">U</span> <span class="o">=</span> <span class="n">ν</span><span class="x">[</span><span class="mi">2</span><span class="o">:</span><span class="n">n</span><span class="x">,</span><span class="o">:</span><span class="x">]</span>
+
+<span class="n">V⁺</span> <span class="o">=</span> <span class="n">inv</span><span class="x">(</span><span class="n">V</span><span class="err">'</span><span class="n">V</span><span class="x">)</span><span class="n">V</span><span class="err">'</span>
+
+<span class="n">Pest</span> <span class="o">=</span> <span class="n">V⁺</span><span class="o">*</span><span class="n">U</span>
+</code></pre></div></div>
+
+<p>This works fairly well but it has problem. The peudo-inverse knows nothing of the contraint on the probabilities which must all be positive. Various workarounds exist but in the end we end up having to fiddle with the numbers to get them all positive in the optimal way.</p>
+
+<p>Luckily for us, optimisation algorithms for situations like these have also been studied extensively. Julia’s <a href="https://jump.dev/">JuMP eco-system</a>, for instance, provides tools which eat these kinds problems for breakfast.</p>
+
+<p>We are optimising for the minimum square difference between $U$ and $VP$ where the entries in $P$, always positive, are the variables we are trying to determine, $p_{ij} &gt; 0 \space \forall i,j$</p>
+
+<p>Specifically, we are finding values for $p_{ij}$ with the objective of minimising
+\((U-VP)^2 = (U-VP)' \cdot (U-VP)\)</p>
+
+<p>We also have the condition that the entries must be positive and the constraint that the rows must sum to 1, $\sum_{j}{p_{ij}} = 1$.</p>
+
+<p>Assuming $r$ is the number of states, in JuMP we can define the problem like this:</p>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="x">(</span><span class="n">Ipopt</span><span class="o">.</span><span class="n">Optimizer</span><span class="x">)</span>
+
+<span class="nd">@variable</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">p</span><span class="x">[</span><span class="mi">1</span><span class="o">:</span><span class="n">r</span><span class="o">^</span><span class="mi">2</span><span class="x">]</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="x">)</span>
+<span class="nd">@objective</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">Min</span><span class="x">,</span> <span class="x">(</span><span class="n">U</span> <span class="o">-</span> <span class="n">V</span><span class="o">*</span><span class="n">P</span><span class="x">)</span><span class="err">'</span><span class="o">*</span><span class="x">(</span><span class="n">U</span> <span class="o">-</span> <span class="n">V</span><span class="o">*</span><span class="n">P</span><span class="x">))</span>
+<span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">r</span>
+    <span class="nd">@constraint</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">sum</span><span class="x">(</span><span class="n">p</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">j</span><span class="o">:</span><span class="n">r</span><span class="o">:</span><span class="n">r</span><span class="o">^</span><span class="mi">2</span><span class="x">)</span> <span class="o">==</span> <span class="mf">1.0</span><span class="x">)</span>
+<span class="k">end</span>
+
+<span class="n">optimize!</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
+
+<span class="n">Pest</span> <span class="o">=</span> <span class="n">reshape</span><span class="x">(</span><span class="n">value</span><span class="o">.</span><span class="x">(</span><span class="n">p</span><span class="x">),</span> <span class="n">r</span><span class="x">,</span><span class="n">r</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>With this code I’ve been able to recover a good approximation to the transition matrix in testing, the approximation becomming better with increasing sample size.</p>
+
+<p>We could give the algorithm an initial hint based on the pseudo-inverse described above but in my experiments the optimisation algorithm is fast enough to not require it.</p>
+
+<p>The method could be improved by quantifying the uncertainty in the results. On way would be to batch observations and look at the distribution of results. Another might be to apply a bayesian approach using a Dirichlet multinomial as the prior and updating with the observations. A problem for another time.</p>
+
+<p>References</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:Lee1965" role="doc-endnote">
+      <p><sup><sub>Lee, T. C., Judge, George G., Takayama, T., 1965. On Estimating the Transition Probabilities of a Markov Process. American Journal of Agricultural Economics 47, 742–762. <a href="https://doi.org/10.2307/1236285">https://doi.org/10.2307/1236285</a></sub></sup> <a href="#fnref:Lee1965" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:Lee1968" role="doc-endnote">
+      <p><sup><sub>Lee, T. C., Judge, George G., Zellner, A., 1968. Maximum Likelihood and Bayesian Estimation of Transition Probabilities. Journal of the American Statistical Association 63, 1162–1179. <a href="https://doi.org/10.1080/01621459.1968.10480918">https://doi.org/10.1080/01621459.1968.10480918</a></sub></sup> <a href="#fnref:Lee1968" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Inverse Markov&url=https://johnhearn.github.io//articles/inverse-markov"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/inverse-markov&title=Inverse Markov&summary=Inferring a model about how stuff moves about&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Inverse Markov&amp;body=Check out this site https://johnhearn.github.io//articles/inverse-markov"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Inverse Markov - October 29, 2022 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Building a QPU simulator in Julia - Part 1</title>
+
+  
+  <meta name="description" content="A new tack, finding Julia and serendipity.">
+  
+  
+  <meta name="keywords" content="quantum computing, tdd, julia"/>
+  
+  
+  <meta property="og:title" content="Building a QPU simulator in Julia - Part 1">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-1/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="A new tack, finding Julia and serendipity.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Building a QPU simulator in Julia - Part 1">
+
+  
+  <meta name="twitter:description" content="A new tack, finding Julia and serendipity.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-1">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Building a QPU simulator in Julia - Part 1</h1>
+<div class="subtitle">May 7, 2019</div>
+<div class="smaller">four minutes.</div>
+
+<p>Just for a kicks, I started rewriting <a href="https://github.com/johnhearn/quko">Quko</a>, my simple quantum computing simulator, <a href="building-a-qpu-simulator-in-clojure-part-1">in clojure</a>. I thought that having powerful linear algebra libraries like <a href="https://neanderthal.uncomplicate.org/">Neanderthal</a> would help simplify the task but it didn’t feel right. I decided to put it on hold until I got some inspiration.</p>
+
+<p><label for="ssn-talk" class="margin-toggle">⊕</label><input type="checkbox" id="ssn-talk" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/pointcare-snns.png" /><br />The talk included Julia code for generating this Pointcaré section of the chaotic interaction between 3 spiking neural networks (SNNs) which I, ironically, converted to Kotlin.</span></p>
+
+<p>So, I started looking again at <a href="encounter-with-complexity"><em>complexity</em> theory</a>. I was lead via <a href="https://en.wikipedia.org/wiki/Logistic_map">logistic maps</a>, and <a href="https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations">other</a> <a href="https://en.wikipedia.org/wiki/Rayleigh%E2%80%93B%C3%A9nard_convection">dynamic</a> <a href="https://en.wikipedia.org/wiki/Galaxy_filament">systems</a> to a library called <a href="https://juliadynamics.github.io/JuliaDynamics/">DynamicSystems.jl</a> written in a language called <a href="https://julialang.org/">Julia</a>. I remembered having seen Julia two years ago from another <a href="https://www.youtube.com/watch?v=cLLQcshWEbE">talk</a> on simulating spiking neural networks using Julia.</p>
+
+<p>The things that were bothering me in Kotlin and Clojure when building the QPU simulator were complex numbers and linear algebra, specifically the Krondecker product, and it turns out that Julia supports both natively! So it was worth giving it a try<label for="guide" class="margin-toggle sidenote-number"></label><input type="checkbox" id="guide" class="margin-toggle" /><span class="sidenote">Edit: For a nice guide through <a href="https://julialang.org/">Julia</a> syntax take a look at the <a href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html">ThinkJulia online book</a>. It pretty much covers all the basic and is very easy to understand. </span>.</p>
+
+<p>Installing Julia on a Mac is as simple as you might expect<label for="jupyter" class="margin-toggle sidenote-number"></label><input type="checkbox" id="jupyter" class="margin-toggle" /><span class="sidenote">You can use it from <a href="https://jupyter.org/">Jupyter</a>, if you prefer. I wrote down how to do that in a <a href="using-julia-in-jupyter">separate note</a>. The community overlap with Python is understandable. </span></p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">&gt;</span><span class="w"> </span>brew <span class="nb">install </span>julia
+<span class="c">...
+</span></code></pre></div></div>
+
+<p>Like Clojure, Julia has a nice REPL for developing and testing ideas quickly. Built-in support for vectors means that defining a qubit is easy<label for="float32" class="margin-toggle sidenote-number"></label><input type="checkbox" id="float32" class="margin-toggle" /><span class="sidenote">Julia uses 64-bit floats by default. We don’t need that level of precision and 32-bit floats save memory, a simple but important consideration for QPU simulators. </span>:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">julia&gt;</span><span class="w"> </span>qubit <span class="o">=</span> Float32<span class="o">(</span>1<span class="o">)</span> <span class="k">*</span> <span class="o">[</span>1, 0]
+<span class="go">2-element Array{Float32,1}:
+ 1.0
+ 0.0
+</span></code></pre></div></div>
+
+<p>Julia has dynamic typing so the variable type doesn’t need to be set explicitly. The Hadamard operator<label for="hadamard" class="margin-toggle sidenote-number"></label><input type="checkbox" id="hadamard" class="margin-toggle" /><span class="sidenote">Defined as \(H = \frac{1}{\sqrt{2}} \left(
+  \begin{array}{c} 
+  1 &amp; 1 \\ 
+  1 &amp; -1 \\ 
+  \end{array} 
+  \right)\) </span> is similarly easy to define with Julia’s matrix syntax:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">julia&gt;</span><span class="w"> </span>H <span class="o">=</span> Float32<span class="o">(</span>1/sqrt<span class="o">(</span>2<span class="o">))</span> <span class="k">*</span> <span class="o">[</span>1 1<span class="p">;</span> 1 <span class="nt">-1</span><span class="o">]</span>
+<span class="go">2×2 Array{Float32,2}:
+ 0.707107   0.707107
+ 0.707107  -0.707107
+
+</span><span class="gp">julia&gt;</span><span class="w"> </span>H <span class="k">*</span> qubit
+<span class="go">2-element Array{Float32,1}:
+ 0.70710677
+ 0.70710677
+</span></code></pre></div></div>
+
+<p>Taking it a step further we can use complex numbers natively. For example, we are able to define the <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Square_root_of_NOT_gate_(%E2%88%9ANOT)">\(\sqrt{NOT}\) gate</a><label for="hadamard" class="margin-toggle sidenote-number"></label><input type="checkbox" id="hadamard" class="margin-toggle" /><span class="sidenote">Defined as \(\sqrt{NOT} = \frac{1}{2} \left(
+  \begin{array}{c} 
+  1+i &amp; 1-i \\ 
+  1-i &amp; 1+i \\ 
+  \end{array} 
+  \right)\) </span> almost as easily:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">julia&gt;</span><span class="w"> </span>halfX <span class="o">=</span> Float32<span class="o">(</span>0.5<span class="o">)</span> <span class="k">*</span> <span class="o">[</span>1+im 1-im<span class="p">;</span> 1-im 1+im]
+<span class="go">2×2 Array{Complex{Float32},2}:
+ 0.5+0.5im  0.5-0.5im
+ 0.5-0.5im  0.5+0.5im
+
+</span><span class="gp">julia&gt;</span><span class="w"> </span>halfX <span class="k">*</span> qubit
+<span class="go">2-element Array{Complex{Float32},1}:
+ 0.5f0 + 0.5f0im
+ 0.5f0 - 0.5f0im
+</span></code></pre></div></div>
+
+<p>We can test that it’s unitary using the conjugation operator, <code class="language-plaintext highlighter-rouge">'</code>, and the <code class="language-plaintext highlighter-rouge">@test</code> macro:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">julia&gt;</span><span class="w"> </span>using Test
+<span class="gp">julia&gt;</span><span class="w"> </span>@test halfX<span class="s1">'*halfX ≈ [1 0; 0 1]
+</span><span class="go">Test Passed
+</span></code></pre></div></div>
+
+<p>It’s normal in Julia to use Unicode characters directly. This is strange at first but makes formulas very succinct. In the above test we used the <code class="language-plaintext highlighter-rouge">≈</code>  character<label for="approx" class="margin-toggle sidenote-number"></label><input type="checkbox" id="approx" class="margin-toggle" /><span class="sidenote">In the REPL, type <code class="language-plaintext highlighter-rouge">\approx</code> and then press <code class="language-plaintext highlighter-rouge">Tab</code>. </span> to perform a machine-precision equality test.</p>
+
+<p>Being a functional language, it’s straightforward to turn our operators into functions. X is the quantum NOT operator:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">julia&gt;</span><span class="w"> </span>X <span class="o">=</span> <span class="o">(</span>qubit<span class="o">)</span> -&gt; Float32<span class="o">(</span>1<span class="o">)</span> <span class="k">*</span> <span class="o">[</span>0 1<span class="p">;</span> 1 0] <span class="k">*</span> qubit
+<span class="gp">#</span>3 <span class="o">(</span>generic <span class="k">function </span>with 1 method<span class="o">)</span>
+<span class="go">
+</span><span class="gp">julia&gt;</span><span class="w"> </span>@test X<span class="o">(</span>X<span class="o">(</span>qubit<span class="o">))</span> ≈ qubit
+<span class="go">Test Passed
+</span></code></pre></div></div>
+
+<p>This language really is a close to perfect for my project! <a href="https://cognitive-edge.com/blog/serendipity/">Serendipity</a><label for="serendipity" class="margin-toggle sidenote-number"></label><input type="checkbox" id="serendipity" class="margin-toggle" /><span class="sidenote">Techniques for <a href="https://cognitive-edge.com/blog/exaptation-managed-serendipity-part-i/">encouraging serendipity</a> are an important part of 
+ the <a href="https://cognitive-edge.com/videos/cynefin-framework-introduction/">Cynefin</a> framework, which I also happen to be studying at the moment. De Bono’s concept of <em>Readiness</em> in action again. </span> is a wonderful thing.</p>
+
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Building a QPU simulator in Julia - Part 1&url=https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-1"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-1&title=Building a QPU simulator in Julia - Part 1&summary=A new tack, finding Julia and serendipity.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Building a QPU simulator in Julia - Part 1&amp;body=Check out this site https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-1"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Building a QPU simulator in Julia - Part 1 - May 7, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

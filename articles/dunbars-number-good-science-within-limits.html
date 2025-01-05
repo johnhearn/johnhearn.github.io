@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Investigating Dunbar's number</title>
+
+  
+  <meta name="description" content="Dunbar&#39;s number is widely references but also widely misunderstood.">
+  
+  
+  <meta name="keywords" content="science"/>
+  
+  
+  <meta property="og:title" content="Investigating Dunbar&#39;s number">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/dunbars-number-good-science-within-limits/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Dunbar&#39;s number is widely references but also widely misunderstood.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Investigating Dunbar's number">
+
+  
+  <meta name="twitter:description" content="Dunbar's number is widely references but also widely misunderstood.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/dunbars-number-good-science-within-limits">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Investigating Dunbar's number</h1>
+<div class="subtitle">September 10, 2024</div>
+<div class="smaller">12 minutes.</div>
+
+<p>In a seminal paper<label for="dunbar-1992" class="margin-toggle sidenote-number"></label><input type="checkbox" id="dunbar-1992" class="margin-toggle" /><span class="sidenote">Dunbar, R. I. M. ‘Neocortex Size as a Constraint on Group Size in Primates’. Journal of Human Evolution 22, no. 6 (1 June 1992): 469–93. doi: <a href="https://doi.org/10.1016/0047-2484(92)90081-j">10.1016/0047-2484(92)90081-j</a>. </span> from 1992, <a href="https://en.wikipedia.org/wiki/Robin_Dunbar">Robin Dunbar</a> extrapolated from the brain measurements of different animal species and their typical social group sizes, to make a now famous prediction about human social group size. His analysis led him to what has become known as <em>Dunbar’s number</em>, 150, which has had multiple <a href="https://en.wikipedia.org/wiki/Dunbar%27s_number#Applications">applications</a> in different organisational contexts.</p>
+
+<p>Prompted by a definition in this <a href="https://martyoo.medium.com/stop-team-topologies-fd954ea26eca">blog post</a>, and out of pure curiosity, I searched for a bit more information and stumbled on an relatively recent <a href="https://theconversation.com/dunbars-number-why-my-theory-that-humans-can-only-maintain-150-friendships-has-withstood-30-years-of-scrutiny-160676">article by him</a> in which he gives an overview of his research. The article sounded a little snarky to me and snarkiness continued in the comments. It seems he was responding to some research<label for="dunbar-1992" class="margin-toggle sidenote-number"></label><input type="checkbox" id="dunbar-1992" class="margin-toggle" /><span class="sidenote">Patrik Lindenfors, Patrik Lindenfors, Andreas Wartel. ‘“Dunbar’s Number” Deconstructed’. Biology Letters 17, no. 5 (1 May 2021): 20210158–20210158. <a href="https://doi.org/10.1098/rsbl.2021.0158">10.1098/rsbl.2021.0158</a>. </span> published by a group at Stockholm University who ran a set of modern statistical tools over the original dataset and were unable to draw the same conclusions that Mr Dunbar had. This group then responded to Dunbar’s article by writing another <a href="https://theconversation.com/why-we-dispute-dunbars-number-the-claim-humans-can-only-maintain-150-friendships-161944">article</a> explaining their position in more detail.</p>
+
+<p>Since working with real data and reading the work of different research groups is a fantastic way to learn, I decided to do a bit of amateur data analysis. I learned <em>a lot</em> and hopefully by writing down what I saw, I’ll learn even more.</p>
+
+<h2 id="fitting-the-data">Fitting the data</h2>
+
+<blockquote>
+  <p>On a double log-log plot, my grandmother fits on a straight line - <a href="https://en.wikiquote.org/wiki/Fritz_Houtermans">Fritz Houtermans</a></p>
+</blockquote>
+
+<p><label for="rayner-1985" class="margin-toggle"> ⊕</label><input type="checkbox" id="rayner-1985" class="margin-toggle" /><span class="marginnote">Much of the mathematics of this section can be found in Rayner, J. M. V. ‘Linear Relations in Biomechanics: The Statistics of Scaling Functions’. Journal of Zoology 206, no. 3 (July 1985): 415–39. <a href="https://doi.org/10.1111/j.1469-7998.1985.tb05668.x">10.1111/j.1469-7998.1985.tb05668.x</a>. </span></p>
+
+<p>Here’s an example of a similar data set to the one used in the original studies. The data is tabulated in the paper but it’s a lot to copy out so I took a similar data set published by the same author in a later paper. Figure 1 is a plot of the data. For multiple species of animal, it shows the ratio of the size of the neocortext to the size of the rest of the brain ($C_r$) on the horizontal axis and the average social group size ($N$) for that species on the vertical axis.</p>
+
+<figure><figcaption><span>Figure 1: a plot of neocortext ratio $N_r$ against average social group size $G$ for 39 animal species.</span></figcaption><img src="/assets/images/dunbar/ncr vs gs.png" /></figure>
+
+<p>Neither Dunbar nor his critics used the data in this form however, they used its logarithm. This is a common technique used under the assumption that it will make skewed data (as this is) appear more symmetrical (normal). There is no explanation of the reasons for the transform in this particular case. Nonetheless it has an important effect on the results. We’ll come back to this point later. Here’s the transformed data.</p>
+
+<p><label for="dunbars-data" class="margin-toggle">⊕</label><input type="checkbox" id="dunbars-data" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/dunbar/dunbars data.png" /><br />Comparison with Dunbar’s data taken from his original paper.</span></p>
+
+<figure><figcaption><span>Figure 2: a plot of $log_{10}N_r$ against $log_{10}G$ for the same 39 animal species.</span></figcaption><img src="/assets/images/dunbar/log10ncr vs log10gs.png" /></figure>
+
+<p>I’ve presented it in exactly the same way as Dunbar’s paper. Although the data is slightly different the similarity is clear. Also, it does <em>look</em> a bit more like a straight line now and the variance is a little less pronounced. I’m not sure how valid this kind of subjective judgement is.</p>
+
+<p>Figure 3 overlays Dunbar’s original result onto this data set and there is no surprise. The line (the equation for which is given explicitly in the paper) is projected out to  show the predicted human mean group size which can be seen to be close to 150. This is the source of Dunbar’s number.</p>
+
+<figure><figcaption><span>Figure 3: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102).</span></figcaption><img src="/assets/images/dunbar/dunbars result.png" /></figure>
+
+<p>I’m tried to reproduce this result but for now we note that for the analysis to work we have to make the strong assumption that an errors in the measurements are normally distributed. The choice of using the log-log transformation another strong assumption that we’re taking as fact for the moment but we will return to it.</p>
+
+<p>The parameters of the line are determined using linear regression which attempts to find the best straight line through the points. The question arises: what is the best straight line? It turns out that there are multiple ways of defining best fit and depending on which you chose you can get different results.</p>
+
+<p>The most common type of linear regression is most commonly called <strong>Ordinary Least Squares</strong><label for="lsr" class="margin-toggle sidenote-number"></label><input type="checkbox" id="lsr" class="margin-toggle" /><span class="sidenote">Dunbar calls it LSR (Least Squares Regression) in his paper. </span> (OLS) where the the best line is chosen to be the one that minimises the squares of the vertical difference between each point and itself. This is the most basic regression technique taught in statistics classes.</p>
+
+<p><label for="york-2004" class="margin-toggle"> ⊕</label><input type="checkbox" id="york-2004" class="margin-toggle" /><span class="marginnote">For more discussion about regression with <em>known</em> error weights in both axes for each sample see this <a href="https://doi.org/10.1119/1.1632486">paper</a>. In this case we don’t know the error margins in the data. </span></p>
+
+<p>The problem with OLS, as Dunbar points out in his original paper and again in his recent article, is that by minimising only the vertical distances there is an implicit assumption that there are no errors in the measurements on the x-axis, which is not true in this case.</p>
+
+<p>To take these (unknown) error margins into account in both axes we can choose to minimise the <em>geometric</em> distance between the points and the line. This is called <strong>Geometric Mean Regression</strong><label for="rma" class="margin-toggle sidenote-number"></label><input type="checkbox" id="rma" class="margin-toggle" /><span class="sidenote">Dunbar calls it RMA (Reduced Major Axis) but just as heads up it turns out the the web page that Dunbar references in his article to explain RMA is wrong. For a neat overview of the main types of regression I’d recommend the paper by Xu, S. (2014). A Property of Geometric Mean Regression. The American Statistician, 68(4), 277–281. doi:<a href="https://doi.org/10.1080/00031305.2014.962763">10.1080/00031305.2014.962763</a>. </span> in much of the modern literature. The geometric distance is the <em>area</em> between the point and the line, the triangle spanning both the distance along the x-axis and the distance along the y-axis.</p>
+
+<p>One <a href="https://doi.org/10.1016/0096-3003(94)00161-V">cited</a> problem with geometric regression is the extra difficulty in the interpretation of confidence intervals for the parameters. I haven’t seen that as being any more of a problem for this type of regression than for any other but I might be wrong. Please read the paper if you are interested.</p>
+
+<p>I did both geometric and OLS regression to compare the difference. Figure 4 shows the results of both types of linear regression transformed back into the original, untransformed scales.</p>
+
+<p><br /></p>
+<figure><figcaption><span>Figure 4: plot showing the regression results of both OLS and Geometric regressions with a 95% confidence interval.</span></figcaption><img src="/assets/images/dunbar/ols vs gmr.png" /></figure>
+
+<p>This confirms Dunbar’s assertion that OLS considerably <em>underestimates</em> the slope of the regression line, as compared to geometric one.</p>
+
+<p>There are two other important things to note here beyond the difference between the two lines. First notice the upward curve of the regression lines over the original data. This is a result of the log transformations, essentially producing an approximately exponential fit due to the differing scales of the two axes.</p>
+
+<p>The second thing to notice is the wide spread of the confidence interval for this line. This is also exaggerated by the log transformation. In fact, the validity of the confidence intervals after transformation is highly questionable. See <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4120293/">Feng et al.</a> for more details.</p>
+
+<p>Notwithstanding the above caveats, what happens if we extrapolate the curve in an attempt to predict a typical group size for humans?</p>
+
+<p><br /></p>
+<figure><figcaption><span>Figure 5: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102).</span></figcaption><img src="/assets/images/dunbar/predict.png" /></figure>
+
+<p>A direct extrapolation of this data using the geometric fit gives a group size prediction for humans as very approximately ~100. This well below Dunbar’s result but some difference should be expected due to the different data. It does however highlight the disproportionate effect of the log-log transformation on the prediction. It also puts into question the conceptual validity of extrapolating so far outside the available data. Remember that this is the spread of the confidence interval of just the mean itself and does not extrapolate from the variance seen in the rest of the data. This is a key point and an interesting realisation for me personally.</p>
+
+<p>Until now we have collected a series of assumptions about the data that we’ll look at in turn in light of the analysis.</p>
+
+<h3 id="log-log-transformation">Log-log transformation</h3>
+
+<p>It is evident that by taking the log-log transformation of the data we have made the confidence intervals of the predictions extremely wide. Was this choice justified? Let’s take a look at the distributions of the data before and after the transformation.
+<br /></p>
+<figure><figcaption><span>Figure 6: Distribution of original and log transformed neocortex ratio, $N_r$, and mean group size, $G$.</span></figcaption><img src="/assets/images/dunbar/data distributions.png" /></figure>
+
+<p>They show that the transformation has gone some way to make the distributions more symmetrical, especially the group size. It might be interesting to see the results without taking the log of the neocortex ratio but it’s confirmed that this transformation does make sense in this case, even though it does introduce other problems elsewhere. It’s a trade-off I guess.</p>
+
+<h3 id="distribution-of-errors">Distribution of errors</h3>
+<p>It was assumed that the errors in the measurements in both axes were normally distributed. Figure 7 takes a closer look at the distributions of the residuals of the  log transformed data against their regression line.</p>
+
+<p><br /></p>
+<figure><figcaption><span>Figure 7: Q-Q plot comparing the standardised residuals with a normal distribution N(0,1).</span></figcaption><img src="/assets/images/dunbar/residuals distribution.png" /></figure>
+
+<p>This residuals are reasonably close to a normal distribution which is one possible justification for the log-log transformation on the data.</p>
+
+<p>We would like to check for the presence of <a href="https://en.wikipedia.org/wiki/Homoscedasticity_and_heteroscedasticity">heteroscedasticity</a> which can cause ordinary least squares estimates of the variance (and, thus, standard errors) of the coefficients to be biased, possibly above or below the true of population variance. A quick plot of the residuals doesn’t give us too much cause for concern.</p>
+
+<p><br /></p>
+<figure><figcaption><span>Figure 8: Plot of the residuals.</span></figcaption><img src="/assets/images/dunbar/residuals plot.png" /></figure>
+
+<p>We might like to check that more formally with a Breusch-Pagan test. Again this can be taken as further justification for the log-log transformation.</p>
+
+<h2 id="confirmation-bias">Confirmation bias</h2>
+
+<p>More recently additional evidence has been gathered to support the original Dunbar number of 150. As we’ve seen, this number is at best a very rough guess of the mean and doesn’t include the potential variance over the extrapolated range. Nonetheless there is a very real possibility of confirmation bias in later results. The phenomena starts when people latch on to these specific numbers and then <a href="https://teamtopologies.com/news-blogs-newsletters/dunbars-numbers-and-communities-of-practice-q-and-a-with-emily-webber">send</a> their correlates to Dunbar who then catalogues them as supporting evidence.</p>
+
+<p>What have military units got to do with Christmas card lists? Christmas card lists are definitely a social phenomenon but it if far from clear which band they should be in. If the results had been 50, say, then it would have been taken as evidence for that smaller group size. It’s a post-hoc correlation.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So, after all this analysis, I learnt a great deal about regression considerations. Least squares never seemed so controversial until I started this. My results came in below Dunbar’s original results. This means nothing, of course, but it does lend some credence to the critics suspicions which would be compatible with my little investigation here.</p>
+
+<p>I also learnt a lot about what can and can’t be said about Dunbar’s number as a concept.</p>
+
+<p>First, none of this says anything about the nested structure of the group sizes and other predictions made subsequently, which have also been used widely<label for="team-topologies-definition" class="margin-toggle sidenote-number"></label><input type="checkbox" id="team-topologies-definition" class="margin-toggle" /><span class="sidenote">The Team Topologies book uses Dunbar’s work as a basis for team size discussions. For them, “Dunbar’s number” (as defined in the glossary) actually refers to results from Dunbar’s <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1111/brv.12730">later work on nested group sizes</a> and is related but different to Dunbar’s number as usually understood. </span>.</p>
+
+<p>Secondly, it is most <strong>definitely not a maximum or upper limit</strong>, as often <a href="https://martyoo.medium.com/stop-team-topologies-fd954ea26eca">stated</a>. We need to be careful not to confuse the confidence interval of the sample mean with a measure of confidence of the prediction.</p>
+
+<p>It is clear to me now that stating Dunbar’s number as 150 is misleading and misses a great deal of context. Even assuming the validity of the model and the regression, it is a predicted mean value extrapolated far outside the underlying data with extremely wide error bars and <strong>needs to be treated with a great deal of caution</strong>. The prediction has even wider margins to the point of losing some of its meaning as a useful concept.</p>
+
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Investigating Dunbar's number&url=https://johnhearn.github.io//articles/dunbars-number-good-science-within-limits"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/dunbars-number-good-science-within-limits&title=Investigating Dunbar's number&summary=Dunbar's number is widely references but also widely misunderstood.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Investigating Dunbar's number&amp;body=Check out this site https://johnhearn.github.io//articles/dunbars-number-good-science-within-limits"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Investigating Dunbar's number - September 10, 2024 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

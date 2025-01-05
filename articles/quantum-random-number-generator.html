@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Quantum Random Number Generator</title>
+
+  
+  <meta name="description" content="The simplest quantum algorithm.">
+  
+  
+  <meta name="keywords" content="quantum computing"/>
+  
+  
+  <meta property="og:title" content="Quantum Random Number Generator">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/quantum-random-number-generator/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="The simplest quantum algorithm.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Quantum Random Number Generator">
+
+  
+  <meta name="twitter:description" content="The simplest quantum algorithm.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/quantum-random-number-generator">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Quantum Random Number Generator</h1>
+<div class="subtitle">September 30, 2018</div>
+<div class="smaller">two minutes.</div>
+
+<p><span class="newthought">One thing to understand is that, as things stand, quantum computers are not particularly useful.</span>  The limited number of quantum bits we have to work with is so limited that classical computers, with over half a century of exponential improvements behind them, beat quantum algorithms at every task.</p>
+
+<p>So why are we interested? Well, we anticipate a point where quantum algorithms will surpass their classical counterparts at some tasks. This is true, for example, with the factoring of semi-prime numbers. That point is known as <em>quantum supremacy</em> and could be years away. What’s more interesting today is that quantum computers represent a new hardware paradigm. There are things that cannot be done way a classical way that <em>can</em> be done using the magic of superposition and entanglement.</p>
+
+<p>The most basic example is the generation of <em>true</em> random numbers which can be implemented trivially on a quantum computer where the probabilistic nature of quantum measurement is the source of randomness. We do this by preparing qubits such that they have a 50-50 change of being <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code> when measured, that is in a state lying on the equator of the Bloch sphere.</p>
+
+<p>This can done with a <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Hadamard_(H)_gate">Hadamard</a> gate or a <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Square_root_of_NOT_gate_(%E2%88%9ANOT)">\(\sqrt{NOT}\)</a> gate, that is, the gate that when applied twice would create a <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Pauli-X_gate">\(NOT\)</a> gate. This is simple circuit to generate a random 3-bit number.</p>
+
+<p><img src="/assets/images/quantum-computing/3-bit-rng.png" alt="Random number circuit" width="320px" /></p>
+
+<p>Measurement of \(q_0\), \(q_1\), \(q_2\) will provide 3 random classical binary digits which can be treated as a number between 0 and 7.</p>
+
+<p>In the quko simulator we can write this as:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">java.util.*</span>
+<span class="k">import</span> <span class="nn">quam.*</span>
+
+<span class="kd">val</span> <span class="py">qubits</span> <span class="p">=</span> <span class="nc">Qubits</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">halfNot</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">halfNot</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">halfNot</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="kd">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">qubits</span><span class="p">.</span><span class="nf">measureAll</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>             <span class="c1">// [false, true, true]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="nf">toInt</span><span class="p">())</span>     <span class="c1">// 3</span>
+</code></pre></div></div>
+
+<p>The result will be a (simulated) random number. Run this algorithm on a real QPU and the number will be truly random.</p>
+
+<p>One thing to notice is that quko interprets the number from top to bottom, MSB first. That is, the result is the binary number \(q_2\)\(q_1\)\(q_0\). This not important here but will be important in other algorithms where the actual value of the result is of interest.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Quantum Random Number Generator&url=https://johnhearn.github.io//articles/quantum-random-number-generator"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/quantum-random-number-generator&title=Quantum Random Number Generator&summary=The simplest quantum algorithm.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Quantum Random Number Generator&amp;body=Check out this site https://johnhearn.github.io//articles/quantum-random-number-generator"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Quantum Random Number Generator - September 30, 2018 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

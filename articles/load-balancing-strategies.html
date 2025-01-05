@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Load Balancing Strategies and their Distributions</title>
+
+  
+  <meta name="description" content="A comparison of different load balancing strategies and the statistical distribution of requests.">
+  
+  
+  <meta name="keywords" content=""/>
+  
+  
+  <meta property="og:title" content="Load Balancing Strategies and their Distributions">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/load-balancing-strategies/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="A comparison of different load balancing strategies and the statistical distribution of requests.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Load Balancing Strategies and their Distributions">
+
+  
+  <meta name="twitter:description" content="A comparison of different load balancing strategies and the statistical distribution of requests.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/load-balancing-strategies">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Load Balancing Strategies and their Distributions</h1>
+<div class="subtitle">April 3, 2021</div>
+<div class="smaller">five minutes.</div>
+
+<p>Results of a simulation to compare four of the most well known load balancer strategies:</p>
+
+<ol>
+  <li><strong>Round robin</strong> - requests are routed to each of the available servers in turn</li>
+  <li><strong>Least occupied</strong> - requests are routed to the server with least current requests</li>
+  <li><strong>Random</strong> - requests are routed to a randomly selected server</li>
+  <li><strong>Random 2</strong> - requests are routed to one of two randomly selected servers, where the chosen server has least current requests (see <a href="https://www.haproxy.com/blog/power-of-two-load-balancing/">here</a> and <a href="https://www.nginx.com/blog/nginx-power-of-two-choices-load-balancing-algorithm">here</a>)</li>
+</ol>
+
+<h2 id="the-experiment">The experiment</h2>
+
+<ul>
+  <li><strong>Arrival rate</strong>: requests arrive with a Poisson process with mean $\lambda$.</li>
+  <li><strong>Service rate</strong>: request completions are distributed with a Log-Normal distribution (although any realistic distribution shows the same characteristics).</li>
+  <li><strong>Load factor</strong> is the ratio of arrival rate to completion rate, ranging strictly from 0.0 to 1.0. If greater than 1 then the requests would accumulate without end.</li>
+</ul>
+
+<p>We keep a record of the number of requests in the system for a single server. The <a href="https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/0209bfb5a128fd332250cf341b97064281ea4feb/Smadex/Load%20Balancing%20Stats.ipynb">Julia code</a> is here.</p>
+
+<h2 id="the-results">The results</h2>
+
+<p>The difference in the distributions of the concurrent requests in with the different strategies is clear.</p>
+
+<figure><figcaption><span>Distribution of concurrent requests under different load balancing strategies. The requests are distributed over 20 servers with average arrival rate of 10 per step at 75% load factor.</span></figcaption><img src="/assets/images/load-balancing/hist-20-75.png" /></figure>
+
+<p>Notice how remnants of the input and output distributions are still visible in the <em>round robin</em> strategy. The <em>least occupied</em> and <em>random 2</em> strategies tend to concentrate the distribution around its average. On the other hand the <em>random</em> strategy seems to spread the distribution still further.</p>
+
+<p>How does the average vary with load factor?</p>
+
+<figure><figcaption><span>Change in average concurrent requests as load factory varies, keeping number of servers at 20.</span></figcaption><img src="/assets/images/load-balancing/mean-20-p.png" /></figure>
+
+<p>All strategies perform progressively worse as load factor increases, as would be expected. However the <em>least occupied</em> and <em>random 2</em> strategies are noticeably better that the others, even at higher load factors.</p>
+
+<p>And how does it change with number of servers?</p>
+
+<figure><figcaption><span>Change in average concurrent requests as number of servers varies, keeping load factor constant at 80%.</span></figcaption><img src="/assets/images/load-balancing/mean-c-80.png" /></figure>
+
+<p>Clearly the best strategies require a minimum number of servers over which to spread the requests. That number is relatively small (in this example around 10) and very little improvement is observed with additional servers. The others are unaffected by number of servers.</p>
+
+<h2 id="variance">Variance</h2>
+
+<p>The spread in concurrent requests will translate to a spread in latencies too. For a distributed systems we are usually interested in maintaining predictable latencies and minimising long-tails, so we want to minimise this spread. It’s visibly clear that <em>least occupied</em> is the best in this case as it has the narrowest distribution. Let’s have a look at the variance for each one, taking <em>round robin</em> as the base.</p>
+
+<figure><figcaption><span>Comparison of variance of the distribution of concurrent requests under different load balancing strategies, keeping the number of servers at 20.</span></figcaption><img src="/assets/images/load-balancing/variance-20-p.png" /></figure>
+
+<p>What is the relationship between number of servers and the variance?</p>
+
+<figure><figcaption><span>Change in variance under different load balancing strategies as number of servers increases.</span></figcaption><img src="/assets/images/load-balancing/variance-c-80.png" /></figure>
+
+<p>We can see that when there is only a single server, all strategies are the same (obviously). Both the <em>round robin</em> and <em>random</em> strategies have little or no effect on the variance, no matter how many servers there are in the cluster. Although bot <em>least occupied</em> and <em>random 2</em> fare better, the <em>least occupied</em> has a clear advantage here and seems to be able to capitalise on additional servers more effectively.</p>
+
+<h2 id="shedding">Shedding</h2>
+
+<p>We employ a shedding mechanism to help keep request distributions under control independently of the load balancing strategy. How does this affect the results? Here we apply a simple shedding of requests by disallowing more than 20 concurrent requests per server.</p>
+
+<figure><figcaption><span>Distribution of concurrent requests under different load balancing strategies, shedding requests above 20 per server.</span></figcaption><img src="/assets/images/load-balancing/hist-20-75-shedding20.png" /></figure>
+
+<p>The mean of the worse strategies has actually gone down, however much more shedding is being done. That means that server throughput (serviced requests) should be lower. On the other hand the average latencies will also be higher due to the higher load on the server.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p><label for="entropy" class="margin-toggle">⊕</label><input type="checkbox" id="entropy" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/load-balancing/entropy-c-80.png" /><br />As an aside, we can also calculate the entropy of the distribution and see (as shown in the graph above) that it has also has <strong>decreased</strong> for the <em>least occupied</em> and <em>random 2</em> strategies while it has actually <strong>increased</strong> for the random one. One interpretation of these results is that the <em>random</em> strategy introduces a little bit of new uncertainty into the system. On the other hand <em>least occupied</em> and <em>random 2</em> actually remove uncertainty. This is the load balancer equivalent of <a href="https://en.wikipedia.org/wiki/Maxwell's_demon">Maxwell’s demon</a>, applying work to each request in order to reduce its uncertainty.</span></p>
+
+<p>Of all the strategies <em>round robin</em> and <em>random</em> are disastrous and either do nothing to improve the distribution of requests or actually make it worse. However, the <em>least occupied</em> and <em>random 2</em> strategies are able to take advantage of multiple servers to not only reduce the mean but also reduce the variance across the cluster.</p>
+
+<p>While the <em>least occupied</em> is slightly better in terms of the spread of requests, the <em>random 2</em> has some other advantages. Firstly, it’s slightly simpler and therefore faster in practice because only 2 servers are checked for each request rather than all of them. More importantly, it avoids servers which are (re)starting receiving all the load immediately. This is useful when the server needs some time to warmup caches, etc.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Load Balancing Strategies and their Distributions&url=https://johnhearn.github.io//articles/load-balancing-strategies"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/load-balancing-strategies&title=Load Balancing Strategies and their Distributions&summary=A comparison of different load balancing strategies and the statistical distribution of requests.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Load Balancing Strategies and their Distributions&amp;body=Check out this site https://johnhearn.github.io//articles/load-balancing-strategies"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Load Balancing Strategies and their Distributions - April 3, 2021 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

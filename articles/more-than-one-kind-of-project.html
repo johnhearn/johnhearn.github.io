@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>There's More Than One Kind of Project</title>
+
+  
+  <meta name="description" content="Software engineering projects come in many shapes and this article lists some of them. Different skills apply to each one, however, and we need to be able to distinguish them and apply the right tools to each.">
+  
+  
+  <meta name="keywords" content="craftsmanship"/>
+  
+  
+  <meta property="og:title" content="There&#39;s More Than One Kind of Project">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/more-than-one-kind-of-project/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Software engineering projects come in many shapes and this article lists some of them. Different skills apply to each one, however, and we need to be able to distinguish them and apply the right to...">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="There's More Than One Kind of Project">
+
+  
+  <meta name="twitter:description" content="Software engineering projects come in many shapes and this article lists some of them. Different skills apply to each one, however, and we need to be able to distinguish them and apply the right tools to each.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/more-than-one-kind-of-project">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>There's More Than One Kind of Project</h1>
+<div class="subtitle">October 28, 2018</div>
+<div class="smaller">seven minutes.</div>
+
+<p>Of the vast number of abstract terms we use as professionals the term <strong>project</strong> comes up very often. It’s such a familiar word that maybe we don’t stop to think about what it really means. It turns out, as so often is the case, that its meaning depends on the situation and business context<label for="context" class="margin-toggle sidenote-number"></label><input type="checkbox" id="context" class="margin-toggle" /><span class="sidenote">hmm… maybe we should apply the bounded context principle to our own communication. </span>.</p>
+
+<p>If you are working on an internal team with a particular set of requirements, a particular workflow and particular end date then you probably have a very clear idea of what “project” means in this scenario. For example, “the project has been cancelled” has a very clear meaning.</p>
+
+<p>On the other had if you’re working permanently on the company’s public crown jewels and the project is cancelled, that probably means a whole different thing. This kind of situation is being called product-mode development and a great deal has been written about this is the last few years.</p>
+
+<p>I think that the <em>product vs project</em> dichotomy is not the whole story though. There are other modes and each modes benefits from different methodologies, practices and skills. To be clear, these different modes are not down to project mismanagement (although that happens) but mainly to different business scenarios. I’m listing here some of the project modes I have worked on. It’s certainly not an exhaustive list.</p>
+
+<h2 id="the-centrepiece">The Centrepiece</h2>
+
+<p>This is the software product which defines a company and generates a substantial part of its revenue. In this situation the sales and marketing teams are probably working together with developer teams on identifying the best features using things like A/B testing and maximising returns by rolling out incrementally.</p>
+
+<p>Features are needed fast and frequent releases are encouraged. This is where many Agile techniques really shine. For example the constant improvement cycles and regular delivery of Scrum help ensure maximum ROI. Anything but the highest level of estimation is a waste. Minimising waist in the deployment cycle is also a major concern so DevOps practices and continuous deployment/delivery make perfect sense.</p>
+
+<p>The best companies realise that quality is a necessity, not just because downtime directly affects business revenue, but also to ensure the sustained pace of development of new revenue generating features. XP practices like TDD and refactoring really do pave the way for faster development.</p>
+
+<p>This is indeed a product that requires a stable team, a product mindset and considerable funding. It also is the one developers seem talk about most, although I’m not sure how typical this is in the industry at large. Which leads to another mode on the opposite end of the scale.</p>
+
+<h2 id="the-scramble">The Scramble</h2>
+
+<p>Often in nascent startups where sales (or your co-founder) need demoable features as fast as possible (days or even hours). Requirements are vague and unproven but speed is vital. Often a client will want a demo ASAP. Generate it from a template, hack it, it doesn’t matter. A single sale or a single new client can make or break a small company.</p>
+
+<p>Non-functional prototypes are more difficult to sell so the thing should work but bugs are not a problem as long as a happy path hangs together. Any kind of planning or testing are the first things to go out of the window. Unit testing, forget it.</p>
+
+<p>This demo mode is not the sort of situation that many a conscientious software engineer considers attractive however, on the face of it, it would seem to be a good fit. The work has an undeniable business value and the best craftspeople know how to work well and fast due to deliberate practice. They know when rules can be broken and which technology that will get fast results.</p>
+
+<p>The idea will often be that the code and/or material will be rewritten in the event of a sale but that often doesn’t happen. Ironically the best developers are again best placed to ensure the right balance of quality because this kind of project can, if successful, easily become a Centerpiece.</p>
+
+<h2 id="the-full-monty">The Full Monty</h2>
+
+<p>It is a reality that some projects have difficulty releasing anything but a near completed product. It may be because of immovable company culture<label for="culture" class="margin-toggle sidenote-number"></label><input type="checkbox" id="culture" class="margin-toggle" /><span class="sidenote">Large and established companies have especial difficulty with this. </span> or it may be a constraint of the product itself. Embedded systems cannot be released before the hardware is developed. Some financial offerings only work if released as a package.</p>
+
+<p>Importantly, these kind of projects probably have a pre-agreed release date. Quality is a concern but the date is often more important to stakeholders so planning and some level of estimation appropriate to the level of certainty needed by the stakeholders is essential.</p>
+
+<p>This is anathema to most of what we learn within the agile movement but in fact is compatible with the manifesto. Technical work can still be done iteratively or incrementally. Work can almost always be split into vertical slices and prioritised accordingly but it does mean that frequent releases are less important. For this kind of project the requirements are in place but not fully fleshed out so continuous feedback is beneficial.</p>
+
+<p>The role of the conscientious software engineer here is difficult but the business motivations no less imperative. Again the craftsman should be able to direct his skills to this kind of situation. Soft skills are as important here as anywhere because trade-offs will need to be evaluated. Requirements will change and expectations must be managed.</p>
+
+<h2 id="the-migration">The Migration</h2>
+
+<p>A variation of the Full Monty but where requirements, apart from some cosmetic tinkering, are completely known beforehand. This has happened several times in my experience when a product is being migrated from a legacy platform to a new one.</p>
+
+<p>Requirements are fixed but weak, often in the style “must do the same as that one” but domain experts are usually readily available and may even include members of the team which created the original implementation.</p>
+
+<p>I believe, and I have some evidence to support this, that the feedback loops in some Agile methodologies (such as Scrum) can get in the way and slow down such projects, Kanban and <a href="http://agilemodeling.com/essays/fdd.htm">feature based development</a> (FDD) are better alternatives. The key here is focus and velocity, meaning that the right engineers work where they can be most beneficial.</p>
+
+<p>The craftsman skills are again important for ensuring speed and quality within reasonable timescales.</p>
+
+<h2 id="the-austin-allegro">The Austin Allegro</h2>
+
+<p>The last example is the trusty maintenance mode project. These projects may or may not be passed to “on-going” teams for bug-fixing and minor enhancements. In any case it’s probably working well enough for the job it was designed for and may not be touched for months or years. This is the case for many back-office applications and I have no data to back this up but I guess that this type of application constitutes a considerable part of the current software landscape.</p>
+
+<p>Some people enjoy deep knowledge of a legacy product, others find it unexciting. Nonetheless the conscientious software engineer has a place here too. The maintenance of these systems is of vital importance to many organisations and <a href="http://amzn.eu/d/iGwYvm4">legacy refactoring</a> is a difficult but rewarding skill with great business value.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>As we have seen here there are various types of software project and no one-size-fits-all approach their to development. It seems to me that this is a need of some kind of categorisation which would help us to apply the right tools to the right projects and enable us to communicate more accurately within the community.</p>
+
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=There's More Than One Kind of Project&url=https://johnhearn.github.io//articles/more-than-one-kind-of-project"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/more-than-one-kind-of-project&title=There's More Than One Kind of Project&summary=Software engineering projects come in many shapes and this article lists some of them. Different skills apply to each one, however, and we need to be able to distinguish them and apply the right tools to each.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=There's More Than One Kind of Project&amp;body=Check out this site https://johnhearn.github.io//articles/more-than-one-kind-of-project"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">There's More Than One Kind of Project - October 28, 2018 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

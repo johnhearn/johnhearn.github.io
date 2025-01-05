@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>COBOL for Fun and Profit</title>
+
+  
+  <meta name="description" content="Random question - Can we compile and run COBOL on a Mac? Yes, of course.">
+  
+  
+  <meta name="keywords" content="cobol"/>
+  
+  
+  <meta property="og:title" content="COBOL for Fun and Profit">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/cobol-for-fun-and-profit/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Random question - Can we compile and run COBOL on a Mac? Yes, of course.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="COBOL for Fun and Profit">
+
+  
+  <meta name="twitter:description" content="Random question - Can we compile and run COBOL on a Mac? Yes, of course.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/cobol-for-fun-and-profit">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>COBOL for Fun and Profit</h1>
+<div class="subtitle">May 4, 2019</div>
+<div class="smaller">two minutes.</div>
+
+<p>I’m lucky enough to have worked in many different areas of the IT industry and several times I’ve crossed paths with COBOL both in the public and the financial sectors. There is no doubt that, in spite of the total absence of COBOL from Stack Overflow’s annual <a href="https://insights.stackoverflow.com/survey/2019#technology-_-programming-scripting-and-markup-languages">Developer Survey</a>, it’s still very much alive, and it’s behind a <a href="http://fingfx.thomsonreuters.com/gfx/rngs/USA-BANKS-COBOL/010040KH18J/index.html">staggering amount</a> of the systems that our society relies on - banking, insurance and central government, to name a few.</p>
+
+<p>After seeing <a href="https://increment.com/programming-languages/cobol-all-the-way-down/">an article</a> come up again on the subject it got me thinking about its title caption: <em>how long can it be maintained?</em> Or, more concretely, <em>can I compile and run a COBOL program on my laptop?</em> I’d only ever see it running on Mainframes behind green-screen terminals and choose-your-own-adventure-style <a href="https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistso.htm">TSO</a> screens. Well, it turns out the answer is YES, and in fact it’s very simple. This is how I did it.</p>
+
+<h2 id="gnucobol">GnuCOBOL</h2>
+
+<p><a href="https://sourceforge.net/projects/open-cobol/">GnuCOBOL</a> compiles COBOL to executable binaries. It actually does this by transpiling to C but that doesn’t really concern me.</p>
+
+<p>First we need to install the compiler. You can just do:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">&gt;</span><span class="w"> </span>brew <span class="nb">install </span>gnu-cobol
+</code></pre></div></div>
+
+<p>Seriously, it’s that easy.</p>
+
+<p>Now, to edit our COBOL programs do we have to resort to some archaic editor? Well, not unless you think VS Code is archaic. It has a 
+<a href="https://marketplace.visualstudio.com/items?itemName=bitlang.cobol">COBOL Plugin</a> with syntax highlighting and autocomplete.</p>
+
+<p><img src="/assets/images/vscode-cobol.png" alt="COBOL in VS Code" /></p>
+
+<p>This is a basic “Hello World!” program for COBOL taken from the article:</p>
+
+<pre style="font-family:IBM3720;">
+000100 IDENTIFICATION DIVISION.
+000200 PROGRAM-ID. HELLO-WORLD.
+000300 PROCEDURE DIVISION.
+000400      DISPLAY 'Hello, world!'.
+000500      STOP RUN.
+
+</pre>
+
+<p>We can now compile it to a executable binary and run it directly:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">&gt;</span><span class="w"> </span>cobc <span class="nt">-x</span> hello.cob
+<span class="gp">&gt;</span><span class="w"> </span>./hello
+<span class="go">Hello, world!
+</span></code></pre></div></div>
+
+<p>Mission completed. Really much simpler that I had expected.</p>
+
+<p>So, if we can take COBOL and compile it to native binaries then couldn’t we take, for example, existing CICS transactions written for standard mainframes and deploy them as services, for example, in a <a href="serverless-is-the-new-mainframe">serverless</a> environment?</p>
+
+<p>So in answer to the question: <em>how long can it be maintained?</em>, based on what I’ve seen the answer is probably, for better or worse, <em>indefinitely</em>.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=COBOL for Fun and Profit&url=https://johnhearn.github.io//articles/cobol-for-fun-and-profit"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/cobol-for-fun-and-profit&title=COBOL for Fun and Profit&summary=Random question - Can we compile and run COBOL on a Mac? Yes, of course.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=COBOL for Fun and Profit&amp;body=Check out this site https://johnhearn.github.io//articles/cobol-for-fun-and-profit"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">COBOL for Fun and Profit - May 4, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

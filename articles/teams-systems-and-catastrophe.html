@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Teams, Systems and Catastrophe</title>
+
+  
+  <meta name="description" content="Examples of surprising cascading effects when increasing the rate or strength of interactions in a team or distributed system.">
+  
+  
+  <meta name="keywords" content="scaling teams, networks, complexity"/>
+  
+  
+  <meta property="og:title" content="Teams, Systems and Catastrophe">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/teams-systems-and-catastrophe/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Examples of surprising cascading effects when increasing the rate or strength of interactions in a team or distributed system.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Teams, Systems and Catastrophe">
+
+  
+  <meta name="twitter:description" content="Examples of surprising cascading effects when increasing the rate or strength of interactions in a team or distributed system.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/teams-systems-and-catastrophe">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Teams, Systems and Catastrophe</h1>
+<div class="subtitle">January 26, 2020</div>
+<div class="smaller">10 minutes.</div>
+
+<p>Many surprising discoveries were made in the last century about how groups of connected things behave and interact<label for="complexity" class="margin-toggle"> ⊕</label><input type="checkbox" id="complexity" class="margin-toggle" /><span class="marginnote">You’ve probably seen the <a href="https://www.youtube.com/watch?v=VBjxsKNIHD8">murmurations of swallows</a> and the <a href="https://www.youtube.com/watch?v=dU2rLhpaMAY">mesmerising bees</a> which are examples of this. </span>. I would like to present a couple of the simplest results which, I think, can help us understand some of the phenomena that we see in our daily lives.</p>
+
+<p>To avoid over-abstraction I’ll talk specifically about <strong>people connected through teams</strong> and <strong>distributed software systems connected by dependence</strong>, but the same ideas and mechanisms are widely applicable to many other situations.</p>
+
+<h2 id="dependency-hell">Dependency Hell</h2>
+
+<p>The first one I want to cover was discovered by mathematicians <a href="https://en.wikipedia.org/wiki/Paul_Erdős">Paul Erdős</a> and <a href="https://en.wikipedia.org/wiki/Alfréd_Rényi">Alfréd Rényi</a> in the late 1950s<label for="erdos-renyi" class="margin-toggle sidenote-number"></label><input type="checkbox" id="erdos-renyi" class="margin-toggle" /><span class="sidenote">Presented in a pair of seminal papers: <a href="http://www.renyi.hu/~p_erdos/1959-11.pdf">On Random Graphs. I</a> [1959] and <a href="http://www.renyi.hu/~p_erdos/1960-10.pdf">On the evolution of random graphs</a> [1960]. </span> and concerns the way networks tend to join together as new connections are added.</p>
+
+<p>They considered what would happen if you start with a fixed set of independent things and then progressively add new connections between them at random.</p>
+
+<p>One might think that the connectivity on the whole would increase in proportion with the number of connections, but this is not the case. The connectivity is not only <strong>non-linear</strong><label for="non-linear" class="margin-toggle sidenote-number"></label><input type="checkbox" id="non-linear" class="margin-toggle" /><span class="sidenote"><strong>Non-linear: The output changing in a way that is not proportional to the change in the input.</strong> Like the temperature of the shower when it goes from freezing cold to scolding hot after the tiniest of adjustments. We tend to expect linearity, either by nature or nurture, but non-linearity is the norm rather than the exception. To paraphrase Stanislaw Ulam: studying non-linearity is like studying non-elephants. </span> but undergoes a <strong>phase transition</strong><label for="phase-transition" class="margin-toggle sidenote-number"></label><input type="checkbox" id="phase-transition" class="margin-toggle" /><span class="sidenote"><strong>Phase-transition: When a collective undergoes a sudden structural reordering as some parameter of the system is gradually changed.</strong> Most often applied to thermo-dynamic systems but complex systems share many of their characteristics. </span> at which nearly everything joins together very quickly. Let’s see it happening.</p>
+
+<p>We start with 20 completely independent objects (people or system components) then start adding connections randomly. What you find is that initially nothing much happens: you have some pairs of things and a few threesomes.</p>
+
+<p><img src="/assets/images/networks/few-connections.png" alt="Few connections" width="250px" /></p>
+
+<p>Adding a few more connections and we can see groups starting to coalesce.</p>
+
+<p><img src="/assets/images/networks/transition.png" alt="Transition" width="250px" /></p>
+
+<p>However add just a couple more connections and the different connected groups<label for="component" class="margin-toggle sidenote-number"></label><input type="checkbox" id="component" class="margin-toggle" /><span class="sidenote">This are called <em>components</em> in network jargon but that might be bit confusing for software people for whom everything is a component! </span> of the network quickly connect together to form much a larger (so-called <em>giant</em>) group.</p>
+
+<p><img src="/assets/images/networks/giant-component.png" alt="Giant component" width="250px" /></p>
+
+<p><strong>This happens every time</strong>. If we run the above scenario many many times with a thousand points and plot the size of the largest group, the tendency is remarkable.</p>
+
+<p><img src="/assets/images/networks/phase-transition-erdos-renyi.png" alt="Phase transition" width="80%" /><label for="source-code" class="margin-toggle"> ⊕</label><input type="checkbox" id="source-code" class="margin-toggle" /><span class="marginnote">Source code for generating these graphics with Julia can be found <a href="https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/master/Phase%20transitions%20in%20networks.ipynb">here</a>. </span></p>
+
+<p>The effect is surprisingly non-linear<label for="non-linear-oil" class="margin-toggle"> ⊕</label><input type="checkbox" id="non-linear-oil" class="margin-toggle" /><span class="marginnote">This morning I had to remove some oil from the engine of my car. I very very gently adjusted the sump bold to allow the dark oil to escape gradually. Instead, it went jumped from a dribble to a great stream of blackness all down my arm. That’s non-linearity. </span>. In other words, as the number of random connections between things reaches a certain threshold then <strong>nearly all the things will be connected together</strong>. In the simplest model, the number of connections just needs to be greater than half the number of things.</p>
+
+<p>For people networks this is the first part<label for="small-world" class="margin-toggle sidenote-number"></label><input type="checkbox" id="small-world" class="margin-toggle" /><span class="sidenote">For the other part see <a href="http://worrydream.com/refs/Watts-CollectiveDynamicsOfSmallWorldNetworks.pdf">The dynamics of ‘small-world’ networks</a> by Watts and Strogatz, which significantly reduces the number of ‘hops’ between you and Mr Bacon. </span> of the Kevin Bacon game, you are certainly connected to Kevin Bacon and indeed to everyone else on the planet.</p>
+
+<p>In the case of software dependencies the situation is less fun. The principle implies that <strong>the number of dependencies in our software is unintuitively highly transitive</strong>. That is, the chains of dependencies in our code and components tends to make everything depend on everything else<label for="talk" class="margin-toggle"> ⊕</label><input type="checkbox" id="talk" class="margin-toggle" /><span class="marginnote">Dependencies are not only transitive but many are hidden and bi-directional. I describe this in more detail in my first ever talk <a href="http://youtube.com/watch?v=m1VsoanstAY"><strong>Predictably Unpredictable</strong></a>. </span>. We see why a single fault can bring down an entire company’s infrastructure and is the reason we must be draconian when choosing our dependencies to stand any chance against this effect.</p>
+
+<p>Another lesson to be learnt from this scenario originated some years ago in a paper<label for="forest-fires" class="margin-toggle sidenote-number"></label><input type="checkbox" id="forest-fires" class="margin-toggle" /><span class="sidenote">See <a href="https://arxiv.org/abs/0808.2116">Erdos-Renyi random graphs + forest fires = self-organized criticality</a> by Balazs Rath and Balint Toth </span> building on the originals mentioned above. It adds to the model a destructive process where connected groups are “burnt down” periodically. The key is that the building and burning down of the groups balances to a precarious and dynamic equilibrium<label for="explorables" class="margin-toggle sidenote-number"></label><input type="checkbox" id="explorables" class="margin-toggle" /><span class="sidenote">A nice interactive model <a href="https://www.complexity-explorables.org/explorables/critically-inflammatory/">Critically Inflammatory</a> is available on the Complexity Explorables website for you to play with. </span>, so-called <a href="https://en.wikipedia.org/wiki/Self-organized_criticality">self-organised criticality</a>.</p>
+
+<p>The take-away for systems designers is that we sometimes see outages in our systems and then “repair” them by scaling or using tools like circuit-breakers and time-outs. At the same time other connections are being added by new features and services. We find ourselves more often than not on the critical line between stable and unstable.</p>
+
+<h2 id="tipping-points">Tipping Points</h2>
+
+<p>Let’s look at a second model. This time, rather than taking completely independent objects and gradually connecting them together, we take <strong>a set of object which are all connected together, but with varying weights</strong>.</p>
+
+<p>This might represent the number of times that one person interrupts another person per day, or the number of requests from one service to another in a distributed system.</p>
+
+<p>We then gradually increase all the weights using some common scaling factor.</p>
+
+<p>This scenario was first proposed by <a href="https://en.wikipedia.org/wiki/Robert_May,_Baron_May_of_Oxford">Lord Robert May</a> in a famous paper<label for="may" class="margin-toggle sidenote-number"></label><input type="checkbox" id="may" class="margin-toggle" /><span class="sidenote">See <strong>Will a large complex system be stable?</strong> by RM May, Nature 238 (5364), 413-414 </span> from 1972. He found<label for="vivo" class="margin-toggle sidenote-number"></label><input type="checkbox" id="vivo" class="margin-toggle" /><span class="sidenote">See also this <a href="https://youtu.be/6KvQPHdZuoU?t=1934">course</a> on random matrices for an in-depth description of the reasoning. </span> that the interactions between the individual parts become unstable (that is move away from a balanced and steady equilibrium) at a certain sudden, non-linear transition.</p>
+
+<p>We start with a network where all objects, this time just 10 of them, are connected to each other by differing strength interactions.</p>
+
+<p><img src="/assets/images/networks/complete-weighted-network.png" alt="Complete weighted network" width="350px" /></p>
+
+<p>Using May’s model we can calculate the threshold where the loops and feedback in the network make the whole system unstable. As before, rather that try and study specific configurations, lets run the example many times with different random networks of this type to see the tendency.</p>
+
+<p><img src="/assets/images/networks/may-threshold.png" alt="May threshold" width="80%" /><label for="source-code" class="margin-toggle"> ⊕</label><input type="checkbox" id="source-code" class="margin-toggle" /><span class="marginnote">Again the source code for generating these graphics with Julia can be found <a href="https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/master/Phase%20transitions%20in%20networks.ipynb">here</a>. </span></p>
+
+<p>May’s criteria for stability has drawn some controversy<label for="controversy" class="margin-toggle sidenote-number"></label><input type="checkbox" id="controversy" class="margin-toggle" /><span class="sidenote"><a href="https://www.sciencedirect.com/science/article/pii/S0022519385800813">When will a large complex system be stable?</a> by Joel E.Cohen and Charles M.Newman </span> but the finding is still striking. There is a definite tipping point where network effects produce a phase shift in the dynamics of the system.</p>
+
+<p>Imagine the network being a team of 10 people each communicating freely with everyone else. The team members which work most closely together would have the strongest interactions. At the tipping point, <strong>a slight change in the situation or team dynamic</strong> might be amplified by the network effects of interactions with multiple people and <strong>could cause a cascade that affects the team as a whole</strong>. This is of course just a model and no doubt unrealistic in detail but it wouldn’t be the first time that a seemingly trivial change would destabilise a team.</p>
+
+<p>Alternatively, imagine the network being a distributed software system. If a peak in load is experienced and a component is pushed beyond its response threshold once again it can affect the entire system disproportionately.</p>
+
+<p>As with the previous example, teams will naturally detect and counteract these tipping points - people with too many interactions will turn off Slack if they can’t keep up. Profilers will be brought to bear to optimise some code just enough to stop overloading the system. This has the result of leaving us constantly on the brink of catastrophe.</p>
+
+<h2 id="wrap-up">Wrap up</h2>
+
+<p>In this article there was no intention to make precise predictions about the dynamics of any particular team or system but rather demonstrate <strong>universal tendencies</strong> using basic ensemble techniques.</p>
+
+<p>We’ve seen a couple of simple examples of how small increases in interactions, either in number or in strength, can have significant, non-linear effects for a system as a whole.</p>
+
+<p>Furthermore, our naturally reactions tend to balance the network effects and leave us at a critical point<label for="soc" class="margin-toggle sidenote-number"></label><input type="checkbox" id="soc" class="margin-toggle" /><span class="sidenote">For an deeper look at self-organised criticality the book <a href="https://www.goodreads.com/book/show/869836.How_Nature_Works">How Nature Works</a> by Per Bak is the seminal work. For a nice summary of the current situation see Watkins, N.W., Pruessner, G., Chapman, S.C. et al. <a href="https://doi.org/10.1007/s11214-015-0155-x">25 Years of Self-organized Criticality: Concepts and Controversies</a>. Space Sci Rev 198, 3–44 (2016). </span> where dangerous tipping points are continually at the doorstep. To a certain extent this explains the universal saying “if it ain’t broke, don’t fix it”.</p>
+
+<p>The combination of these dynamics is why a single new team member can bring a working team to a standstill or a small change in load can wreak havoc on a seemingly well oiled system. Note that this doesn’t mean that we should avoid change, just that we need to bear in mind how the system might respond.</p>
+
+<p>Strict minimisation of direct and indirect dependencies is not just about clean architectures. Removal of dependencies and working towards additional quality measures beyond the minimal “it works” moves systems further from the critical point and hence makes them considerably more stable. On the other hand, increasing code entropy and poor design choices will push a system towards the critical point, making them less stable, even if they continue working.</p>
+
+<p>I’m aware that the software industry is not used to talking about systems in these terms, some of these ideas could be considered technical and abstract. Nevertheless these examples are real and can help us increase our literacy with complex systems, our “<a href="https://www.morebeyond.co.za/navigate-complexity-three-habits-of-mind/">lived, practical complexity</a>”. They are just couple of the many results of this type that could be applied more generally.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Teams, Systems and Catastrophe&url=https://johnhearn.github.io//articles/teams-systems-and-catastrophe"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/teams-systems-and-catastrophe&title=Teams, Systems and Catastrophe&summary=Examples of surprising cascading effects when increasing the rate or strength of interactions in a team or distributed system.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Teams, Systems and Catastrophe&amp;body=Check out this site https://johnhearn.github.io//articles/teams-systems-and-catastrophe"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Teams, Systems and Catastrophe - January 26, 2020 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

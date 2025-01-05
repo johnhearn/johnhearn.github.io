@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Building a QPU simulator in Clojure - Part 1</title>
+
+  
+  <meta name="description" content="First steps in building a quantum CPU simulator with Clojure and TDD.">
+  
+  
+  <meta name="keywords" content="quantum computing, tdd, clojure"/>
+  
+  
+  <meta property="og:title" content="Building a QPU simulator in Clojure - Part 1">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/building-a-qpu-simulator-in-clojure-part-1/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="First steps in building a quantum CPU simulator with Clojure and TDD.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Building a QPU simulator in Clojure - Part 1">
+
+  
+  <meta name="twitter:description" content="First steps in building a quantum CPU simulator with Clojure and TDD.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/building-a-qpu-simulator-in-clojure-part-1">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Building a QPU simulator in Clojure - Part 1</h1>
+<div class="subtitle">January 27, 2019</div>
+<div class="smaller">12 minutes.</div>
+
+<p><a href="quantum-computing-primer-part-1a">Last year</a> I started looking into quantum computing<label for="physics" class="margin-toggle sidenote-number"></label><input type="checkbox" id="physics" class="margin-toggle" /><span class="sidenote">If you happen to be a physics graduate and a programmer (there are more of us than you might think) then I guess it’s natural that you’ll eventually look into quantum computing at some point. </span> and the result was <a href="https://github.com/johnhearn/quko">Quko</a>, a naïve quantum computer simulator written in Kotlin. If there’s one thing I learned from that project it’s that there is no better way to learn how something works than by writing a simulator for it: it turned out that things that I thought I understood in fact I didn’t until getting in to the nitty-gritty.</p>
+
+<p>Quko worked out pretty well and I was able to repeat some of the standard results with a small number of qubits. A naïve implementation will never be particularly efficient but I didn’t really care as that wasn’t the goal. Not long ago, however, I stumbled upon a Clojure library called <a href="https://neanderthal.uncomplicate.org/">Neanderthal</a><label for="clojureaitalk" class="margin-toggle sidenote-number"></label><input type="checkbox" id="clojureaitalk" class="margin-toggle" /><span class="sidenote">From <a href="https://www.youtube.com/watch?v=um2uq5oURT8">this</a> talk where they’re using Neanderthal for processing large neural networks. </span> for doing high performance mathsy stuff and after playing with it for a while I was impressed by how easy it was to get started<label for="naming" class="margin-toggle sidenote-number"></label><input type="checkbox" id="naming" class="margin-toggle" /><span class="sidenote">although not so much with its naming conventions :/ </span>. Since I’m also learning Clojure I thought I’d rewrite Quko in Clojure to practice the language and get a more powerful simulator to boot. This blog series will be my way of remembering what I did, the mistakes and the successes along the way.</p>
+
+<p>We’ll start with a simple case of an 8-sided <a href="quantum-random-number-generator">quantum die</a>. This is the code written with the Quko library (from the <a href="https://github.com/johnhearn/quko">README</a>):</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">qubits</span> <span class="p">=</span> <span class="nc">Qubits</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="nf">hadamard</span><span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="mi">2</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">qubits</span><span class="p">.</span><span class="nf">measureAll</span><span class="p">().</span><span class="nf">toInt</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>Written in Clojure this becomes<label for="h" class="margin-toggle sidenote-number"></label><input type="checkbox" id="h" class="margin-toggle" /><span class="sidenote">Note I’ve changed the name of the Hadamard operator to H which is acceptable in Clojure and more consistent with the QC literature. </span>:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">qubits</span><span class="w"> </span><span class="p">(</span><span class="nf">H</span><span class="w"> </span><span class="p">(</span><span class="nf">Qubits</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">2</span><span class="p">)))</span><span class="w">
+</span><span class="p">(</span><span class="nb">print</span><span class="w"> </span><span class="p">(</span><span class="nf">to-int</span><span class="w"> </span><span class="p">(</span><span class="nf">measure-all</span><span class="w"> </span><span class="n">qubits</span><span class="p">)))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Obviously this doesn’t compile because we’ve not written any code yet (see appendix) so lets start building out the implementation with unit tests. In fact we will start with a very simple test for a single qubit which ensures that its default value is 100% <code class="language-plaintext highlighter-rouge">true</code>. Remember qubits are probabilistic animals but we don’t want to expose the underlying implementation to the outside world. For that reason in the test we’ll take a count of multiple samples and compare the result with what’s expected rather than interrogating the qubit’s internals directly.</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">qucl.qubits_test</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">clojure.test</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="no">:all</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">qucl.qubits</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="no">:all</span><span class="p">]))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">sample</span><span class="w"> </span><span class="p">[</span><span class="n">source-function</span><span class="w"> </span><span class="n">num-samples</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">count</span><span class="w"> </span><span class="p">(</span><span class="nb">filter</span><span class="w"> </span><span class="nb">true?</span><span class="w"> </span><span class="p">(</span><span class="nf">repeatedly</span><span class="w"> </span><span class="n">num-samples</span><span class="w"> </span><span class="n">source-function</span><span class="p">))))</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">deftest</span><span class="w"> </span><span class="n">measure-should</span><span class="w">
+  </span><span class="p">(</span><span class="nf">is</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="nf">sample-qubit</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">measure</span><span class="w"> </span><span class="p">(</span><span class="nf">Qubit</span><span class="p">))</span><span class="w"> </span><span class="mi">100</span><span class="p">)))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>We can make that pass trivially, of course, just returning <code class="language-plaintext highlighter-rouge">0</code> from <code class="language-plaintext highlighter-rouge">measure</code>.</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">Qubit</span><span class="w"> </span><span class="p">[])</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">measure</span><span class="w"> </span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span><span class="w"> </span><span class="n">false</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Next we’ll triangulate to get some more behaviour. The simplest way to do that is to apply a <code class="language-plaintext highlighter-rouge">not</code> or <code class="language-plaintext highlighter-rouge">X</code> operation<label for="not-gate" class="margin-toggle sidenote-number"></label><input type="checkbox" id="not-gate" class="margin-toggle" /><span class="sidenote">The so called <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Pauli-X_gate">Pauli-X gate</a>. </span> and expect the opposite result.</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="p">(</span><span class="nf">is</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="p">(</span><span class="nf">sample-qubit</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">measure</span><span class="w"> </span><span class="p">(</span><span class="nf">X</span><span class="w"> </span><span class="p">(</span><span class="nf">Qubit</span><span class="p">)))</span><span class="w"> </span><span class="mi">100</span><span class="p">))))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The easiest way to make this pass is to make <code class="language-plaintext highlighter-rouge">Qubit</code> have a binary value and negate it.</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">Qubit</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">false</span><span class="p">)</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="n">qubit</span><span class="p">)</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">measure</span><span class="w"> </span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span><span class="w">
+  </span><span class="n">qubit</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The tests pass. One nice thing about Clojure is that we can also take advantage of the REPL to try our code. In this case we get the answers we expect.</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="nf">measure</span><span class="w"> </span><span class="p">(</span><span class="nf">Qubit</span><span class="p">))</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">(</span><span class="nf">measure</span><span class="w"> </span><span class="p">(</span><span class="nf">X</span><span class="w"> </span><span class="p">(</span><span class="nf">Qubit</span><span class="p">)))</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">(</span><span class="nf">measure</span><span class="w"> </span><span class="p">(</span><span class="nf">X</span><span class="w"> </span><span class="p">(</span><span class="nf">X</span><span class="w"> </span><span class="p">(</span><span class="nf">Qubit</span><span class="p">))))</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Now we have our tests passing we can introduce some theory. The qubit is a structure with two (possibly complex) variables<label for="hilbert" class="margin-toggle sidenote-number"></label><input type="checkbox" id="hilbert" class="margin-toggle" /><span class="sidenote">A so called Hilbert space, \(\mathcal{H}_2\). </span>, the absolute values of which are the probabilities of measuring <code class="language-plaintext highlighter-rouge">0</code> or <code class="language-plaintext highlighter-rouge">1</code> respectively. For the moment the variable will only need real values and is represented by two real numbers <code class="language-plaintext highlighter-rouge">:0</code> and <code class="language-plaintext highlighter-rouge">:1</code>. This could be considered a vector with named indices. The <code class="language-plaintext highlighter-rouge">X</code> operation swaps the variables so the probability of measuring <code class="language-plaintext highlighter-rouge">0</code> becomes the probability of measuring <code class="language-plaintext highlighter-rouge">1</code> and vice-versa.</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">Qubit</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">{</span><span class="no">:0</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="no">:1</span><span class="w"> </span><span class="mf">0.0</span><span class="p">})</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span><span class="w">
+  </span><span class="p">{</span><span class="no">:0</span><span class="w"> </span><span class="p">(</span><span class="no">:1</span><span class="w"> </span><span class="n">qubit</span><span class="p">)</span><span class="w"> </span><span class="no">:1</span><span class="w"> </span><span class="p">(</span><span class="no">:0</span><span class="w"> </span><span class="n">qubit</span><span class="p">)})</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The measurement will now be a random process which picks <code class="language-plaintext highlighter-rouge">0</code> or <code class="language-plaintext highlighter-rouge">1</code> with the appropriate frequency. The probability of measuring a <code class="language-plaintext highlighter-rouge">0</code> is <code class="language-plaintext highlighter-rouge">|:0|</code>\(^2\).</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn-</span><span class="w"> </span><span class="n">prob-zero</span><span class="w"> </span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="no">:0</span><span class="w"> </span><span class="n">qubit</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="no">:0</span><span class="w"> </span><span class="n">qubit</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">measure</span><span class="w"> </span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="p">(</span><span class="nb">rand</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">prob-zero</span><span class="w"> </span><span class="n">qubit</span><span class="p">))</span><span class="w"> </span><span class="n">false</span><span class="w"> </span><span class="n">true</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The implementation of <code class="language-plaintext highlighter-rouge">X</code> is a degenerate case of a more general fact. One of the central tenets of quantum operators or <em>gates</em> is that they can be represented by matrix multiplication<label for="representation" class="margin-toggle sidenote-number"></label><input type="checkbox" id="representation" class="margin-toggle" /><span class="sidenote">As can any operator according to <a href="wiki">representation theory</a>. </span>. Let’s do it that way so that we can slot in other gates much more easily. We define a matrix which inverts the two numbers:</p>
+
+\[X = \left( \begin{array}{c}
+      0 &amp; 1 \\
+      1 &amp; 0 \\
+    \end{array} \right)\]
+
+<p>And a test to ensure that our code does indeed invert the entries:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="p">{</span><span class="no">:00</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="no">:01</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="no">:10</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="no">:11</span><span class="w"> </span><span class="mi">0</span><span class="p">})</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">deftest</span><span class="w"> </span><span class="n">matrix-mult-test</span><span class="w">
+  </span><span class="p">(</span><span class="nf">is</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="p">(</span><span class="nf">matrix-mult</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="p">{</span><span class="no">:0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="no">:1</span><span class="w"> </span><span class="mi">1</span><span class="p">})</span><span class="w">
+         </span><span class="p">{</span><span class="no">:0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="no">:1</span><span class="w"> </span><span class="mi">0</span><span class="p">})))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>An implementation of that using the normal rules of matrix multiplication would be:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">matrix-mult</span><span class="w"> </span><span class="p">[</span><span class="n">A</span><span class="w"> </span><span class="n">x</span><span class="p">]</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="no">:00</span><span class="w"> </span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="no">:0</span><span class="w"> </span><span class="n">x</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="no">:01</span><span class="w"> </span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="no">:1</span><span class="w"> </span><span class="n">x</span><span class="p">)))</span><span class="w">
+    </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="no">:10</span><span class="w"> </span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="no">:0</span><span class="w"> </span><span class="n">x</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="no">:11</span><span class="w"> </span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="no">:1</span><span class="w"> </span><span class="n">x</span><span class="p">)))</span><span class="w">
+  </span><span class="p">})</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Now we can reimplement the <code class="language-plaintext highlighter-rouge">X</code> function using our matrix:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">matrix-mult</span><span class="w"> </span><span class="p">{</span><span class="no">:00</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="no">:01</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="no">:10</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="no">:11</span><span class="w"> </span><span class="mi">0</span><span class="p">}</span><span class="w"> </span><span class="n">qubit</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Great. The tests are still passing and we are now in a position to add new gates, for example the very useful <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Hadamard_(H)_gate">Hadamard</a> (H) gate that we need for the die. The Hadamard gate takes the qubit to the equator of the Bloch Sphere and, since it’s unitary, applying it twice takes us back to the start. We can capture that in a test<label for="testing-internal-state" class="margin-toggle sidenote-number"></label><input type="checkbox" id="testing-internal-state" class="margin-toggle" /><span class="sidenote">Strictly speaking this is not a very good test. There are an infinite number of ways to make this it pass but it’s good enough for now. </span>:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="nf">deftest</span><span class="w"> </span><span class="n">measure-should</span><span class="w">
+  </span><span class="p">(</span><span class="nf">is</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="p">(</span><span class="nf">sample</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">measure</span><span class="w"> </span><span class="p">(</span><span class="nf">H</span><span class="w"> </span><span class="p">(</span><span class="nf">Qubit</span><span class="p">))))))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">is</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="nf">sample</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">measure</span><span class="w"> </span><span class="p">(</span><span class="nf">H</span><span class="w"> </span><span class="p">(</span><span class="nf">H</span><span class="w"> </span><span class="p">(</span><span class="nf">Qubit</span><span class="p">))))))))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In this case the matrix for the transformation (still real numbers) is:</p>
+
+\[H = \frac{1}{\sqrt{2}} 
+    \left( \begin{array}{c}
+      1 &amp; 1 \\
+      1 &amp; -1 \\
+    \end{array} \right)\]
+
+<p>We can implement it, for example, in this way.</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="o">^</span><span class="no">:const</span><span class="w"> </span><span class="n">oosr2</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nf">Math/sqrt</span><span class="w"> </span><span class="mi">2</span><span class="p">)))</span><span class="w">
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">H</span><span class="w"> </span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">matrix-mult</span><span class="w"> </span><span class="p">{</span><span class="no">:00</span><span class="w"> </span><span class="n">oosr2</span><span class="w"> </span><span class="no">:01</span><span class="w"> </span><span class="n">oosr2</span><span class="w"> </span><span class="no">:10</span><span class="w"> </span><span class="n">oosr2</span><span class="w"> </span><span class="no">:11</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">oosr2</span><span class="p">)}</span><span class="w"> </span><span class="n">qubit</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>OK, so we have built our Qubit and a couple of gates, X and H, to manipulate it. With this code we’ve advanced quite a bit and can already simulate a quantum coin toss. In the REPL we can do:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">coin-toss</span><span class="w"> </span><span class="p">[]</span><span class="w"> 
+  </span><span class="p">(</span><span class="nf">measure</span><span class="w"> </span><span class="p">(</span><span class="nf">H</span><span class="w"> </span><span class="p">(</span><span class="nf">Qubit</span><span class="p">))))</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="o">#</span><span class="ss">'qucl.qubits/coin-toss</span><span class="w">
+</span><span class="p">(</span><span class="nf">coin-toss</span><span class="p">)</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="n">true</span><span class="w">
+</span><span class="p">(</span><span class="nf">repeatedly</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="n">coin-toss</span><span class="p">)</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">false</span><span class="w"> </span><span class="n">false</span><span class="w"> </span><span class="n">false</span><span class="w"> </span><span class="n">false</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="n">false</span><span class="w"> </span><span class="n">false</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Going back to the original feature test, we can also now simulate an 8-sided die simply by tossing a coin 3 times and interpreting the result as binary. We could do this in the REPL:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">to-int</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="w"> </span><span class="n">b</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">reduce</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">acc</span><span class="w"> </span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">acc</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">0</span><span class="p">)))</span><span class="w">
+          </span><span class="mi">0</span><span class="w">
+          </span><span class="n">b</span><span class="p">))</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="o">#</span><span class="ss">'qucl.qubits/to-int</span><span class="w">
+</span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">to-int</span><span class="w"> </span><span class="p">(</span><span class="nf">repeatedly</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">coin-toss</span><span class="p">))</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="mi">7</span><span class="w">
+</span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">to-int</span><span class="w"> </span><span class="p">(</span><span class="nf">repeatedly</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">coin-toss</span><span class="p">))</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Not a bad start but there’s still a lot to do. To implement our feature test completely we need to be able to combine Qubits. We’ve some way to go and the next steps will be to introduce Neanderthal and complex numbers but I’ll leave that for <a href="building-a-qpu-simulator-in-clojure-part-2">next time</a>.</p>
+
+<p><br /></p>
+
+<hr />
+
+<h2 id="appendix">Appendix</h2>
+
+<p>To make the our feature test compile we can use stub implementations which just throw exceptions, for example:</p>
+
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">to-int</span><span class="w"> </span><span class="p">[</span><span class="n">qubits</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">throw</span><span class="w"> </span><span class="p">(</span><span class="nf">UnsupportedOperationException</span><span class="p">)))</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This isn’t as necessary in Clojure as other JVM based languages because we tend to use the REPL to run just the parts that we need. I don’t have a strong opinions about the best workflow for TDD in Clojure yet, I guess it’s personal and may depend on your preferred tooling.</p>
+
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Building a QPU simulator in Clojure - Part 1&url=https://johnhearn.github.io//articles/building-a-qpu-simulator-in-clojure-part-1"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/building-a-qpu-simulator-in-clojure-part-1&title=Building a QPU simulator in Clojure - Part 1&summary=First steps in building a quantum CPU simulator with Clojure and TDD.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Building a QPU simulator in Clojure - Part 1&amp;body=Check out this site https://johnhearn.github.io//articles/building-a-qpu-simulator-in-clojure-part-1"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Building a QPU simulator in Clojure - Part 1 - January 27, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

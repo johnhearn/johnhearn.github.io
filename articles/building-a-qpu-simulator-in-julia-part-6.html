@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Building a QPU simulator in Julia - Part 6</title>
+
+  
+  <meta name="description" content="Building a QFT gate.">
+  
+  
+  <meta name="keywords" content="quantum computing, julia"/>
+  
+  
+  <meta property="og:title" content="Building a QPU simulator in Julia - Part 6">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-6/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Building a QFT gate.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Building a QPU simulator in Julia - Part 6">
+
+  
+  <meta name="twitter:description" content="Building a QFT gate.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-6">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Building a QPU simulator in Julia - Part 6</h1>
+<div class="subtitle">July 25, 2019</div>
+<div class="smaller">three minutes.</div>
+
+<p>The <a href="https://en.wikipedia.org/wiki/Quantum_Fourier_transform">Quantum Fourier Transform</a> (QFT) is an important quantum operation and an essential part of the period finding step needed for <a href="https://quantum-algorithms.herokuapp.com/299/paper/node1.html">Shor’s algorithm</a>. It can be built as a quantum circuit but it’s very easy to build its unitary matrix directly, the details are in the Wikipedia article. In Julia, this was even easier than I expected. Once we have calculated a couple of constants, we can use a 2-d <code class="language-plaintext highlighter-rouge">for</code> comprehension to create the individual elements of the array in a single line.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> qft</span><span class="x">(</span><span class="n">n</span><span class="x">)</span>
+   <span class="n">N</span> <span class="o">=</span> <span class="mi">2</span><span class="o">^</span><span class="n">n</span>
+   <span class="n">ω</span> <span class="o">=</span> <span class="n">exp</span><span class="x">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">π</span> <span class="o">*</span> <span class="nb">im</span> <span class="o">/</span> <span class="n">N</span><span class="x">)</span>
+   <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">N</span><span class="x">)</span>
+   <span class="x">[</span><span class="n">a</span> <span class="o">*</span> <span class="n">ω</span><span class="o">^</span><span class="x">(</span><span class="n">i</span><span class="o">*</span><span class="n">j</span><span class="x">)</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">:</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="x">,</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">0</span><span class="o">:</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="x">]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Here $n$ is the number of bits and $N$ the size of the matrix, which as we know grows exponentially with the number of bits. $ω$ is the first complex $N^{th}$ root of unity and $a$ the normalising factor. The comprehension runs over both axis $i$ and $j$ computing the element at each position.</p>
+
+<p>We can test this against the example from the Wikipedia article:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@test</span> <span class="n">qft</span><span class="x">(</span><span class="mi">2</span><span class="x">)</span> <span class="n">≈</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="x">[</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span><span class="x">;</span> <span class="mi">1</span> <span class="nb">im</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="nb">im</span><span class="x">;</span> <span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="mi">1</span> <span class="o">-</span><span class="mi">1</span><span class="x">;</span> <span class="mi">1</span> <span class="o">-</span><span class="nb">im</span> <span class="o">-</span><span class="mi">1</span> <span class="nb">im</span><span class="x">]</span>
+</code></pre></div></div>
+
+<p>In the above it’s going to generate complex numbers with Float64 precision. For our quantum gates this level of precision is not necessary and uses more memory. A few tweaks to the function will use Float32 instead.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> qft</span><span class="x">(</span><span class="n">n</span><span class="x">)</span>
+   <span class="n">N</span> <span class="o">=</span> <span class="mi">2</span><span class="o">^</span><span class="n">n</span>
+   <span class="n">ω</span> <span class="o">=</span> <span class="n">exp</span><span class="x">(</span><span class="mf">2f0</span> <span class="o">*</span> <span class="nb">π</span> <span class="o">*</span> <span class="nb">im</span> <span class="o">/</span> <span class="n">N</span><span class="x">)</span>
+   <span class="n">a</span> <span class="o">=</span> <span class="mf">1f0</span> <span class="o">/</span> <span class="n">sqrt</span><span class="x">(</span><span class="kt">Float32</span><span class="x">(</span><span class="n">N</span><span class="x">))</span>
+   <span class="x">[</span><span class="n">a</span> <span class="o">*</span> <span class="n">ω</span><span class="o">^</span><span class="x">(</span><span class="n">i</span><span class="o">*</span><span class="n">j</span><span class="x">)</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">:</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="x">,</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">0</span><span class="o">:</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="x">]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>And test that it does indeed generate the correct type.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@test</span> <span class="n">typeof</span><span class="x">(</span><span class="n">qft</span><span class="x">(</span><span class="mi">2</span><span class="x">))</span> <span class="o">==</span> <span class="kt">Array</span><span class="x">{</span><span class="kt">Complex</span><span class="x">{</span><span class="kt">Float32</span><span class="x">},</span><span class="mi">2</span><span class="x">}</span>
+</code></pre></div></div>
+
+<p>What about the performance? Let’s generate the QFT for different numbers of bits.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">&gt;</span><span class="w"> </span>@time qft<span class="o">(</span>11<span class="o">)</span>
+<span class="go">0.384501 seconds (6 allocations: 32.000 MiB, 11.74% gc time)
+2048×2048 Array{Complex{Float32},2}
+
+</span><span class="gp">&gt;</span><span class="w"> </span>@time qft<span class="o">(</span>12<span class="o">)</span>
+<span class="go">1.469458 seconds (6 allocations: 128.000 MiB, 3.34% gc time)
+4096×4096 Array{Complex{Float32},2}
+
+</span><span class="gp">&gt;</span><span class="w"> </span>@time qft<span class="o">(</span>13<span class="o">)</span>
+<span class="go">6.037579 seconds (6 allocations: 512.000 MiB, 0.74% gc time)
+8192×8192 Array{Complex{Float32},2}
+
+</span><span class="gp">&gt;</span><span class="w"> </span>@time qft<span class="o">(</span>14<span class="o">)</span>
+<span class="go">25.163830 seconds (6 allocations: 2.000 GiB, 0.20% gc time)
+16384×16384 Array{Complex{Float32},2}
+</span></code></pre></div></div>
+
+<p>The exponential increase in time and space is evident and we quickly reach practical limits. The array is dense because the values are always non-zero but since the calculation time is relatively small there could be considerable advantage using a <a href="https://github.com/traktofon/ComputedArrays.jl"><code class="language-plaintext highlighter-rouge">ComputedArray</code></a> instead of a normal array in this case.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Building a QPU simulator in Julia - Part 6&url=https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-6"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-6&title=Building a QPU simulator in Julia - Part 6&summary=Building a QFT gate.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Building a QPU simulator in Julia - Part 6&amp;body=Check out this site https://johnhearn.github.io//articles/building-a-qpu-simulator-in-julia-part-6"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Building a QPU simulator in Julia - Part 6 - July 25, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

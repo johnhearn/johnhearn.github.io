@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>The Deutsch-Jozsa Algorithm in Yao.jl</title>
+
+  
+  <meta name="description" content="The simplest quantum algorithm implemented in Yao.jl.">
+  
+  
+  <meta name="keywords" content="quantum computing, julia, yao"/>
+  
+  
+  <meta property="og:title" content="The Deutsch-Jozsa Algorithm in Yao.jl">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/deutsch-jozsa-with-yao-jl/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="The simplest quantum algorithm implemented in Yao.jl.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="The Deutsch-Jozsa Algorithm in Yao.jl">
+
+  
+  <meta name="twitter:description" content="The simplest quantum algorithm implemented in Yao.jl.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/deutsch-jozsa-with-yao-jl">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>The Deutsch-Jozsa Algorithm in Yao.jl</h1>
+<div class="subtitle">July 25, 2020</div>
+<div class="smaller">five minutes.</div>
+
+<p>(Post adapted from a <a href="deutsch-jozsa-algorithm">similar one</a> using <a href="https://yaoquantum.org/">Yao.jl</a> instead of <a href="https://github.com/johnhearn/quko">Quko</a>. <a href="https://qiskit.org/textbook/ch-algorithms/deutsch-josza.html">Here</a> is another one using <a href="https://qiskit.org/">QisKit</a>)</p>
+
+<p>This post describes one of the first quantum algorithms to be discovered that gave a theoretically significant improvement over the classical equivalent. Having said that it’s not useful at all, its main value was that it served as inspiration for other more practical algorithms such as Grover’s search and Shor’s factoring.</p>
+
+<h2 id="simplest-case">Simplest case</h2>
+
+<p>The simplest statement of the problem is to determine if a boolean function, \(f\), always results in the same <em>constant</em> value or if it is <em>balanced</em> and returns both true and false depending on the input.</p>
+
+<p>In programming terms this means evaluating the function:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="p">:</span> <span class="p">(</span><span class="nc">Boolean</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Boolean</span>
+</code></pre></div></div>
+
+<p>for both possible inputs and checking the results. This amounts to applying an XOR operation to the two results:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span><span class="x">(</span><span class="nb">false</span><span class="x">)</span> <span class="n">⊻</span> <span class="n">f</span><span class="x">(</span><span class="nb">true</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>In the classical world this will obviously require <strong>two</strong> evaluations of the function however in the quantum version only <strong>one</strong> evaluation is ever required.</p>
+
+<p>Imagine we are given a gate \(U_f\) which is based on the function we are interested in. This gate can be constructed in various ways but for now we’ll assume that it’s given.</p>
+
+<p>Then a circuit for the algorithm can be represented by the following diagram:</p>
+
+<p><img src="/assets/images/quantum-computing/deutschs-circuit.png" alt="Deutsch's algorithm circuit" width="320px" /></p>
+
+<p>This equates in Yao.jl to the following snippet:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">deutsch</span><span class="x">(</span><span class="n">Uf</span><span class="x">)</span> <span class="o">=</span> <span class="n">chain</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span>
+                <span class="n">put</span><span class="x">(</span><span class="mi">2</span><span class="o">=&gt;</span><span class="n">X</span><span class="x">),</span>
+                <span class="n">repeat</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="n">H</span><span class="x">),</span>
+                <span class="n">Uf</span><span class="x">,</span>
+                <span class="n">put</span><span class="x">(</span><span class="mi">1</span><span class="o">=&gt;</span><span class="n">H</span><span class="x">))</span>
+</code></pre></div></div>
+
+<p>Where $U_f$<label for="like" class="margin-toggle sidenote-number"></label><input type="checkbox" id="like" class="margin-toggle" /><span class="sidenote">One of the things I like about Julia is that it is OK to use naming more akin to the mathematics, even using unicode, than would be conventional in other language conventions. </span> is the block implementing the function. If the function is <em>balanced</em> then the measurement will always be <code class="language-plaintext highlighter-rouge">true</code>, if constant then the measurement will always be <code class="language-plaintext highlighter-rouge">false</code>.</p>
+
+<p>One way to think about how this works is that the \(U_f\) gate transforms the superposition of both possible input values. The resulting interference pattern provides us with the result.</p>
+
+<p>As an example, if the function, $f$, evaluates to a constant value $1$. If you work through the logic then the oracle, $U_f$, simply flips the second bit. In Yao.jl the block can be created like this:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Uf₁</span> <span class="o">=</span> <span class="n">put</span><span class="x">(</span><span class="mi">2</span><span class="o">=&gt;</span><span class="n">X</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>Where <code class="language-plaintext highlighter-rouge">put</code> is a Yao.jl function to add an <code class="language-plaintext highlighter-rouge">X</code> gate to the second qubit. Then, evaluating the circuit:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">zero_state</span><span class="x">(</span><span class="mi">2</span><span class="x">)</span> <span class="o">|&gt;</span> <span class="n">deutsch</span><span class="x">(</span><span class="n">Uf₁</span><span class="x">)</span> <span class="o">|&gt;</span> <span class="n">focus!</span><span class="x">(</span><span class="mi">1</span><span class="x">)</span> <span class="o">|&gt;</span> <span class="n">measure!</span>
+</code></pre></div></div>
+
+<p>Always results in a <code class="language-plaintext highlighter-rouge">0</code> to indicate a <em>constant</em> function. On the other hand if we try a balanced function which can be represented by the <code class="language-plaintext highlighter-rouge">CNOT</code> gate.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Uf₂</span> <span class="o">=</span> <span class="n">control</span><span class="x">(</span><span class="mi">1</span><span class="x">,</span> <span class="mi">2</span><span class="o">=&gt;</span><span class="n">X</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>In this case evaluating the circuit as before results ins a <code class="language-plaintext highlighter-rouge">1</code> indicating that it is balanced.</p>
+
+<h2 id="extending-to-multiple-bits">Extending to multiple bits</h2>
+
+<p>Other researchers extended to algorithm to multiple bits which corresponds to the function taking an integer argument. The result bust either be <em>constant</em>, as before, or <em>balanced</em>, meaning that the function returns either 1 or 0 half of the time (other possible functions are not contemplated).</p>
+
+<p>The function becomes:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="p">:</span> <span class="p">(</span><span class="nc">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Int</span>
+</code></pre></div></div>
+
+<p>and will, on average, need many more evaluations of the function to test be able to determine if it is <em>constant</em> or not.</p>
+
+<p>The quantum circuit in this case would be:</p>
+
+<p><img src="/assets/images/quantum-computing/deutsch-jozsa-circuit.png" alt="Deutsch-Jozsa algorithm circuit" width="400px" /></p>
+
+<p>One way to build this circuit in Yao.jl is as follows:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">deutsch_jozsa</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">Uf</span><span class="x">)</span> <span class="o">=</span> <span class="n">chain</span><span class="x">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="x">,</span>
+                        <span class="n">put</span><span class="x">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="o">=&gt;</span><span class="n">X</span><span class="x">),</span>
+                        <span class="n">repeat</span><span class="x">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="x">,</span> <span class="n">H</span><span class="x">),</span>
+                        <span class="n">Uf</span><span class="x">,</span>
+                        <span class="n">repeat</span><span class="x">(</span><span class="n">H</span><span class="x">,</span> <span class="mi">1</span><span class="o">:</span><span class="n">m</span><span class="x">))</span>
+</code></pre></div></div>
+
+<p>In this case $m$ is the number of bits in the integer part of the circuit. This will give us a boolean result for the given function, assuming the function works on \(m\) bit integers. To build the oracle, $U_f$, we’ll use some bit fiddling to create a permutation:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">perm</span> <span class="o">=</span> <span class="x">[(</span><span class="n">y</span> <span class="n">⊻</span> <span class="n">f</span><span class="x">(</span><span class="n">x</span><span class="x">))</span><span class="o">&lt;&lt;</span><span class="n">m</span> <span class="o">+</span> <span class="n">x</span> <span class="k">for</span> <span class="n">y</span> <span class="k">in</span> <span class="mi">0</span><span class="o">:</span><span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="k">in</span> <span class="mi">0</span><span class="o">:</span><span class="mi">2</span><span class="o">^</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="x">]</span>
+</code></pre></div></div>
+
+<p>The double comprehension syntax is very convenient here. Compare the calculation <code class="language-plaintext highlighter-rouge">y ⊻ f(x)</code> (where ⊻ means XOR) with the <a href="https://en.wikipedia.org/wiki/Deutsch%E2%80%93Jozsa_algorithm#Algorithm">definition</a> of the gate.</p>
+
+<p>To convert this to a Yao.jl block we have to create a permutation matrix (complex for generality) and then convert to a matrix block <code class="language-plaintext highlighter-rouge">matblock</code> for Yao.jl to understand it.</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">permute</span><span class="x">(</span><span class="n">sparse</span><span class="x">(</span><span class="n">I</span><span class="x">,</span> <span class="n">N</span><span class="x">,</span> <span class="n">N</span><span class="x">),</span> <span class="n">perm</span><span class="o">.+</span><span class="mi">1</span><span class="x">,</span> <span class="n">collect</span><span class="x">(</span><span class="mi">1</span><span class="o">:</span><span class="n">N</span><span class="x">))</span> <span class="o">|&gt;</span>
+     <span class="kt">Matrix</span><span class="x">{</span><span class="kt">Complex</span><span class="x">{</span><span class="kt">Float64</span><span class="x">}}</span> <span class="o">|&gt;</span>
+     <span class="n">matblock</span>
+</code></pre></div></div>
+
+<p>We can then test our circuit with a function, say $f(x)=1$ which should give us $0$ since it’s constant:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="mi">1</span> <span class="c"># constant</span>
+<span class="n">zero_state</span><span class="x">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="x">)</span> <span class="o">|&gt;</span> <span class="n">deutsch_jozsa</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">Uf</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">f</span><span class="x">))</span> <span class="o">|&gt;</span> <span class="n">focus!</span><span class="x">(</span><span class="mi">1</span><span class="o">:</span><span class="n">m</span><span class="x">)</span> <span class="o">|&gt;</span> <span class="n">measure!</span>
+</code></pre></div></div>
+
+<p>Which indeed results in 0.</p>
+
+<p>To see this all working take a look at <a href="https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/master/QuantumComputing/The%20Deutsch-Jozsa%20Algorithm%20in%20Yao.jl.ipynb">this notebook</a>.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=The Deutsch-Jozsa Algorithm in Yao.jl&url=https://johnhearn.github.io//articles/deutsch-jozsa-with-yao-jl"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/deutsch-jozsa-with-yao-jl&title=The Deutsch-Jozsa Algorithm in Yao.jl&summary=The simplest quantum algorithm implemented in Yao.jl.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=The Deutsch-Jozsa Algorithm in Yao.jl&amp;body=Check out this site https://johnhearn.github.io//articles/deutsch-jozsa-with-yao-jl"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">The Deutsch-Jozsa Algorithm in Yao.jl - July 25, 2020 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

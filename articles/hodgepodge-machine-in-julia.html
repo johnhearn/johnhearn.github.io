@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>The Hodgepodge Machine</title>
+
+  
+  <meta name="description" content="A classic 2D cellular automa with Julia.">
+  
+  
+  <meta name="keywords" content="complexity, julia"/>
+  
+  
+  <meta property="og:title" content="The Hodgepodge Machine">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/hodgepodge-machine-in-julia/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="A classic 2D cellular automa with Julia.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="The Hodgepodge Machine">
+
+  
+  <meta name="twitter:description" content="A classic 2D cellular automa with Julia.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/hodgepodge-machine-in-julia">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>The Hodgepodge Machine</h1>
+<div class="subtitle">June 8, 2019</div>
+<div class="smaller">two minutes.</div>
+
+<blockquote>
+  <p>“<em>The pleasure of complexity… the inconceivable nature of nature</em>” - <a href="https://youtu.be/tD_XAX--Ono?t=67">Richard Feynmann</a></p>
+</blockquote>
+
+<p>Back in the 80s, my Dad used to work as a security guard at a <a href="https://en.wikipedia.org/wiki/Rosemanowes_Quarry">geothermal energy research site</a> and sometimes I would accompany him on his rounds. The facility was well funded and very advanced for its time and there was all kinds of computer equipment which was at that time both fascinating and alien to me. There was also a collection of science and technology magazines and sometimes I would read them for hours.</p>
+
+<p>The magazines I liked most were Computer Weekly and Scientific American. I liked them mostly for their programming sections. Back in those pre-internet days it was common for the articles to include listings, mostly in Fortran, BASIC and maybe Pascal and even Assembler<label for="assembler" class="margin-toggle sidenote-number"></label><input type="checkbox" id="assembler" class="margin-toggle" /><span class="sidenote">Yep, we used to type machine code by hand! </span>. That’s how I learned to code.</p>
+
+<p>One <a href="https://www.jstor.org/stable/24989205?seq=1#page_scan_tab_contents">article</a> I remember particularly fondly was in Scientific American’s Computer Recreations section with the caption “<em>The hodgepodge machine makes waves</em>“<label for="citation" class="margin-toggle sidenote-number"></label><input type="checkbox" id="citation" class="margin-toggle" /><span class="sidenote">Dewdney, A. (1988). COMPUTER RECREATIONS. <em>Scientific American</em>, <em>259(2)</em>, 104-107. Retrieved from http://www.jstor.org/stable/24989205 </span>. The date was August 1988. It described a set of rules which mimicked a type of chemical reaction, the so called <a href="https://en.wikipedia.org/wiki/Belousov%E2%80%93Zhabotinsky_reaction">Belousov-Zhabotinsky reaction</a>, and resulted in fantastic shapes and behaviours emerging almost like magic. I was able to reproduce that at the time on my Amstrad CPC even though it took ages to update each frame. It was one of my first programming successes.</p>
+
+<p>A few weeks ago one of my colleagues at Codurance wrote an article called <a href="https://codurance.com/2019/05/30/nature-in-code/"><em>Nature in Code</em></a> where she simulated biological interactions in code and how interesting phenomena emerge naturally. It reminded me of the Hodgepodge Machine and inspired me to try it again with more modern techniques (thank you Solange). So I sat down this morning, and with a little help from this <a href="https://softologyblog.wordpress.com/2017/02/04/the-belousov-zhabotinsky-reaction-and-the-hodgepodge-machine/">blog post</a>, wrote it in Julia. This is the result.</p>
+<p />
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9HPaottA9tE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>Compare that to this real reaction:</p>
+<p />
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8tArShb1fhw?start=57" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<p>This ties in with recent work I’ve been doing on dynamical systems and complexity. The hodgepodge machine <em>is</em> a dynamical system: deterministic but, under certain conditions, totally unpredictable.</p>
+
+<p>As Feynman said, “<em>And it’s all really there…but you’ve got to stop and think about it to really get the pleasure about the complexity;
+the inconceivable [he chuckles] nature of nature.</em>”.</p>
+
+<p>Code is on GitHub <a href="https://gist.github.com/johnhearn/e17cc9d2e98f7bf3db1012d2046fba78">here</a>.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=The Hodgepodge Machine&url=https://johnhearn.github.io//articles/hodgepodge-machine-in-julia"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/hodgepodge-machine-in-julia&title=The Hodgepodge Machine&summary=A classic 2D cellular automa with Julia.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=The Hodgepodge Machine&amp;body=Check out this site https://johnhearn.github.io//articles/hodgepodge-machine-in-julia"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">The Hodgepodge Machine - June 8, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

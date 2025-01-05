@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>The Stability of Systems</title>
+
+  
+  <meta name="description" content="A quote from an ecologist regarding the stability of ecosystems could also apply to software systems.">
+  
+  
+  <meta name="keywords" content="complexity, systems"/>
+  
+  
+  <meta property="og:title" content="The Stability of Systems">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/stability-of-systems/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="A quote from an ecologist regarding the stability of ecosystems could also apply to software systems.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="The Stability of Systems">
+
+  
+  <meta name="twitter:description" content="A quote from an ecologist regarding the stability of ecosystems could also apply to software systems.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/stability-of-systems">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>The Stability of Systems</h1>
+<div class="subtitle">April 19, 2019</div>
+<div class="smaller">five minutes.</div>
+
+<p>I recently read this in a popular science magazine:</p>
+
+<blockquote>
+  <p><em>If a system is to persist rather than to collapse in the face of change, it needs to be robust. <strong>Three features</strong> make an ecosystem, or a planetary system, more robust, says ecologist Simon Levin at Princeton University. 
+First, robust systems have some degree of <strong>redundancy</strong>, so the loss of any particular component - the extinction of a species, say, - doesn’t critically compromise the whole.
+Second, they have <strong>diversity</strong>, which increases the odds that at least some species will be able to cope with unexpected change.
+Third, they have <strong>modularity</strong>, so that failure of part of the system doesn’t bring down the whole thing.</em> - The Goldilocks Planet - New Scientist (23 March 2019)</p>
+</blockquote>
+
+<p>These principles seem to be quite applicable to any non-trivial system, including distributed software systems. In particular, when I read that quote, I immediately thought of Netflix and its well publicised techniques for making their platform reliable in the face of infrastructure problems.</p>
+
+<p>In the above quote, the ecologist talks about robust systems but, technically, the terms <strong>robustness</strong> and <strong>resilience</strong> have different meanings in this context, <em>robustness</em> being strength to bear additional load and <em>resilience</em> the ability to adapt and respond in the face of changing external factors<label for="netflix-resilience-engineer" class="margin-toggle sidenote-number"></label><input type="checkbox" id="netflix-resilience-engineer" class="margin-toggle" /><span class="sidenote">See <a href="https://web.archive.org/web/20190428092808/https://jobs.netflix.com/jobs/869465">this</a> job description for an idea of how important resilience engineering is at Netflix and how if differs from traditional engineering approaches which tend to focus on robustness. </span>. The looser, everyday meanings of these words mean that authors (myself included) are liable mix these two concepts even though each play separate roles in a stable system.</p>
+
+<p>
+<iframe style="width: 273px;height: 154px;" class="marginnote" src="https://www.youtube.com/embed/2Hhu0ihG3kY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</p>
+<p><label for="moon" class="margin-toggle"> ⊕</label><input type="checkbox" id="moon" class="margin-toggle" /><span class="marginnote"><strong>Risk and Resilience</strong> - <a href="https://cognitive-edge.com/our-people/dave-snowden/">Dave Snowden</a> talks about the shift from focusing only on robustness to also considering resilience in the face of inevitable failures. </span></p>
+
+<p>Bear in mind that here we are talking about the stability of an entire system, not any particular component, and certainly not the robustness of any individual component. Having said that, systems principles tend to be fractal in nature, applicable at different scales simultaneously, so similar techniques which hold at a system level may also be applicable at component level too.</p>
+
+<p>Let’s take a quick look at each of the principles from the quote in terms of software.</p>
+
+<h3 id="redundancy">Redundancy</h3>
+
+<p>A distributed software system must be able to take unplanned peaks in load which arise from unexpected changes in the environment like a viral link or, more commonly, the outage of another component. Auto-scaling (a kind of latent redundancy) can help cope with changing load over minutes or hours but sudden peaks require continuous redundancy to avoid service degradation. By intentionally building redundancy into their infrastructure, Netflix <a href="https://www.networkworld.com/article/3178076/why-netflix-didnt-sink-when-amazon-s3-went-down.html">routinely</a> <a href="https://www.computer.org/publications/tech-news/research/realizing-software-reliability-in-the-face-of-infrastructure-instability">survives</a> AWS outages, even though it runs entirely on AWS.</p>
+
+<p>Similarly, if there is a single design principle behind most if not all distributed systems then it is to have <a href="https://en.wikipedia.org/wiki/Single_point_of_failure">no single point of failure</a>. If a entire systems depends on one particular part of the system to be present then the system is not resilient at all<label for="bus-factor" class="margin-toggle sidenote-number"></label><input type="checkbox" id="bus-factor" class="margin-toggle" /><span class="sidenote">In a similar vein, for organisations and projects we have the <a href="https://en.wikipedia.org/wiki/Bus_factor">bus factor</a>, where an endeavour might fail because of the loss of one or more of its members. </span>.</p>
+
+<p>A risk-based design approach really comes into its own here.</p>
+
+<h3 id="diversity">Diversity</h3>
+
+<p>What happens when Netflix’s personalised recommendations services can’t take the load? They fallback to simpler recommendation services or generic suggestions. The user may not even notice the difference and, even if they do, it’s much better than the alternative. Netflix’s <a href="https://github.com/Netflix/Hystrix">Hystrix</a> fault tolerance library<label for="resilience4j" class="margin-toggle sidenote-number"></label><input type="checkbox" id="resilience4j" class="margin-toggle" /><span class="sidenote">See also <a href="https://github.com/resilience4j/resilience4j">resilience4j</a>. </span> provides timeout and the circuit breaker mechanisms but without diversity there is no alternative to fall back to.</p>
+
+<p>This is reminiscent of the idea that, in some circumstances, the same or similar services could be written for and run on multiple platforms at the same time. This might sound odd to many engineers but this approach would be justifiable if the <a href="https://en.wikipedia.org/wiki/Expected_loss">risk to the business</a> of an outage, whatever the <a href="https://blog.fosketts.net/2011/07/06/defining-failure-mttr-mttf-mtbf/">MTTR</a>, is greater than cost of adding and maintaining more diversity.</p>
+
+<h3 id="modularity">Modularity</h3>
+
+<p>Modularity, and the related concept of minimising coupling, has been the basis of many, if not most, good design practices for decades. A change in one module should have minimum affect on another, either directly (dependency) or indirectly (shared assumptions). Remember the <a href="https://www.youtube.com/watch?v=AJW2FAJGgVw">three tenets</a> of modularity: strong encapsulation, well-defined interfaces, and explicit dependencies, all of which are ultimately related to managing coupling. And, of course, the best kind of coupling between modules is no coupling at all, in other words, total isolation.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Famously, Netflix uses <a href="https://en.wikipedia.org/wiki/Chaos_engineering">Chaos engineering</a> to test the stability of their systems by deliberately applying selective, or even mass outages. Similarly, the article from which the quote above is taken suggests that extinctions, or even mass extinctions, in Earth’s past have actually made its ecosystem more stable. Of course there are other ways we can increase the stability of software systems, or even organisations, but it is nonetheless interesting to see the similarities between software and natural ecosystems.</p>
+
+<p>I think the principles underlying these ideas are actually applicable to many systems. Consider how they are represented in more sophisticated frameworks like systems thinking, Cynefin and risk-based decision making. And better ways of thinking about resilience will take us into <a href="https://en.wikipedia.org/wiki/Antifragile">Anti-fragility</a> and related ideas.</p>
+
+<p>There is certainly a great deal to learn in this area.</p>
+
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=The Stability of Systems&url=https://johnhearn.github.io//articles/stability-of-systems"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/stability-of-systems&title=The Stability of Systems&summary=A quote from an ecologist regarding the stability of ecosystems could also apply to software systems.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=The Stability of Systems&amp;body=Check out this site https://johnhearn.github.io//articles/stability-of-systems"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">The Stability of Systems - April 19, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

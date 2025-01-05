@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Consider Technical Documentation</title>
+
+  
+  <meta name="description" content="Visualising a system can lead to more effective communication and better decisions.">
+  
+  
+  <meta name="keywords" content="agile, uml"/>
+  
+  
+  <meta property="og:title" content="Consider Technical Documentation">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/consider-technical-documentation/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Visualising a system can lead to more effective communication and better decisions.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Consider Technical Documentation">
+
+  
+  <meta name="twitter:description" content="Visualising a system can lead to more effective communication and better decisions.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/consider-technical-documentation">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Consider Technical Documentation</h1>
+<div class="subtitle">February 16, 2019</div>
+<div class="smaller">six minutes.</div>
+
+<p>I’ve worked in projects where huge amounts of detailed documentation was written and diligently maintained. I’ve also worked on projects where no documentation was written whatsoever. Both extremes have their advantages and disadvantages but, as with most things, there is usually a balance to be found somewhere in the middle. Finding where that sweet spot is can be really hard.</p>
+
+<p>Early in my career I had the dubious pleasure of using such tools as Rational Rose and ArgoUML to produce detailed technical diagrams using UML<label for="objectaid" class="margin-toggle sidenote-number"></label><input type="checkbox" id="objectaid" class="margin-toggle" /><span class="sidenote">I’ll also give a shout out to a very nice little tool called <a href="https://www.objectaid.com/home">ObjectAid</a> which enabled bi-directional modification between diagram and code. It’s nice for simple designs but try reverse-engineering anything more complex <img src="https://4.bp.blogspot.com/-oos28eSe-rE/Vud2j-kTc8I/AAAAAAAACLA/NGV8TBnDLHs221yMlzbn968ppf3zaftJA/s1600/uh-oh-smiley.jpg" width="25px" height="25px" />. </span>. It can work well if proper modularity is maintained by disciplined teams. In these cases it <strong>facilitates a common technical understanding which in turn leads to better technical discussions and consequently better decisions overall</strong>. This is a flavour of the case in favour.</p>
+
+<p>In other teams, on the other hand, diagrams of real systems can very easily become unworkable or difficult to understand. Complex diagrams often mean you can’t see the wood for the trees. The documentation itself can also become <strong>costly to maintain and is often forgotten when the system changes</strong> becoming out of date and worse than useless. This is the case against and my feeling is that it has gained traction in recent years.</p>
+
+<p>For example, in one recent project very little technical documentation was being written, for which the initial positive effect was to enable the project to advance very quickly. As the system became more complex, however, it led to misunderstandings within the team and difficulty for new team members to pick up the system easily. I also felt that it led to a communication gap with no shared vision to guide decisions. It seemed to me that some level of documentation would be of value. Step up the C4 Model.</p>
+
+<h3 id="c4-model">C4 Model</h3>
+
+<p>Simon Brown’s <a href="https://c4model.com/">C4 Model</a> tries to address some of the genuine concerns about unmanageable documentation by providing guidelines for visualising systems with information which is useful at different levels of detail. It also provides some templates for useful diagramming styles.</p>
+
+<p>I thought there was an opportunity to apply some of those ideas in this project but before spending too much time on it the idea was discussed with the various stakeholders. Initial worries about maintenance were waylaid in several ways.</p>
+
+<p>Firstly we decided to schedule a regular review in an existing fortnightly technical update. Some discipline is required in the process to ensure this actually happens.</p>
+
+<p>Secondly, following the <a href="https://en.wikipedia.org/wiki/Diminishing_returns">Law of Diminishing Returns</a>, we aimed for maximising the ROI by only using the first two levels of detail in the documentation<label for="sufficiency" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sufficiency" class="margin-toggle" /><span class="sidenote">Compare to Alistair Cockburn’s concept of <em>sufficiency</em> and Scott Ambler’s <a href="http://agilemodeling.com/essays/barelyGoodEnough.html">JBGE</a>. </span> (more on that below).</p>
+
+<p>Finally, we used a text based diagramming tool: <a href="http://plantuml.com/">PlantUML</a> in conjunction with Ricardo Niepel’s <a href="https://github.com/RicardoNiepel/C4-PlantUML">C4 macros</a>, automating its execution and the subsequent publication.</p>
+
+<p>Then we could work on the documentation itself and this was the result (blurred to maintain confidentiality).</p>
+
+<p><img src="/assets/images/tech-doc-blurred-resized.png" style="float:left" />
+The document consists of a standard HTML page and several PlantUML generated diagrams with a <strong>narrative</strong> running through it, including a short description of the content of the document, the format and its purpose.</p>
+
+<p>The top level includes a <strong>context diagram</strong> showing the system in the context of the main actors and the principal external dependencies.</p>
+
+<p>It then goes on to include <strong>container diagrams</strong> which zoom into the system and show more of its internal structure.</p>
+
+<p style="clear:left" />
+
+<p><br />
+Further levels of detail from <strong>component</strong> and <strong>class diagrams</strong> were omitted, not because they are not valuable but rather because they typically take longer to produce and have the highest maintenance costs, and those costs were considered to outweigh the potential returns at the time (something which may be revisited).</p>
+
+<p>I won’t go into too much detail about the diagrams, a lot of great information is available on the <a href="https://c4model.com/">C4 Model</a> website.</p>
+
+<p>To facilitate easy maintenance I tried <strong>not to repeat information contained in the diagrams in the text and vice-versa</strong>. The narrative is an important part of the document but one of the strengths of the C4 model over UML is the extra information within the diagram itself and that information does not need to be duplicated.</p>
+
+<p>It is very important to <strong>think very carefully about the detail shown at each level</strong>. For this reason it may be necessary to split sub-systems into separate diagrams at the same level. Without care the diagrams can become very complex very fast. This exercise makes patently clear the dependencies between the different containers and any associated problems.</p>
+
+<p>The initial feedback from the team was very positive with the strongest approval from new team members. Having <strong>a single, easily digestible resource which summarised the system context and cryptic naming of external dependencies</strong> turned out to he highly valuable. I even noticed that one new guy had it open in a tab all day and continually referred back to it. Several people also helpfully corrected errors.</p>
+
+<p>Another fallout from the documentation was that it immediately (maybe too immediately!) provided a focal point for design discussion. This is a key point about this kind of documentation, rather than just being a system blueprint it actually <strong>fosters a common understanding</strong>. That common understanding and shared experience is vital to sustain a global technical vision for the whole team and facilitate effective communication.</p>
+
+<p>The overall outcome of this exercise was clearly positive but some things remain open ended.</p>
+
+<p>I’ve already mentioned that <strong>getting the right level of detail is difficult</strong>. Is there enough value in each level of documentation and how can we measure it? What happens when the diagram becomes too unwieldy?</p>
+
+<p>Also there are inherent <strong>trade-offs using auto-generated diagrams</strong>. On the positive side they are much easier to edit and maintain. On the downside we tend to lose fine grained control over placement of elements and adding a single element can even change the layout completely.</p>
+
+<h2 id="conclusions">Conclusions</h2>
+
+<p>Technical documentation for software projects must be considered in the context of the team and its needs.</p>
+
+<p>Consider the audience for the documentation and the value it provides them. Some projects will need to deliver it as part of the deliverables of the project, others will use it only internally. Operational needs may require a different focus to that required by development teams.</p>
+
+<p>Don’t add detail that is not necessary. That effort may be wasted or, worse, justify not using it. Remember the Law of Diminishing Returns.</p>
+
+<p>Consider how to ensure the documentation remains up to date. Either by including it in the workflow or reviewing it regularly.</p>
+
+<p>Think about the trade-offs of different diagramming methods and tools. I chose PlantUML for its simplicity and text-based interface but also consider more powerful modelling tools.</p>
+
+<p>I believe that these kinds of considerations are part of any teams technical responsibilities. Tools like PlantUML and the C4 model can help us but in the end it’s a skill that must be practised like any other.</p>
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Consider Technical Documentation&url=https://johnhearn.github.io//articles/consider-technical-documentation"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/consider-technical-documentation&title=Consider Technical Documentation&summary=Visualising a system can lead to more effective communication and better decisions.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Consider Technical Documentation&amp;body=Check out this site https://johnhearn.github.io//articles/consider-technical-documentation"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Consider Technical Documentation - February 16, 2019 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

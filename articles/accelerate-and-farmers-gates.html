@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Accelerate and Farmers' Gates</title>
+
+  
+  <meta name="description" content="Predictive inference is not enough.">
+  
+  
+  <meta name="keywords" content="probability"/>
+  
+  
+  <meta property="og:title" content="Accelerate and Farmers&#39; Gates">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/accelerate-and-farmers-gates/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Predictive inference is not enough.">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Accelerate and Farmers' Gates">
+
+  
+  <meta name="twitter:description" content="Predictive inference is not enough.">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/accelerate-and-farmers-gates">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Accelerate and Farmers' Gates</h1>
+<div class="subtitle">July 8, 2022</div>
+<div class="smaller">1 minute.</div>
+
+<p><label for="accelerate-book" class="margin-toggle">⊕</label><input type="checkbox" id="accelerate-book" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/assets/images/accelerate-book.jpg" /><br /><a href="https://www.goodreads.com/book/show/35747076-accelerate">Accelerate: Building and Scaling High-Performing Technology Organizations</a> by Nicole Forsgren, Jez Humble, Gene Kim</span></p>
+
+<p><label for="farm-gate" class="margin-toggle">⊕</label><input type="checkbox" id="farm-gate" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Farm_gate_-_geograph.org.uk_-_538713.jpg" /><br />The kind of gate I’m talking about.</span></p>
+
+<p>In the rural community where I grew up there was a common aphorism: “<em>A good farmer has good gates</em>” and generations of experience showed that this is a pretty good rule of thumb.</p>
+
+<p>If you took a group of researchers and surveyed the local farmers’ general habits, including how well maintained their gates are, do you think they could infer a relation? Could they even <strong>predict</strong> which were the better farmers based on their gates? Yes they probably could, because <em>a good farmer has good gates</em>.</p>
+
+<p>In the jargon, this is <em>predictive inference</em>, and it is the kind of inference that <em>Accelerate</em> describes<label for="chapter12" class="margin-toggle sidenote-number"></label><input type="checkbox" id="chapter12" class="margin-toggle" /><span class="sidenote">In chapter 12 they go into some detail. </span>.</p>
+
+<p>Does having good gates <em>make</em> you a good farmer? Of course not. The relation between gates and the type of farmer is <strong>not causal</strong>.</p>
+
+<p>Can a farmer become a better farmer through better maintenance of his gates? Hmm. <em>Accelerate</em> might say that “good gates <em>drive</em> good farming”. IMO the word “drive” is bearing quite a lot of weight to make that statement.</p>
+
+<p>The unfortunate situation is that predictive inference explains nothing. It may validate a hypothesis based on a theory but the scientific literature is littered with such validations that later turned out to be false<label for="phack" class="margin-toggle sidenote-number"></label><input type="checkbox" id="phack" class="margin-toggle" /><span class="sidenote">Try <a href="https://projects.fivethirtyeight.com/p-hacking/">this website</a> to demonstrate your political point. </span>.</p>
+
+<p>For explanation you need, at least, <em>causal inference</em> and that is much much harder. Causal inference requires a causal statistical model which is notoriously hard to get right.</p>
+
+<p>My feeling is that some of the key indicators in <em>Accelerate</em> really are causal but others are just the equivalent of good gates.</p>
+
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Accelerate and Farmers' Gates&url=https://johnhearn.github.io//articles/accelerate-and-farmers-gates"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/accelerate-and-farmers-gates&title=Accelerate and Farmers' Gates&summary=Predictive inference is not enough.&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Accelerate and Farmers' Gates&amp;body=Check out this site https://johnhearn.github.io//articles/accelerate-and-farmers-gates"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Accelerate and Farmers' Gates - July 8, 2022 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

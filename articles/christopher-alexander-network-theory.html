@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Christopher Alexander and Network Theory</title>
+
+  
+  <meta name="description" content="Christopher Alexander&#39;s philosophy evolved from an algorithmic to an experience based framework. Can we get the best of both worlds?">
+  
+  
+  <meta name="keywords" content="design, alexander, network theory"/>
+  
+  
+  <meta property="og:title" content="Christopher Alexander and Network Theory">
+  <meta property="og:type" content="note">
+  <meta property="og:url" content="https://johnhearn.github.io//articles/christopher-alexander-network-theory/">
+  <meta property="og:image" content="https://johnhearn.github.io/">
+  <meta property="og:description" content="Christopher Alexander&#39;s philosophy evolved from an algorithmic to an experience based framework. Can we get the best of both worlds?">
+  <meta property="og:site_name" content="John Hearn">
+  
+  <!-- Twitter cards -->
+  <meta name="twitter:site"    content="@johnhearnbcn">
+  <meta name="twitter:creator" content="@johnhearnbcn">
+  <meta name="twitter:title"   content="Christopher Alexander and Network Theory">
+
+  
+  <meta name="twitter:description" content="Christopher Alexander's philosophy evolved from an algorithmic to an experience based framework. Can we get the best of both worlds?">
+  
+
+  
+  <!-- end of Twitter cards -->
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+      <script type="text/x-mathjax-config"> 
+        MathJax.Ajax.config.path["Contrib"]="https://cdn.mathjax.org/mathjax/contrib"; 
+        MathJax.Hub.Register.StartupHook("TeX Jax Ready",function (){MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{cancel: ["Extension","cancel"], bcancel: ["Extension","cancel"], xcancel: ["Extension","cancel"], cancelto: ["Extension","cancel"]});}); 
+        MathJax.Hub.Config({tex2jax:{inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}, TeX:{equationNumbers:{autoNumber: "AMS"}, extensions: ["[Contrib]/physics/physics.js","[Contrib]/siunitx/siunitx.js"]}});
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="https://johnhearn.github.io//articles/christopher-alexander-network-theory">
+
+  <link rel="alternate" type="application/rss+xml" title="John Hearn" href="https://johnhearn.github.io//feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+	  <a href="/">BLOG</a>
+	  <a href="/notes.html">NOTES</a>
+	  <a href="/about">ABOUT</a>
+	</nav>
+</header>
+    <article class="group">
+      <h1>Christopher Alexander and Network Theory</h1>
+<div class="subtitle">November 16, 2024</div>
+<div class="smaller">nine minutes.</div>
+
+<p><label for="aim" class="margin-toggle"> ⊕</label><input type="checkbox" id="aim" class="margin-toggle" /><span class="marginnote">The aim of this article is not to give a complete picture of 60 years of his work. I suggest you read his books for that. Rather it is to explain just enough to see the arc and place it in context. </span></p>
+
+<p>In his early work, “<em>Notes on the Synthesis of Form (1964)</em>” (abbreviated in the following as <em>NotSoF</em>), Christopher Alexander explored a mathematical, network-based approach to design. He conceptualised design as an interrelated network of “misfit variables” to be optimised through computational analysis, algorithmically <em>solving</em> conflicts between interconnected elements.</p>
+
+<p>His thesis was that to solve a design problem it should be reduced to multiple smaller problems and that, crucially, we have been limited to using existing concepts that have come down to us as “<em>arbitrary historical accidents</em>” rather than being an optimal description of the situation at hand. At this stage, Alexander’s approach was reductionist and analytical, believing that a design could be synthesised and studied through rigorous structural optimization. He suggested algorithms (precursors to <a href="https://en.wikipedia.org/wiki/Community_structure">community structure</a> algorithms) to cluster elements together in such a way as to reduce the overall design problem to a hierarchical tree of simpler ones which in turn could be solved and optimised <em>independently</em>.</p>
+
+<p><label for="assets/images/alexander/diagrams.jpg" class="margin-toggle"> ⊕</label><input type="checkbox" id="assets/images/alexander/diagrams.jpg" class="margin-toggle" /><span class="marginnote">A figure from NotSoF which shows design variables (small black circles, so-called <em>nodes</em> in the network) and their interactions (lines). The nodes are grouped into clusters (represented as the larger circles). </span>
+<img src="/assets/images/alexander/diagrams.jpg" alt="Diagrams" width="80%" /></p>
+
+<p>In this work, the clusters of variables Alexander calls “<em>diagrams</em>” (which he would later rename to the “<em>patterns</em>” which he became famous for) and this is where his thinking began to change. As he states in the preface to later editions:</p>
+
+<blockquote>
+  <p>As you can see, it is the independence of the diagrams which gives them these powers. At the time I wrote this book, I was very much concerned with the formal definition of “independence,” and the idea of using a mathematical method to discover systems of forces and diagrams which are independent. But once the book was written, I discovered that it is quite unnecessary to use such a complicated and formal way of getting at the independent diagrams.</p>
+</blockquote>
+
+<p>What does modern network science tell us about this? To answer this we can use the example described in depth at the end of NotSoF.</p>
+
+<p><label for="assets/images/alexander/village.jpg" class="margin-toggle"> ⊕</label><input type="checkbox" id="assets/images/alexander/village.jpg" class="margin-toggle" /><span class="marginnote">The example from the book NotSoF which in turn is taken from the study “<em>The De­termination of Components for an Indian Village</em>” - Conference on Design Method (Oxford : Pergamon, 1963). The layout is force directed, meaning that related nodes are attracted toward each other and unconnected nodes are pushed apart. Sometimes clusters appear naturally but in this case none are easily identified. The graph is interactive, feel free to try and pull the clusters apart yourself.  </span></p>
+
+<iframe width="55%" height="400" frameborder="0" src="https://observablehq.com/embed/e954fd2bd1ba27cb@219?cells=chart"></iframe>
+
+<p>This is the full and extensive design problem that Alexander studied. Although he was able to group this into 12 hierarchical clusters (represented by the colours off the nodes), the nature of the <em>independence</em> of those clusters is far from clear. Force directed layouts such as this one sometimes identify underlying structure but not in this case. Even so, visually it might be deceiving so we can apply modern summary statistics to this network and see the difficulty in clustering this network at all.</p>
+
+<p><br /></p>
+
+<table style="width:70%">
+  <tbody>
+    <tr>
+      <td><strong>Average degree</strong></td>
+      <td>~20</td>
+      <td>Each node, on average, interacts with 20 other nodes.</td>
+    </tr>
+    <tr>
+      <td><strong>Edge density</strong></td>
+      <td>0.14</td>
+      <td>About 1 in 7 of all possible interactions are present. This is a dense graph.</td>
+    </tr>
+    <tr>
+      <td><strong><a href="https://en.wikipedia.org/wiki/Average_path_length">Average Path Length</a></strong></td>
+      <td>2.0</td>
+      <td>On average there are just 2 hops between each node.</td>
+    </tr>
+    <tr>
+      <td><strong><a href="https://en.wikipedia.org/wiki/Clustering_coefficient#Global_clustering_coefficient">Global clustering coefficient</a></strong></td>
+      <td>0.06</td>
+      <td>Higher values mean better clusters. This is a very low value.</td>
+    </tr>
+    <tr>
+      <td><strong><a href="https://en.wikipedia.org/wiki/Algebraic_connectivity">Algebraic connectivity</a></strong></td>
+      <td>&gt;6</td>
+      <td>Very high. By comparison tree-like graphs, scale-free and small-world networks have this typically less then 1.0.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<p>These metrics all point at this being a highly connected network without any clear clusters or community structure. Although the <em>diagrams</em> suggested by Alexander in the book do, to some measure, minimise the links between clusters, the result is still very far from the tree-like structure that is espoused.</p>
+
+<p>Alexander realised this, of course, and the beginnings of a perspective shift are clear in his essay the very next year “<em>A City is Not a Tree (1965)</em>”, where he claimed that cities and urban structures cannot be fully explained by hierarchical models or purely tree-like networks. He argued that successful cities are not trees but are “semi-lattices” — networks with overlapping connections that resemble the organic, intertwined complexity of real-life. Here, Alexander is reflecting on and challenging his own reductionist assumptions, positing that cities function best with fluid, overlapping, and non-hierarchical connections, allowing diverse elements to interrelate dynamically.</p>
+
+<p>Alexander’s reflexivity is to be admired. Remember he was writing this 60 years ago, when hard science was a raging success explaining the unexplainable and we were still optimistic for “Grand Theories of Everything” even though computers filled an entire room.</p>
+
+<p>By the time Alexander finished “<em>A Pattern Language (1977)</em>”, his thinking had moved even further away from strict optimization schemes toward a more life-centered philosophy. He recognized that human environments thrive on the richness of overlapping networks rather than static or strictly hierarchical arrangements. Rather than optimizing individual design problems, he focused on identifying “patterns” — recurring, archetypal solutions that reflect timeless principles of habitability. Each pattern addressed a design aspect that could contribute to a “whole” design when combined with others in rich and intricate ways. Patterns were interconnected in what Alexander saw as a more organic network, linked by relationships that encouraged cohesion and harmony within the design. Rather than algorithmic clustering, these patterns represented design wisdom drawn from observation and experience, creating environments that intuitively supported human needs and preferences.</p>
+
+<p>Taking this idea further, in “<em>The Nature of Order series (2002–2005)</em>”, Alexander considers “centers,” a concept intended to capture essential order that appears naturally within vibrant environments. Alexander believed these centers were interrelated and overlapping, embedded in a “living” structure that achieved harmony through wholeness rather than quantifiable connections.</p>
+
+<p>By this point Alexander’s perspective has shifted entirely to a holistic one. He is no longer using tree structures and prefers using words like "<em>wholeness</em>" to describe this shift requiring experience and expertise to understand the full picture.</p>
+
+<hr class="slender" width="50%" />
+
+<p>I will admit that the mathematical approach of Alexander’s early work still very much appeals to the logical side of my brain and 30+ years of western education: if I follow this procedure, I can solve the problem in the abstract using maths and computers. This is one extreme of a philosophical framework which emphasises narrowing the vision and focusing in on breaking down and solving component problems and then reintegrating them. Some people use the left-hemisphere as a metaphor for this kind of thinking.</p>
+
+<p>This is also the thinking that leads us to search for optimal efficiency through gradient descent to cost reduction and maximal productivity.</p>
+
+<p><label for="left-right" class="margin-toggle"> ⊕</label><input type="checkbox" id="left-right" class="margin-toggle" /><span class="marginnote">Ironically the left-right distinction is itself a left-hemisphere concept. Using such terms encumbers us with a recursive limitation. </span></p>
+
+<p>However, shifting too dramatically from a left-hemisphere to right-hemisphere approach (System A to System B, as he called them) causes unresolvable tension, poles so far apart that there simply is no sweet spot. Christopher Alexander himself documented these problems in the book “<em>The Battle for the Life and Beauty of the Earth: A Struggle between Two World-Systems (2012)</em>”. System A drives for cold, modern efficiency and System B for life and harmony. I live in a System A building. How much better it could have been with a little System B. Too much System B and it wouldn’t even exist. As Daniel Schmachtenberger says “<em>we’re creating a future that <strong>nobody</strong> wants</em>”.</p>
+
+<p>Can we apply modern efficiency to find life and harmony and get the best of both worlds? It doesn’t seem like an impossible goal to me.</p>
+
+<p>In modern network theory, <em>patterns</em>, <em>diagrams</em> and even <em>centres</em> might be better considered as <a href="https://en.wikipedia.org/wiki/Network_motif">motifs</a> rather than clusters determined by the density of their interactions. Motifs are repeating, stable structures with the potential to identify key functional properties embedded within a network of a particular type - certain configurations that always seem to work well together. Importantly, they do not need to be disconnected from the rest of the network but can mix and overlap with other nodes and motifs while maintaining their own essential structure. Although there are modern algorithms for detecting motifs, just like clusters, at this point Alexander was arguing that algorithms could not capture the fundamental quality of “<em>life</em>” that great designs embody; only an intuitive, holistic understanding could bring the sense of harmony aspired to.</p>
+
+<p>There is a certain circularity in Alexander’s story. With the aim of trying to get away from subjective, accidental concepts to a more objective approach he ended up saying that only through expertise are we able to detect and evaluate the concepts in the first place.</p>
+
+<p>I am more optimistic. I wonder if we will be able to complete the circle and detect natural but explainable motifs. For example, new language models seem to be able to glean underlying patterns that maybe even the experts are not aware of. I can envision a world, not too far away, where we will need both the algorithmic tools <em>and</em> expert evaluation to keep things in check.</p>
+
+<p>A nice example of a similar circularity has happened in chess. Many believed that computers could not play chess due to the unfathomable number of possible moves while others believed that even if they did, the game would become boring and predictable. Nonetheless modern engines have far surpassed humans and are now helping professional players to develop new intuitions. Rather than mechanising the game, modern encounters are quick to leave theory behind and explore more novel openings than they did before the engines existed.</p>
+
+<p>The evolution of Christopher Alexander’s design philosophy also has an interesting analogy with the modern tension between systems thinking and complexity theory. When viewed through the lens of network theory we can place his journey in a firm conceptual framework and show his battles in a modern light. He moved from clustering design variables to a more holistic, fluid approach. This is very similar to the comparison by some of traditional and structural systems thinking approaches (such as lines and circles and systems dynamics) to more fluid approaches from Complexity Theory. Bearing in mind Alexander’s philosophical journey, I am eager to see the evolution and synthesis of both of these subjects.</p>
+
+
+
+<div id="share-bar">
+
+    <div class="share-buttons">
+        Share this:
+        <a  href="https://twitter.com/intent/tweet?text=Christopher Alexander and Network Theory&url=https://johnhearn.github.io//articles/christopher-alexander-network-theory"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa-lg fab fa-twitter share-button"></i>
+        </a>
+        <a  href="https://www.linkedin.com/shareArticle?mini=true&url=https://johnhearn.github.io//articles/christopher-alexander-network-theory&title=Christopher Alexander and Network Theory&summary=Christopher Alexander's philosophy evolved from an algorithmic to an experience based framework. Can we get the best of both worlds?&source=John Hearn"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa-lg fab fa-linkedin share-button"></i>
+        </a>
+        <a  href="mailto:?subject=Christopher Alexander and Network Theory&amp;body=Check out this site https://johnhearn.github.io//articles/christopher-alexander-network-theory"
+            title="Share via Email" >
+            <i class="fa-lg fa fa-envelope-open share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+    </article>
+    <span class="print-footer">Christopher Alexander and Network Theory - November 16, 2024 - John Hearn</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li>
+        <a href="https://twitter.com/johnhearnbcn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/johnhearn">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="https://www.linkedin.com/in/john-hearn-599762b">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+    <li>
+        <a href="mailto:hearn.john@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope-open fa-stack-1x fa-inverse"></i>
+        </span>
+        </a>
+    </li>
+</ul>
+
+<div class="credits">
+<span>&copy; 2025 &nbsp;&nbsp;JOHN HEARN</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a> for <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>
