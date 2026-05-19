@@ -1,0 +1,19 @@
+---
+categories: [blog]
+title: Organisation as a distributed system
+description: An organisation is a distributed system and as such the CAP theorem applies
+date: "2024-11-25 14:56:00 +01:00"
+draft: true
+---
+
+ 
+
+We're trying to agree some requirements that need the input of many stakeholders. There is an implicit assumption that we'll try and get everyone together in the same room to make a decision thereby breaking the partition tolerance (the P in CAP). But that's OK because we have the other two, right? Wrong. What inevitably happens is that not everyone can come to the big meeting because they are not available. A decision might or might not be made in the absence of these people but, for now at least, it's consistent. However, when those people who were not at the first meeting get wind of the decision, they don't like it and are angry that their view wasn't taken into account. Someone creates another meeting to which not everyone can go to either. The second meeting changes a decision. Now we have lost the consistency too. 
+
+In the end:
+1) Not everyone has the information because they were not at the meeting (Availability of an answer is the A in CAP)
+2) Even if they were at one of the meetings, they may or may not agree on what the decision was because it was changed (Consistency is the C in CAP)
+
+People are taring their hair out because no-one agrees on anything. The most common way to try and resolve this intuitively is for individuals to send out a load of chat and email messages telling everyone what their understanding of the situation is. What inevitably happens is that there is some back and forth between people saying what the situation actually is. Some people are copied in and some people aren't. Some people don't read them even if they are. Consistency is gone forever, and worse, there may even be a perception of consistency that dissipates as soon as you talk to someone not on the mailing list.
+
+The other way to resolve this not telling people who don't need to know. We relax the Availability of information.

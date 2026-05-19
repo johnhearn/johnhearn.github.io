@@ -1,0 +1,16 @@
+---
+categories: [blog]
+name: java-beans
+title: Java Beans
+description: A relic from another age.
+date: '2019-04-19T17:30:00.000+00:00'
+tags:
+- java
+draft: true
+---
+
+http://princetonacm.acm.org/downloads/javabeans.html
+
+![ibmvajpfwnt95100) over 20 years ago.](ibm_visualage_java.jpg){.column-margin}
+
+

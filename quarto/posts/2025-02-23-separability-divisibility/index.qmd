@@ -1,0 +1,16 @@
+---
+categories: [blog]
+title: "Two sides of decomposition: separability and divisibility"
+date: "2025-02-23 08:42:00 +01:00"
+draft: true
+---
+
+ 
+
+Decomposition, factorisation, division, separation, similar but not the same.
+
+Take any number, say 90, and work out its prime factors: $2 \times 3^2 \times 5$. Most of us learnt that any number can be _factored_ in this way. Factorisation is a kind of decomposition.
+
+If you go on to study some mechanics then you'll learn that speed of a ball rolling down a slope can be separated into horizontal and vertical components and each can be calculated independently. Separability is another kind od decomposition.
+
+The first thing you learn when studying electronics is the composition laws for resistors. In serial the resistances simply sum: $R = R_1 + R_2 + ... + R_n$. In parallel the rule is more complicated: $\frac{1}{R} = \frac{1}{R_1} + \frac{1}{R_2} + ... + \frac{1}{R_n}$

@@ -1,0 +1,10 @@
+---
+title: "Notes on Uno series"
+listing:
+  contents: ../notes/*/index.qmd
+  sort: "date asc"
+  type: default
+  include:
+    categories: "notes-on-uno"
+  fields: [date, title, description]
+---

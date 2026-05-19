@@ -1,0 +1,103 @@
+---
+categories: [blog]
+title: "A map is a bit like the terrain"
+description: When is a map useful? When is it not?
+date: "2024-09-17 08:30:00 +02:00"
+tags: [science]
+draft: true
+---
+
+[Enterprise Architects: From Cartographers to Scouts
+Check the map, and then go have a look for yourself.](https://architectelevator.com/architecture/enterprise-architects-cartographers-scouts/). Says the same thing, the bastard.
+
+[Models and Representation](https://www.semanticscholar.org/paper/Models-and-Representation-Frigg-Nguyen/30a6cd29e0f3efe3acfe98859e2ae70a988376ae)
+Quote: Jorge Luis Borges in On Exactitude in Science
+
+
+Rosenblueth, A., and N. Wiener. 1945. [The role of models in science](https://nemenmanlab.org/~ilya/images/9/99/Rosenblueth-wiener-1945.pdf). Philosophy of Science 12: 316–321.
+"_As a limit it will become that system itself. That is, in a specific example, the best material model for a cat is another, or preferably the same cat. In other words, should a material model thoroughly realize its purpose, the original situation could be grasped in its entirety and a model would be unnecessary."_
+
+
+The bridleway next to my parent's house is marked on Google maps as a road. Of course, it's just about wide enough for a horse, full of brambles and, being in Cornwall, covered in about a foot of mud. People sometimes consider going down it in their cars. Most realise that it's a bad idea and find some other route but one delivery driver decided that Google must be right. He got some way down it before realising he was able to go neither forward nor back and had to be pulled out by my neighbour's tractor.
+
+"Aha!," we say, "the map is not the terrain. He could have seen that by simply looking out the window." That is true but on the other hand maps are generally pretty useful, aren't they? So what is it that makes a map so generally useful but at the same time so treacherous for delivery drivers?
+
+As it happens, we have a rather elegant answer to that question but first let's back up (as the Amazon van failed to do).
+
+
+---
+
+## The philosophy
+
+My favourite word at the moment is _anekantavada_, apparently an idea coming from Jain doctrine stating that because everything has many, even multitudinous, facets, it is impossible to capture nature in words, even if one could experience it. Reality is cast into a concept and its properties and qualities are cast onto, into or out of the concept. A colour, a temperature, a size, a shape, an unfathomable number of indiscernible processes... In this sense, any expression of it is no more (and no less) that a casting, a projection, a reflection, a shadow. 
+
+Moreover in this way of seeing, a casting should not be mistaken for a _representation_, as the temperature or colour of the terrain does not _represent_ the terrain, as your shadow does not represent you. It is not a veil _through which we see_, but an instrument _by which we see_, focussing only on certain aspects. 
+
+<!--A shadow will change, it will lengthen and shorten, mould itself to the surface on which it is cast. In fact it must _have_ a surface, the surface and the shadow are bound together[^cybernetics]. -->
+
+So GDP does not _represent_ the economy of millions of people in a single number. The economy in turn does not _represent_ their well-being. Yet we mistake these things in every newspaper copy. And the newspaper does not represent the news and the news does not represent what has happened. They are a channel through which an inevitable translation and transformation has taken place. Same for history, politics, science or a meeting at work.
+
+<!--A satellite image of the earth is in some aspects bound to the camera that took the image and so to the pixels projected on the screen. In other aspects it is bound to our interpretation of colour, of distance, of preconceptions of roads and trees and so on.-->
+
+So then we go too far and say everything is context and every aspect is equally valid, the critique overwhelms. Nonetheless, GDP _does_ tell us something about the economy. The economy does tell us something about the well-being of millions. The news does tell us something about what's happened. The shadow, while not the thing, does demonstrate some aspect of the thing, its position, shape, translucency. In some sense it is predictable. Given stable enough conditions, it itself is stable enough to be interpretable and useful. The map tells us many useful somethings about the terrain. 
+
+So a map then is not only not the terrain, it does not even represent the terrain but rather is is a projection of the terrain. On the other hand it's a projection that codifies salient features of the terrain in a way amenable for interpretation, not as a placeholder or stand-in for the real thing, whatever that is, but enough to capture the aspects to make it useful. In a precise sense and for certain precise aspects, the map is very much like the terrain.
+
+Of course this is philosophy 101, from Plato to Baudrillard to...
+
+## The mathematics
+
+Let's state this again in more precise language. Google Maps projects a snapshot of the almost infinite collection facets (qualities and relations) of the terrain onto a much simplified model (map) which captures features deemed relevant (coordinates and labels) by way of measurements and photography. The process looks something like this:
+
+<!-- https://q.uiver.app/#q=WzAsMixbMCwwLCJUZXJyYWluIl0sWzMsMCwiTWFwIl0sWzAsMSwibWVhc3VyZW1lbnRzIl1d -->
+<iframe class="quiver-embed" src="https://q.uiver.app/#q=WzAsMixbMCwwLCJUZXJyYWluIl0sWzMsMCwiTWFwIl0sWzAsMSwibWVhc3VyZW1lbnRzIl1d&embed" width="611" height="176" style="border-radius: 8px; border: none;"></iframe>
+
+This diagram is saying that an objective projection of the $Terrain$ (whatever that is) is cast to a $Map$ by measurement. 
+
+The map is _not_ a representation but rather an abstraction of salient features like position and connectivity, labelled features and satellite imagery, all relevant for navigation. In symbols: 
+
+$$abstraction: (\infty \times \infty \times ...) \rightarrow (Position \times Connectivity \times Labels \times Images)$$
+
+We then want to reason reliably about the $Terrain$ by way of the $Map$. The answer to a query derived from the Map should reliably match the equivalent query on the ground. Again to make the language mathematical:
+
+<!-- https://q.uiver.app/#q=WzAsNCxbMCwwLCJUZXJyYWluIl0sWzMsMCwiTWFwIl0sWzAsMiwiWWVzL05vIl0sWzMsMiwiWWVzL05vIl0sWzAsMSwiYWJzdHJhY3Rpb24iXSxbMCwyLCJRdWVyeTogXFxcXCBTdWl0YWJsZSBcXHNwYWNlIGZvciBcXFxcIGRlbGl2ZXJ5IFxcc3BhY2UgdmFuPyIsMV0sWzEsMywiUXVlcnk6IFxcXFwgSXMgXFxzcGFjZSByb2FkPyIsMV0sWzMsMiwiUmVsaWFibGUgXFxcXCBpbnRlcnByZXRhdGlvbj8iLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XV0= -->
+<iframe class="quiver-embed" src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJUZXJyYWluIl0sWzMsMCwiTWFwIl0sWzAsMiwiWWVzL05vIl0sWzMsMiwiWWVzL05vIl0sWzAsMSwiYWJzdHJhY3Rpb24iXSxbMCwyLCJRdWVyeTogXFxcXCBTdWl0YWJsZSBcXHNwYWNlIGZvciBcXFxcIGRlbGl2ZXJ5IFxcc3BhY2UgdmFuPyIsMV0sWzEsMywiUXVlcnk6IFxcXFwgSXMgXFxzcGFjZSByb2FkPyIsMV0sWzMsMiwiUmVsaWFibGUgXFxcXCBpbnRlcnByZXRhdGlvbj8iLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XV0=&embed" width="660" height="432" style="border-radius: 8px; border: none;"></iframe>
+
+To be useful the following must hold
+
+$$(abstraction ⨾ Query_{Map} ⨾ interpretation) = Query_{Terrain}$$. 
+
+In other words, the composition of operations over the map must _commute_ with the equivalent operation over the terrain, i.e. it must give us the same answer. Somewhere amongst the infinite aspects of the terrain are things like mud and brambles. These features are not part of the abstraction, this was our delivery driver's undoing.
+
+
+
+
+## Denotation / Demonstration / Interpretation 
+DDI[^ddi]
+
+## Immersion / Derivation / Interpretation
+
+The point of immersion is to relate the relevant aspects of the empirical situation with the appropriate mathematical context.
+
+The derivation step consists in drawing consequences from the formalism, using the structure obtained in the immersion step. 
+
+
+
+Representation / Transformation / Interpretation
+
+
+By focusing on mappings, the account sidesteps deep questions about the existence or nature of the objects and structures being mapped, leaving unresolved issues in the ontology of mathematics.
+
+This account may not fully capture the creative, exploratory, and heuristic elements as practiced.
+
+The account may be overly focused on structural relationships, making it less applicable to fields where specific properties of individual entities or sets are central.
+
+The account does not adequately explain how we gain knowledge of mappings, especially in cases where they involve highly abstract or infinite structures.
+
+
+
+
+
+I was rather sceptical when I [heard David Spivak say](https://www.youtube.com/live/Cp5_o2lDqj0?si=K2eKkS2gKT0yP3ZX&t=314) that he uses Category Theory (CT) to think about philosophy but as I learn more I'm starting to see what he means. Much of what I'm going to say next doesn't _need_ to be cast in CT terms, nothing here couldn't be said in natural language, maybe picking out familiar ideas from geometry or experience. What I have found, however, is that this "picking out" of ideas from other areas is exactly what CT is able to do, adding some rigour to the language, without being lost in the mathematics.
+
+[^ddi]: 

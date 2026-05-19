@@ -1,0 +1,14 @@
+---
+title: "TDD and Algorithms"
+date: "2017-05-15"
+categories: [blog]
+draft: true
+---
+
+To apply TDD to algorithms we should still try and define an abstract contract for the class of algorithms that could solve our problem.
+
+The nature of these contracts should be explored: we have seen that using sequential addition and extraction of elements is a very good contract for sorting. What would be similar ones for graph navigation, packing problems, etc.
+
+Sorting requires a single operation "compare", with a well defined contract which can be defined in terms of generic types. The sorting methods can be applied by insertion or by selection, giving us our sequential abstraction.
+
+Packing requires a single concept: the "size" (or "quantity" or "extent", sometime the vocabulary is difficult to make abstract along with the contract) of a space to be filled and the "size" of items filling it. The type of the item (or its unit of measurement) in this case is not important to the algorithm although it should be consistent. Packing algorithms can be applied on insertion or by searching, so while sequential insertion may be useful, sequential extraction is not necessarily a good fit for the abstraction.

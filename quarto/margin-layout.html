@@ -1,0 +1,63 @@
+<script>
+const visibleMarginItems = () =>
+  Array.from(
+    document.querySelectorAll(
+      ".column-margin.column-container > *, .margin-caption, .aside"
+    )
+  ).filter((item) => item.offsetParent !== null);
+
+const captionPriority = (item) =>
+  item.classList.contains("margin-caption") ? 0 : 1;
+
+const layoutMarginItems = () => {
+  const items = visibleMarginItems();
+
+  items.forEach((item) => {
+    item.style.marginTop = "";
+  });
+
+  const positionedItems = items
+    .map((item) => ({
+      item,
+      top: item.getBoundingClientRect().top + window.scrollY,
+    }))
+    .sort(
+      (left, right) =>
+        left.top - right.top ||
+        captionPriority(left.item) - captionPriority(right.item)
+    );
+
+  let lastBottom = 0;
+  positionedItems.forEach(({ item, top }) => {
+    if (top < lastBottom) {
+      const styles = window.getComputedStyle(item);
+      const marginBottom = Number.parseFloat(styles.marginBottom) || 0;
+      item.style.marginTop = `${lastBottom - top + marginBottom}px`;
+    }
+
+    const styles = window.getComputedStyle(item);
+    const marginTop = Number.parseFloat(styles.marginTop) || 0;
+    lastBottom = top + item.getBoundingClientRect().height + marginTop;
+  });
+};
+
+const scheduleMarginLayout = () => {
+  window.requestAnimationFrame(() => {
+    window.setTimeout(layoutMarginItems, 0);
+  });
+};
+
+window.addEventListener("load", scheduleMarginLayout);
+window.addEventListener("resize", scheduleMarginLayout);
+document.fonts?.ready.then(scheduleMarginLayout);
+
+document.querySelectorAll("img").forEach((image) => {
+  if (!image.complete) {
+    image.addEventListener("load", scheduleMarginLayout, { once: true });
+  }
+});
+
+if (window.ResizeObserver) {
+  new ResizeObserver(scheduleMarginLayout).observe(document.body);
+}
+</script>

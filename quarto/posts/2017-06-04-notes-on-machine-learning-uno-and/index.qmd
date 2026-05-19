@@ -1,0 +1,29 @@
+---
+title: "Notes on Machine Learning: Uno and TensorFlow"
+date: "2017-06-04"
+categories: [blog]
+draft: true
+---
+
+The goal is to train an basic RNN cell with the results of winning sequences. We could al this point train a basic MLP as we did previously using genetic methods. Those models did not take into account the the sequence of cards being played or rest of the hand held by the player. The aim here is to use winning training sequences and take all those things into account and for that we'll take a different approach.
+
+To do this we'll need training data which we can generate using the Uno tournament model developed in previous posts. In this way we can generate any amount of training data and that training data will have a lot of random noise so over-fitting is not a major concern at the beginning.
+
+The first thing to think about is the feature vector. In previous models we used a heavily condensed feature vector of length 15 which took advantage of the inherent symmetries of the pack. To hold all the information of the had we'll need to expand this feature vector again. It is not the dsame to have a green 2 and a red 2 as it is to have 2 red 2s. We'll have to restore the colour representation so our feature vector jumps back to 50+ entries. We can, however, still maintain the symmetry on number, that is to say if we have 3 red 5s, then add a 3 to the vector at the position representing RED-5. Our feature vector will look like this:
+
+RED-0
+RED-1
+...
+RED-9
+RED-SKIP
+RED-REVERSE
+RED-DRAWTWO
+GREEN-0
+GREEN-1
+etc.
+WILDCARD
+WILDCARD-DRAWFOUR
+
+At each position the factor with contain a number 0 to 4 to represent how many of those cards thay have.
+
+(Intuitively, I'm not entirely comfortable with magnitude of the feature vector representing the number of cards but if we don't the the feature vector will have 100s of entries, a greater challenge to the training regime.)

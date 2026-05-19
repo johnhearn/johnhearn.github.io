@@ -1,0 +1,42 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "John Hearn"
+  description: "Science and software"
+  site-url: https://johnhearn.github.io/
+  navbar:
+    left:
+      - text: Blog
+        href: index.qmd
+      - text: Notes
+        href: notes.qmd
+      - text: About
+        href: about.qmd
+  page-footer:
+    left: "© John Hearn"
+    right:
+      - icon: github
+        href: https://github.com/johnhearn
+      - icon: linkedin
+        href: https://linkedin.com/in/john-hearn-599762b
+      - icon: twitter
+        href: https://twitter.com/johnhearnbcn
+
+format:
+  html:
+    theme:
+      - default
+      - custom.scss
+    include-after-body: margin-layout.html
+    reference-location: margin
+    citation-location: margin
+    cap-location: margin
+    toc: true
+    toc-location: right
+    grid:
+      margin-width: 350px
+
+execute:
+  freeze: auto

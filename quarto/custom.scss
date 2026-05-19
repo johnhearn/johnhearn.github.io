@@ -1,0 +1,74 @@
+/*-- scss:defaults --*/
+$font-family-sans-serif: "et-book", Palatino, "Palatino Linotype",
+                          "Palatino LT STD", "Book Antiqua", Georgia, serif;
+$body-bg: #fffff8;
+$body-color: #111;
+$link-color: #a00000;
+$font-size-base: 1.1rem;
+
+/*-- scss:rules --*/
+.smallcaps {
+  font-variant: small-caps;
+  letter-spacing: 0.05em;
+}
+
+/* Keep margin figures inside the margin column.
+   Quarto adds page-columns (grid) + page-full to figures with {.column-margin},
+   which creates a nested grid that pushes content off-screen.
+   Disable the sub-grid so the figure stays within the margin.
+   Quarto JS also sets large inline margin-top on figcaptions to align margin
+   content with body text — override this for figures so the caption stays
+   directly under the image. */
+.column-margin.page-columns {
+  display: block !important;
+}
+
+.column-margin .page-columns {
+  display: block !important;
+}
+
+.column-margin .figure-img {
+  max-width: 100%;
+}
+
+.column-margin .quarto-figure {
+  margin-bottom: 0;
+}
+
+.column-margin figure p {
+  margin-bottom: 0;
+}
+
+.column-margin figcaption {
+  margin-top: 0 !important;
+}
+
+.margin-caption::before {
+  content: "\2190";
+  display: inline-block;
+  margin-right: 0.35em;
+}
+
+.column-margin .margin-caption::before {
+  content: "\2191";
+}
+
+// Quarto gives all margin content a very high z-index, which lets notes and
+// margin figures paint over the sticky TOC when they cross the same space.
+.column-margin,
+.margin-caption {
+  z-index: auto !important;
+}
+
+article {
+  max-width: 55rem;
+  line-height: 1.6;
+}
+
+#quarto-margin-sidebar:not(.zindex-bottom) {
+  z-index: 1;
+}
+
+#quarto-margin-sidebar #TOC {
+  background-color: $body-bg;
+}

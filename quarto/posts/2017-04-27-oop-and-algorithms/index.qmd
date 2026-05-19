@@ -1,0 +1,36 @@
+---
+title: "OOP And Algorithms"
+date: "2017-04-27"
+categories: [blog]
+draft: true
+---
+
+## Examples: Sorting, Graph navigation, Packing problems, Sudoku
+
+Defining a contract
+ - One often quoted advantage of OO is reuse; OO algorithms should be reusable in different contexts and therefore should not depend on the problem domain classes (Dependency Inversion).
+ - Obviously implementation details of the algorithm should be hidden within the implementing class (encapsulation) but the source data must be injected somehow
+ - OO input/output as collection, pull, push, etc.
+ - Requires understanding of the solution domain, e.g. all sorting algorithms, to ensure a broad enough abstract contract
+ - Use of auxiliary interfaces (such as Comparators for sorting, Items for packing)
+ - Tieing algorithm to data structure (sort implementation in linked lists, solver to Sudoku board). Good or Bad?
+ - Define hierarchy (cf paper on the subject of abstract contracts)
+ - Generic data structures, Digraph, Node, Edge. Should that be part of the contract?
+ - SOLID
+   - Algorithm as single responsability, List implementation has multiple responsibilities, Sort has only one
+   - Algorithm contract design is a direct application of the open/closed principle. The contract effectively closes the algorithm to modifications while enabling concrete implementations to encapsulate the machinery.
+   - Liskov substitution is applicable to algorithms, this assumes the client has understood performance concerns
+   - Interface segregation could be used if the algorithm in question has multiple facets which could be exposed to clientes independently. A search class could also provide statistics, for example. Although this might also break the SRP :)
+   - Dependency inversion is a direct result of designing an abstract contract for a given algorithm, allowing clients to choose the implementation which is most suited for the problem without changing the surrounding logic.
+   
+Options:
+ - Define problem domain for algorithm. PROS and CONS?
+   * domain interfaces (Geode::Space)
+   * concrete value classes (also Geode::IntValue)
+   * annotations (OptaPlanner)
+* generics/templates (Comparator<T>#compare(T t1, T t2))
+
+**References:**
+
+- Algorithms and Object-Oriented Programming: Bridging the Gap — Paolo Bucci, Wayne Heym, Timothy J. Long, Bruce W. Weide — [PDF](https://pdfs.semanticscholar.org/a9b2/fffd81f01af61f6c69ae72d30213056bf502.pdf)
+- Object-oriented algorithm analysis and design with Java — Sergio Rajsbaum, Elisa Viso — [ScienceDirect](http://www.sciencedirect.com/science/article/pii/S0167642304001017)

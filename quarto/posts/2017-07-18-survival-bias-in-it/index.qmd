@@ -1,0 +1,8 @@
+---
+title: "Survival bias in IT"
+date: "2017-07-18"
+categories: [blog]
+draft: true
+---
+
+Serverless architecture is so new that the knowledge that is spread about it tends to come from projects that worked. Success can be either by the inherent nature of the architecture or by the inherent nature of the project or both. How many projects have failed with that architecture?
