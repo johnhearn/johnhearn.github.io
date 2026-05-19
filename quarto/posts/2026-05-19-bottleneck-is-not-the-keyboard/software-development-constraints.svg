@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">Software development work across three stages</title>
+  <desc id="desc">A three-stage software development flow showing coding as a deceptively prominent middle box while deciding what to build and verifying and releasing contain many ambiguous feedback-heavy tasks.</desc>
+  <defs>
+    <style>
+      .bg { fill: #fffff8; }
+      .stage { fill: #fffdfa; stroke: #202020; stroke-width: 1.5; rx: 8; }
+      .coding { fill: #fff5df; stroke-width: 2; }
+      .title { font: 700 23px Georgia, serif; fill: #111; }
+      .subtitle { font: italic 15px Georgia, serif; fill: #555; }
+      .item { font: 15px Georgia, serif; fill: #222; }
+      .small { font: 14px Georgia, serif; fill: #555; }
+      .arrow { stroke: #777; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .hint { fill: #f3eee2; stroke: #b8a98c; stroke-width: 1; rx: 5; }
+      .hint-text { font: 14px Georgia, serif; fill: #6b5635; }
+    </style>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#777"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1200" height="620"/>
+
+  <text x="600" y="44" text-anchor="middle" class="title">Where the work often is</text>
+  <text x="600" y="70" text-anchor="middle" class="subtitle">Coding is visible and concrete. The wider queues often sit before and after it.</text>
+
+  <rect x="40" y="115" width="450" height="390" class="stage"/>
+  <rect x="525" y="115" width="150" height="390" class="stage coding"/>
+  <rect x="710" y="115" width="450" height="390" class="stage"/>
+
+  <path class="arrow" d="M 492 310 H 520"/>
+  <path class="arrow" d="M 678 310 H 706"/>
+
+  <text x="265" y="150" text-anchor="middle" class="title">Deciding What To Build</text>
+  <text x="600" y="150" text-anchor="middle" class="title">Coding</text>
+  <text x="935" y="150" text-anchor="middle" class="title">Verifying And Releasing</text>
+
+  <g transform="translate(70 185)">
+    <text class="item" y="0">Understanding the problem</text>
+    <text class="item" y="28">Identifying the user or customer need</text>
+    <text class="item" y="56">Clarifying goals and constraints</text>
+    <text class="item" y="84">Exploring options</text>
+    <text class="item" y="112">Testing assumptions</text>
+    <text class="item" y="140">Defining scope and what not to build</text>
+    <text class="item" y="168">Prioritising work</text>
+    <text class="item" y="196">Agreeing acceptance criteria</text>
+    <text class="item" y="224">Sequencing work, epics and stories</text>
+  </g>
+
+  <g transform="translate(548 185)">
+    <text class="item" y="0">Designing</text>
+    <text class="item" y="22">the technical</text>
+    <text class="item" y="44">approach</text>
+    <text class="item" y="82">Changing code</text>
+    <text class="item" y="120">Refactoring</text>
+    <text class="item" y="158">Writing tests</text>
+    <text class="item" y="196">Updating docs</text>
+    <text class="item" y="234">Fixing defects</text>
+  </g>
+
+  <g transform="translate(740 185)">
+    <text class="item" y="0">Running automated checks</text>
+    <text class="item" y="28">Manual testing</text>
+    <text class="item" y="56">Testing against acceptance criteria</text>
+    <text class="item" y="84">Reviewing usability or workflow fit</text>
+    <text class="item" y="112">Security, performance, or compliance reviews</text>
+    <text class="item" y="140">Managing release across the organisation</text>
+    <text class="item" y="168">Deploying to production</text>
+    <text class="item" y="196">Monitoring after release</text>
+    <text class="item" y="224">Handling incidents or rollback</text>
+    <text class="item" y="252">Gathering feedback</text>
+  </g>
+
+  <rect x="525" y="525" width="150" height="42" class="hint"/>
+  <text x="600" y="551" text-anchor="middle" class="hint-text">deceptively visible</text>
+
+  <text x="265" y="545" text-anchor="middle" class="small">Ambiguity, choice, trade-offs</text>
+  <text x="935" y="545" text-anchor="middle" class="small">Feedback, confidence, coordination</text>
+</svg>
