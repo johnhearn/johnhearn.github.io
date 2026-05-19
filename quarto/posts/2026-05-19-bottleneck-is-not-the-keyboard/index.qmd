@@ -1,11 +1,10 @@
 ---
 categories: [blog]
 title: The Bottleneck Is Not the Keyboard
-description: Faster coding only helps when coding is the constraint. Otherwise it just creates a faster queue.
+description: Writing production code faster is only useful when the rest of the development process can absorb it.
 date: "2026-05-19 00:00:00 +01:00"
+draft: true
 ---
-
-**Writing production code faster is only useful when the rest of the development process can absorb it.**
 
 If decisions about what to build are unclear, or if verification and release are slow, then faster coding mostly creates a bigger queue. This was always true[^reinertsen] and remains so. The work has moved, which can feel like progress, but the system as a whole has not necessarily improved. It may even be harder to manage because there is now more unfinished work waiting to be understood, checked, and released.
 
