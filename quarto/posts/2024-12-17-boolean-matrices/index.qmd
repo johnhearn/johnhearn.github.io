@@ -133,7 +133,7 @@ Now it just so happens that those non-zero values are the cube roots of unity. U
 
 The last 3 eigenvalues are now exactly one! So let's look at the last 3 eigenvectors and convert them back to the corresponding states:
 
-![The *kimatograph* depicted in the original paper. In more mordern language we might call this a [_state (transition) diagram_](https://en.wikipedia.org/wiki/State_diagram), a [_pseudoforest_](https://en.wikipedia.org/wiki/Pseudoforest#Graphs_of_functions) or a [_functional graph_](https://en.wikipedia.org/wiki/Pseudoforest#Graphs_of_functions). The states $001_b$, $101_b$ and $110_b$ are in the cycle. $000_b$ is missing 🤷.](/assets/images/kauffman/kauffman-kimatograph-3-2.png){.column-margin}
+![The *kimatograph* depicted in the original paper. In more mordern language we might call this a [_state (transition) diagram_](https://en.wikipedia.org/wiki/State_diagram), a [_pseudoforest_](https://en.wikipedia.org/wiki/Pseudoforest#Graphs_of_functions) or a [_functional graph_](https://en.wikipedia.org/wiki/Pseudoforest#Graphs_of_functions). The states $001_b$, $101_b$ and $110_b$ are in the cycle. $000_b$ is missing 🤷.](kauffman-kimatograph-3-2.png){.column-margin}
 
 ```julia
 [measure(ν) for ν in eachcol(eigvecs(M^3)[:,6:8])]

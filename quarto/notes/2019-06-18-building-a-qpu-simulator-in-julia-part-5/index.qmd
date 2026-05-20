@@ -20,7 +20,7 @@ We start with a test for the condition we want to search for. In this case a sim
 
 It starts with the following circuit:
 
-![Grover's search algorithm circuit](/assets/images/quantum-computing/grovers-circuit.png)
+![Grover's search algorithm circuit](grovers-circuit.png)
 
 This new part of this is the diffusion operator The first part of which we can translate to our growing Julia library as something like this:
 

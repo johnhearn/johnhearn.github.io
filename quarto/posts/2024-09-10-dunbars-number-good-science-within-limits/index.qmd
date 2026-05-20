@@ -24,7 +24,7 @@ Here's an example of a similar data set to the one used in the original studies.
 
 Neither Dunbar nor his critics used the data in this form however, they used its logarithm. This is a common technique used under the assumption that it will make skewed data (as this is) appear more symmetrical (normal). There is no explanation of the reasons for the transform in this particular case. Nonetheless it has an important effect on the results. We'll come back to this point later. Here's the transformed data.
 
-![Comparison with Dunbar's data taken from his original paper.](/assets/images/dunbar/dunbars data.png){.column-margin}
+![Comparison with Dunbar's data taken from his original paper.](dunbars data.png){.column-margin}
 
 ![Figure 2: a plot of $log_{10}N_r$ against $log_{10}G$ for the same 39 animal species.](log10ncr vs log10gs.png)
 

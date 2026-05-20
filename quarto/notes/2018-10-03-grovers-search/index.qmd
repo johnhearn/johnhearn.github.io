@@ -24,7 +24,7 @@ val phi = Qubits(n, random).hadamard(0 until n)
 
 The next step, also mirroring Deutsch's algorithm, is to apply the oracle, $$U_f$$, followed by another hadamard operation to the first n bits. Next we apply a new gate which is specially prepared for this circuit and we follow that by another hadamard gate. The last three gates are repeated several times to refine the result. The whole process is summarised this this diagram:
 
-![grovers-circuit](/assets/images/quantum-computing/grovers-circuit.png)
+![grovers-circuit](grovers-circuit.png)
 
 In quko code this looks like this:
 

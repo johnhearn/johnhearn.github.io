@@ -152,15 +152,14 @@ quarto/
 │       └── image.png   # Co-located assets
 ├── notes/              # Notes (same structure)
 ├── series/             # Series listing pages
-├── assets/images/      # Shared images (used by multiple posts)
 ├── _site/              # Build output (git-ignored)
 └── _freeze/            # Cached computation results
 ```
 
 ## Tips
 
-- **Images**: Put images in the post's own folder. Only use `assets/images/` for images shared across multiple posts.
+- **Images**: Put images in the post or note's own folder.
 - **Cross-links**: Link to sibling posts with `../YYYY-MM-DD-slug/` relative paths.
-- **Categories**: Used for filtering on listing pages. Current categories: `blog`, `notes`, `notes-on-uno`.
+- **Categories**: Used for filtering on listing pages. Use subject categories rather than structural categories such as `blog` or `notes`.
 - **Tags**: Free-form, shown in post listings.
 - **Date format**: Use `"YYYY-MM-DD"` in frontmatter.

@@ -14,7 +14,7 @@ The data I used was from one of his more recent papers[^dunbar-2021] so my resul
 
 So yesterday, with a combination of OCR and careful copying, I recovered Dunbar's original data from his paper. Here's a reproduction of a plot of the data - satisfyingly similar to the original.
 
-![Comparison with Dunbar's data taken from his original paper.](/assets/images/dunbar/dunbars data.png){.column-margin}
+![Comparison with Dunbar's data taken from his original paper.](dunbars data.png){.column-margin}
 
 <br/>
 ![Figure 1. Mean group size for individual genera plotted against neocortex ratio (relative to rest of brain; i.e., total brain volume less neocortex). (●) Polygamous anthropoids; (+) monogamous anthropoids; (○) diurnal prosimians; (□) nocturnal prosimians; (△) hominoids.](dunbars data original.png)

@@ -78,7 +78,7 @@ $f: X \times Y \times Z \rightarrow X \times Y \times Z$
 
 When the update rule is applied multiple times, the values of the nodes enter a dynamic wholly defined by the truth table. Since this is a finite system, at some point the values will enter a cycle. The maximum possible cycle length is $2^N$ (or $2^3=8$ in our small example) but often the cycles will be shorter. By tracing the dynamics for each of the possible state values we can draw a graph of their trajectories[^kimatograph].
 
-![The *kimatograph* depicted in the original paper. The state $000$ has been omitted for some reason.](/assets/images/kauffman/kauffman-kimatograph-3-2.png){.column-margin}
+![The *kimatograph* depicted in the original paper. The state $000$ has been omitted for some reason.](kauffman-kimatograph-3-2.png){.column-margin}
 
 ![Example kimatograph from paper](kimatograph-3-2.png){width="450px"}
 
