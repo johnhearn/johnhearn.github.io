@@ -99,6 +99,16 @@ article {
   z-index: 1;
 }
 
+#quarto-margin-sidebar,
+#quarto-margin-sidebar #TOC {
+  pointer-events: none;
+}
+
+#quarto-margin-sidebar a,
+#quarto-margin-sidebar button {
+  pointer-events: auto;
+}
+
 #quarto-margin-sidebar #TOC {
   background-color: $body-bg;
 }
