@@ -105,7 +105,9 @@ article {
 }
 
 #quarto-margin-sidebar a,
-#quarto-margin-sidebar button {
+#quarto-margin-sidebar button,
+#quarto-margin-sidebar .quarto-listing-category,
+#quarto-margin-sidebar .category {
   pointer-events: auto;
 }
 
