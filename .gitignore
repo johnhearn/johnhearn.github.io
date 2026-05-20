@@ -1,9 +1,8 @@
-_site/
-.sass-cache/
-vendor/
-.bundle/
-.jekyll-metadata
-.jekyll-cache
-.DS\_Store
+/.quarto/
+/_site/
+/_freeze/
+
+**/*.quarto_ipynb
+.DS_Store
 .vscode/
 config.codekit
