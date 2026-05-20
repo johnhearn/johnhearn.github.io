@@ -8,10 +8,11 @@ tags:
 - maths
 ---
 
-<p>
-<iframe style="width: 273px;height: 154px;" class="marginnote" src="https://www.youtube.com/embed/Z-Qio-n6yPc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</p> 
-[**Emily Gorcenski - Polynomial Chaos: A technique for modeling uncertainty** - *Polynomial chaos is a somewhat obscure technique that leverages a natural connection between probability distributions and orthogonal polynomial families. This talk demonstrates the technique and its applications*.]{.column-margin}
+::: {.page-columns .page-full .margin-video}
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/Z-Qio-n6yPc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<div class="no-row-height column-margin column-container margin-video-caption"><span><strong>Emily Gorcenski - Polynomial Chaos: A technique for modeling uncertainty</strong> - <em>Polynomial chaos is a somewhat obscure technique that leverages a natural connection between probability distributions and orthogonal polynomial families. This talk demonstrates the technique and its applications</em>.</span></div>
+:::
 
 *(The Julia code for this blog is available in my GitHub notebooks repo and online [here](https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/master/Poly%20Chaos%20Approximation.ipynb){target="_blank"}.)*
 

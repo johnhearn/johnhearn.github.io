@@ -39,10 +39,11 @@ At about the same time that Wolfram was publishing his book, [Dave Snowden](http
 
 Each domain in this framework has a set of techniques and methods which can be applied on a contextual basis. There is a clockwise drift associated with improved methods and experience and a counter-clockwise drift when knowledge is lost.
 
-<p>
-<iframe style="width: 273px;height: 154px;" class="marginnote" src="https://www.youtube.com/embed/4o_TnYmDHsg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</p> 
-[**Doctrine, domesticity and delinquency; returning Agile to the Wild** - One of Dave Snowden's many interesting talks  - ´*The cat is domestic but still wild, switch to agility instead of Agile*´.]{.column-margin}
+::: {.page-columns .page-full .margin-video}
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/4o_TnYmDHsg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<div class="no-row-height column-margin column-container margin-video-caption"><span><strong>Doctrine, domesticity and delinquency; returning Agile to the Wild</strong> - One of Dave Snowden's many interesting talks - <em>The cat is domestic but still wild, switch to agility instead of Agile</em>.</span></div>
+:::
 
 Interesting, [according to Snowden](https://www.youtube.com/watch?v=l4-vpegxYPg), agile organisations tend to be constantly on the transition between the complex and complicated domains, and in fact this is necessarily so: complex systems are where the interesting things tend to happen but they are also unpredictable. Agile practices pull pieces of work from the complex domain, back into the complicated domain, or even into the obvious one, so that it can be treated in a single, small step, played-out and evaluated. This is what agility means. Small teams are employed, again to reduce self-interactions and, hence, simplify the system.
 

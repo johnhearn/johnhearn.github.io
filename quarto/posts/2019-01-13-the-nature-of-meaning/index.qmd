@@ -20,31 +20,34 @@ With that in mind I guess I'm primed to pick up on similar ideas[^car] and in th
 ![[Agile Software Development](https://www.goodreads.com/book/show/942577.Agile_Software_Development) by [Alisdair Cockburn](https://twitter.com/TotherAlistair)](agile-software-development-book.jpg){.column-margin}
 I'd like to start with Alisdair Cockburn's arguments for building a shared vocabulary in his book "[Agile Software Development](https://www.goodreads.com/book/show/942577.Agile_Software_Development)". Through a series of examples he demonstrates what he calls the **impossibility of communication without shared experience**. Fundamentally the vocabulary we use to express knowledge or concepts relies on the labels that we associate with them. For those label to have any meaning and for effective communication to take place then they must be shared with others and refer to the same concepts, something that is only possible through shared experience. This is why he advocates for **fluid and continuous team interaction during a project to build that shared experience**. This idea, I take it, was the forebearer to the DDD practices advocating a ubiquitous[^ubiquitous] language and clear context for software models.
 
-<p>
-<iframe style="width: 273px;height: 154px;" class="marginnote" src="https://www.youtube.com/embed/7XYnNGOboe8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</p> 
-[**There Is No Moon If We Close Our Eyes** - a reference to Einstein’s question in relation to the subjectiveness of quantum mechanics “Do you really believe that the moon isn’t there when nobody looks?”]{.column-margin}
+::: {.page-columns .page-full .margin-video}
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/7XYnNGOboe8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<div class="no-row-height column-margin column-container margin-video-caption"><span><strong>There Is No Moon If We Close Our Eyes</strong> - a reference to Einstein’s question in relation to the subjectiveness of quantum mechanics “Do you really believe that the moon isn’t there when nobody looks?”</span></div>
+:::
 
 Sometimes Cockburn's descriptions take a very slightly mystical tone (which I like) but Chris Fields and Riccardo Manzotti take it to another level in their conversation with the interesting title ["There Is No Moon If We Close Our Eyes"](https://www.youtube.com/watch?v=7XYnNGOboe8) where they talk explicitly about the nature of communication and how it relies entirely on ones own personal perception[^umwelt]. Riccardo introduces the idea of the *intimacy of knowing*, that is knowledge being fundamentally personal to the observer and, reiterating Cockburn's assertions, **impossible, even in principle, to communicate perfectly**. This means that communication, and indeed information itself, by its nature, must be related by an overlap of experiences to have any meaning whatsoever. This is very easy for programmers to understand. For example **a variable cannot have any meaning outside the context of its use** and therefore only represents actual information inside that context.
 
-<p>
-<iframe style="width: 273px;height: 154px;" class="marginnote" src="https://www.youtube.com/embed/EbIEtV_31-w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</p>
-[**What Do You Mean?** - [@KevlinHenney](https://twitter.com/KevlinHenney)’s [@kandddinsky](https://twitter.com/kandddinsky) talk on semantics, DDD, epistemology, cognition, semiotics, context, design, code, architecture, creativity, learning, etc.]{.column-margin}
+::: {.page-columns .page-full .margin-video}
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/EbIEtV_31-w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<div class="no-row-height column-margin column-container margin-video-caption"><span><strong>What Do You Mean?</strong> - <a href="https://twitter.com/KevlinHenney">@KevlinHenney</a>’s <a href="https://twitter.com/kandddinsky">@kandddinsky</a> talk on semantics, DDD, epistemology, cognition, semiotics, context, design, code, architecture, creativity, learning, etc.</span></div>
+:::
 
 Kevlin Henney also brings up this point in his talk "[What do you mean?](https://twitter.com/KevlinHenney/status/1078315354324127745)" and picks up on the ironic misuse of the word *semantics* and introduces the field of *semiology*: the difference between the signified and the signifier[^encodings]. These signifiers are usually represented by visual symbols but could take any sensory form. Crucially, symbols can be interpreted differently by different people in different contexts. He gives the example of the different regional meanings of the word "dinner" which have caught me out many a time coming from Cornwall where, like in the north of England, it means the midday rather than the evening meal. He also points out that lazy usage of words like "value" vs "[estimated](../2018-11-03-estimate-everything/) value" have a crucial importance to how we approach a subject. As mentioned earlier the word *ubiquitous* used in DDD to share context is also inappropriate, although understood.
 
-<p>
-<iframe style="width: 273px;height: 154px;" class="marginnote" src="https://www.youtube.com/embed/Mscn8QBu2Ws" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</p>
-[**Beware double meanings when you talk science** - It’s great to share your expertise with a wider audience, but it helps if you speak their language.]{.column-margin}
+::: {.page-columns .page-full .margin-video}
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/Mscn8QBu2Ws" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<div class="no-row-height column-margin column-container margin-video-caption"><span><strong>Beware double meanings when you talk science</strong> - It’s great to share your expertise with a wider audience, but it helps if you speak their language.</span></div>
+:::
 By coincidence [another video](https://www.youtube.com/watch?v=Mscn8QBu2Ws) came up in a similar vein. Words such as *theory*, *determine* and *significant* have very specific meanings in the scientific community and may be different to the meanings that are probably given to them by a member of the public. If allowance is not made for different interpretations then misunderstandings will be inevitable.
 
 On a different tack but related to the significance of symbols there was a [twitter storm](https://twitter.com/GaryMarcus/status/1065280340669816832) followed by an article by Gary Markus called "[Why Robot Brains Need Symbols](http://nautil.us/issue/67/reboot/why-robot-brains-need-symbols)" on the necessity of symbols for intelligence. I happen not to agree with his analysis but the idea of symbols comes up again and again in the realm of artificial intelligence. I like to think about the ground breaking work of DeepMind on their [AlphaZero](https://en.wikipedia.org/wiki/AlphaZero) project. AlphaZero is a general reinforcement learning system which taught itself to play Go and then Chess. What interests me in this context is not that a weighted neural network plays chess and not its (state-of-the-art) learning algorithm, it's the fact that **the resulting game play exhibits what could be considered *rational* behaviour**. That behaviour emerges from the training and actually doesn't use symbols to do it. It's logical play is NOT the logic of mathematics. Or maybe it is, somewhere deep within its neural net.
 
-<p>
-<iframe style="width: 273px;height: 154px;" class="marginnote" src="https://www.youtube.com/embed/GEf6X-FueMo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</p>
+::: {.page-columns .page-full .margin-video}
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/GEf6X-FueMo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+:::
 
 This deep emergent rationality could be just a hint of what I believe Jordan Peterson is calling our [a priori framework](https://youtu.be/GEf6X-FueMo?t=4491), imparted to us not only by experience but also by stories and culture. This is something which is necessary in order for us to be able to **make sense of a chaotic (as in *overwhelmingly complex*) world** and reduce the number of variables down to something tractable. This ties back to the ideas of perception presented by de Bono and contrasts starkly with the pragmatic, if rather glib, rationalism presented by Sam Harris in this same debate.
 
