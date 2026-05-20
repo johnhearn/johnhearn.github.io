@@ -23,11 +23,9 @@ First some terminology. Kauffman refers to his net as "*a binary (on-off) device
 
 There are $N$ nodes and each node is attached to $K$ other nodes. By way of example Kauffman uses a simple network with 3 nodes and 2 connections.
 
-[The example that Kauffman uses in the paper is a (N=3,K=2) network. By necessity it is a complete graph and is small enough to be worked through by hand.]{.column-margin}
-
 ![Comparison with figure from the original paper which includes the truth table for each node.](kauffman-network-3-2.png){.column-margin}
 
-![Example network from paper](network-3-2.png){width="250px"}
+![The example that Kauffman uses in the paper is a (N=3,K=2) network. By necessity it is a complete graph and is small enough to be worked through by hand.](network-3-2.png){width="250px"}
 
 The network is allowed to evolve in a particular way:
 
