@@ -2,12 +2,18 @@
 title: "About"
 ---
 
-This site is the property of the author and any opinions are his own.
+I'm John Hearn. I write about software, systems, mathematics, organisations, and the models we use to make sense of things.
 
-It is generated using the [Quarto](https://quarto.org) publishing system.
+My centre of gravity is software engineering, but I am usually more interested in the ideas around it: how people think, communicate, learn, estimate, design, test, and make trade-offs inside complex systems; how we know what we think we know; where our models help or mislead us; and what simple structures can reveal about the nature of things.
+
+I tend to learn by rebuilding things for myself, so the writing here is a mixture of essays, worked examples, simulations, and notes. The opinions are my own, and provisional. Writing is partly how I find out what I think.
+
+## About the site
+
+The site is generated using the [Quarto](https://quarto.org) publishing system.
 
 The style is inspired by the [Tufte-CSS](https://github.com/edwardtufte/tufte-css) theme, a natural extension of the work done by Edward Tufte and his collaborators who created a CSS file that allows web writers to use the same simple and elegant style employed in his published materials.
 
-The style uses liberal margin notes as an alternative to foot notes to bring additional detail closer to the relevant text.
+The style uses liberal margin notes as an alternative to footnotes to bring additional detail closer to the relevant text.
 
-Tufte is best known for his [analysis](https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001yB) of PowerPoint slides used by NASA engineers leading up to the Challenger disaster. This was part of a general critisism of presentation style (PowerPoint/Keynote) slides as a tool for communication, suggesting that they tend to be used for persuasion rather that to inform. I have some sympathy for that view.
+Tufte is best known for his [analysis](https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001yB) of PowerPoint slides used by NASA engineers leading up to the Challenger disaster. This was part of a general criticism of presentation style (PowerPoint/Keynote) slides as a tool for communication, suggesting that they tend to be used for persuasion rather than to inform. I have some sympathy for that view.
