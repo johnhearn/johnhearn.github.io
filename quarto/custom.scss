@@ -58,6 +58,7 @@ $font-size-base: 1.1rem;
   align-self: start;
 }
 
+.margin-video-caption > span::before,
 .margin-caption::before {
   content: "\2190";
   display: inline-block;
@@ -72,6 +73,14 @@ $font-size-base: 1.1rem;
 
 .column-margin .margin-caption::before {
   content: "\2191";
+}
+
+@media (max-width: 767.98px) {
+  .margin-video-caption > span::before,
+  .margin-caption::before,
+  .page-columns:has(> p > img) > .column-margin.column-container > span::before {
+    content: "\2191";
+  }
 }
 
 // Quarto gives all margin content a very high z-index, which lets notes and
