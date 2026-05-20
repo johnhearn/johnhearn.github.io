@@ -1,5 +1,5 @@
 ---
-categories: [note]
+categories: [statistics, simulation, games]
 title: "Validating Euchre Bidding Thresholds with Monte Carlo Simulation"
 author: "John"
 date: "2026-03-16"

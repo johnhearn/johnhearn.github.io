@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [modelling, science]
 title: "A map is a bit like the terrain"
 description: When is a map useful? When is it not?
 date: "2024-09-17 08:30:00 +02:00"

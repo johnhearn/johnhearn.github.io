@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [software-architecture, programming-languages]
 title: Native µservices with Kotlin, Spark and Graal
 description: Combining SparkJava, Graal and Kotlin.
 date: "2018-11-14 09:08:00 +01:00"

@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [programming-languages]
 name: using-julia-in-jupyter
 title: Using Julia From Jupyter 
 description: How to install Jupyter on Mac using Homebrew and configure it to use the Julia kernel.

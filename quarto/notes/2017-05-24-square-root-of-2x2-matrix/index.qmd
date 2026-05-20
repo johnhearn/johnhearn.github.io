@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [mathematics]
 name: square-root-of-2x2-matrix
 title: Square root of 2x2 matrix using basic algebra
 date: "2017-05-24 08:22:00 +02:00"

@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [mathematics, complexity-systems, quantum-computing]
 title: Matrices of Boolean Nets
 description: Matrices representing boolean nets can shed some light on their properties with nice links to quantum computing and category theory.
 date: "2024-12-17 17:03:00 +01:00"

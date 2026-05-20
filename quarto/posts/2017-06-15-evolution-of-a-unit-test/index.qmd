@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [software-testing, software-engineering]
 name: evolution-of-unit-test
 title: Evolution of a Unit Test
 description: Example of the evolution of a real unit test over the course of a morning.

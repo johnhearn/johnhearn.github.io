@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [software-engineering, philosophy]
 title: Flow and Cognitive Load
 description: Falling over our own terminology
 date: "2024-02-06 13:30:00 +01:00"

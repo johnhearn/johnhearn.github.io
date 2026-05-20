@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [science, statistics]
 title: "Dunbar's number deconstructed (again)"
 description: When linear regression is taken too far.
 date: "2024-09-17 08:30:00 +02:00"

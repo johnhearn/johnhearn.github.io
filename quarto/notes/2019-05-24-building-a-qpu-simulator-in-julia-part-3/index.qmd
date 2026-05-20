@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [quantum-computing, programming-languages]
 name: building-a-qpu-simulator-in-julia-part-3
 title: Building a QPU simulator in Julia - Part 3
 description: Improving performance.

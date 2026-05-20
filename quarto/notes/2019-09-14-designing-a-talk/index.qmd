@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [communication]
 name: designing-a-talk
 title: Designing a Talk
 description: Do a talk at a conference, they said. 

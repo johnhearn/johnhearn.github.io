@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [modelling, philosophy]
 name: composing-abstraction
 date: "2018-08-29 10:42:40 +0100"
 draft: true

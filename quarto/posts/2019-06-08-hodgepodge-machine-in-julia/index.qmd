@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [complexity-systems, simulation, programming-languages]
 name: hodgepodge-machine-in-julia
 title: The Hodgepodge Machine
 description: A classic 2D cellular automa with Julia.

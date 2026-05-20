@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [ai-coding, software-engineering, organisations]
 title: The Bottleneck Is Not the Keyboard
 description: Writing production code faster is only useful when the rest of the development process can absorb it.
 date: "2026-05-19 00:00:00 +01:00"

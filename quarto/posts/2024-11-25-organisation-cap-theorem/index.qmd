@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [organisations, software-architecture, complexity-systems]
 title: Organisation as a distributed system
 description: An organisation is a distributed system and as such the CAP theorem applies
 date: "2024-11-25 14:56:00 +01:00"

@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [philosophy, communication]
 name: illicit-negative
 title: Illicit Negative Fallacy
 description: The human mind doesn't seem to deal very well with negatives.

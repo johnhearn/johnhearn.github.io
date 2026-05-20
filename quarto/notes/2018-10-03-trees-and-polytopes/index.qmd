@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [mathematics, quantum-computing]
 name: trees-and-polytopes
 title: Trees and Polytopes
 description: Some notes about the similarities between the tensor product and cross-polytopes.

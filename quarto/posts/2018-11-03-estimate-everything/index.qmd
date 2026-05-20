@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [statistics, software-engineering]
 name: estimate-everything
 title: Estimate Everything
 description: The power of estimation is widely denigrated or ignored. That is a shame.

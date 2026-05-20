@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [programming-languages, software-architecture, software-engineering]
 name: stop-using-autowire
 title: Stop Using @Autowire
 description: Some reasons why Spring's @Autowire annotation could be considered a code smell.

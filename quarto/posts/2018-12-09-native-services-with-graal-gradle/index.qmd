@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [software-architecture, programming-languages]
 name: native-services-with-graal-gradle
 title: Native µservices with Graal and Gradle
 date: "2018-12-09 07:52:00 +00:00"

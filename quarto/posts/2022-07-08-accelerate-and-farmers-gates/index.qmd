@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [statistics, software-engineering]
 title: Accelerate and Farmers' Gates
 description: Predictive inference is not enough.
 date: "2022-07-08 20:01:00 +02:00"

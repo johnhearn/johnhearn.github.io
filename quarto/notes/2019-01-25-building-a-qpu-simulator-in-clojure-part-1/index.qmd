@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [quantum-computing, programming-languages, software-testing]
 name: building-a-qpu-simulator-in-clojure-part-1
 title: Building a QPU simulator in Clojure - Part 1
 description: First steps in building a quantum CPU simulator with Clojure and TDD.

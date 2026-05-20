@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [science, statistics, organisations]
 title: "Investigating Dunbar's number"
 description: Dunbar's number is widely references but also widely misunderstood.
 date: "2024-09-10 09:30:00 +02:00"

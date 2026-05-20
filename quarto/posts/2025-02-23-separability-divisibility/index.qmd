@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [mathematics, software-architecture, modelling]
 title: "Two sides of decomposition: separability and divisibility"
 date: "2025-02-23 08:42:00 +01:00"
 draft: true

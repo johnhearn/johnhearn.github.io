@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [software-engineering, philosophy]
 name: quality-and-time
 title: Quality and Time
 description: Digging into the meaning of quality and its relationship with time.

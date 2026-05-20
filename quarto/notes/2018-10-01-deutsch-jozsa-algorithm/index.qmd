@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [quantum-computing]
 name: deutsch-jozsa-algorithm
 title: The Deutsch-Jozsa Algorithm
 description: One of the first quantum algorithms which was shown to be significantly better that any classical counterpart.

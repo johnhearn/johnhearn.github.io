@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [quantum-computing, programming-languages]
 name: building-a-qpu-simulator-in-julia-part-5
 title: Building a QPU simulator in Julia - Part 5
 description: Grover's search algorithm.

@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [mathematics, physics]
 title: A Measure of Alignment
 description: A little mathematical formula for measuring the angular alignment of things
 date: "2024-08-24 19:30:00 +02:00"

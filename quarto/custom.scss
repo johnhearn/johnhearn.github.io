@@ -49,6 +49,12 @@ $font-size-base: 1.1rem;
   margin-right: 0.35em;
 }
 
+.page-columns:has(> p > img) > .column-margin.column-container > span::before {
+  content: "\2190";
+  display: inline-block;
+  margin-right: 0.35em;
+}
+
 .column-margin .margin-caption::before {
   content: "\2191";
 }
@@ -71,4 +77,30 @@ article {
 
 #quarto-margin-sidebar #TOC {
   background-color: $body-bg;
+}
+
+.network-metrics {
+  width: 100%;
+}
+
+.network-metrics table {
+  width: 100%;
+  table-layout: auto;
+}
+
+.network-metrics th:first-child,
+.network-metrics td:first-child {
+  white-space: nowrap;
+  width: 1%;
+}
+
+.network-metrics th:nth-child(2),
+.network-metrics td:nth-child(2) {
+  white-space: nowrap;
+  width: 4rem;
+}
+
+.network-metrics th:nth-child(3),
+.network-metrics td:nth-child(3) {
+  width: auto;
 }

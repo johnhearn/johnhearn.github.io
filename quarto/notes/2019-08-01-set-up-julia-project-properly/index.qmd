@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [programming-languages, software-engineering]
 name: set-up-julia-project-properly
 title: Setup a Julia Project Properly
 description: How to create a project with standard structure, tests and documentation.

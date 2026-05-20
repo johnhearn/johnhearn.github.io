@@ -9,11 +9,11 @@ website:
   navbar:
     left:
       - text: Blog
-        href: index.qmd
+        href: index.html
       - text: Notes
-        href: notes.qmd
+        href: notes.html
       - text: About
-        href: about.qmd
+        href: about.html
   page-footer:
     left: "© John Hearn"
     right:

@@ -5,7 +5,7 @@ modified_time: '2017-08-04T20:36:31.172+02:00'
 thumbnail: https://2.bp.blogspot.com/-t34_2_GX_zw/WS25HAVgWrI/AAAAAAAANVs/hZZ5k2OoRq8Vf9vNIcRlSw1GWu5wWwbHgCLcB/s72-c/uno%2Bsimulation.png
 blogger_id: tag:blogger.com,1999:blog-525051364647796957.post-7278705496644260718
 blogger_orig_url: http://john-hearn.blogspot.com/2017/05/notes-on-machine-learning-playing-uno.html
-categories: [notes-on-uno]
+categories: [machine-learning, games]
 ---
 
 I was playing [Uno](https://en.wikipedia.org/wiki/Uno_%28card_game%29) with my daughter last weekend and wondering about the best strategies. I had also been looking into [TensorFlow](https://www.tensorflow.org/) and, while the ideas and maths is relatively easy, a lack of practical knowledge about machine learning in general was making the reading difficult. So, as so often happens, two became one and I set about using Uno to learn about machine learning using TDD along the way.

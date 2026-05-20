@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [communication, software-architecture]
 name: consider-technical-documentation
 title: Consider Technical Documentation
 description: Visualising a system can lead to more effective communication and better decisions.

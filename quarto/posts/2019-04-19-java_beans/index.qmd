@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [programming-languages, software-engineering]
 name: java-beans
 title: Java Beans
 description: A relic from another age.

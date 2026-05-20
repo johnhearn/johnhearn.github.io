@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [philosophy]
 name: why-ask-why
 title: Why ask why?
 description: A paradox of modern life - take charge of your life but go with the flow.

@@ -1,7 +1,7 @@
 ---
 title: "OOP And Algorithms"
 date: "2017-04-27"
-categories: [blog]
+categories: [software-engineering, programming-languages]
 draft: true
 ---
 

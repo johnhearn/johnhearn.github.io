@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [quantum-computing, programming-languages, mathematics]
 name: building-a-qpu-simulator-in-julia-part-6
 title: Building a QPU simulator in Julia - Part 6
 description: Building a QFT gate.

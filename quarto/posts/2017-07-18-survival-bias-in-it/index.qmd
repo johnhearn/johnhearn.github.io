@@ -1,7 +1,7 @@
 ---
 title: "Survival bias in IT"
 date: "2017-07-18"
-categories: [blog]
+categories: [software-engineering, philosophy]
 draft: true
 ---
 

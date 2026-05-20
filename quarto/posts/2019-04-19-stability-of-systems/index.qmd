@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [complexity-systems, software-engineering]
 name: stability-of-systems
 title: The Stability of Systems
 description: A quote from an ecologist regarding the stability of ecosystems could also apply to software systems.

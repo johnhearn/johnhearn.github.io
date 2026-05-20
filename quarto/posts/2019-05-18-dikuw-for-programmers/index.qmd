@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [philosophy, communication, software-engineering]
 name: dikuw-programmer
 title: DIKUW for Programmers
 description: An explanation for programmers of the concepts behind the decision-making information hierarchy. 

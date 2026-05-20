@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [software-engineering, organisations]
 name: the-good-programmer
 title: The Good Programmer
 description: Some notes on the different meanings of quality.

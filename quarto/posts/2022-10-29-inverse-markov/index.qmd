@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [statistics, modelling]
 title: Inverse Markov
 description: Inferring a model about how stuff moves about
 date: "2022-10-29 08:46:00 +02:00"
@@ -35,10 +35,10 @@ U = ν[2:n,:]
 
 V⁺ = inv(V'V)V'
 
-Pest = V⁺*U
+P̂ = V⁺*U
 ```
 
-This works fairly well but it has problem. The peudo-inverse knows nothing of the contraint on the probabilities which must all be positive. Various workarounds exist but in the end we end up having to fiddle with the numbers to get them all positive in the optimal way.
+This works fairly well but it has problem. The pseudo-inverse knows nothing of the constraint on the probabilities which must all be positive. Various workarounds exist but in the end we end up having to fiddle with the numbers to get them all positive in the optimal way.
 
 Luckily for us, optimisation algorithms for situations like these have also been studied extensively. Julia's [JuMP eco-system](https://jump.dev/), for instance, provides tools which eat these kinds problems for breakfast.
 
@@ -64,14 +64,11 @@ optimize!(model)
 Pest = reshape(value.(p), r,r)
 ```
 
-With this code I've been able to recover a good approximation to the transition matrix in testing, the approximation becomming better with increasing sample size. 
+With this code I've been able to recover a good approximation to the transition matrix in testing, the approximation becoming better with increasing sample size. 
 
 We could give the algorithm an initial hint based on the pseudo-inverse described above but in my experiments the optimisation algorithm is fast enough to not require it. 
 
 The method could be improved by quantifying the uncertainty in the results. On way would be to batch observations and look at the distribution of results. Another might be to apply a bayesian approach using a Dirichlet multinomial as the prior and updating with the observations. A problem for another time.
 
-
-References
-
-[^Lee1965]: <sup><sub>Lee, T. C., Judge, George G., Takayama, T., 1965. On Estimating the Transition Probabilities of a Markov Process. American Journal of Agricultural Economics 47, 742–762. [https://doi.org/10.2307/1236285](https://doi.org/10.2307/1236285)
-[^Lee1968]: <sup><sub>Lee, T. C., Judge, George G., Zellner, A., 1968. Maximum Likelihood and Bayesian Estimation of Transition Probabilities. Journal of the American Statistical Association 63, 1162–1179. [https://doi.org/10.1080/01621459.1968.10480918](https://doi.org/10.1080/01621459.1968.10480918)
+[^Lee1965]: Lee, T. C., Judge, George G., Takayama, T., 1965. On Estimating the Transition Probabilities of a Markov Process. American Journal of Agricultural Economics 47, 742–762. [https://doi.org/10.2307/1236285](https://doi.org/10.2307/1236285)
+[^Lee1968]: Lee, T. C., Judge, George G., Zellner, A., 1968. Maximum Likelihood and Bayesian Estimation of Transition Probabilities. Journal of the American Statistical Association 63, 1162–1179. [https://doi.org/10.1080/01621459.1968.10480918](https://doi.org/10.1080/01621459.1968.10480918)

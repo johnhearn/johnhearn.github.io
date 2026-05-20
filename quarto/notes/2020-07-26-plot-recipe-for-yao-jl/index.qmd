@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [quantum-computing, programming-languages, visualisation]
 name: plot-recipe-for-yao-jl
 title: A Plot Recipe for Yao.jl
 description: A distribution plot for Yao.jl

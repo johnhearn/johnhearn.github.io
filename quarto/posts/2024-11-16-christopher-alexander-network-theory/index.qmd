@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [complexity-systems, modelling, software-architecture]
 title: "Christopher Alexander and Network Theory"
 description: Christopher Alexander's philosophy evolved from an algorithmic to an experience based framework. Can we get the best of both worlds?
 date: "2024-11-16 08:30:00 +01:00"
@@ -15,8 +15,7 @@ In his early work, "_Notes on the Synthesis of Form (1964)_" (abbreviated in the
 
  His thesis was that to solve a design problem it should be reduced to multiple smaller problems and that, crucially, we have been limited to using existing concepts that have come down to us as "_arbitrary historical accidents_" rather than being an optimal description of the situation at hand. At this stage, Alexander’s approach was reductionist and analytical, believing that a design could be synthesised and studied through rigorous structural optimization. He suggested algorithms (precursors to [community structure](https://en.wikipedia.org/wiki/Community_structure) algorithms) to cluster elements together in such a way as to reduce the overall design problem to a hierarchical tree of simpler ones which in turn could be solved and optimised _independently_.
 
-[A figure from NotSoF which shows design variables (small black circles, so-called _nodes_ in the network) and their interactions (lines). The nodes are grouped into clusters (represented as the larger circles).]{.column-margin}
-![Diagrams](diagrams.jpg){width="80%"}
+![A figure from NotSoF which shows design variables (small black circles, so-called _nodes_ in the network) and their interactions (lines). The nodes are grouped into clusters (represented as the larger circles).](diagrams.jpg){width="80%" fig-alt="Diagrams from Notes on the Synthesis of Form showing design variables and their interactions."}
 
 In this work, the clusters of variables Alexander calls "_diagrams_" (which he would later rename to the "_patterns_" which he became famous for) and this is where his thinking began to change. As he states in the preface to later editions:
 
@@ -33,7 +32,7 @@ This is the full and extensive design problem that Alexander studied. Although h
 
 <br/>
 
-::: {style="width:70%"}
+::: {.network-metrics}
 | Metric | Value | Interpretation |
 |---|---:|---|
 | **Average degree** | ~20 | Each node, on average, interacts with 20 other nodes. |

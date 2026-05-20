@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [modelling, statistics]
 title: On not having a map
 description: How much does having a map help when travelling over rugged terrain?
 date: "2024-08-22 21:30:00 +02:00"

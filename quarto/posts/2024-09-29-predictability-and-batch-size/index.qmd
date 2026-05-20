@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [software-engineering, statistics]
 title: "Predictability and batch size"
 description: It turns out that delivery predictability decreases linearly with batch size.
 date: "2024-09-28 18:30:00 +02:00"

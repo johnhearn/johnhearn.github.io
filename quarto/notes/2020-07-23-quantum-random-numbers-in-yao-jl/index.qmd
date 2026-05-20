@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [quantum-computing, programming-languages]
 name: quantum-random-numbers-in-yao-jl
 title: Quantum Random Numbers in Yao.jl
 description: Embarrassingly simple first fling with Yao.jl.

@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [quantum-computing, programming-languages, mathematics]
 name: building-a-qpu-simulator-in-julia-part-8
 title: Building a QPU simulator in Julia - Part 8
 description: Using Julia to build the quantum part of Shor's Algorithm.

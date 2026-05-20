@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [programming-languages]
 title: Comparing Clojure to Kotlin
 description: Take an interesting Clojure example and convert it to Kotlin.
 date: "2018-12-16 19:22:00 +02:00"

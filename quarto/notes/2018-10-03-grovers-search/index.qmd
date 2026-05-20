@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [quantum-computing]
 name: grovers-search-algorithm
 title: Grover's Search Algorithm
 description: At last, a potentially useful quantum algorithm.

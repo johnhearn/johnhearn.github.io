@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [quantum-computing, programming-languages, mathematics]
 name: building-a-qpu-simulator-in-clojure-part-2
 title: Building a QPU simulator in Clojure - Part 2
 description: Adding Neanderthal and complex numbers.

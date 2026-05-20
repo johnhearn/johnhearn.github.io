@@ -1,5 +1,5 @@
 ---
-categories: [blog]
+categories: [organisations, philosophy]
 title: A Little Every Day
 description: Tackling daunting challenges
 date: "2023-02-22 10:30:00 +01:00"

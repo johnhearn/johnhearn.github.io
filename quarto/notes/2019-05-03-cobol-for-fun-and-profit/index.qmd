@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [programming-languages]
 name: cobol-for-fun-and-profit
 title: COBOL for Fun and Profit 
 description: Random question - Can we compile and run COBOL on a Mac? Yes, of course.

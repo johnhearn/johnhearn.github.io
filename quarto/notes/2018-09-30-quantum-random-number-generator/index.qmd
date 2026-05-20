@@ -1,5 +1,5 @@
 ---
-categories: [notes]
+categories: [quantum-computing]
 name: quantum-random-number-generator
 title: Quantum Random Number Generator
 description: The simplest quantum algorithm.
