@@ -1,6 +1,7 @@
 ---
 categories: [organisations]
 name: teal-organisation-in-the-methodist-tradition
+title: Teal Organisation in the Methodist Tradition
 description: Comments on the similarity between the way Methodists organise themselves and so-called Teal organisations.
 date: "2018-08-30 00:32:00 +00:00"
 ---

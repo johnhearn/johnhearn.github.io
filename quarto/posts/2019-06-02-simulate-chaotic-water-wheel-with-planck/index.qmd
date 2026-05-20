@@ -24,4 +24,4 @@ It took a while to tune the size of the balls representing the water flow and th
 
 Anyway here's the result.
 
-<!-- Interactive demo was hosted at /assets/frames/chaos-wheel-planck.html but is not yet migrated -->
+<iframe title="Chaotic waterwheel simulation" width="700" height="520" src="chaos-wheel-planck.html" frameborder="0"></iframe>
