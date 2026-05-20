@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2024-09-10">
+<meta name="description" content="Dunbar’s number is widely references but also widely misunderstood.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Investigating Dunbar’s number – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,35 +70,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -139,7 +110,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +121,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -172,22 +143,50 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#fitting-the-data" id="toc-fitting-the-data" class="nav-link active" data-scroll-target="#fitting-the-data">Fitting the data</a>
+  <ul class="collapse">
+  <li><a href="#log-log-transformation" id="toc-log-log-transformation" class="nav-link" data-scroll-target="#log-log-transformation">Log-log transformation</a></li>
+  <li><a href="#distribution-of-errors" id="toc-distribution-of-errors" class="nav-link" data-scroll-target="#distribution-of-errors">Distribution of errors</a></li>
+  </ul></li>
+  <li><a href="#confirmation-bias" id="toc-confirmation-bias" class="nav-link" data-scroll-target="#confirmation-bias">Confirmation bias</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Investigating Dunbar’s number</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">science</div>
+    <div class="quarto-category">statistics</div>
+    <div class="quarto-category">organisations</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Dunbar’s number is widely references but also widely misunderstood.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 10, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +196,92 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
+<p>In a seminal paper<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> from 1992, <a href="https://en.wikipedia.org/wiki/Robin_Dunbar">Robin Dunbar</a> extrapolated from the brain measurements of different animal species and their typical social group sizes, to make a now famous prediction about human social group size. His analysis led him to what has become known as <em>Dunbar’s number</em>, 150, which has had multiple <a href="https://en.wikipedia.org/wiki/Dunbar%27s_number#Applications">applications</a> in different organisational contexts.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Dunbar, R. I. M. ‘Neocortex Size as a Constraint on Group Size in Primates’. Journal of Human Evolution 22, no. 6 (1 June 1992): 469–93. doi: <a href="https://doi.org/10.1016/0047-2484(92)90081-j">10.1016/0047-2484(92)90081-j</a>.</p></div><div id="fn2"><p><sup>2</sup>&nbsp;Patrik Lindenfors, Patrik Lindenfors, Andreas Wartel. ‘“Dunbar’s Number” Deconstructed’. Biology Letters 17, no. 5 (1 May 2021): 20210158–20210158. <a href="https://doi.org/10.1098/rsbl.2021.0158">10.1098/rsbl.2021.0158</a>.</p></div></div><p>Prompted by a definition in this <a href="https://martyoo.medium.com/stop-team-topologies-fd954ea26eca">blog post</a>, and out of pure curiosity, I searched for a bit more information and stumbled on an relatively recent <a href="https://theconversation.com/dunbars-number-why-my-theory-that-humans-can-only-maintain-150-friendships-has-withstood-30-years-of-scrutiny-160676">article by him</a> in which he gives an overview of his research. The article sounded a little snarky to me and snarkiness continued in the comments. It seems he was responding to some research<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> published by a group at Stockholm University who ran a set of modern statistical tools over the original dataset and were unable to draw the same conclusions that Mr Dunbar had. This group then responded to Dunbar’s article by writing another <a href="https://theconversation.com/why-we-dispute-dunbars-number-the-claim-humans-can-only-maintain-150-friendships-161944">article</a> explaining their position in more detail.</p>
+<p>Since working with real data and reading the work of different research groups is a fantastic way to learn, I decided to do a bit of amateur data analysis. I learned <em>a lot</em> and hopefully by writing down what I saw, I’ll learn even more.</p>
+<section id="fitting-the-data" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="fitting-the-data">Fitting the data</h2>
+<blockquote class="blockquote">
+<p>On a double log-log plot, my grandmother fits on a straight line - <a href="https://en.wikiquote.org/wiki/Fritz_Houtermans">Fritz Houtermans</a></p>
+</blockquote>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="">Much of the mathematics of this section can be found in Rayner, J. M. V. ‘Linear Relations in Biomechanics: The Statistics of Scaling Functions’. Journal of Zoology 206, no. 3 (July 1985): 415–39. <a href="https://doi.org/10.1111/j.1469-7998.1985.tb05668.x">10.1111/j.1469-7998.1985.tb05668.x</a>.</span></div></div>
+<p>Here’s an example of a similar data set to the one used in the original studies. The data is tabulated in the paper but it’s a lot to copy out so I took a similar data set published by the same author in a later paper. Figure 1 is a plot of the data. For multiple species of animal, it shows the ratio of the size of the neocortext to the size of the rest of the brain (<span class="math inline">\(C_r\)</span>) on the horizontal axis and the average social group size (<span class="math inline">\(N\)</span>) for that species on the vertical axis.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="ncr vs gs.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Figure 1: a plot of neocortext ratio <span class="math inline">\(N_r\)</span> against average social group size <span class="math inline">\(G\)</span> for 39 animal species.</figcaption>
+</figure>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+<p>Neither Dunbar nor his critics used the data in this form however, they used its logarithm. This is a common technique used under the assumption that it will make skewed data (as this is) appear more symmetrical (normal). There is no explanation of the reasons for the transform in this particular case. Nonetheless it has an important effect on the results. We’ll come back to this point later. Here’s the transformed data.</p>
+
+<div class="no-row-height column-margin column-container page-columns page-full"><div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="dunbars data.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Comparison with Dunbar’s data taken from his original paper.</figcaption>
+</figure>
+</div></div><div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="log10ncr vs log10gs.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Figure 2: a plot of <span class="math inline">\(log_{10}N_r\)</span> against <span class="math inline">\(log_{10}G\)</span> for the same 39 animal species.</figcaption>
+</figure>
+</div>
+<p>I’ve presented it in exactly the same way as Dunbar’s paper. Although the data is slightly different the similarity is clear. Also, it does <em>look</em> a bit more like a straight line now and the variance is a little less pronounced. I’m not sure how valid this kind of subjective judgement is.</p>
+<p>Figure 3 overlays Dunbar’s original result onto this data set and there is no surprise. The line (the equation for which is given explicitly in the paper) is projected out to show the predicted human mean group size which can be seen to be close to 150. This is the source of Dunbar’s number.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="dunbars result.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Figure 3: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102).</figcaption>
+</figure>
+</div>
+<p>I’m tried to reproduce this result but for now we note that for the analysis to work we have to make the strong assumption that an errors in the measurements are normally distributed. The choice of using the log-log transformation another strong assumption that we’re taking as fact for the moment but we will return to it.</p>
+<p>The parameters of the line are determined using linear regression which attempts to find the best straight line through the points. The question arises: what is the best straight line? It turns out that there are multiple ways of defining best fit and depending on which you chose you can get different results.</p>
+<p>The most common type of linear regression is most commonly called <strong>Ordinary Least Squares</strong><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> (OLS) where the the best line is chosen to be the one that minimises the squares of the vertical difference between each point and itself. This is the most basic regression technique taught in statistics classes.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;Dunbar calls it LSR (Least Squares Regression) in his paper.</p></div></div><div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="">For more discussion about regression with <em>known</em> error weights in both axes for each sample see this <a href="https://doi.org/10.1119/1.1632486">paper</a>. In this case we don’t know the error margins in the data.</span></div></div>
+<p>The problem with OLS, as Dunbar points out in his original paper and again in his recent article, is that by minimising only the vertical distances there is an implicit assumption that there are no errors in the measurements on the x-axis, which is not true in this case.</p>
+<p>To take these (unknown) error margins into account in both axes we can choose to minimise the <em>geometric</em> distance between the points and the line. This is called <strong>Geometric Mean Regression</strong><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> in much of the modern literature. The geometric distance is the <em>area</em> between the point and the line, the triangle spanning both the distance along the x-axis and the distance along the y-axis.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;Dunbar calls it RMA (Reduced Major Axis) but just as heads up it turns out the the web page that Dunbar references in his article to explain RMA is wrong. For a neat overview of the main types of regression I’d recommend the paper by Xu, S. (2014). A Property of Geometric Mean Regression. The American Statistician, 68(4), 277–281. doi:<a href="https://doi.org/10.1080/00031305.2014.962763">10.1080/00031305.2014.962763</a>.</p></div></div><p>One <a href="https://doi.org/10.1016/0096-3003(94)00161-V">cited</a> problem with geometric regression is the extra difficulty in the interpretation of confidence intervals for the parameters. I haven’t seen that as being any more of a problem for this type of regression than for any other but I might be wrong. Please read the paper if you are interested.</p>
+<p>I did both geometric and OLS regression to compare the difference. Figure 4 shows the results of both types of linear regression transformed back into the original, untransformed scales.</p>
+<p><br> <img src="ols vs gmr.png" class="img-fluid" alt="Figure 4: plot showing the regression results of both OLS and Geometric regressions with a 95% confidence interval."></p>
+<p>This confirms Dunbar’s assertion that OLS considerably <em>underestimates</em> the slope of the regression line, as compared to geometric one.</p>
+<p>There are two other important things to note here beyond the difference between the two lines. First notice the upward curve of the regression lines over the original data. This is a result of the log transformations, essentially producing an approximately exponential fit due to the differing scales of the two axes.</p>
+<p>The second thing to notice is the wide spread of the confidence interval for this line. This is also exaggerated by the log transformation. In fact, the validity of the confidence intervals after transformation is highly questionable. See <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4120293/">Feng et al.</a> for more details.</p>
+<p>Notwithstanding the above caveats, what happens if we extrapolate the curve in an attempt to predict a typical group size for humans?</p>
+<p><br> <img src="predict.png" class="img-fluid" alt="Figure 5: plot extending the 95% confidence interval of the geometric mean regression out to the measured neocortex ratio for humans (4.102)."></p>
+<p>A direct extrapolation of this data using the geometric fit gives a group size prediction for humans as very approximately ~100. This well below Dunbar’s result but some difference should be expected due to the different data. It does however highlight the disproportionate effect of the log-log transformation on the prediction. It also puts into question the conceptual validity of extrapolating so far outside the available data. Remember that this is the spread of the confidence interval of just the mean itself and does not extrapolate from the variance seen in the rest of the data. This is a key point and an interesting realisation for me personally.</p>
+<p>Until now we have collected a series of assumptions about the data that we’ll look at in turn in light of the analysis.</p>
+<section id="log-log-transformation" class="level3">
+<h3 class="anchored" data-anchor-id="log-log-transformation">Log-log transformation</h3>
+<p>It is evident that by taking the log-log transformation of the data we have made the confidence intervals of the predictions extremely wide. Was this choice justified? Let’s take a look at the distributions of the data before and after the transformation. <br> <img src="data distributions.png" class="img-fluid" alt="Figure 6: Distribution of original and log transformed neocortex ratio, N_r, and mean group size, G."></p>
+<p>They show that the transformation has gone some way to make the distributions more symmetrical, especially the group size. It might be interesting to see the results without taking the log of the neocortex ratio but it’s confirmed that this transformation does make sense in this case, even though it does introduce other problems elsewhere. It’s a trade-off I guess.</p>
+</section>
+<section id="distribution-of-errors" class="level3">
+<h3 class="anchored" data-anchor-id="distribution-of-errors">Distribution of errors</h3>
+<p>It was assumed that the errors in the measurements in both axes were normally distributed. Figure 7 takes a closer look at the distributions of the residuals of the log transformed data against their regression line.</p>
+<p><br> <img src="residuals distribution.png" class="img-fluid" alt="Figure 7: Q-Q plot comparing the standardised residuals with a normal distribution N(0,1)."></p>
+<p>This residuals are reasonably close to a normal distribution which is one possible justification for the log-log transformation on the data.</p>
+<p>We would like to check for the presence of <a href="https://en.wikipedia.org/wiki/Homoscedasticity_and_heteroscedasticity">heteroscedasticity</a> which can cause ordinary least squares estimates of the variance (and, thus, standard errors) of the coefficients to be biased, possibly above or below the true of population variance. A quick plot of the residuals doesn’t give us too much cause for concern.</p>
+<p><br> <img src="residuals plot.png" class="img-fluid" alt="Figure 8: Plot of the residuals."></p>
+<p>We might like to check that more formally with a Breusch-Pagan test. Again this can be taken as further justification for the log-log transformation.</p>
+</section>
+</section>
+<section id="confirmation-bias" class="level2">
+<h2 class="anchored" data-anchor-id="confirmation-bias">Confirmation bias</h2>
+<p>More recently additional evidence has been gathered to support the original Dunbar number of 150. As we’ve seen, this number is at best a very rough guess of the mean and doesn’t include the potential variance over the extrapolated range. Nonetheless there is a very real possibility of confirmation bias in later results. The phenomena starts when people latch on to these specific numbers and then <a href="https://teamtopologies.com/news-blogs-newsletters/dunbars-numbers-and-communities-of-practice-q-and-a-with-emily-webber">send</a> their correlates to Dunbar who then catalogues them as supporting evidence.</p>
+<p>What have military units got to do with Christmas card lists? Christmas card lists are definitely a social phenomenon but it if far from clear which band they should be in. If the results had been 50, say, then it would have been taken as evidence for that smaller group size. It’s a post-hoc correlation.</p>
+</section>
+<section id="conclusion" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>So, after all this analysis, I learnt a great deal about regression considerations. Least squares never seemed so controversial until I started this. My results came in below Dunbar’s original results. This means nothing, of course, but it does lend some credence to the critics suspicions which would be compatible with my little investigation here.</p>
+<p>I also learnt a lot about what can and can’t be said about Dunbar’s number as a concept.</p>
+<p>First, none of this says anything about the nested structure of the group sizes and other predictions made subsequently, which have also been used widely<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;The Team Topologies book uses Dunbar’s work as a basis for team size discussions. For them, “Dunbar’s number” (as defined in the glossary) actually refers to results from Dunbar’s <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1111/brv.12730">later work on nested group sizes</a> and is related but different to Dunbar’s number as usually understood.</p></div></div><p>Secondly, it is most <strong>definitely not a maximum or upper limit</strong>, as often <a href="https://martyoo.medium.com/stop-team-topologies-fd954ea26eca">stated</a>. We need to be careful not to confuse the confidence interval of the sample mean with a measure of confidence of the prediction.</p>
+<p>It is clear to me now that stating Dunbar’s number as 150 is misleading and misses a great deal of context. Even assuming the validity of the model and the regression, it is a predicted mean value extrapolated far outside the underlying data with extremely wide error bars and <strong>needs to be treated with a great deal of caution</strong>. The prediction has even wider margins to the point of losing some of its meaning as a useful concept.</p>
+
+
+</section>
+
+
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

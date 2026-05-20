@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2017-05-15">
+<meta name="description" content="Some observations about the relationship between well known programming principles.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>SOLID Principles, Cohesion and Coupling – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,65 +70,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -139,7 +81,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +92,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -172,22 +114,50 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#s---separation-of-responsibilities" id="toc-s---separation-of-responsibilities" class="nav-link active" data-scroll-target="#s---separation-of-responsibilities">S - Separation of responsibilities</a></li>
+  <li><a href="#i---interface-segregation" id="toc-i---interface-segregation" class="nav-link" data-scroll-target="#i---interface-segregation">I - Interface segregation</a>
+  <ul class="collapse">
+  <li><a href="#the-key-takeaway-is-that-the-interface-segregation-principle-minimises-coupling-while-the-single-responsibility-principle-maximises-cohesion." id="toc-the-key-takeaway-is-that-the-interface-segregation-principle-minimises-coupling-while-the-single-responsibility-principle-maximises-cohesion." class="nav-link" data-scroll-target="#the-key-takeaway-is-that-the-interface-segregation-principle-minimises-coupling-while-the-single-responsibility-principle-maximises-cohesion.">The key takeaway is that the <strong>interface segregation principle minimises coupling</strong> while the <strong>single responsibility principle maximises cohesion</strong>.</a></li>
+  </ul></li>
+  <li><a href="#d---dependency-inversion" id="toc-d---dependency-inversion" class="nav-link" data-scroll-target="#d---dependency-inversion">D - Dependency inversion</a></li>
+  <li><a href="#o---openclosed-principle" id="toc-o---openclosed-principle" class="nav-link" data-scroll-target="#o---openclosed-principle">O - Open/closed principle</a></li>
+  <li><a href="#l---the-liskov-substitution-principle" id="toc-l---the-liskov-substitution-principle" class="nav-link" data-scroll-target="#l---the-liskov-substitution-principle">L - the Liskov substitution principle</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">SOLID Principles, Cohesion and Coupling</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">software-engineering</div>
+    <div class="quarto-category">software-architecture</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Some observations about the relationship between well known programming principles.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 15, 2017</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +167,66 @@ window.Quarto = {
 </header>
 
 
+<p>A few years ago I was given a coding problem as part of a recruitment process for a very well known software consultancy. Fair enough, I thought. Doesn’t seem too hard, I thought. A couple of hours and it’ll be in the bag.</p>
+<p>I failed the test and was thrown out on my ear with very little ceremony.</p>
+<p>What went wrong? Easy, two things…. Object Oriented Design and TDD skills.</p>
+<p>The solution I submitted had good unit-test coverage, was easy enough to understand, built incrementally, self-documenting, and all the rest it. I’d even go so far as to say it was reasonably well designed by my own pragmatic criteria. It even worked.</p>
+<p>However it did not stand up to scrutiny. A public getter here, a redundant test there, an integration test skulking amongst the unit tests, and that was the end of it. Literal failure.</p>
+<p>How did this happen? I have been doing (or, now it seems, failing to do) OOD for over 15 years. I have read more than many on the subject and worked hard to understand the principles. I am a convert to the cause but somehow my skills still didn’t cut the mustard. Likewise TDD. (To my defense, although my day job as technical manager in a bank should expose me daily to these skill sets, it doesn’t.)</p>
+<p>So… back to the books (one was recommended to me by the recruiter) and the trusty IDE to hone those skills. This series of posts is to document the journey.</p>
+<p>Back to basics. What is OOD? We all know some textbook examples: a <code>Car</code> is a <code>Vehicle</code> and has <code>Wheels</code>, <code>Amplifiers</code> depend on <code>Speakers</code>, etc. Choose your metaphor. I’m not here to go over that. I’m interested in the design skills to design good systems and they rarely have anything to do with cars and wheels but rather processors and parsers and formatters and caches and tasks and orders…..</p>
+<p>So lets start with the basic <a href="https://en.wikipedia.org/wiki/SOLID_%28object-oriented_design%29"><strong>SOLID principles</strong> of OOD</a>. There are a million books and internet articles on these principles first proposed in the early 2000s. I don’t want to rehash that but rather document some insights I have gained by going back over them and to the skills required to put them into practice. SOLID starts with S….</p>
+<section id="s---separation-of-responsibilities" class="level2">
+<h2 class="anchored" data-anchor-id="s---separation-of-responsibilities">S - Separation of responsibilities</h2>
+<p>A seemingly simple principle and easy to apply, right? Wrong. After going back over the basic definitions, it turns out there is a great deal of subtlety here. Robert C Martin’s justification for this principle:</p>
+<blockquote class="blockquote">
+<p>“If a class has more than one responsibility, then the responsibilities become coupled. Changes to one responsibility may impair or inhibit the class’ ability to meet the others. This kind of coupling leads to fragile designs that break in unexpected ways when changed.”</p>
+</blockquote>
+<p>… however later he goes on to state,</p>
+<blockquote class="blockquote">
+<p>“If, on the other hand, the application is not changing in ways that cause the the two responsibilities to change at different times, then there is no need to separate them.”</p>
+</blockquote>
+<p>Understanding subtle contradictions like these is actually where the “skill” in OOP lies. Sweeping statements about separation of concerns don’t hold if those concerns are so tightly bound that they will always change in tandem. Stated in another way:</p>
+<blockquote class="blockquote">
+<p>“An axis of change is only an axis of change if the changes actually occur.”</p>
+</blockquote>
+<p>Whether or not the changes actually occur may not be immediately apparent or may only become apparent with domain knowledge or driven by testing (a future article) but this will not always be the case. Changes to requirements very often, if not in the majority of cases, affect the design in unexpected ways. Should we design for unexpected changes? There are different schools of thought but in the end experience will be the guide.</p>
+<p>Lets now jump straight over to the I in SOLID because it has some relevance…</p>
+</section>
+<section id="i---interface-segregation" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="i---interface-segregation">I - Interface segregation</h2>
+<p>An interface specifies a contract, a contract is a single responsibility, or so my logic went. How can an object with multiple interfaces not be implementing multiple responsibilities? I feel to square this circle we should forget the word “responsibility” for a moment and talk about cohesion.</p>
+<div class="page-columns page-full"><p>I have a book called “The Practical Guide to Structured Systems Design” (SSD) written back in 1980 and I feel that many of the concepts explained in that book are as relevant here as they were nearly 40 years ago, and maybe more clearly explained because the world was simpler then.</p><div class="no-row-height column-margin column-container"><img src="practical-guide-to-structured-systems-design.jpg" class="img-fluid" alt="1441004.Practical_Guide_to_Structured_Systems_Design) by Meilir Page-Jones."></div></div>
+<p>Cohesion is a measure of the strength of functional relatedness of elements within a module.</p>
+<p>Change “module” to “class” and the definition holds for OOD. I contend that “<strong>responsibility</strong>” is giving a name to a set of “<strong>strongly related elements</strong>” or “<strong>stuff which goes together</strong>”, in the case of OOD both data and behaviour, grouped by some abstract concept. I had made the mistake of equating responsibility with behaviour. This seems obvious now, which is encouraging because that’s what happens when you learn new skills - things seem obvious when they didn’t before.</p>
+<p>Now, related elements may certainly have different functional interfaces. An amplifier may have a jack plug socket and co-axial connections but it is nonetheless cohesive and has a single responsibility in that sense.</p>
+<p>Incidentally, the interface segregation principle is also intimately related to the concept of coupling which also elucidates the meaning of this principle. SSD encourages the use of “Narrow (as opposed to broad) connections” to weaken coupling, a concept taken from Yourdon in the 1970s. Essentially <strong>a client depending on a smaller interface has a narrower connection and is therefore less likely to change</strong>.</p>
+<section id="the-key-takeaway-is-that-the-interface-segregation-principle-minimises-coupling-while-the-single-responsibility-principle-maximises-cohesion." class="level3">
+<h3 class="anchored" data-anchor-id="the-key-takeaway-is-that-the-interface-segregation-principle-minimises-coupling-while-the-single-responsibility-principle-maximises-cohesion.">The key takeaway is that the <strong>interface segregation principle minimises coupling</strong> while the <strong>single responsibility principle maximises cohesion</strong>.</h3>
+<p>For fun, lets look at the other principles in SOLID in terms of cohesion and coupling.</p>
+</section>
+</section>
+<section id="d---dependency-inversion" class="level2">
+<h2 class="anchored" data-anchor-id="d---dependency-inversion">D - Dependency inversion</h2>
+<p>The interface of a class (or interface) must, by definition, be equal to or narrower than its sub-classes (or sub-interfaces). This principle states that, where possible, we should use narrower super-classes rather than broader sub-classes, just what we need to reduce coupling. If a client depends on the narrower (or equal) interface of the super-class rather than the sub-class then that must minimise the coupling. <strong>The farther we go up the class hierarchy the smaller the interface and the lower the coupling</strong>. If we assume the Liskov principle as well (below) then the interface will always behave as expected. All good. Not much skill involved here..</p>
+<p>Now lets do the O.</p>
+</section>
+<section id="o---openclosed-principle" class="level2">
+<h2 class="anchored" data-anchor-id="o---openclosed-principle">O - Open/closed principle</h2>
+<p>Open for extension, closed for modification. Lets put this in terms of cohesion and coupling. In OO we must consider not only public interfaces but protected ones too, that is, the “interface” from classes to their super-classes. Visualise being inside the class “looking up” at the super class: we see everything except the private methods. That interface represents a connection which can be narrow or broad. And we know that <strong>narrow interfaces reduce coupling</strong>.</p>
+<p>So we want restrict that interface, right?</p>
+<p>No so fast. There is another concern and that is how extensible a class is. More extensible classes tend to have broader protected interfaces. The balancing of extensibility with reducing super-class coupling is another <strong>skill</strong> to be learned.</p>
+<p>But wait. The superclass interface can also be modified by overriding methods. It’s not actually modifying the source code in the original sense but rather modifying the behaviour as seen by a client…. which leads us finally to L:</p>
+</section>
+<section id="l---the-liskov-substitution-principle" class="level2">
+<h2 class="anchored" data-anchor-id="l---the-liskov-substitution-principle">L - the Liskov substitution principle</h2>
+<p>Clients are connected to classed not only by their interface defined as methods and data, but also by their behaviour. A kind of semantic coupling. A class can break the contract of the interface of the super-class, which in turn may break a client, which is bad.</p>
+<p>That’s it for this post. This journey will continue…</p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

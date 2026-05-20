@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2019-07-25">
+<meta name="description" content="Building a QFT gate.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Building a QPU simulator in Julia - Part 6 – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,29 +22,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,35 +105,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -139,7 +145,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +156,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -180,14 +186,30 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Building a QPU simulator in Julia - Part 6</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">quantum-computing</div>
+    <div class="quarto-category">programming-languages</div>
+    <div class="quarto-category">mathematics</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Building a QFT gate.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 25, 2019</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +219,46 @@ window.Quarto = {
 </header>
 
 
+<p>The <a href="https://en.wikipedia.org/wiki/Quantum_Fourier_transform">Quantum Fourier Transform</a> (QFT) is an important quantum operation and an essential part of the period finding step needed for <a href="https://quantum-algorithms.herokuapp.com/299/paper/node1.html">Shor’s algorithm</a>. It can be built as a quantum circuit but it’s very easy to build its unitary matrix directly, the details are in the Wikipedia article. In Julia, this was even easier than I expected. Once we have calculated a couple of constants, we can use a 2-d <code>for</code> comprehension to create the individual elements of the array in a single line.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">qft</span>(n)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   N <span class="op">=</span> <span class="fl">2</span><span class="op">^</span>n</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   ω <span class="op">=</span> <span class="fu">exp</span>(<span class="fl">2</span> <span class="op">*</span> <span class="cn">π</span> <span class="op">*</span> <span class="cn">im</span> <span class="op">/</span> N)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>   a <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fu">sqrt</span>(N)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>   [a <span class="op">*</span> ω<span class="op">^</span>(i<span class="op">*</span>j) for i <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>N<span class="op">-</span><span class="fl">1</span>, j <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>N<span class="op">-</span><span class="fl">1</span>]</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here <span class="math inline">\(n\)</span> is the number of bits and <span class="math inline">\(N\)</span> the size of the matrix, which as we know grows exponentially with the number of bits. <span class="math inline">\(ω\)</span> is the first complex <span class="math inline">\(N^{th}\)</span> root of unity and <span class="math inline">\(a\)</span> the normalising factor. The comprehension runs over both axis <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> computing the element at each position.</p>
+<p>We can test this against the example from the Wikipedia article:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">qft</span>(<span class="fl">2</span>) <span class="op">≈</span> <span class="fl">0.5</span> <span class="op">*</span> [<span class="fl">1</span> <span class="fl">1</span> <span class="fl">1</span> <span class="fl">1</span>; <span class="fl">1</span> <span class="cn">im</span> <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="cn">im</span>; <span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="fl">1</span> <span class="op">-</span><span class="fl">1</span>; <span class="fl">1</span> <span class="op">-</span><span class="cn">im</span> <span class="op">-</span><span class="fl">1</span> <span class="cn">im</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In the above it’s going to generate complex numbers with Float64 precision. For our quantum gates this level of precision is not necessary and uses more memory. A few tweaks to the function will use Float32 instead.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">qft</span>(n)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>   N <span class="op">=</span> <span class="fl">2</span><span class="op">^</span>n</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   ω <span class="op">=</span> <span class="fu">exp</span>(<span class="fl">2f0</span> <span class="op">*</span> <span class="cn">π</span> <span class="op">*</span> <span class="cn">im</span> <span class="op">/</span> N)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>   a <span class="op">=</span> <span class="fl">1f0</span> <span class="op">/</span> <span class="fu">sqrt</span>(<span class="fu">Float32</span>(N))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>   [a <span class="op">*</span> ω<span class="op">^</span>(i<span class="op">*</span>j) for i <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>N<span class="op">-</span><span class="fl">1</span>, j <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span>N<span class="op">-</span><span class="fl">1</span>]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And test that it does indeed generate the correct type.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">typeof</span>(<span class="fu">qft</span>(<span class="fl">2</span>)) <span class="op">==</span> <span class="dt">Array</span>{<span class="dt">Complex</span>{<span class="dt">Float32</span>},<span class="fl">2</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>What about the performance? Let’s generate the QFT for different numbers of bits.</p>
+<pre class="console"><code>&gt; @time qft(11)
+0.384501 seconds (6 allocations: 32.000 MiB, 11.74% gc time)
+2048×2048 Array{Complex{Float32},2}
+
+&gt; @time qft(12)
+1.469458 seconds (6 allocations: 128.000 MiB, 3.34% gc time)
+4096×4096 Array{Complex{Float32},2}
+
+&gt; @time qft(13)
+6.037579 seconds (6 allocations: 512.000 MiB, 0.74% gc time)
+8192×8192 Array{Complex{Float32},2}
+
+&gt; @time qft(14)
+25.163830 seconds (6 allocations: 2.000 GiB, 0.20% gc time)
+16384×16384 Array{Complex{Float32},2}</code></pre>
+<p>The exponential increase in time and space is evident and we quickly reach practical limits. The array is dense because the values are always non-zero but since the calculation time is relatively small there could be considerable advantage using a <a href="https://github.com/traktofon/ComputedArrays.jl"><code>ComputedArray</code></a> instead of a normal array in this case.</p>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

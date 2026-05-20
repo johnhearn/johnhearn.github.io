@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2019-01-13">
+<meta name="description" content="An understanding of how we arrive at meaning has great implications for learning and communication.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Some Perspectives on the Nature Of Meaning – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,65 +70,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -139,7 +81,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +92,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -176,18 +118,33 @@ window.Quarto = {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Some Perspectives on the Nature Of Meaning</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">philosophy</div>
+    <div class="quarto-category">communication</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    An understanding of how we arrive at meaning has great implications for learning and communication.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 13, 2019</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +154,53 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
+<blockquote class="blockquote">
+<p>If language is not correct, then what is said is not what is meant. If what is said is not what is meant, then what ought to be done, remains undone. - Confucius</p>
+</blockquote>
+<div class="page-columns page-full"><p> For several months now I’ve been trying to absorb the concepts presented in the book “<a href="https://www.goodreads.com/book/show/98483.I_Am_Right_You_Are_Wrong">I’m Right, You’re Wrong</a>” by Eduard de Bono. It’s a fascinating book in which he attempts to do two things. Firstly he presents a series of mechanisms through which perception may arise, <strong>physiological mechanisms that are inevitably tightly bound to the way we think and learn</strong>. His model is a simplified version of real neurological processes and involves the complex, <a href="https://en.wikipedia.org/wiki/Nonlinear_system">non-linear</a> interaction between experience and thought from which <strong>meaning</strong> is built. He talks in great detail about the thinking patterns that he believes emerge from this system and, by analogy, within us. He also suggests a new vocabulary<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> (catchment, knife-edge discrimination, etc.) for describing and working with them.</p><div class="no-row-height column-margin column-container"><img src="i-am-right-you-are-wrong-book.jpg" class="img-fluid" alt="98483.I_Am_Right_You_Are_Wrong) by Edward de Bono"><div id="fn1"><p><sup>1</sup>&nbsp;Kind of like a domain language.</p></div></div></div>
+<p>Secondly he works backward from his model to design tools and techniques which not only help us to understand our own thinking processes but are also of <strong>great benefit for such things as better communication, creativity and learning</strong>. For example <em><a href="https://en.wikipedia.org/wiki/Lateral_thinking">lateral thinking</a></em>, <em><a href="https://en.wikipedia.org/wiki/Six_Thinking_Hats">six hats</a></em> and <em>learning backwards</em> techniques are just three well-known and highly practical examples.</p>
+<p>With that in mind I guess I’m primed to pick up on similar ideas<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and in these last few weeks I have seen a whole series of references to <strong>the concept of meaning as seen from very different angles</strong>. This blog post is a walk through some of those perspectives and ends with some observations of the <strong>practical consequences for software engineering</strong>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;Like when you buy a new car and suddenly the roads seem full of cars of the same model. Incidentally this phenomenon is also something that de Bono exploits with his thinking tools and calls <em>readiness</em>.</p></div></div><div class="page-columns page-full"><p> I’d like to start with Alisdair Cockburn’s arguments for building a shared vocabulary in his book “<a href="https://www.goodreads.com/book/show/942577.Agile_Software_Development">Agile Software Development</a>”. Through a series of examples he demonstrates what he calls the <strong>impossibility of communication without shared experience</strong>. Fundamentally the vocabulary we use to express knowledge or concepts relies on the labels that we associate with them. For those label to have any meaning and for effective communication to take place then they must be shared with others and refer to the same concepts, something that is only possible through shared experience. This is why he advocates for <strong>fluid and continuous team interaction during a project to build that shared experience</strong>. This idea, I take it, was the forebearer to the DDD practices advocating a ubiquitous<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> language and clear context for software models.</p><div class="no-row-height column-margin column-container"><img src="agile-software-development-book.jpg" class="img-fluid" alt="Agile Software Development by Alisdair Cockburn"><div id="fn3"><p><sup>3</sup>&nbsp;Although Kevlin Henney mentions specifically how the even the word <em>ubiquitous</em> is ironically misused in this context.</p></div></div></div>
+<div class="page-columns page-full margin-video">
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/7XYnNGOboe8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+<div class="no-row-height column-margin column-container margin-video-caption">
+<span><strong>There Is No Moon If We Close Our Eyes</strong> - a reference to Einstein’s question in relation to the subjectiveness of quantum mechanics “Do you really believe that the moon isn’t there when nobody looks?”</span>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div>
+<p>Sometimes Cockburn’s descriptions take a very slightly mystical tone (which I like) but Chris Fields and Riccardo Manzotti take it to another level in their conversation with the interesting title <a href="https://www.youtube.com/watch?v=7XYnNGOboe8">“There Is No Moon If We Close Our Eyes”</a> where they talk explicitly about the nature of communication and how it relies entirely on ones own personal perception<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Riccardo introduces the idea of the <em>intimacy of knowing</em>, that is knowledge being fundamentally personal to the observer and, reiterating Cockburn’s assertions, <strong>impossible, even in principle, to communicate perfectly</strong>. This means that communication, and indeed information itself, by its nature, must be related by an overlap of experiences to have any meaning whatsoever. This is very easy for programmers to understand. For example <strong>a variable cannot have any meaning outside the context of its use</strong> and therefore only represents actual information inside that context.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;Both speakers mention the concept of <a href="https://en.wikipedia.org/wiki/Umwelt">umwelt</a>, something new to me but very relevant here.</p></div></div><div class="page-columns page-full margin-video">
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/EbIEtV_31-w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+<div class="no-row-height column-margin column-container margin-video-caption">
+<span><strong>What Do You Mean?</strong> - <a href="https://twitter.com/KevlinHenney"><span class="citation" data-cites="KevlinHenney">@KevlinHenney</span></a>’s <a href="https://twitter.com/kandddinsky"><span class="citation" data-cites="kandddinsky">@kandddinsky</span></a> talk on semantics, DDD, epistemology, cognition, semiotics, context, design, code, architecture, creativity, learning, etc.</span>
+</div>
+</div>
+<p>Kevlin Henney also brings up this point in his talk “<a href="https://twitter.com/KevlinHenney/status/1078315354324127745">What do you mean?</a>” and picks up on the ironic misuse of the word <em>semantics</em> and introduces the field of <em>semiology</em>: the difference between the signified and the signifier<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. These signifiers are usually represented by visual symbols but could take any sensory form. Crucially, symbols can be interpreted differently by different people in different contexts. He gives the example of the different regional meanings of the word “dinner” which have caught me out many a time coming from Cornwall where, like in the north of England, it means the midday rather than the evening meal. He also points out that lazy usage of words like “value” vs “<a href="../2018-11-03-estimate-everything/">estimated</a> value” have a crucial importance to how we approach a subject. As mentioned earlier the word <em>ubiquitous</em> used in DDD to share context is also inappropriate, although understood.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;Related, in a way, to the difference between a <em>character</em> and a <em>character encoding</em>, so often confused to the annoyance of non-ASCII users.</p></div></div><div class="page-columns page-full margin-video">
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/Mscn8QBu2Ws" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+<div class="no-row-height column-margin column-container margin-video-caption">
+<span><strong>Beware double meanings when you talk science</strong> - It’s great to share your expertise with a wider audience, but it helps if you speak their language.</span>
+</div>
+</div>
+<p>By coincidence <a href="https://www.youtube.com/watch?v=Mscn8QBu2Ws">another video</a> came up in a similar vein. Words such as <em>theory</em>, <em>determine</em> and <em>significant</em> have very specific meanings in the scientific community and may be different to the meanings that are probably given to them by a member of the public. If allowance is not made for different interpretations then misunderstandings will be inevitable.</p>
+<p>On a different tack but related to the significance of symbols there was a <a href="https://twitter.com/GaryMarcus/status/1065280340669816832">twitter storm</a> followed by an article by Gary Markus called “<a href="http://nautil.us/issue/67/reboot/why-robot-brains-need-symbols">Why Robot Brains Need Symbols</a>” on the necessity of symbols for intelligence. I happen not to agree with his analysis but the idea of symbols comes up again and again in the realm of artificial intelligence. I like to think about the ground breaking work of DeepMind on their <a href="https://en.wikipedia.org/wiki/AlphaZero">AlphaZero</a> project. AlphaZero is a general reinforcement learning system which taught itself to play Go and then Chess. What interests me in this context is not that a weighted neural network plays chess and not its (state-of-the-art) learning algorithm, it’s the fact that <strong>the resulting game play exhibits what could be considered <em>rational</em> behaviour</strong>. That behaviour emerges from the training and actually doesn’t use symbols to do it. It’s logical play is NOT the logic of mathematics. Or maybe it is, somewhere deep within its neural net.</p>
+<div class="page-columns page-full margin-video">
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/GEf6X-FueMo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+</div>
+<p>This deep emergent rationality could be just a hint of what I believe Jordan Peterson is calling our <a href="https://youtu.be/GEf6X-FueMo?t=4491">a priori framework</a>, imparted to us not only by experience but also by stories and culture. This is something which is necessary in order for us to be able to <strong>make sense of a chaotic (as in <em>overwhelmingly complex</em>) world</strong> and reduce the number of variables down to something tractable. This ties back to the ideas of perception presented by de Bono and contrasts starkly with the pragmatic, if rather glib, rationalism presented by Sam Harris in this same debate.</p>
+<p>Of course all of these debates and articles talk about much more than has been summarised here. The ideas around the meaning of meaning is an enormous subject area. This post is really not much more than a reminder of these resources and an excuse to chain them together to form some kind of whole. Nonetheless from these ideas come immediate insights which can help us to build software too.</p>
+<p>The software industry, although dominated from the US, is a worldwide pursuit and as such it is remarkable that it is as homogenous as it is. Nevertheless it is sometimes difficult for people from different projects in different companies with different academic backgrounds and from different countries, languages and cultures to talk about things from a point of shared experience and, as we saw above, shared experience is fundamental to communication. <a href="../2018-09-30-dangers-of-abstraction/">Examples</a> are numerous and rife.</p>
+<p>There seems to be only two ways of coming to that shared understanding. The first is by definition. This is done in rigorous fields like, for example, science and mathematics where definitions are given precise meanings using mathematical language but even then definitions can be confused<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Likewise in software engineering where terms like REST which were <a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">defined with a high degree of formality</a> are so misunderstood that the misunderstanding is now the de-facto meaning. I’m wondering whether we could come up with a list of readily confused software engineering words and phrases like was done, for example, in <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2015.01100/full">this article</a><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> from the field of psychology. <em>REST</em>, <em>estimation</em>, <em>agile</em> and many others would be on that list.</p>
+<div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp;Does the set of natural numbers, ℕ, <a href="https://en.wikipedia.org/wiki/Natural_number#Notation">include 0</a>? The answer is that it doesn’t except for when it does.</p></div><div id="fn7"><p><sup>7</sup>&nbsp;<a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2015.01100/full">Fifty psychological and psychiatric terms to avoid: a list of inaccurate, misleading, misused, ambiguous, and logically confused words and phrases</a> - Scott O. Lilienfeld et al.</p></div></div><p>The other way is to reinforce shared experience is by bringing to light discrepancies. To do that we need have a deeper debate on the nature of meaning and to be aware of multiple usages of the same signifiers and use empathy and imagination to consider and reduce misunderstanding.</p>
+<p>I’m particularly sensitive to my misunderstandings of others and their misunderstandings of me (and it happens a lot!) but I’m also curious about how <strong>considerations such as these about communication in this ever more complex, interconnected and abstract world of meaning might pave the way to deeper understanding and even better collaboration</strong>. I’m going to try and do my bit anyway.</p>
+
+
+
+
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

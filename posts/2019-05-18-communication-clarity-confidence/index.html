@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2019-05-18">
+<meta name="description" content="A few ideas for improving leadership skills for technical people.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Communication Clarity Confidence – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,65 +70,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -139,7 +81,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +92,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -172,22 +114,46 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#communication" id="toc-communication" class="nav-link active" data-scroll-target="#communication">Communication</a></li>
+  <li><a href="#clarity" id="toc-clarity" class="nav-link" data-scroll-target="#clarity">Clarity</a></li>
+  <li><a href="#confidence" id="toc-confidence" class="nav-link" data-scroll-target="#confidence">Confidence</a></li>
+  <li><a href="#actions" id="toc-actions" class="nav-link" data-scroll-target="#actions">Actions</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Communication Clarity Confidence</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">communication</div>
+    <div class="quarto-category">organisations</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    A few ideas for improving leadership skills for technical people.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 18, 2019</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +163,92 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
+<p>One of my main goals for this year is to improve communication and leadership skills at work. These are not things that come easily to me so for many years I’ve concentrated on the technical side and dodged leadership positions wherever possible. That is not a sustainable position in the long run because as an “experienced<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>” professional, it is increasingly necessary for me to be able to pass on what I have learned to individuals, teams and organisations.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;i.e.&nbsp;“old”</p></div></div><p>So I’ve been doing some research into how someone with my particular personality might improve their leadership skills and, since <em><a href="https://en.wikipedia.org/wiki/Rule_of_three_(writing)#Rhetoric_and_public_speaking">omne trium perfectum</a></em>, I’ve come up with a plan with three elements, which just happens to <a href="https://en.wikipedia.org/wiki/Alliteration#Rhetoric">alliterate</a> as well:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<svg width="672" height="480" viewbox="0.00 0.00 154.53 188.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
+<title>communication-clarity-confidence</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-184 150.53,-184 150.53,4 -4,4"></polygon>
+<!-- Communication -->
+<g id="node1" class="node">
+<title>Communication</title>
+<ellipse fill="none" stroke="black" cx="73.26" cy="-162" rx="73.03" ry="18"></ellipse>
+<text text-anchor="middle" x="73.26" y="-157.8" font-family="Times,serif" font-size="14.00">Communication</text>
+</g>
+<!-- Clarity -->
+<g id="node2" class="node">
+<title>Clarity</title>
+<ellipse fill="none" stroke="black" cx="40.26" cy="-90" rx="37.71" ry="18"></ellipse>
+<text text-anchor="middle" x="40.26" y="-85.8" font-family="Times,serif" font-size="14.00">Clarity</text>
+</g>
+<!-- Communication&#45;&gt;Clarity -->
+<g id="edge1" class="edge">
+<title>Communication-&gt;Clarity</title>
+<path fill="none" stroke="black" d="M61.01,-135C58.26,-129.17 55.34,-122.99 52.59,-117.15"></path>
+<polygon fill="black" stroke="black" points="57.85,-136.5 65.28,-144.05 64.18,-133.52 57.85,-136.5"></polygon>
+<polygon fill="black" stroke="black" points="55.61,-115.34 48.18,-107.79 49.28,-118.33 55.61,-115.34"></polygon>
+</g>
+<!-- Confidence -->
+<g id="node3" class="node">
+<title>Confidence</title>
+<ellipse fill="none" stroke="black" cx="73.26" cy="-18" rx="55.6" ry="18"></ellipse>
+<text text-anchor="middle" x="73.26" y="-13.8" font-family="Times,serif" font-size="14.00">Confidence</text>
+</g>
+<!-- Clarity&#45;&gt;Confidence -->
+<g id="edge2" class="edge">
+<title>Clarity-&gt;Confidence</title>
+<path fill="none" stroke="black" d="M52.59,-62.86C55.27,-57.17 58.11,-51.15 60.8,-45.45"></path>
+<polygon fill="black" stroke="black" points="49.35,-61.52 48.25,-72.05 55.68,-64.5 49.35,-61.52"></polygon>
+<polygon fill="black" stroke="black" points="64.02,-46.81 65.12,-36.28 57.69,-43.83 64.02,-46.81"></polygon>
+</g>
+<!-- Confidence&#45;&gt;Communication -->
+<g id="edge3" class="edge">
+<title>Confidence-&gt;Communication</title>
+<path fill="none" stroke="black" d="M81.72,-45.58C83.99,-53.95 86.13,-63.28 87.26,-72 89.32,-87.87 89.32,-92.13 87.26,-108 86.13,-116.72 83.99,-126.05 81.72,-134.42"></path>
+<polygon fill="black" stroke="black" points="85.08,-44.6 78.94,-35.96 78.35,-46.54 85.08,-44.6"></polygon>
+<polygon fill="black" stroke="black" points="78.35,-133.46 78.94,-144.04 85.08,-135.4 78.35,-133.46"></polygon>
+</g>
+</g>
+</svg>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Notice that the arrows are bidirectional, that is each one feeds into the others. Lets start with communication.</p>
+<section id="communication" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="communication">Communication</h2>
+<p>There are different forms fo communication. <strong>Verbal communication</strong>, requires us to linearise the concepts within our heads into a train of words. Steven Pinker describes this very well in <a href="https://youtu.be/OV5J6BfToSw?t=1545">this talk</a> about writing style. These webs of knowledge will be quite complicated and we may not even be aware of all the connections ourselves. <strong>The more clarity we have of those connections, the easier it is to convert them to words</strong>.</p>
+<p>This also works the other way around: <strong>forcing yourself to write can encourage greater clarity</strong>. So many times has the simple act of writing an idea down made it clear where the holes or inconsistencies are. This is the main reason for writing this blog.</p>
+<p>Another thing that I must bear in mind is to use the <strong>right vocabulary for the situation</strong>. I love language and especially esoteric words with highly specific meanings but sometimes literary embellishments are not appropriate<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> for an email or Slack message at work. Also I work in multi-lingual and multi-cultural environments so finding the right level is essential<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;Although in this blog I can do whatever I want 😉</p></div><div id="fn3"><p><sup>3</sup>&nbsp;For example, ensuring to use <a href="https://en.wikipedia.org/wiki/International_English">globish</a> with non-native speakers of English.</p></div></div><p><strong>Visual communication</strong> through images and diagrams is something which I have used extensively in the past, maybe as a substitute for verbal skills 🤔. Visual communication skills are essential for software engineers although this seems to be waning in recent years. We must be adaptable and make sure this kind of communication is appropriate in a given situation. An elevator pitch to non-technical people or an informal chat are example of where it might not be.</p>
+<p>Another important form of communication is through body language. Psychologically, <strong>body language has a huge conscious and sub-conscious effect</strong> on the people we talk to and interact with. Just some things to think about: - Appropriate eye contact, handshake and physical contact - Posture and <a href="https://www.youtube.com/watch?v=ZZZ7k8cMA-4">hand gestures</a></p>
+<p>The other side of communication is <strong>listening</strong>. Many times I have been told that I’m not present in conversations and that is often true because a “tree” of possibilities and consequences of what the other person is saying overwhelms me. <a href="https://www.youtube.com/watch?v=H6n3iNh4XLI">Being present is key to good communication</a>.</p>
+</section>
+<section id="clarity" class="level2">
+<h2 class="anchored" data-anchor-id="clarity">Clarity</h2>
+<p>If you don’t have clarity in your ideas it will be impossible to communicate them effectively. <strong>Arguments must be coherent to be viable, which is not the same as being right</strong>, a mistake made very often which I must try to avoid.</p>
+<p>Like it or not, <strong>the right level of confidence is an essential part of persuasive communication</strong>. We are humans and we evaluate what people are saying not only on <em>what</em> is being said but also <em>how</em> it is being said.</p>
+</section>
+<section id="confidence" class="level2">
+<h2 class="anchored" data-anchor-id="confidence">Confidence</h2>
+<p>Confidence requires clarity of ideas but is not about bullying or not being wrong. Quite the opposite. <strong>Confidence is about being able to state an opinion but also to recognise better ideas and the ability to accept mistakes without feeling personal failure</strong>. Confidence also ties back to body language which is essential for maintaining credibility and holding interest.</p>
+</section>
+<section id="actions" class="level2">
+<h2 class="anchored" data-anchor-id="actions">Actions</h2>
+<p>In terms of actions, I have a number of ideas which, no doubt, will grow over time. - To continue writing this blog which I am finding to be very valuable. I’ll also continue contributing to the company blog. - I have been asking colleagues to film me while talking so that I can pick up on any bad habits which others might not feel comfortable pointing out. - We have a tool for soliciting feedback from co-workers and these are the areas where I’ll be doing that. - I’ll also be taking any opportunity for speaking, for example lightning talks, open spaces, or presentations for the community of practice session we run, etc. - For what it’s worth, I’m dabbling in social-media as well.</p>
+<p>So this trinity of skills, communication, clarity and confidence, represent my approach becoming a better leader. Hopefully this will make progress measurable and allow me to define some reachable goals.</p>
+
+
+</section>
+
+
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

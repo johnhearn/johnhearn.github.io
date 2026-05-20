@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2018-09-30">
+<meta name="description" content="Thoughts on the use of high-level abstractions where, if we are not careful, words easily loose their meaning.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>The Dangers of Abstraction – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,65 +70,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -139,7 +81,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +92,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -176,18 +118,34 @@ window.Quarto = {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">The Dangers of Abstraction</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">modelling</div>
+    <div class="quarto-category">philosophy</div>
+    <div class="quarto-category">software-engineering</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Thoughts on the use of high-level abstractions where, if we are not careful, words easily loose their meaning.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 30, 2018</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +155,20 @@ window.Quarto = {
 </header>
 
 
+<p>Abstraction is a powerful thing. It enables us to compose ever more elaborate ideas, as <a href="https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants">dwarves standing on the shoulders of giants</a>, and it is what has enabled us to build the immense edifices of religion, philosophy, economics, technology and science.</p>
+<p>Highly abstract concepts depend on other concepts which in turn depend on others and so it goes on. Turtles all the way down<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;It’s interesting to compare concepts with features extracted by deep learning algorithms. These algorithms are often criticised as being opaque but how many of us really know <em>why</em> we think what we think?</p></div></div><p>In the modern age where complex ideas are stated in tweets, of which we receive hundreds per day, they can easily can loose their grounding and their original meaning. This opens the door to misinterpretation.</p>
+<p>As software engineers we are as prone this as anyone, maybe more. We talk endlessly, and it must be said sometimes carelessly, about <em>components</em> and <em>agile</em> and <em>quality</em> and <em>architecture</em> and a whole raft of other concepts<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. We go around in circles debating what these things actually mean and end up, in the best cases, agreeing that it depends on context, whatever <em>that</em> means, and in the worst cases we end up sticking to our ideas like glue and conclude by telling ourselves that other people are just stupid.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;and <em>right</em> and <em>wrong</em> and <em>justice</em> and <em>value</em> and <em>religion</em> and <em>love</em> and …</p></div><div id="fn3"><p><sup>3</sup>&nbsp;The <a href="https://m.signalvnoise.com/the-open-plan-office-is-a-terrible-horrible-no-good-very-bad-idea-42bd9cd294e3">joy</a> of open plan offices.</p></div></div><p><span class="smallcaps">Mostly we assume that words will be interpreted by other people in the same way as we interpret them.</span> Many times they don’t and, what’s worse, we usually don’t even know if they have or not. I once overheard an entire conversation<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> where the word “shadowing” was being used by each person with the opposite meaning, one to refer to the act of being shadowed and other to the act of doing the shadowing. It was a bit like listening to a <a href="https://www.youtube.com/watch?v=3VkjDSxBVqw">Two Ronnies</a> sketch.</p>
+<p>There can be more serious consequences. I know of a project that wasted thousands when a contractor was hired by a technical manager to build a <em>continuous deployment</em> environment. What the manager wanted was <em>continuous<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> integration with automated deployment</em>, evidenced by the fact that they didn’t have a single automated test. However he had heard about <em>CD</em> (acronyms for enhanced confusion) and it sounded like just what he wanted. The contractor built what the manager asked for. Politics, saving-face and the <a href="https://www.logicallyfallacious.com/tools/lp/Bo/LogicalFallacies/173/Sunk_Cost_Fallacy">sunk cost fallacy</a> dictated that the project went ahead with serious consequences for the development teams.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;<em>continual</em> would have been a much better word in this context but hey-ho</p></div></div><div class="page-columns page-full"><p>The continual process of debate and misunderstanding folds back into an evolving language. Consider the word REST, familiar to us in software engineering. When this term was coined it had a very <a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">definite meaning</a> however it has evolved over the years and now has such a broad range of uses that it has lost a lot of its value. We need so called <a href="https://martinfowler.com/articles/richardsonMaturityModel.html">maturity models</a> just to understand which type of REST we are talking about!</p><div class="no-row-height column-margin column-container"><span class="">I agree with my colleague <a href="https://codurance.com/2018/09/03/rest-review/">Jorge Gueorguiev Garcia</a> that “<em>REST is an architectural style defined to solve Network distributed hypermedia systems. Without Hypermedia there is no REST. If your API doesn’t work through the use of hypermedia, you don’t have a REST API. Maybe you don’t need hypermedia to solve your problems. But then use the correct term.</em>”</span></div></div>
+<p>As teachers and mentors, not only must we be careful about how we communicate, we must also take extra care to understand that misinterpretations will happen, in fact there are often multiple alternative interpretations of the same word in circulation. I remember being baffled by a conversation with a colleague about “integration testing”. What he was saying seemed to make no sense. I knew he wasn’t an idiot so I really really tried to understand and apply his ideas. I later found out he was talking about a <a href="https://martinfowler.com/bliki/IntegrationTest.html">different kind of integration testing</a><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Basically we were talking about two separate things. If either of us had known <em>how</em> these words could be misinterpreted then that conversation would have been a lot shorter.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;As so often, Martin Fowler was ahead of us: “<em>And there is a large population of software developers for whom “integration test” only means “broad integration tests”, leading to plenty of confusion when they run into people who use the narrow approach.</em>”</p></div></div><p>An that’s the message I want to transmit. The ideas flying around the media are ever more complex and numerous, our communication is ever more frequent and short. There will always be alternative interpretations. It is no longer acceptable to restrict ourselves to our own definitions. We must endeavour to <em>simultaneously</em> understand different alternative perspectives of <em>agile</em>, <em>REST</em>, <em>DevOps</em>, and all the rest of it, to have a full picture of the current software engineering field.</p>
 
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

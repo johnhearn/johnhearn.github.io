@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2019-05-07">
+<meta name="description" content="A new tack, finding Julia and serendipity.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Building a QPU simulator in Julia - Part 1 – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,35 +70,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -139,7 +110,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +121,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -176,18 +147,34 @@ window.Quarto = {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Building a QPU simulator in Julia - Part 1</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">quantum-computing</div>
+    <div class="quarto-category">programming-languages</div>
+    <div class="quarto-category">software-testing</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    A new tack, finding Julia and serendipity.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 7, 2019</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +184,60 @@ window.Quarto = {
 </header>
 
 
+<p>Just for a kicks, I started rewriting <a href="https://github.com/johnhearn/quko">Quko</a>, my simple quantum computing simulator, <a href="../2019-01-25-building-a-qpu-simulator-in-clojure-part-1/">in clojure</a>. I thought that having powerful linear algebra libraries like <a href="https://neanderthal.uncomplicate.org/">Neanderthal</a> would help simplify the task but it didn’t feel right. I decided to put it on hold until I got some inspiration.</p>
+
+<div class="no-row-height column-margin column-container page-columns page-full"><div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="pointcare-snns.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">The talk included Julia code for generating this Pointcaré section of the chaotic interaction between 3 spiking neural networks (SNNs) which I, ironically, converted to Kotlin.</figcaption>
+</figure>
+</div></div><p>So, I started looking again at <a href="../../posts/2019-04-20-encounter-with-complexity/"><em>complexity</em> theory</a>. I was lead via <a href="https://en.wikipedia.org/wiki/Logistic_map">logistic maps</a>, and <a href="https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations">other</a> <a href="https://en.wikipedia.org/wiki/Rayleigh%E2%80%93B%C3%A9nard_convection">dynamic</a> <a href="https://en.wikipedia.org/wiki/Galaxy_filament">systems</a> to a library called <a href="https://juliadynamics.github.io/JuliaDynamics/">DynamicSystems.jl</a> written in a language called <a href="https://julialang.org/">Julia</a>. I remembered having seen Julia two years ago from another <a href="https://www.youtube.com/watch?v=cLLQcshWEbE">talk</a> on simulating spiking neural networks using Julia.</p>
+<p>The things that were bothering me in Kotlin and Clojure when building the QPU simulator were complex numbers and linear algebra, specifically the Krondecker product, and it turns out that Julia supports both natively! So it was worth giving it a try<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Edit: For a nice guide through <a href="https://julialang.org/">Julia</a> syntax take a look at the <a href="https://benlauwens.github.io/ThinkJulia.jl/latest/book.html">ThinkJulia online book</a>. It pretty much covers all the basic and is very easy to understand.</p></div><div id="fn2"><p><sup>2</sup>&nbsp;You can use it from <a href="https://jupyter.org/">Jupyter</a>, if you prefer. I wrote down how to do that in a <a href="../2019-05-05-using-julia-in-jupyter/">separate note</a>. The community overlap with Python is understandable.</p></div></div><p>Installing Julia on a Mac is as simple as you might expect<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<pre class="console"><code>&gt; brew install julia
+...</code></pre>
+<p>Like Clojure, Julia has a nice REPL for developing and testing ideas quickly. Built-in support for vectors means that defining a qubit is easy<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>:</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;Julia uses 64-bit floats by default. We don’t need that level of precision and 32-bit floats save memory, a simple but important consideration for QPU simulators.</p></div></div><pre class="console"><code>julia&gt; qubit = Float32(1) * [1, 0]
+2-element Array{Float32,1}:
+ 1.0
+ 0.0</code></pre>
+<p>Julia has dynamic typing so the variable type doesn’t need to be set explicitly. The Hadamard operator[^hadamard] is similarly easy to define with Julia’s matrix syntax:</p>
+<pre class="console"><code>julia&gt; H = Float32(1/sqrt(2)) * [1 1; 1 -1]
+2×2 Array{Float32,2}:
+ 0.707107   0.707107
+ 0.707107  -0.707107
+
+julia&gt; H * qubit
+2-element Array{Float32,1}:
+ 0.70710677
+ 0.70710677</code></pre>
+<p>Taking it a step further we can use complex numbers natively. For example, we are able to define the <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Square_root_of_NOT_gate_(%E2%88%9ANOT)"><span class="math display">\[\sqrt{NOT}\]</span> gate</a>[^sqrtnot] almost as easily:</p>
+<pre class="console"><code>julia&gt; halfX = Float32(0.5) * [1+im 1-im; 1-im 1+im]
+2×2 Array{Complex{Float32},2}:
+ 0.5+0.5im  0.5-0.5im
+ 0.5-0.5im  0.5+0.5im
+
+julia&gt; halfX * qubit
+2-element Array{Complex{Float32},1}:
+ 0.5f0 + 0.5f0im
+ 0.5f0 - 0.5f0im</code></pre>
+<p>We can test that it’s unitary using the conjugation operator, <code>'</code>, and the <code>@test</code> macro:</p>
+<pre class="console"><code>julia&gt; using Test
+julia&gt; @test halfX'*halfX ≈ [1 0; 0 1]
+Test Passed</code></pre>
+<p>It’s normal in Julia to use Unicode characters directly. This is strange at first but makes formulas very succinct. In the above test we used the <code>≈</code> character<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> to perform a machine-precision equality test.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;In the REPL, type <code>\approx</code> and then press <code>Tab</code>.</p></div></div><p>Being a functional language, it’s straightforward to turn our operators into functions. X is the quantum NOT operator:</p>
+<pre class="console"><code>julia&gt; X = (qubit) -&gt; Float32(1) * [0 1; 1 0] * qubit
+#3 (generic function with 1 method)
+
+julia&gt; @test X(X(qubit)) ≈ qubit
+Test Passed</code></pre>
+<p>This language really is a close to perfect for my project! <a href="https://cognitive-edge.com/blog/serendipity/">Serendipity</a>[^serendipity] is a wonderful thing.</p>
 
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

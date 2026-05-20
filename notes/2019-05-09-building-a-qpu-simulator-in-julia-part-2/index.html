@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2019-05-07">
+<meta name="description" content="Starting again with Julia.">
+
+<title>Building a QPU simulator in Julia - Part 2 – John Hearn</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">John Hearn</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#measurement-of-single-qubit" id="toc-measurement-of-single-qubit" class="nav-link active" data-scroll-target="#measurement-of-single-qubit">Measurement of Single Qubit</a></li>
+  <li><a href="#the-hadamard-gate" id="toc-the-hadamard-gate" class="nav-link" data-scroll-target="#the-hadamard-gate">The Hadamard Gate</a></li>
+  <li><a href="#quantum-registers" id="toc-quantum-registers" class="nav-link" data-scroll-target="#quantum-registers">Quantum Registers</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Building a QPU simulator in Julia - Part 2</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">quantum-computing</div>
+    <div class="quarto-category">programming-languages</div>
+    <div class="quarto-category">software-testing</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Starting again with Julia.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 7, 2019</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In the <a href="../2019-05-07-building-a-qpu-simulator-in-julia-part-1/">last post</a> we saw how the Julia programming language has several advantages over Kotlin and Clojure for building a quantum computer simulator. This post covers how we might do that<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. We’ll start as <a href="../2019-01-25-building-a-qpu-simulator-in-clojure-part-1/">before</a> with a simple case of an 8-sided <a href="../2018-09-30-quantum-random-number-generator/">quantum die</a>. This is the code written with the <a href="https://github.com/johnhearn/quko">Quko</a> library (from the <a href="https://github.com/johnhearn/quko">README</a>):</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Note: These notes go into some pretty heavy maths. For a less mathematical description of quantum computing concepts, take a look at <a href="../../posts/2018-08-16-quantum-computing-primer-part-1a/">this article</a>.</p></div></div><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">qubits</span> <span class="op">=</span> Qubits<span class="op">(</span><span class="dv">3</span><span class="op">).</span>hadamard<span class="op">(</span><span class="fl">0..2</span><span class="op">)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>print<span class="op">(</span>qubits<span class="op">.</span>measureAll<span class="op">().</span>toInt<span class="op">())</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Written in Julia this becomes:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>qubits <span class="op">=</span> <span class="fu">hadamard</span>(<span class="fu">qubits</span>(<span class="fl">3</span>), <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">toInt</span>(<span class="fu">measureAll</span>(qubits))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Some things to notice. Firstly we’ve moved to a functional style. As typing is optional there is no need to define the variable. Also the range specified by <code>1:3</code> is using <a href="https://craftofcoding.wordpress.com/2017/03/12/why-1-based-indexing-is-ok/">1-based indexing</a>.</p>
+<section id="measurement-of-single-qubit" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="measurement-of-single-qubit">Measurement of Single Qubit</h2>
+<p>We’ll define a test to verify the probability that our qubit is measured <code>false</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>repeatedly <span class="op">=</span> (n, f) <span class="op">-&gt;</span> <span class="fu">map</span>(x <span class="op">-&gt;</span> <span class="fu">f</span>(), <span class="fu">collect</span>(<span class="fl">1</span><span class="op">:</span>n))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> (n, f) <span class="op">-&gt;</span> <span class="fu">count</span>(<span class="fu">repeatedly</span>(n, f))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">sample</span>(<span class="fl">1000</span>, () <span class="op">-&gt;</span> <span class="fu">measure</span>(<span class="fu">qubit</span>())) <span class="op">==</span> <span class="fl">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>As <a href="../2019-01-25-building-a-qpu-simulator-in-clojure-part-1/">before</a>, we can make that pass trivially, of course, defining a dummy qubit and just returning false from <code>measure</code> every time.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>qubit <span class="op">=</span> () <span class="op">-&gt;</span> <span class="cn">nothing</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>measure <span class="op">=</span> (qubit) <span class="op">-&gt;</span> <span class="cn">false</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, given Julia’s support for matrices, let’s jump straight to theory. A qubit can be represented by a <strong>pair</strong> of (complex) numbers, a <span class="math display">\[\mathcal{H}_2\]</span> space. In the case of a qubit initialised to the <span class="math display">\[\ket{0}\]</span> state that is just <code>[1 0]</code>. We saw in the <a href="../2019-05-07-building-a-qpu-simulator-in-julia-part-1/">last post</a> how easy that is in Julia<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;Julia uses 64-bit floats by default. We don’t need that level of precision and 32-bit floats save memory, a simple but important consideration for QPU simulators.</p></div></div><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>qubit <span class="op">=</span> () <span class="op">-&gt;</span> <span class="fu">Float32</span>(<span class="fl">1</span>) <span class="op">*</span> [<span class="fl">1</span>, <span class="fl">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The measurement can be represented by a matrix operator using the quadratic form <span class="math display">\[p(\ket{0})=\braket{v}{0}\braket{0}{v}=v^{T} M_0 v\]</span> where <span class="math display">\[p(\ket{0})\]</span> is the probability that a qubit is measured as <code>false</code> and</p>
+<p><span class="math display">\[ M_0 = \ketbra{0}{0} = \left(
+  \begin{array}{c}
+  1 \\
+  0 \\
+  \end{array}
+  \right)
+  \left(
+  \begin{array}{c}
+  1 &amp; 0
+  \end{array}
+  \right)
+  =
+  \left(
+  \begin{array}{c}
+  1 &amp; 0 \\
+  0 &amp; 0 \\
+  \end{array}
+  \right)
+\]</span></p>
+<p>To make this calculation we can take advantage of Julia’s <a href="https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#Base.adjoint">adjoint</a> operator, <code>'</code>. Also this is where the random aspect of the qubit comes into play and the <code>rand()</code> function is used to determine if the measurement is indeed <code>false</code> based on the probability of it being so.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>M₀<span class="op">=</span>[<span class="fl">1</span> <span class="fl">0</span>]<span class="ch">' * [1 0]</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>measure <span class="op">=</span> (qubit) <span class="op">-&gt;</span> <span class="fu">rand</span>() <span class="op">&lt;</span> <span class="fu">abs</span>(q<span class="op">'</span> <span class="op">*</span> M₀ <span class="op">*</span> q)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="console"><code>julia&gt; @test sample(1_000_000, () -&gt; measure(qubit())) == 0
+Test Passed</code></pre>
+</section>
+<section id="the-hadamard-gate" class="level2">
+<h2 class="anchored" data-anchor-id="the-hadamard-gate">The Hadamard Gate</h2>
+<p>At the moment the qubit is always initialised to <span class="math display">\[\ket{0}\]</span> so measurement will always return <code>false</code> with 100% probability. To make the measurement more meaningful we want to be able to move the state of the qubit into a 50/50 superposition (half way around the Bloch sphere) so that measurement will return <code>true</code> or <code>false</code> with equal probability, a fair coin toss. We can do that using the Hadamard operator. The Hadamard operator is defined as <span class="math display">\[H = \frac{1}{\sqrt{2}} \left(
+  \begin{array}{c}
+  1 &amp; 1 \\
+  1 &amp; -1 \\
+  \end{array}
+  \right)\]</span> and is similarly easy to implement with Julia’s matrix syntax:</p>
+<pre class="console"><code>julia&gt; H = Float32(1/sqrt(2)) * [1 1; 1 -1]
+2×2 Array{Float32,2}:
+ 0.707107   0.707107
+ 0.707107  -0.707107
+
+julia&gt; hadamard = (qubit) -&gt; H * qubit
+julia&gt; hadamard(qubit())
+2-element Array{Float32,1}:
+ 0.70710677
+ 0.70710677</code></pre>
+<p>Or even better using the piping operator:</p>
+<pre class="console"><code>julia&gt; qubit() |&gt; hadamard
+2-element Array{Float32,1}:
+ 0.70710677
+ 0.70710677</code></pre>
+<p>Then we can measure our qubit and it gives us one random bit each time, as can be seen by measuring multiple qubits prepared in the same way.</p>
+<pre class="console"><code>julia&gt; repeatedly(3, () -&gt; qubit() |&gt; hadamard |&gt; measure)
+10-element Array{Bool,1}:
+ false
+  true
+ false</code></pre>
+<p>We could build our random number generator already, taking 3 independent measurements and interpreting it as binary. For example,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>coinToss <span class="op">=</span> () <span class="op">-&gt;</span> () <span class="op">-&gt;</span> <span class="fu">qubit</span>() <span class="op">|&gt;</span> hadamard <span class="op">|&gt;</span> measure</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>toInt <span class="op">=</span> (b) <span class="op">-&gt;</span> <span class="fu">reduce</span>((acc, v) <span class="op">-&gt;</span> <span class="fl">2</span><span class="op">*</span>acc <span class="op">+</span> v ? <span class="fl">1</span> <span class="op">:</span> <span class="fl">0</span>, b)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="console"><code>julia&gt; toInt(repeatedly(3, coinToss))
+6
+julia&gt; toInt(repeatedly(3, coinToss))
+3</code></pre>
+<p>This, however, is cheating because we can only deal with one qubit at a time and it doesn’t implement our original feature test. We’re back to the same point as we were with the Clojure implementation but in a better position because now we can take advantage of more of Julia’s built-in linear algebra support.</p>
+</section>
+<section id="quantum-registers" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="quantum-registers">Quantum Registers</h2>
+<p>So let’s make things even harder and represent qubit <em>registers</em>. Registers are <em>systems</em> of qubits in a combined state. We calculate this combined state with the <a href="https://en.wikipedia.org/wiki/Kronecker_product">Krondecker</a> product, also implemented natively in Julia by the <a href="https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/index.html#Base.kron"><code>kron</code></a> function. Let’s try a 2 qubit register:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>qubits <span class="op">=</span> () <span class="op">-&gt;</span> <span class="fu">kron</span>(<span class="fu">qubit</span>(), <span class="fu">qubit</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Testing in the console, it just works…</p>
+<pre class="console"><code>julia&gt; qubits()
+4-element Array{Float32,1}:
+ 1.0
+ 0.0
+ 0.0
+ 0.0</code></pre>
+<p>We can generate any size register we please, with the only constraint being available memory:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>register <span class="op">=</span> (n) <span class="op">-&gt;</span> <span class="fu">foldl</span>(kron, <span class="fu">fill</span>(<span class="fu">qubit</span>(), n))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This function uses the standard <code>fold</code> function to perform the <code>kron</code> operation, from left to right, over an array of <code>n</code> qubits.</p>
+<pre class="console"><code>julia&gt; register(3)
+8-element Array{Float32,1}:
+ 1.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+ 0.0</code></pre>
+<p>It works as expected. A 2 bit register needs an array of 4 complex numbers, a 3 bit one needs an 8 bit array, 4-bits require 16 and so on. The size of the array gets very big.</p>
+<p>Now we can turn our attention to the quantum gates and combine them into a multiple qubit gate. Once again the Krondecker product is used and works in exactly the same way.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>hadamard <span class="op">=</span> (n) <span class="op">-&gt;</span> <span class="fu">foldl</span>(kron, <span class="fu">fill</span>(H, n))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="console"><code>julia&gt; hadamard(3)
+8×8 Array{Float32,2}:
+ 0.353553   0.353553   0.353553   0.353553   0.353553   0.353553   0.353553   0.353553
+ 0.353553  -0.353553   0.353553  -0.353553   0.353553  -0.353553   0.353553  -0.353553
+ 0.353553   0.353553  -0.353553  -0.353553   0.353553   0.353553  -0.353553  -0.353553
+ 0.353553  -0.353553  -0.353553   0.353553   0.353553  -0.353553  -0.353553   0.353553
+ 0.353553   0.353553   0.353553   0.353553  -0.353553  -0.353553  -0.353553  -0.353553
+ 0.353553  -0.353553   0.353553  -0.353553  -0.353553   0.353553  -0.353553   0.353553
+ 0.353553   0.353553  -0.353553  -0.353553  -0.353553  -0.353553   0.353553   0.353553
+ 0.353553  -0.353553  -0.353553   0.353553  -0.353553   0.353553   0.353553  -0.353553</code></pre>
+<p>It’s clear how the size of these gates gets out of hand very quickly having a size of <span class="math display">\[2^n \times 2^n\]</span>.</p>
+<p>Using this gate we can apply the Hadamard operator to all the qubits at once.</p>
+<pre class="console"><code>julia&gt; hadamard(3) * register(3)
+8-element Array{Float32,1}:
+ 0.35355335
+ 0.35355335
+ 0.35355335
+ 0.35355335
+ 0.35355335
+ 0.35355335
+ 0.35355335
+ 0.35355335</code></pre>
+<p>This is the combined state of a 3 bit quantum register with each bit in a 50/50 superposition. Not to be confused with entanglement because the bits are still independent… so far.</p>
+<p>This is where things get a little more tricky. To measure a single qubit we need to place the measurement operator over the qubit in the register, applying the identity operator for all other bits. This is called lifting<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;At least it’s called lifting in <a href="https://arxiv.org/abs/1608.03355">this paper</a> which I found helpful to understand this process.</p></div></div><p>We’ll need the identity operator for a single qubit <span class="math display">\[I = \left(
+  \begin{array}{c}
+  1 &amp; 0 \\
+  0 &amp; 1 \\
+  \end{array}
+  \right)\]</span>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>eye <span class="op">=</span> () <span class="op">-&gt;</span> <span class="fu">Matrix</span><span class="dt">{Float32}</span>(I, <span class="fl">2</span>, <span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now we must <em>lift</em> the <span class="math display">\[M_0\]</span> operator as <span class="math display">\[I^{k-1} \times M_0 \times I^{n-k-1}\]</span>. In Julia this can be written like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>lift <span class="op">=</span> (n, k, op) <span class="op">-&gt;</span> <span class="fu">foldl</span>(kron, <span class="fu">map</span>(it <span class="op">-&gt;</span> (it <span class="op">==</span> k) ? op <span class="op">:</span> eye, <span class="fu">collect</span>(<span class="fl">1</span><span class="op">:</span>n)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This function will combine a series of <span class="math display">\[I\]</span> operators, the <code>op</code> operator over the <code>k</code>th bit and then more <span class="math display">\[I\]</span> operators to the end of the register. The result is<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>:</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;It can be seen here that the lifting matrix is mostly full of zeros. Hopefully we’ll be able to take advantage of Julia’s specialised matrix representations to optimise this.</p></div></div><pre class="console"><code>julia&gt; lift(3, 2, M₀)
+8×8 Array{Float32,2}:
+ 1.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  1.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  1.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  1.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.0</code></pre>
+<p>Measurement of the kth bit is then:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>measure <span class="op">=</span> (n, k, qubits) <span class="op">-&gt;</span> <span class="fu">rand</span>() <span class="op">&gt;</span> qubits<span class="op">'</span> <span class="op">*</span> <span class="fu">lift</span>(n, k, M₀) <span class="op">*</span> qubits</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>So we can measure the 2nd bit like this:</p>
+<pre class="console"><code>julia&gt; qubits = hadamard(3) * register(3)
+...
+julia&gt; measure(3, 2, qubits)
+true</code></pre>
+<p>One more important point. The measurement of each qubit is an operation which <em>collapses</em> the state of the qubit, i.e.&nbsp;changes its value. The measurement function must <em>lift</em> the <span class="math display">\[M_0\]</span> or <span class="math display">\[M_1\]</span> operation (depending on the result) over the measured qubit, apply it to the register and then renormalise it. More information about this can be found in <a href="https://arxiv.org/abs/1608.03355">this paper</a>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>M₁ <span class="op">=</span> [<span class="fl">0</span> <span class="fl">1</span>]<span class="ch">' * [0 1]</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>measure <span class="op">=</span> (n, k, qubits) <span class="op">-&gt;</span> <span class="cf">begin</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>       result <span class="op">=</span> <span class="fu">rand</span>() <span class="op">&gt;</span> qubits<span class="op">'</span> <span class="op">*</span> <span class="fu">lift</span>(n, k, M₀) <span class="op">*</span> qubits</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>       (result, <span class="fu">normalize</span>(<span class="fu">lift</span>(n, k, (result ? M₁ <span class="op">:</span> M₀)) <span class="op">*</span> qubits))</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To measure all the bits at once we can do something like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>measureAll <span class="op">=</span> (n, qubits) <span class="op">-&gt;</span> <span class="cf">begin</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>         results <span class="op">=</span> []; </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>         <span class="cf">for</span> k <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>           result, qubits <span class="op">=</span> <span class="fu">measure</span>(n, k, qubits)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">push!</span>(results, result)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>         <span class="cf">end</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>         results, qubits</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>       <span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It’s a bit nasty but, save for a few indices, at last we can say we have completed the first feature test. So our final solution, after extracting some constants, is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>ZERO <span class="op">=</span> <span class="fu">Float32</span>(<span class="fl">1</span>) <span class="op">*</span> [<span class="fl">1</span>, <span class="fl">0</span>]</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>ONE <span class="op">=</span> <span class="fu">Float32</span>(<span class="fl">1</span>) <span class="op">*</span> [<span class="fl">0</span>, <span class="fl">1</span>]</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>eye <span class="op">=</span> <span class="fu">Matrix</span><span class="dt">{Float32}</span>(I, <span class="fl">2</span>, <span class="fl">2</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>H <span class="op">=</span> <span class="fu">Float32</span>(<span class="fl">1</span><span class="op">/</span><span class="fu">sqrt</span>(<span class="fl">2</span>)) <span class="op">*</span> [<span class="fl">1</span> <span class="fl">1</span>; <span class="fl">1</span> <span class="op">-</span><span class="fl">1</span>]</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>M₀ <span class="op">=</span> ZERO <span class="op">*</span> ZERO<span class="op">'</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>M₁ <span class="op">=</span> ONE <span class="op">*</span> ONE<span class="op">'</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>register <span class="op">=</span> (n) <span class="op">-&gt;</span> <span class="fu">foldl</span>(kron, <span class="fu">fill</span>(ZERO, n))</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>hadamard <span class="op">=</span> (n) <span class="op">-&gt;</span> <span class="fu">foldl</span>(kron, <span class="fu">fill</span>(H, n))</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>lift <span class="op">=</span> (n, k, op) <span class="op">-&gt;</span> <span class="fu">foldl</span>(kron, <span class="fu">map</span>(it <span class="op">-&gt;</span> (it <span class="op">==</span> k) ? op <span class="op">:</span> eye, <span class="fu">collect</span>(<span class="fl">1</span><span class="op">:</span>n)))</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>measure <span class="op">=</span> (n, k, qubits) <span class="op">-&gt;</span> <span class="cf">begin</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>         result <span class="op">=</span> <span class="fu">rand</span>() <span class="op">&gt;</span> qubits<span class="op">'</span> <span class="op">*</span> <span class="fu">lift</span>(n, k, M₀) <span class="op">*</span> qubits</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>         (result, <span class="fu">normalize</span>(<span class="fu">lift</span>(n, k, (result ? M₁ <span class="op">:</span> M₀)) <span class="op">*</span> qubits))</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>       <span class="cf">end</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>measureAll <span class="op">=</span> (n, qubits) <span class="op">-&gt;</span> <span class="cf">begin</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>         results <span class="op">=</span> [];</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>         <span class="cf">for</span> k <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>           result, qubits <span class="op">=</span> <span class="fu">measure</span>(n, k, qubits)</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>           <span class="fu">push!</span>(results, result)</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>         <span class="cf">end</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>         results, qubits</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>       <span class="cf">end</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>toInt <span class="op">=</span> (b) <span class="op">-&gt;</span> <span class="fu">reduce</span>((acc, v) <span class="op">-&gt;</span> <span class="fl">2</span><span class="op">*</span>acc <span class="op">+</span> (v ? <span class="fl">1</span> <span class="op">:</span> <span class="fl">0</span>), b, init<span class="op">=</span><span class="fl">0</span>)</span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>qubits <span class="op">=</span> <span class="fu">hadamard</span>(<span class="fl">3</span>) <span class="op">*</span> <span class="fu">register</span>(<span class="fl">3</span>)</span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">toInt</span>(<span class="fu">measureAll</span>(<span class="fl">3</span>, qubits)[<span class="fl">1</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Running it to give us a random number from 0 to 7 on the console.</p>
+<p>Before we leave it, what’s the performance of this thing in its current form? Let’s see:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">11</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">print</span>(<span class="fu">toInt</span>(<span class="fu">measureAll</span>(n, <span class="fu">hadamard</span>(n) <span class="op">*</span> <span class="fu">register</span>(n))[<span class="fl">1</span>]))</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="console"><code>1  0.834134 seconds (1.63 M allocations: 90.474 MiB, 2.38% gc time)
+0  0.063235 seconds (15.49 k allocations: 813.162 KiB)
+7  0.004201 seconds (9.11 k allocations: 281.986 KiB)
+11  0.002534 seconds (27.13 k allocations: 623.813 KiB)
+30  0.011686 seconds (122.15 k allocations: 2.509 MiB)
+7  0.023647 seconds (634.68 k allocations: 12.326 MiB)
+1  0.086709 seconds (3.05 M allocations: 58.193 MiB, 5.11% gc time)
+185  0.362644 seconds (14.04 M allocations: 265.855 MiB, 1.72% gc time)
+237  1.746489 seconds (63.02 M allocations: 1.163 GiB, 6.29% gc time)
+504  7.655970 seconds (279.03 M allocations: 5.145 GiB, 11.96% gc time)
+490 31.689085 seconds (1.29 G allocations: 23.612 GiB, 4.77% gc time)</code></pre>
+<p>At just 11 bits it’s taking up huge parts of my machine and far exceeding available main memory. Now we have the machinery written in Julia we can try a number of things to improve performance:</p>
+<ul>
+<li>We’re using dense matrices everywhere. We can improve that by using sparse matrices where appropriate. The lifting matrix., especially, is open for conversion to a sparse matrix representation.</li>
+<li>Since the vectors can become quite large it makes sense to do the multiplications in-place, breaking the immutability of the functional paradigm but improving the performance and memory usage which will be very important for larger registers. May be necessary to write our own algorithm to do that using sparse matrices and dense arrays.</li>
+</ul>
+<p>Also there are a number of other improvements to consider: - We pass around the number of bits when it could be determined implicitly from the size of the arrays. - There is no entanglement yet in our system, for that we need to define a Conditional NOT operator and for that a more sophisticated <code>lift</code> function.</p>
+<p>We’ll cover all that in another post.</p>
+
+
+</section>
+
+
+</main> <!-- /main -->
+<script>
+const visibleMarginItems = () =>
+  Array.from(
+    document.querySelectorAll(
+      ".column-margin.column-container > *, .margin-caption, .aside"
+    )
+  ).filter((item) => item.offsetParent !== null);
+
+const captionPriority = (item) =>
+  item.classList.contains("margin-caption") ? 0 : 1;
+
+const layoutMarginItems = () => {
+  const items = visibleMarginItems();
+
+  items.forEach((item) => {
+    item.style.marginTop = "";
+  });
+
+  const positionedItems = items
+    .map((item) => ({
+      item,
+      top: item.getBoundingClientRect().top + window.scrollY,
+    }))
+    .sort(
+      (left, right) =>
+        left.top - right.top ||
+        captionPriority(left.item) - captionPriority(right.item)
+    );
+
+  let lastBottom = 0;
+  positionedItems.forEach(({ item, top }) => {
+    if (top < lastBottom) {
+      const styles = window.getComputedStyle(item);
+      const marginBottom = Number.parseFloat(styles.marginBottom) || 0;
+      item.style.marginTop = `${lastBottom - top + marginBottom}px`;
+    }
+
+    const styles = window.getComputedStyle(item);
+    const marginTop = Number.parseFloat(styles.marginTop) || 0;
+    lastBottom = top + item.getBoundingClientRect().height + marginTop;
+  });
+};
+
+const scheduleMarginLayout = () => {
+  window.requestAnimationFrame(() => {
+    window.setTimeout(layoutMarginItems, 0);
+  });
+};
+
+window.addEventListener("load", scheduleMarginLayout);
+window.addEventListener("resize", scheduleMarginLayout);
+document.fonts?.ready.then(scheduleMarginLayout);
+
+document.querySelectorAll("img").forEach((image) => {
+  if (!image.complete) {
+    image.addEventListener("load", scheduleMarginLayout, { once: true });
+  }
+});
+
+if (window.ResizeObserver) {
+  new ResizeObserver(scheduleMarginLayout).observe(document.body);
+}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/johnhearn\.github\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© John Hearn</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/johnhearn">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://linkedin.com/in/john-hearn-599762b">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/johnhearnbcn">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

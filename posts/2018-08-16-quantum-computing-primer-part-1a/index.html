@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2018-08-16">
+<meta name="description" content="Basic maths-free introduction to quantum computing for software engineers.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Quantum Computing Primer – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,65 +70,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -139,7 +81,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +92,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -172,22 +114,50 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#a-bit-of-history" id="toc-a-bit-of-history" class="nav-link active" data-scroll-target="#a-bit-of-history">A Bit of History</a></li>
+  <li><a href="#whats-a-bit-anyway" id="toc-whats-a-bit-anyway" class="nav-link" data-scroll-target="#whats-a-bit-anyway">What’s a Bit Anyway?</a></li>
+  <li><a href="#extending-the-notion-of-a-bit-to-the-quantum-world" id="toc-extending-the-notion-of-a-bit-to-the-quantum-world" class="nav-link" data-scroll-target="#extending-the-notion-of-a-bit-to-the-quantum-world">Extending the Notion of a Bit to the Quantum World</a></li>
+  <li><a href="#god-does-play-dice" id="toc-god-does-play-dice" class="nav-link" data-scroll-target="#god-does-play-dice">God <em>does</em> play dice</a></li>
+  <li><a href="#combining-two-qubits" id="toc-combining-two-qubits" class="nav-link" data-scroll-target="#combining-two-qubits">Combining Two Qubits</a></li>
+  <li><a href="#entanglement" id="toc-entanglement" class="nav-link" data-scroll-target="#entanglement">Entanglement</a></li>
+  <li><a href="#quantum-computers-are-not-reliable" id="toc-quantum-computers-are-not-reliable" class="nav-link" data-scroll-target="#quantum-computers-are-not-reliable">Quantum computers are not reliable</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#online-resources" id="toc-online-resources" class="nav-link" data-scroll-target="#online-resources">Online Resources</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Quantum Computing Primer</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">quantum-computing</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Basic maths-free introduction to quantum computing for software engineers.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 16, 2018</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +167,88 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="header.jpg" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Header Image</figcaption>
+</figure>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+<p>Quantum computing is coming, in fact it’s on our doorstep.</p>
+<p>But there’s a problem: a lack of quantum software engineers. There is a reason for this. At the moment much of the literature is either popular science, so watered down to be useless for practical purposes, or, at the other extreme, written <em>by</em> academics <em>for</em> academics making it tough going for many programmers to follow.</p>
+<p>Nonetheless software engineers are exactly what the field needs because we build abstractions and abstractions are sorely missing. Quantum computing needs YOU to build new constructs that academia hasn’t even thought of yet. This article introduces the general concepts behind quantum computing which hopefully any programmer new to quantum computing can understand.</p>
+<section id="a-bit-of-history" class="level2">
+<h2 class="anchored" data-anchor-id="a-bit-of-history">A Bit of History</h2>
+<p>It shouldn’t be necessary to explain to programmers what a <strong>bit</strong> is. It’s a concept so fundamental to computing that it’s taken almost for granted in modern day programming.</p>
+<p>We often forget that in the earliest computers each bit of information required a clunky, power-hungry, sausage-sized vacuum tube. Programming in those days was low-level bit twiddling and was inherently error-prone. In time vacuum tubes were replaced by individual transistors which were gradually miniaturised and packed more and more tightly into the integrated circuits which are the processors of today’s laptops and smartphones.</p>
+<p>Today’s quantum computers are clunky, power-hungry and error-prone, like the vacuum tubes in their day. Programming them is basically low-level bit twiddling and they operation is inherently error prone. Do not be fooled into thinking that quantum computing is a step backwards, however, in fact we’ll see that the strange consequences of quantum mechanics can be harnessed to bring immense benefits and even tiny quantum systems can produce results that traditional computing cannot. The computational power that they will represent in the coming years is unimaginable.</p>
+</section>
+<section id="whats-a-bit-anyway" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="whats-a-bit-anyway">What’s a Bit Anyway?</h2>
+<p>A <em>bit</em> represents a binary piece of information, the answer to a yes/no question. We are used to seeing binary information represented with other symbols too: yes/no, 1/0, true/false or maybe even on/off. We’ll call the possible values <em>states</em>, that is, an “on” state or a “true” state, etc.</p>
+<p>Binary data can also be be represented geometrically, for example as an arrow pointing up for one binary state and an arrow pointing down for the other, like the hour hand of a clock at 12pm and 6pm.</p>
+<p><img src="up.png" class="img-fluid" alt="Up"> <img src="down.png" class="img-fluid" alt="Down"></p>
+<p>With this in mind we can interpret the familiar NOT operator or <em>gate</em> as simply flipping the arrow through 180º, from the <code>Up</code> state to the <code>Down</code> state and vice versa<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The NOT gate, then, is an example of a <em>unitary operation</em> on the bit, that is to say, it changes the direction of the arrow but not its length. In fact in the classical world there are only two one-bit operations, the other being the <em>identity</em> operator which leaves the bit in its previous state and obviously doesn’t affect the length of the arrow either.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;The <code>Up</code> and <code>Down</code> terminology is also reminiscent of one of the quantum mechanical properties of particles called <a href="https://en.wikipedia.org/wiki/Spin_(physics)">spin</a>.</p></div></div></section>
+<section id="extending-the-notion-of-a-bit-to-the-quantum-world" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="extending-the-notion-of-a-bit-to-the-quantum-world">Extending the Notion of a Bit to the Quantum World</h2>
+<p>Now take a moment to imagine that the arrow is not confined to just the <code>Up</code> and <code>Down</code> states, as it is in the classical world, but can point in <em>any</em> direction, up, down, left, right, front and back. The arrow is evidently not restricted to just two mutually exclusive binary states, as in the case of the classical bit, but rather any point over the whole surface of a sphere<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;This sphere is known as the <a href="https://en.wikipedia.org/wiki/Bloch_sphere">Bloch sphere</a>.</p></div></div><div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="bloch-sphere.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Bloch sphere</figcaption>
+</figure>
+</div>
+<p>You’ve just imagined the possible states of a <strong>quantum bit</strong>, or <strong>qubit</strong> as it is usually called.</p>
+<p>As an analogy, take the surface of the earth with the north and south poles representing the <code>Up</code> and <code>Down</code> directions. Every location on the surface of the earth would represent a different state, given, for example, by its GPS coordinates.</p>
+<p>Now we can imagine a whole new family of gates which not only flip the arrow around 180º (like the classical NOT gate) but can rotate it by different angles into any direction<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;In the quantum computing literature these gates have (cryptic) names like <code>H</code>, <code>X</code>, <code>Y</code> and <code>Z</code>. In reality they are all nothing more than rotations of the arrow in different directions by different amounts.</p></div></div></section>
+<section id="god-does-play-dice" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="god-does-play-dice">God <em>does</em> play dice</h2>
+<p>In the strange world of quantum mechanics, when we make observations, those same observations affect the state of the system. In this case, when we <strong>measure</strong> a qubit it will always appear to be straight <code>Up</code> or straight <code>Down</code>, <em>never anything in-between</em>. It is said that the state <em>collapses</em> to one of these values<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. What’s more, the <em>probability</em> that it will collapse to one state or another is related directly to how close it is to that state, i.e.&nbsp;how close to the poles.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;This is known as the <a href="https://en.wikipedia.org/wiki/Measurement_problem">measurement problem</a> because no one really knows for certain <em>why</em> or <em>how</em> this happens. There is evidence that when considering the measuring equipment as a quantum mechanical system in itself then the collapse can be considered as altering the state on the whole system to bring both into alignment. Einstein famously was not convinced.</p></div></div><p>For example, if we identify the <code>Up</code> state as <code>false</code> and the <code>Down</code> state as <code>true</code> then if the arrow of our quantum bit is pointing vertically up then it will almost certainly be <code>false</code> when measured. On the other hand if it’s pointing down then it’s almost certain to be measured as <code>true</code>. If it’s pointing sideways then it could result in either <code>true</code> or <code>false</code> with equal likelihood. It is indeterministic, in other words <em>random</em>. God really does play dice.</p>
+<p>Believe it or not this view of a qubit has been validated by experiment time and again. Specially prepared light particles, sub-atomic particles and even atoms behave in exactly this way. It leads to some very useful results in its own right, like true random number generation, but the real power doesn’t come until we combine multiple bits into a single state.</p>
+</section>
+<section id="combining-two-qubits" class="level2">
+<h2 class="anchored" data-anchor-id="combining-two-qubits">Combining Two Qubits</h2>
+<p>We know how to combine classical bits, it’s just the binary number system that we use everyday. For example, the combination of 2 bits have exactly 4 possible states, namely 00, 01, 10 and 11. Notice that although each bit exists separately, to have meaning they need to be considered together, as a single <em>register</em>, in a given combined state.</p>
+<p>In a similar way quantum bits can be combined into quantum registers and, just as we saw that a quantum bit can be considered a mix or <em>superposition</em> of <code>Up</code> and <code>Down</code> states, so can the quantum registers be considered a superposition of their possible states, although unfortunately there is no easy way to intuitively visualise them as there is with the Bloch sphere of a single quantum bit.</p>
+<p>In other words, the quantum register is some weighted superposition of <code>Up</code>-<code>Up</code> plus <code>Up</code>-<code>Down</code> plus <code>Down</code>-<code>Up</code> plus <code>Down</code>-<code>Down</code>. The weights of the components define the combined state, just as it did in the single qubit case.</p>
+</section>
+<section id="entanglement" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="entanglement">Entanglement</h2>
+<p>When measured, a 2-bit quantum register will collapse to just one of 4 possible states, just as in the classical case.</p>
+<p>There is something truly remarkable about quantum registers and it is this: the number of possible states for the register <em>before</em> measurement is greater than the number of states that could be produced from two single quantum bits working separately.</p>
+<p>Let that sink in.</p>
+<p>Two linked, or <em>entangled</em>, quantum bits forming a 2-bit quantum register can be in a state which is not a combination of individual qubits! What’s more, the measurement of one qubit affects <em>both</em> qubits, even if they are separated by great distances.</p>
+<p>Einstein called this “spooky action at a distance” and the physical mechanisms behind it are still a mystery<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Nonetheless it has been shown and confirmed by many experiments to be true. It is one of the remarkable facts that gives quantum computing its immense power and set it apart from classical computing.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;See <a href="https://www.youtube.com/watch?v=XGulRS2IyF8">this video</a> for an esoteric attempt to explain of this phenomenon.</p></div></div></section>
+<section id="quantum-computers-are-not-reliable" class="level1">
+<h1>Quantum computers are not reliable</h1>
+<p>As programmers we’re no longer accustomed to dealing with bit errors. Under the covers, however, errors are common in data storage and transmission but reliability is achieved through built-in <a href="https://en.wikipedia.org/wiki/Error_detection_and_correction">detection and recovery mechanisms</a> which solve this problem for us. These mechanisms usually by work by adding redundancy to the data itself and this redundancy is also required in quantum computing meaning that they can never reach their theoretical maximum capacity.</p>
+<p>The current state of the art in quantum computing is very far from the reliability of traditional computing. The error rates are such that results must be assumed to be wrong some of the time.</p>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<p>We have seen how to extend a classical bit to the quantum world. We have also seen how these bits differ from their classical counterparts:</p>
+<ol type="1">
+<li>Quantum bits (<em>qubits</em>) have a whole continuum of states, not just the binary states of a classical bit.</li>
+<li>Even though qubits have a continuum of possible states, when observed or <em>measured</em>, they <em>collapse</em>, permanently, to one of the classical binary states.</li>
+<li>Qubits can be combined into <em>registers</em> and these registers have more possible states than the combinations of the individual qubits. This means when one qubit is measured and collapses to a particular binary state then the other qubits in the register must also change, even if separated by enormous distances. This effect is known as <em>entanglement</em>.</li>
+</ol>
+<p>This area of computing is in its infancy and basic things that we take for granted must be reevaluated. On the other hand these properties taken together give us access to a powerful new programming paradigm. This introduction is just the very beginning. Nonetheless to get a deeper understanding of what’s happening in order to be able to do anything useful requires understanding the maths involved but I encourage you to do so. Quantum computing needs you!</p>
+</section>
+<section id="online-resources" class="level1">
+<h1>Online Resources</h1>
+<p>If you would like to know more I can recommend the following online resources:</p>
+<p>Michael Nielson’s YouTube course - <a href="https://www.youtube.com/playlist?list=PL1826E60FD05B44E4">Quantum Computing for the Determined</a></p>
+<p>Microsoft’s Q# - <a href="https://docs.microsoft.com/en-us/quantum/quantum-concepts-1-intro?view=qsharp-preview">What is Quantum Computing?</a></p>
+<p>Craig Gidney’s <a href="http://algassert.com/quirk">Quirk</a> online quantum circuit simulator and <a href="http://algassert.com/">blog</a>.</p>
+
+
+</section>
+
+
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

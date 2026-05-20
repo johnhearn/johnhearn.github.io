@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2019-05-24">
+<meta name="description" content="Improving performance.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Building a QPU simulator in Julia - Part 3 – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,29 +22,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,35 +105,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -139,7 +145,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +156,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -180,14 +186,29 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Building a QPU simulator in Julia - Part 3</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">quantum-computing</div>
+    <div class="quarto-category">programming-languages</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Improving performance.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 24, 2019</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +218,75 @@ window.Quarto = {
 </header>
 
 
+<p>In the <a href="../2019-05-09-building-a-qpu-simulator-in-julia-part-2/">last post</a> we were able to build a functional quantum register and used it to create a simple circuit for a <a href="../2018-09-30-quantum-random-number-generator/">quantum random number generator</a>. It worked directly with registers up to about 11 bits when the amount of memory required to represent the operations on the register surpassed the available resources.</p>
+<p>This short post is to see if we can improve the simple functions we wrote to increase the performance.</p>
+<p>The first obvious thing to try is to use sparse matrices instead of dense ones. This is especially important when lifting the operators over large registers because the dense matrices are full of zeros. For example take a hadamard operator lift into the 2rd position of a 3-bit register. The lifted matrix becomes:</p>
+<pre class="console"><code>julia&gt; lift(3, 2, H)
+8×8 Array{Float32,2}:
+ 0.707107  0.0        0.707107   0.0       0.0       0.0        0.0        0.0     
+ 0.0       0.707107   0.0        0.707107  0.0       0.0        0.0        0.0     
+ 0.707107  0.0       -0.707107  -0.0       0.0       0.0       -0.0       -0.0     
+ 0.0       0.707107  -0.0       -0.707107  0.0       0.0       -0.0       -0.0     
+ 0.0       0.0        0.0        0.0       0.707107  0.0        0.707107   0.0     
+ 0.0       0.0        0.0        0.0       0.0       0.707107   0.0        0.707107
+ 0.0       0.0       -0.0       -0.0       0.707107  0.0       -0.707107  -0.0     
+ 0.0       0.0       -0.0       -0.0       0.0       0.707107  -0.0       -0.707107</code></pre>
+<p>This matrix has a high density of zeros, something which indicates that a sparce representation may be better. Luckily <a href="https://julialang.org/">Julia</a> includes support for sparce matrices as part of the <code>SparseArrays</code> package and then we can simply start creating sparse matrices with a couple of simple changes:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">SparseArrays</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ZERO <span class="op">=</span> <span class="fu">sparsevec</span>([<span class="fl">1</span>], [<span class="fl">1f0</span>], <span class="fl">2</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ONE <span class="op">=</span> <span class="fu">sparsevec</span>([<span class="fl">2</span>], [<span class="fl">1f0</span>], <span class="fl">2</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>eye <span class="op">=</span> <span class="fu">sparse</span>(I, <span class="fl">2</span>, <span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="console"><code>julia&gt; lift(3, 2, H)
+8×8 SparseMatrixCSC{Float32,Int64} with 16 stored entries:
+  [1, 1]  =  0.707107
+  [3, 1]  =  0.707107
+  [2, 2]  =  0.707107
+  [4, 2]  =  0.707107
+  [1, 3]  =  0.707107
+  [3, 3]  =  -0.707107
+  [2, 4]  =  0.707107
+  [4, 4]  =  -0.707107
+  [5, 5]  =  0.707107
+  [7, 5]  =  0.707107
+  [6, 6]  =  0.707107
+  [8, 6]  =  0.707107
+  [5, 7]  =  0.707107
+  [7, 7]  =  -0.707107
+  [6, 8]  =  0.707107
+  [8, 8]  =  -0.707107</code></pre>
+<p>We have reduced the memory footprint of the matrix by a factor of 4. In fact the saving is exponential: a <span class="math display">\[2^n \times 2^n\]</span> array becomes a sparse representation with <span class="math display">\[2^{n+1}\]</span> entries.</p>
+<p>Trying the same benchmark again gives us much better results:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">11</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">print</span>(<span class="fu">toInt</span>(<span class="fu">measureAll</span>(n, <span class="fu">hadamard</span>(n) <span class="op">*</span> <span class="fu">register</span>(n))[<span class="fl">1</span>]))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="console"><code>0  0.000075 seconds (23 allocations: 1.047 KiB)
+3  0.000034 seconds (41 allocations: 1.969 KiB)
+0  0.000019 seconds (51 allocations: 3.016 KiB)
+15  0.000029 seconds (73 allocations: 5.516 KiB)
+12  0.000030 seconds (84 allocations: 11.422 KiB)
+46  0.000038 seconds (102 allocations: 31.031 KiB)
+62  0.000103 seconds (119 allocations: 102.750 KiB)
+143  0.000190 seconds (134 allocations: 374.313 KiB)
+301  0.000605 seconds (150 allocations: 1.396 MiB)
+130  0.002381 seconds (159 allocations: 5.463 MiB)
+666  0.016114 seconds (202 allocations: 21.679 MiB)</code></pre>
+<p>Lets see how far we can go…</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="fl">12</span><span class="op">:</span><span class="fl">16</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">print</span>(<span class="fu">toInt</span>(<span class="fu">measureAll</span>(n, <span class="fu">hadamard</span>(n) <span class="op">*</span> <span class="fu">register</span>(n))[<span class="fl">1</span>]))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="console"><code>1131  0.064576 seconds (199 allocations: 85.922 MiB)
+430  0.296749 seconds (252 allocations: 342.593 MiB)
+12847  1.547630 seconds (285 allocations: 1.336 GiB, 32.59% gc time)
+24906  4.267627 seconds (317 allocations: 5.340 GiB, 4.51% gc time)
+63277 39.087846 seconds (787 allocations: 21.372 GiB, 6.12% gc time)</code></pre>
+<p>It turns out that we’ve improved the performance by a factor of about 32! Not a bad for a 3 line change :)</p>
+<p>There are more things to do like in-place multiplications but I’d like to implement some of the standard algorithms first to compare performance in more varied circumstances. That’ll be for next time.</p>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

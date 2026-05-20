@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2020-05-01">
+<meta name="description" content="Approximating probability distributions with polynomials.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Polynomial Chaos – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,29 +22,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,35 +105,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -139,7 +145,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +156,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -176,18 +182,33 @@ window.Quarto = {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Polynomial Chaos</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">mathematics</div>
+    <div class="quarto-category">statistics</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Approximating probability distributions with polynomials.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 1, 2020</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +218,78 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
+<div class="page-columns page-full margin-video">
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/Z-Qio-n6yPc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+<div class="no-row-height column-margin column-container margin-video-caption">
+<span><strong>Emily Gorcenski - Polynomial Chaos: A technique for modeling uncertainty</strong> - <em>Polynomial chaos is a somewhat obscure technique that leverages a natural connection between probability distributions and orthogonal polynomial families. This talk demonstrates the technique and its applications</em>.</span>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div>
+<p><em>(The Julia code for this blog is available in my GitHub notebooks repo and online <a href="https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/master/Poly%20Chaos%20Approximation.ipynb" target="_blank">here</a>.)</em></p>
+<p>This talk appeared recently in my YouTube recommendations and with a title like “Polynomial Chaos” I had to take a look. This is a summary of what I learnt mainly to help my own understanding.</p>
+<p><strong>Polynomial Chaos Expansion</strong> (aka PCE, also known as Wiener Chaos Expansion.) was a technique introduced just before the second world war by Norbert Wiener. The use of the word chaos is different from the way we understand it today and seems to come from its application to the statistical study of white noise.</p>
+<p>In a very similar way to how the <a href="https://en.wikipedia.org/wiki/Fourier_series#Hilbert_space_interpretation">Fourier</a> and <a href="https://en.wikipedia.org/wiki/Laplace_transform">Laplace</a> transforms are related to the exponential functions, there are <strong>strong relationships</strong> between certain <strong>probability distributions</strong> and corresponding families<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> of <strong>orthogonal polynomials</strong>.</p>
+<div class="no-row-height column-margin column-container page-columns page-full"><div id="fn1"><p><sup>1</sup>&nbsp;Catalogued in the <a href="https://en.wikipedia.org/wiki/Askey_scheme">Wiener-Askey scheme</a>.</p></div><div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="hermite-polynomials.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">I’m imagining it in a similar way to how a continuous oscillation can be parameterised by only its frequency and amplitude in the Fourier case, though I’m not sure how far that analogy goes. This plot of the polynomials themselves does seem a bit sine-wavey.</figcaption>
+</figure>
+</div></div>
+<p>Also like the Fourier and Laplace versions, the transformed version of the distribution has many useful properties which can be used for similar purposes, like <strong>approximation</strong> and <strong>solving differential equations</strong>.</p>
+<p>In these notes, and following closely the talk mentioned above, I’ll try and describe how you might approximate a general probability distributions using this technique.</p>
+<p>Polynomial chaos extends from the fact<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> that any stochastic variable (within reason) can be transformed into a system of orthogonal polynomials: <span class="math inline">\(X = \sum_{i=0}^\infty X_i \phi_i(\zeta)\)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;The <a href="https://en.wikipedia.org/wiki/Karhunen%E2%80%93Lo%C3%A8ve_theorem">Kosambi–Karhunen–Loève theorem</a> states that a stochastic process can be represented as an infinite linear combination of orthogonal functions, analogous to a Fourier series representation of a function on a bounded interval.</p></div></div><p>If the polynomials are chosen correctly then they can represent certain probability distributions very compactly. For example, for a normally distributed random variable the polynomials are <a href="https://en.wikipedia.org/wiki/Hermite_polynomials">Hermite polynomials</a>, <span class="math inline">\(\phi_i(\zeta) \equiv H_i(\zeta)\)</span>, and the transformed random variable can be written <span class="math inline">\(X = \mu H_0(\zeta) + \sigma H_1(\zeta) = \mu + \sigma \zeta\)</span>, where <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are the mean and standard deviation respectively, which makes sense.</p>
+<p>The relationship between the distribution and the polynomials can be seen most clearly in the definition of the inner product of the polynomials themselves. In this case the Hermite polynomial inner product is defined like this:</p>
+<p><span class="math display">\[ \langle H_i(\zeta)\, H_j(\zeta) \rangle  = \int_{-\infty}^\infty H_i(\zeta) H_j(\zeta) \color{red}{e^{-\frac{\zeta^2}{2}}}\, d\zeta = \color{red}{\sqrt{2\pi}} i! \delta_{ij}\]</span></p>
+<p>The elements in <span class="math inline">\(\color{red}{red}\)</span> being both the weighting function for the product and the distribution itself.</p>
+<p>We want to approximate a general probability distribution, <span class="math inline">\(F(k)\)</span> by expanding in terms of a chosen set of polynomials belonging to another distribution, say <span class="math inline">\(G(\zeta)\)</span>. To do this the trick is to transform both <span class="math inline">\(F(k)\)</span> and <span class="math inline">\(G(\zeta)\)</span> into the same, uniform distribution using an inverse transformation of both:</p>
+<p><span class="math display">\[k = F^{-1}(u) \stackrel{\small{\textrm{def}}}{=} h(u)\]</span></p>
+<p><span class="math display">\[\zeta = G^{-1}(u) \stackrel{\small{\textrm{def}}}{=} l(u)\]</span></p>
+<p>Then use the Galerkin projection to compute the individual coefficients:</p>
+<p><span class="math display">\[k_i = \frac{\langle k H_i(\zeta) \rangle}{\langle H_i^2(\zeta) \rangle} = \frac{1}{\langle H_i^2 \rangle} \int_{-\infty}^\infty k H_i(\zeta) e^{-\frac{\zeta^2}{2}}\, d\zeta = \frac{1}{\langle H_i^2 \rangle}\int_0^1 h(u) H_i(l(u))\, du \]</span></p>
+<p>All this is verbatim from the talk. I also planned to transcribe her code (to Julia of course) but I found a better plan.</p>
+<p>Dealing with the polynomials from scratch is pretty tedious so I looked for a package that would do it for me. As it turns out there is a Julia package called <a href="https://timueh.github.io/PolyChaos.jl/stable">PolyChaos</a> which does most of this. Looking through the documentation I didn’t see this actual use case so I did it myself.</p>
+<div class="page-columns page-full"><p>Using the PolyChaos package we can easily define our Hermite polynomials. In PolyChaos they are called <code>GaussOrthPoly</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>:</p><div class="no-row-height column-margin column-container"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/HarmOsziFunktionen.png" class="img-fluid" alt="Quantum_harmonic_oscillator)."></div></div>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;The name Hermite is used for the variant of the Hermite polynomials used by physicists. I remember they appear as part of the study of the quantum linear harmonic oscillator which I studied in university.</p></div></div><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">PolyChaos</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>op_gauss <span class="op">=</span> <span class="fu">GaussOrthoPoly</span>(<span class="fl">20</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">H</span>(i,x) <span class="op">=</span> <span class="fu">evaluate</span>(i, x, op_gauss)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We also compute the inner (scalar) products, <span class="math inline">\(\langle H_i^2(\zeta) \rangle\)</span> for our polynomials, PolyChaos conveniently does this for us:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sp <span class="op">=</span> <span class="fu">computeSP2</span>(op_gauss)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then we define our inverse functions for testing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Distributions</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">inv_cdf</span>(dist) <span class="op">=</span> u <span class="op">-&gt;</span> <span class="fu">quantile</span>(dist, u)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> <span class="fu">inv_cdf</span>(<span class="fu">Exponential</span>())</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> <span class="fu">inv_cdf</span>(<span class="fu">Normal</span>())</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">integrand</span>(i) <span class="op">=</span> u <span class="op">-&gt;</span> <span class="fu">h</span>(u)<span class="fu">*H</span>(i, <span class="fu">l</span>(u))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In this case the distribution we want to approximate if the <code>Exponential</code> distribution, <code>h</code>, and is defined as a partial function. The Gassian we will approximate it with is defined as the partial function <code>l</code>. Finally de define our integrand in terms of <code>h(u)</code>, <code>H</code> and <code>l(u)</code>, for a particular index, <code>i</code>.</p>
+<p>Now we perform the integration, for which PolyChaos also has us covered.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>int_op <span class="op">=</span> <span class="fu">Uniform01OrthoPoly</span>(<span class="fl">1000</span>, addQuadrature<span class="op">=</span><span class="cn">true</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We’ll truncate the approximation to <code>p</code> polynomials:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="fl">21</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ki <span class="op">=</span> [<span class="fu">integrate</span>(<span class="fu">integrand</span>(i<span class="op">-</span><span class="fl">1</span>), int_op) <span class="op">/</span> sp[i] for i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>p]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then we can reconstitute the approximated distribution using 5000 Gaussian random variables, <span class="math inline">\(\zeta_i\)</span>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ζ <span class="op">=</span> <span class="fu">randn</span>(<span class="fl">5000</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>Σ <span class="op">=</span> <span class="fu">zeros</span>(<span class="fl">5000</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>p</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    Σ <span class="op">+=</span> ki[i] <span class="op">*</span> <span class="fu">H</span>(i<span class="op">-</span><span class="fl">1</span>,ζ)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">histogram</span>(Σ, normed<span class="op">=</span><span class="cn">true</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="reconstitutes-exponential-5000.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Exponential distribution constituted as a sum of transformed gaussian random variables.</figcaption>
+</figure>
+</div>
+<p>With this same code we can now approximate any distribution using random variables drawn from a more manageable distribution of our choice. This would allow us to perform other transformations or analysis which may have been difficult in the original form. It may also be a faster alternative to sampling techniques, like Monte Carlo variants.</p>
+
+
+
+
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2021-08-19">
+<meta name="description" content="The distribution of latencies in a system is often approximately log-normal. Why?">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Why Lognormal? – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,35 +70,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -139,7 +110,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +121,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -176,18 +147,33 @@ window.Quarto = {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Why Lognormal?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">statistics</div>
+    <div class="quarto-category">software-architecture</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    The distribution of latencies in a system is often approximately log-normal. Why?
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 19, 2021</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +183,39 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
+<div class="page-columns page-full"><p>The <a href="https://en.wikipedia.org/wiki/Log-normal_distribution">log-normal distribution</a> is <a href="https://www.semanticscholar.org/paper/What-Do-You-Mean-Revisiting-Statistics-for-Web-Time-Ciemiewicz/65162028a420dbefdcb71c6def616e4aa1b126b1?p2df">sometimes</a> used as a simple model for the distribution of latencies from real-world systems. By no means is it a perfect model and sometimes <a href="https://newrelic.com/blog/best-practices/expected-distributions-website-response-times">alternatives</a> are better, especially when the load is far below maximum capacity but at high load I’ve empirically found it to be a reasonable fit.</p><div class="no-row-height column-margin column-container"><span class="">It’s important to understand that models are just models. Under different situations the latency distributions may be completely different.</span></div></div>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="log-normal-fit.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Real world data from proprietary production system under high load.</figcaption>
+</figure>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+<p>One reason that this is important is that the log-normal is long-tailed. This means that while the average response time under these conditions might be excellent, the top percentiles might be totally unacceptable so we end up having to oversize more than we might like.</p>
+<p>I’ve often wondered why this might be the case and answers to this question are often very hand-wavey. Here I attempt a totally unscientific explanation.</p>
+<p>Let’s take a <a href="https://erikbern.com/2018/03/27/waiting-time-load-factor-and-queueing-theory.html">standard result</a> from queueing theory and say that the latency is a function of the load factor,<span class="math inline">\(f\)</span>, defined as the ratio of arrival rate to service rate.</p>
+<p><span class="math display">\[Latency \propto \frac{1}{1-f}\]</span></p>
+<p>Latencies fly off to infinity when the load factor approaches 1. Makes sense because if the requests arrive faster than they can be serviced then the queue will grow until something else gives.</p>
+<p>Now we might assume there is some dispersal in the load factor due to the natural burstiness of incoming traffic. We don’t want to model this noise with a normal distribution because our load factor is strictly between 0 and 1. A better choice is the <a href="https://en.wikipedia.org/wiki/Beta_distribution">beta distribution</a> which has exactly that property and just so happens to nicely approximate the normal distribution if we <a href="https://www.johndcook.com/blog/normal_approx_to_beta/">choose the right parameters</a>.</p>
+<p>Now what happens to the distribution of latencies? Well, luck would have it that the transformation of the beta distribution by the formula above gives us the so called <a href="https://en.wikipedia.org/wiki/Beta_prime_distribution">beta-prime distribution</a>. And that approximates a LogNormal distribution surprisingly well, especially around the tail.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="log-normal-vs-beta-prime.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Beta-prime distribution compared to the Log Normal distribution by method of moments.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="log-normal-vs-beta-prime-error.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Absolute error tapers away.</figcaption>
+</figure>
+</div>
+<p>What does this mean? Absolutely nothing and it’s wrong for all kinds of reasons. Nonetheless it might give a clue to the usefulness of the LogNormal distribution and its tail and why the Erlang/Gamma distributions sometimes are more indicative.</p>
+<p>The intuition would be that the natural variance in the load produces latencies heavily skewed by the <a href="https://www.r-bloggers.com/2015/07/hockey-elbow-and-other-response-time-injuries/">elbow curve</a> of the latency formula, especially when under high load, producing the long tail. Under lower loads the skewing effect is less and the distribution loses it’s long tail, in fact becoming more like an Erlang distribution after all.</p>
+<p>Source code for the graphs is <a href="https://github.com/johnhearn/notebooks/blob/master/beta-prime.ipynb">here</a>.</p>
+
+
+
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

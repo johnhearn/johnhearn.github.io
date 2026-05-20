@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2020-04-03">
+<meta name="description" content="Some reasons why Spring’s @Autowire annotation could be considered a code smell.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Stop Using @Autowire – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,29 +22,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,65 +105,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -139,7 +116,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +127,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -176,18 +153,34 @@ window.Quarto = {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Stop Using <span class="citation" data-cites="Autowire">@Autowire</span></h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">programming-languages</div>
+    <div class="quarto-category">software-architecture</div>
+    <div class="quarto-category">software-engineering</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Some reasons why Spring’s <span class="citation" data-cites="Autowire">@Autowire</span> annotation could be considered a code smell.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 3, 2020</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +190,73 @@ window.Quarto = {
 </header>
 
 
+<p>The <a href="https://spring.io/">Spring Framework</a> is one of the most widely used Java frameworks around. There is a lot of great stuff in the Spring eco-system so it’s a shame to see its flagship feature, a dependency injection container, being widely misused.</p>
+<div class="page-columns page-full"><p>First some history.</p><div class="no-row-height column-margin column-container"><span class="">Cheesy quote of the day: „<em>You have to know the past to understand the present.</em>“ — Carl Sagan</span></div></div>
+<p>Spring has been around since the early-2000s and was conceived as an <a href="https://www.amazon.com/Expert-One-One-Design-Development/dp/0764543857">antidote</a> to the messy J2EE situation at the time. Its principal (but certainly not its only) attraction was a <strong>strong focus on Inversion of Control</strong> (IoC) and its dependency injection framework emerged amongst a plethora of competing DI containers.</p>
+<p>In the beginning we had <em>bean descriptors</em> written in XML (best forgotten) and then<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, when annotations became fashionable, and driven partly by competing frameworks like PicoContainer and Guice, (much of) the XML was replaced with <code>@Autowire</code>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;In 2007, apparently.</p></div><div id="fn2"><p><sup>2</sup>&nbsp;<code>@Autowire</code> and the standardised <code>@Inject</code> annotations are essentially the same and Spring supports both. I’ll consider them as synonyms in this post.</p></div></div><p>The strength of <code>@Autowire</code> (and, equally, <code>@Inject</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>) is its simplicity: add the annotation and let the framework do the rest.</p>
+<p>Even at that time there was a big debate about whether to use constructor or field injection, the former better by design and the latter simpler to apply, but in either case the annotation was required to be present somewhere in the class.</p>
+<p>The rather unfortunate consequence of having to add Spring specific code to otherwise clean domain objects was considered a worthwhile trade-off. And since we’re using the annotation anyway why not just add it everywhere?</p>
+<p><strong>The annotation is no longer required on constructors and the trade-off is no longer worthwhile</strong>. Nonetheless millions of developers are dragging it into the 2020s needlessly along with its disadvantages.</p>
+<p>As an example consider this code:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyClass <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Autowire</span> <span class="kw">private</span> Foo foo<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Autowire</span> <span class="kw">private</span> Bar bar<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">...</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This can be converted to the following code without having to do any other changes. Spring will handle it just fine.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyClass <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">final</span> Foo foo<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">final</span> Bar bar<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">MyClass</span><span class="op">(</span>Foo foo<span class="op">,</span> Bar bar<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">foo</span> <span class="op">=</span> foo<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">bar</span> <span class="op">=</span> bar<span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">...</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Granted that there are a couple of extra lines of boilerplate code<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> but there are <a href="https://kinbiko.com/java/dependency-injection-patterns/">strong arguments</a> why the second option should be preferred and <code>@Autowire</code> <strong>should now be considered a code smell</strong>, especially on fields or accessors. This post outlines some of them.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;If this is important to you then consider using <a href="https://www.baeldung.com/spring-injection-lombok">Lombok to generate the appropriate constructor automatically</a>, but note that that has its own trade-offs.</p></div><div id="fn4"><p><sup>4</sup>&nbsp;From maintainability issues to the IDE warnings about unassigned fields.</p></div></div><p>There are also stylistic reasons<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> but I’ll skip them here and concentrate on pure, cold engineering. Much of the same reasoning can be applied to the use of the <code>@Value</code> annotation as well. The objections can be grouped into two main categories.</p>
+<p>Firstly, <strong>it makes it impossible to use the final modifier</strong>. Using the final modifier on fields is an important feature for multiple reasons:</p>
+<p>Compilation fails if you have not provided all the necessary dependencies, whereas <code>@Autowire</code> fails at runtime. <strong>Compile time guarantees are stronger and safer than runtime testing</strong>, they just are. It’s easier and quicker to fix compilation errors than it is to find runtime bugs. So much magic makes configuration problems really hard to debug at runtime. <em>You will lose time over this</em>.</p>
+<p>The simple fact that a value cannot change after construction gives <strong>additional assurances about the behaviour of the code</strong> just by looking at it. It explicitly declares intent and can help avoid some very hard to find bugs.</p>
+<p>Final fields are <a href="https://www.javamex.com/tutorials/synchronization_final.shtml">guaranteed to be synchronised</a> between threads. If you don’t declare fields final, then you must cover thread-safety by some other means, or accept that you don’t have it.</p>
+<p>The JVM adds extra care-taking to non-final fields to ensure <a href="https://dzone.com/articles/final-keyword-and-jvm-memory-impact">correct memory ordering</a> which is not needed in final fields. Additionally, <a href="https://bugs.openjdk.java.net/browse/JDK-8233873">there are plans</a> to allow the JIT compiler to aggressively optimise code in the knowledge that a field value will not change, as <a href="https://shipilev.net/jvm/anatomy-quarks/15-just-in-time-constants/">currently happens with static final fields</a>.</p>
+<p>That should be enough by itself but there is another major group of objections, namely that it <strong>hides dependencies instead of making them explicit</strong>.</p>
+<p>It’s so easy to add an <code>@Autowire</code> annotation to a field that the structure of the object graph almost inevitably becomes messy over time and, if not careful, can even lead to hard to maintain <a href="https://softwareengineering.stackexchange.com/a/12030">circular dependencies</a>.</p>
+<p>A long list of dependencies in a constructor is a signal that a class has too many responsibilities (violating the <a href="https://en.wikipedia.org/wiki/Single-responsibility_principle">SRP</a>) but it’s easy for the same number of annotations to go unnoticed inside a class with many fields.</p>
+<p><code>@Autowired</code> classes are needlessly harder to test. Either we have to bootstrap the entire framework (see below), make our fields public or use something like Mockito’s <code>@InjectMocks</code>, a good example of engineering a solution to a problem that can been avoided altogether.</p>
+<p>It’s a NullPointerException <a href="http://olivergierke.de/2013/11/why-field-injection-is-evil/">waiting to happen</a>. If you construct an instance outside of Spring then the fields must be public or otherwise initialised using setters, breaking encapsulation. It also means it’s possible to create an object in an invalid state breaking the “make invalid state unrepresentable” advice.</p>
+<p>Finally, it unnecessarily ties your code to the Spring framework binaries making migrations between frameworks<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> and restructuring of the domain much harder. This also applies to <code>@Service</code>, <code>@Component</code>, etc. which can also be removed but that’s another story.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;Unfortunately I’ve had to do several over the years: EBJ -&gt; Spring, Spring -&gt; EJB, Spring Boot 1.x -&gt; Spring Boot 2.x 😠</p></div></div><p>Having said all that, as always there are some notable exceptions to the general rule.</p>
+<p>Autowiring with <code>@Bean</code> annotations can (and probably should) be used in Spring configuration classes, which you are likely already using if you’re using Spring. In this case <code>@Autowire</code> is still mostly unnecessary and again you can keep Spring stuff out of your domain. For example:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@Configuration</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="kw">class</span> SomeConfiguration <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Bean</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> MyClass <span class="fu">myClass</span><span class="op">(</span>Foo foo<span class="op">,</span> Bar bar<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="kw">new</span> <span class="fu">MyClass</span><span class="op">(</span>foo<span class="op">,</span> bar<span class="op">);</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This may be useful if you want to perform some additional configuration and avoids the <code>@PostConstruct</code> nonsense. Again, the idea is to keep all the Spring based annotations inside the configurations and outside the domain classes. This way your domain classes will be clean and typically easier to test without the heavy machinery of…</p>
+<p><code>@SpringBootTest</code> <a href="https://www.baeldung.com/spring-boot-testing">automagically</a> uses <code>@Autowire</code> to inject fully configured objects into your tests. A suitable constructor would be better but JUnit<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> has its limitations. Take for example:</p>
+<div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp;Another ubiquitous annotation magic wielding library</p></div></div><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">@RunWith</span><span class="op">(</span>SpringJUnit4ClassRunner<span class="op">.</span><span class="fu">class</span><span class="op">)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">@ActiveProfiles</span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">@SpringBootTest</span><span class="op">(</span>classes <span class="op">=</span> ApplicationConfig<span class="op">.</span><span class="fu">class</span><span class="op">)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> BigOldServiceTestIT <span class="op">{</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">@Autowired</span> <span class="kw">private</span> BigOldService service<span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">...</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>There are probably more exceptions, there always are. I’ll add them as I think of them. On the other had there are definitely more reasons not to, we haven even talked about anaemic domains and good OO design here. That’ll be for another post.</p>
 
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

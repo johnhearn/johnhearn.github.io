@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2020-01-26">
+<meta name="description" content="Examples of surprising cascading effects when increasing the rate or strength of interactions in a team or distributed system.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Teams, Systems and Catastrophe – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,65 +70,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -139,7 +81,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +92,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -172,22 +114,46 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#dependency-hell" id="toc-dependency-hell" class="nav-link active" data-scroll-target="#dependency-hell">Dependency Hell</a></li>
+  <li><a href="#tipping-points" id="toc-tipping-points" class="nav-link" data-scroll-target="#tipping-points">Tipping Points</a></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">Wrap up</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Teams, Systems and Catastrophe</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">complexity-systems</div>
+    <div class="quarto-category">organisations</div>
+    <div class="quarto-category">software-architecture</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Examples of surprising cascading effects when increasing the rate or strength of interactions in a team or distributed system.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 26, 2020</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +163,76 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
+<div class="page-columns page-full"><p>Many surprising discoveries were made in the last century about how groups of connected things behave and interact. I would like to present a couple of the simplest results which, I think, can help us understand some of the phenomena that we see in our daily lives.</p><div class="no-row-height column-margin column-container"><span class="">You’ve probably seen the <a href="https://www.youtube.com/watch?v=VBjxsKNIHD8">murmurations of swallows</a> and the <a href="https://www.youtube.com/watch?v=dU2rLhpaMAY">mesmerising bees</a> which are examples of this.</span></div></div>
+<p>To avoid over-abstraction I’ll talk specifically about <strong>people connected through teams</strong> and <strong>distributed software systems connected by dependence</strong>, but the same ideas and mechanisms are widely applicable to many other situations.</p>
+<section id="dependency-hell" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="dependency-hell">Dependency Hell</h2>
+<p>The first one I want to cover was discovered by mathematicians <a href="https://en.wikipedia.org/wiki/Paul_Erdős">Paul Erdős</a> and <a href="https://en.wikipedia.org/wiki/Alfréd_Rényi">Alfréd Rényi</a> in the late 1950s<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and concerns the way networks tend to join together as new connections are added.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Presented in a pair of seminal papers: <a href="http://www.renyi.hu/~p_erdos/1959-11.pdf">On Random Graphs. I</a> [1959] and <a href="http://www.renyi.hu/~p_erdos/1960-10.pdf">On the evolution of random graphs</a> [1960].</p></div></div><p>They considered what would happen if you start with a fixed set of independent things and then progressively add new connections between them at random.</p>
+<p>One might think that the connectivity on the whole would increase in proportion with the number of connections, but this is not the case. The connectivity is not only <strong>non-linear</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> but undergoes a <strong>phase transition</strong><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> at which nearly everything joins together very quickly. Let’s see it happening.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;<strong>Non-linear: The output changing in a way that is not proportional to the change in the input.</strong> Like the temperature of the shower when it goes from freezing cold to scolding hot after the tiniest of adjustments. We tend to expect linearity, either by nature or nurture, but non-linearity is the norm rather than the exception. To paraphrase Stanislaw Ulam: studying non-linearity is like studying non-elephants.</p></div><div id="fn3"><p><sup>3</sup>&nbsp;<strong>Phase-transition: When a collective undergoes a sudden structural reordering as some parameter of the system is gradually changed.</strong> Most often applied to thermo-dynamic systems but complex systems share many of their characteristics.</p></div></div><p>We start with 20 completely independent objects (people or system components) then start adding connections randomly. What you find is that initially nothing much happens: you have some pairs of things and a few threesomes.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="few-connections.png" class="img-fluid figure-img" width="250"></p>
+<figcaption class="margin-caption">Few connections</figcaption>
+</figure>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+<p>Adding a few more connections and we can see groups starting to coalesce.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="transition.png" class="img-fluid figure-img" width="250"></p>
+<figcaption class="margin-caption">Transition</figcaption>
+</figure>
+</div>
+<p>However add just a couple more connections and the different connected groups<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> of the network quickly connect together to form much a larger (so-called <em>giant</em>) group.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;This are called <em>components</em> in network jargon but that might be bit confusing for software people for whom everything is a component!</p></div></div><div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="giant-component.png" class="img-fluid figure-img" width="250"></p>
+<figcaption class="margin-caption">Giant component</figcaption>
+</figure>
+</div>
+<p><strong>This happens every time</strong>. If we run the above scenario many many times with a thousand points and plot the size of the largest group, the tendency is remarkable.</p>
+<div class="page-columns page-full"><p><img src="phase-transition-erdos-renyi.png" class="img-fluid" style="width:80.0%" alt="Phase transition"></p><div class="no-row-height column-margin column-container"><span class="">Source code for generating these graphics with Julia can be found <a href="https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/master/Phase%20transitions%20in%20networks.ipynb">here</a>.</span></div></div>
+<div class="page-columns page-full"><p>The effect is surprisingly non-linear. In other words, as the number of random connections between things reaches a certain threshold then <strong>nearly all the things will be connected together</strong>. In the simplest model, the number of connections just needs to be greater than half the number of things.</p><div class="no-row-height column-margin column-container"><span class="">This morning I had to remove some oil from the engine of my car. I very very gently adjusted the sump bold to allow the dark oil to escape gradually. Instead, it went jumped from a dribble to a great stream of blackness all down my arm. That’s non-linearity.</span></div></div>
+<p>For people networks this is the first part<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> of the Kevin Bacon game, you are certainly connected to Kevin Bacon and indeed to everyone else on the planet.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;For the other part see <a href="http://worrydream.com/refs/Watts-CollectiveDynamicsOfSmallWorldNetworks.pdf">The dynamics of ‘small-world’ networks</a> by Watts and Strogatz, which significantly reduces the number of ‘hops’ between you and Mr Bacon.</p></div></div><div class="page-columns page-full"><p>In the case of software dependencies the situation is less fun. The principle implies that <strong>the number of dependencies in our software is unintuitively highly transitive</strong>. That is, the chains of dependencies in our code and components tends to make everything depend on everything else. We see why a single fault can bring down an entire company’s infrastructure and is the reason we must be draconian when choosing our dependencies to stand any chance against this effect.</p><div class="no-row-height column-margin column-container"><span class="">Dependencies are not only transitive but many are hidden and bi-directional. I describe this in more detail in my first ever talk <a href="http://youtube.com/watch?v=m1VsoanstAY"><strong>Predictably Unpredictable</strong></a>.</span></div></div>
+<p>Another lesson to be learnt from this scenario originated some years ago in a paper<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> building on the originals mentioned above. It adds to the model a destructive process where connected groups are “burnt down” periodically. The key is that the building and burning down of the groups balances to a precarious and dynamic equilibrium<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>, so-called <a href="https://en.wikipedia.org/wiki/Self-organized_criticality">self-organised criticality</a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp;See <a href="https://arxiv.org/abs/0808.2116">Erdos-Renyi random graphs + forest fires = self-organized criticality</a> by Balazs Rath and Balint Toth</p></div><div id="fn7"><p><sup>7</sup>&nbsp;A nice interactive model <a href="https://www.complexity-explorables.org/explorables/critically-inflammatory/">Critically Inflammatory</a> is available on the Complexity Explorables website for you to play with.</p></div></div><p>The take-away for systems designers is that we sometimes see outages in our systems and then “repair” them by scaling or using tools like circuit-breakers and time-outs. At the same time other connections are being added by new features and services. We find ourselves more often than not on the critical line between stable and unstable.</p>
+</section>
+<section id="tipping-points" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="tipping-points">Tipping Points</h2>
+<p>Let’s look at a second model. This time, rather than taking completely independent objects and gradually connecting them together, we take <strong>a set of object which are all connected together, but with varying weights</strong>.</p>
+<p>This might represent the number of times that one person interrupts another person per day, or the number of requests from one service to another in a distributed system.</p>
+<p>We then gradually increase all the weights using some common scaling factor.</p>
+<p>This scenario was first proposed by <a href="https://en.wikipedia.org/wiki/Robert_May,_Baron_May_of_Oxford">Lord Robert May</a> in a famous paper<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> from 1972. He found<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> that the interactions between the individual parts become unstable (that is move away from a balanced and steady equilibrium) at a certain sudden, non-linear transition.</p>
+<div class="no-row-height column-margin column-container"><div id="fn8"><p><sup>8</sup>&nbsp;See <strong>Will a large complex system be stable?</strong> by RM May, Nature 238 (5364), 413-414</p></div><div id="fn9"><p><sup>9</sup>&nbsp;See also this <a href="https://youtu.be/6KvQPHdZuoU?t=1934">course</a> on random matrices for an in-depth description of the reasoning.</p></div></div><p>We start with a network where all objects, this time just 10 of them, are connected to each other by differing strength interactions.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="complete-weighted-network.png" class="img-fluid figure-img" width="350"></p>
+<figcaption class="margin-caption">Complete weighted network</figcaption>
+</figure>
+</div>
+<p>Using May’s model we can calculate the threshold where the loops and feedback in the network make the whole system unstable. As before, rather that try and study specific configurations, lets run the example many times with different random networks of this type to see the tendency.</p>
+<div class="page-columns page-full"><p><img src="may-threshold.png" class="img-fluid" style="width:80.0%" alt="May threshold"></p><div class="no-row-height column-margin column-container"><span class="">Again the source code for generating these graphics with Julia can be found <a href="https://nbviewer.jupyter.org/github/johnhearn/notebooks/blob/master/Phase%20transitions%20in%20networks.ipynb">here</a>.</span></div></div>
+<p>May’s criteria for stability has drawn some controversy<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> but the finding is still striking. There is a definite tipping point where network effects produce a phase shift in the dynamics of the system.</p>
+<div class="no-row-height column-margin column-container"><div id="fn10"><p><sup>10</sup>&nbsp;<a href="https://www.sciencedirect.com/science/article/pii/S0022519385800813">When will a large complex system be stable?</a> by Joel E.Cohen and Charles M.Newman</p></div></div><p>Imagine the network being a team of 10 people each communicating freely with everyone else. The team members which work most closely together would have the strongest interactions. At the tipping point, <strong>a slight change in the situation or team dynamic</strong> might be amplified by the network effects of interactions with multiple people and <strong>could cause a cascade that affects the team as a whole</strong>. This is of course just a model and no doubt unrealistic in detail but it wouldn’t be the first time that a seemingly trivial change would destabilise a team.</p>
+<p>Alternatively, imagine the network being a distributed software system. If a peak in load is experienced and a component is pushed beyond its response threshold once again it can affect the entire system disproportionately.</p>
+<p>As with the previous example, teams will naturally detect and counteract these tipping points - people with too many interactions will turn off Slack if they can’t keep up. Profilers will be brought to bear to optimise some code just enough to stop overloading the system. This has the result of leaving us constantly on the brink of catastrophe.</p>
+</section>
+<section id="wrap-up" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="wrap-up">Wrap up</h2>
+<p>In this article there was no intention to make precise predictions about the dynamics of any particular team or system but rather demonstrate <strong>universal tendencies</strong> using basic ensemble techniques.</p>
+<p>We’ve seen a couple of simple examples of how small increases in interactions, either in number or in strength, can have significant, non-linear effects for a system as a whole.</p>
+<p>Furthermore, our naturally reactions tend to balance the network effects and leave us at a critical point<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> where dangerous tipping points are continually at the doorstep. To a certain extent this explains the universal saying “if it ain’t broke, don’t fix it”.</p>
+<div class="no-row-height column-margin column-container"><div id="fn11"><p><sup>11</sup>&nbsp;For an deeper look at self-organised criticality the book <a href="https://www.goodreads.com/book/show/869836.How_Nature_Works">How Nature Works</a> by Per Bak is the seminal work. For a nice summary of the current situation see Watkins, N.W., Pruessner, G., Chapman, S.C. et al.&nbsp;<a href="https://doi.org/10.1007/s11214-015-0155-x">25 Years of Self-organized Criticality: Concepts and Controversies</a>. Space Sci Rev 198, 3–44 (2016).</p></div></div><p>The combination of these dynamics is why a single new team member can bring a working team to a standstill or a small change in load can wreak havoc on a seemingly well oiled system. Note that this doesn’t mean that we should avoid change, just that we need to bear in mind how the system might respond.</p>
+<p>Strict minimisation of direct and indirect dependencies is not just about clean architectures. Removal of dependencies and working towards additional quality measures beyond the minimal “it works” moves systems further from the critical point and hence makes them considerably more stable. On the other hand, increasing code entropy and poor design choices will push a system towards the critical point, making them less stable, even if they continue working.</p>
+<p>I’m aware that the software industry is not used to talking about systems in these terms, some of these ideas could be considered technical and abstract. Nevertheless these examples are real and can help us increase our literacy with complex systems, our “<a href="https://www.morebeyond.co.za/navigate-complexity-three-habits-of-mind/">lived, practical complexity</a>”. They are just couple of the many results of this type that could be applied more generally.</p>
+
+
+</section>
+
+
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

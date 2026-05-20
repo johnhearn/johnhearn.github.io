@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2019-06-17">
+<meta name="description" content="Implementing the Deutsch’s Algorithm.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Building a QPU simulator in Julia - Part 4 – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,29 +22,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,35 +105,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -139,7 +145,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +156,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -176,18 +182,33 @@ window.Quarto = {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Building a QPU simulator in Julia - Part 4</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">quantum-computing</div>
+    <div class="quarto-category">programming-languages</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Implementing the Deutsch’s Algorithm.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 17, 2019</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +218,137 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
+<p>Recall that <a href="../2018-10-01-deutsch-jozsa-algorithm/">Deutsch’s algorithm</a> can be represented by the following circuit:</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="deutschs-circuit.png" class="img-fluid figure-img" width="320"></p>
+<figcaption class="margin-caption">Deutsch’s algorithm circuit</figcaption>
+</figure>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+<p>We want something like this, remembering that Julia is 1-index based:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">deutch</span>(Uf) <span class="op">=</span> <span class="fu">register</span>(ZERO, ONE) <span class="op">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                <span class="fu">gate</span>(H, H) <span class="op">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                <span class="fu">gate</span>(Uf) <span class="op">|&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                <span class="fu">gate</span>(H, eye) <span class="op">|&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">measure</span>(<span class="fl">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We already have most of the machinery to make this work. We need an overloaded <code>register</code> function to create a register with the given states. This is straightforward and very similar to the <code>gate</code> function we defined in the last post.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">register</span>(x<span class="op">...</span>) <span class="op">=</span> <span class="fu">foldl</span>(kron, x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Next a <em>pipeable</em> <code>measure</code> function that takes the bit <code>k</code> that we want to measure (1-indexed).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">measure</span>(n, k) <span class="op">=</span> (qubits) <span class="op">-&gt;</span> <span class="fu">measure!</span>(n, k, qubits)[<span class="fl">1</span>][k]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To avoid having to pass in the size of the register, we can calculate it from the length of the <code>qubits</code> vector. We know that the length, <span class="math inline">\(l\)</span>, of the vector is <span class="math inline">\(l=2^{n}\)</span> so <span class="math inline">\(n=\lfloor log_{2}(l) \rfloor\)</span>. In code that becomes:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">size</span>(qubits) <span class="op">=</span> <span class="fu">Int</span>(<span class="fu">floor</span>(<span class="fu">log2</span>(<span class="fu">length</span>(qubits))))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">measure</span>(k) <span class="op">=</span> (qubits) <span class="op">-&gt;</span> <span class="fu">measure!</span>(<span class="fu">size</span>(qubits), k, qubits)[<span class="fl">1</span>][k]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>All that remains is to define the oracle <span class="math display">\[U_{f}\]</span>. For 2-bit inputs there are four possible functions:</p>
+<div class="line-block"><span class="math inline">\(x\)</span> || <span class="math inline">\(f_1(x)=0\)</span> | <span class="math inline">\(f_2(x)=x\)</span> | <span class="math inline">\(f_3(x)=\bar{x}\)</span> | <span class="math inline">\(f_4(x)=1\)</span> |</div>
+<p>|:-:++:—–:+:—–:|:—–:|:—–:| | 0 || 0 | 0 | 1 | 1 | | 1 || 0 | 1 | 0 | 1 | |||constant|balanced|balanced|constant|</p>
+<p>The transformation we need for the oracle is from <span class="math inline">\(\ket{x}\ket{y}\)</span> to <span class="math inline">\(\ket{x}\ket{y⊕f(x)}\)</span> which we can write out explicitly.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(x\)</span> <span class="math inline">\(y\)</span></th>
+<th></th>
+<th style="text-align: center;"><span class="math inline">\(y⊕f_1(x)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(y⊕f_2(x)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(y⊕f_3(x)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(y⊕f_4(x)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0 0</td>
+<td></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0 1</td>
+<td></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1 0</td>
+<td></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1 1</td>
+<td></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>Reading off the columns we have:</p>
+<p>|:—:|:-|:—–: | <span class="math inline">\(y⊕f_1(x)\)</span> | <code>y</code> | I | <span class="math inline">\(y⊕f_2(x)\)</span> | <code>x?~y:y</code> | Controlled NOT | <span class="math inline">\(y⊕f_3(x)\)</span> | <code>y?~x:x</code> | Reversed Controlled NOT | <span class="math inline">\(y⊕f_4(x)\)</span> | <code>~y</code> | NOT</p>
+<p>The matrices that do those transformations can be written as <a href="https://en.wikipedia.org/wiki/Matrix_addition#Direct_sum">direct sums</a>,which is available in Julia as the <a href="https://docs.julialang.org/en/v1/stdlib/SparseArrays/index.html#SparseArrays.blockdiag"><code>blockdiag</code></a> function:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Uf1 <span class="op">=</span> <span class="fu">blockdiag</span>(eye, eye) <span class="co"># I</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Uf2 <span class="op">=</span> <span class="fu">blockdiag</span>(eye, NOT) <span class="co"># C-NOT</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Uf3 <span class="op">=</span> <span class="fu">blockdiag</span>(NOT, eye) <span class="co"># Reversed C-NOT</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Uf4 <span class="op">=</span> <span class="fu">blockdiag</span>(NOT, NOT) <span class="co"># NOT</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If the function, <span class="math inline">\(f\)</span>, is <em>balanced</em> then the measurement will always be true, if <em>constant</em> then the measurement will always be false. Let’s evaluate them all together:</p>
+<pre class="console"><code>julia&gt; map(deutch, [Uf1, Uf2, Uf3, Uf4])
+Bool[false, true, true, false]</code></pre>
+<p>We can see that this is exactly the result we expect.</p>
+<p>Extending to multiple bits, the generalised quantum circuit in this case is:</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="deutsch-jozsa-circuit.png" class="img-fluid figure-img" width="400"></p>
+<figcaption class="margin-caption">Deutsch-Jozsa algorithm circuit</figcaption>
+</figure>
+</div>
+<p>This is known as the Deutsch-Jozsa algorithm. The wikipedia article has much more information about how this works. In our Julia DSL we can easily extend to 2-bit functions:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">deutchJosza</span>(Uf) <span class="op">=</span> <span class="fu">register</span>(ZERO, ZERO, ONE) <span class="op">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                <span class="fu">gate</span>(H, H, H) <span class="op">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                <span class="fu">gate</span>(Uf) <span class="op">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                <span class="fu">gate</span>(H, H, eye) <span class="op">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">measure</span>(<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We could determine the transformations <span class="math inline">\(U_f\)</span> like before by writing them out explicitly but new we have 8 possible permutations. Rather than writing them out let’s write a function to do it for us:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">oracle</span>(n<span class="op">::</span><span class="dt">Int</span>, f) <span class="op">=</span> <span class="cf">begin</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    perm <span class="op">=</span> <span class="fu">Dict</span><span class="dt">{Int,Int}</span>()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">2</span><span class="op">^</span>n<span class="op">-</span><span class="fl">1</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> y <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>            xy <span class="op">=</span> (x <span class="op">&lt;&lt;</span> n) <span class="op">+</span> y      <span class="co"># |x&gt;|y&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>            fxy <span class="op">=</span> y <span class="op">⊻</span> <span class="fu">f</span>(x)         <span class="co"># |y⊕f(x)&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>            xfxy <span class="op">=</span> (x <span class="op">&lt;&lt;</span> n) <span class="op">+</span> fxy  <span class="co"># |x&gt;|y⊕f(x)&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>            perm[xy<span class="op">+</span><span class="fl">1</span>] <span class="op">=</span> xfxy<span class="op">+</span><span class="fl">1</span>    <span class="co"># mapping (1-index based)</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">permmat</span>(<span class="fu">map</span>((it) <span class="op">-&gt;</span> perm[it], <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">^</span>(n<span class="op">+</span><span class="fl">1</span>)))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">permmat</span>(<span class="cn">π</span>) <span class="op">=</span> <span class="fu">sparse</span>(<span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(<span class="cn">π</span>), <span class="cn">π</span>, <span class="fl">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This function goes through the <span class="math inline">\(2^n\)</span> possible values of <span class="math inline">\(\ket{x}\)</span> and the two possible values of <span class="math inline">\(\ket{y} \in (0,1)\)</span> and builds a transformation table, <code>perm</code>, of the values <span class="math inline">\(\ket{x}\ket{y}\)</span> to <span class="math inline">\(\ket{x}\ket{y⊕f(x)}\)</span>. This table is then used to create a (sparse) permutation matrix for the transformation, e.g.&nbsp;<span class="math inline">\(U_f\)</span>. This is a very brutish way of doing it but it gets the job done.</p>
+<p>Finally we can run the algorithm and check it works</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">deutchJosza</span>(Uf) <span class="op">=</span> <span class="fu">register</span>(ZERO, ZERO, ONE) <span class="op">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                <span class="fu">gate</span>(H, H, H) <span class="op">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                <span class="fu">gate</span>(Uf) <span class="op">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                <span class="fu">gate</span>(H, H, eye) <span class="op">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">measure</span>(<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>) <span class="op">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                (y) <span class="op">-&gt;</span> <span class="fu">reinterpret</span>(<span class="dt">Int</span>, y.chunks)[<span class="fl">1</span>] <span class="op">!=</span> <span class="fl">0</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>Uf1 <span class="op">=</span> <span class="fu">oracle</span>(<span class="fl">2</span>, <span class="fl">1</span>, (x, y) <span class="op">-&gt;</span> y <span class="op">⊻</span> <span class="fl">0</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>Uf2 <span class="op">=</span> <span class="fu">oracle</span>(<span class="fl">2</span>, <span class="fl">1</span>, (x, y) <span class="op">-&gt;</span> y <span class="op">⊻</span> (x <span class="op">&amp;</span> <span class="fl">1</span>))</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>Uf3 <span class="op">=</span> <span class="fu">oracle</span>(<span class="fl">2</span>, <span class="fl">1</span>, (x, y) <span class="op">-&gt;</span> y <span class="op">⊻</span> (x <span class="op">&amp;</span> <span class="fl">1</span> <span class="op">⊻</span> <span class="fl">1</span>))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>Uf4 <span class="op">=</span> <span class="fu">oracle</span>(<span class="fl">2</span>, <span class="fl">1</span>, (x, y) <span class="op">-&gt;</span> y <span class="op">⊻</span> <span class="fl">1</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="pp">@test</span> <span class="fu">map</span>(deutchJosza, [Uf1, Uf2, Uf3, Uf4]) <span class="op">==</span> [<span class="cn">false</span>, <span class="cn">true</span>, <span class="cn">true</span>, <span class="cn">false</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The line <code>reinterpret(Int, y.chunks)[1] != 0</code> converts the binary result to an integer and checks if it’s different from 0.</p>
+<p>That’s the Deutch-Jozsa algorithm complete. Next one will be Grover’s algorithm, then Simon’s algorithm before we get into the QFT and finally Shor’s famous factoring algorithm.</p>
+
+
+
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2019-04-19">
+<meta name="description" content="A quote from an ecologist regarding the stability of ecosystems could also apply to software systems.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>The Stability of Systems – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,65 +70,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -139,7 +81,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +92,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -172,22 +114,46 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#redundancy" id="toc-redundancy" class="nav-link active" data-scroll-target="#redundancy">Redundancy</a></li>
+  <li><a href="#diversity" id="toc-diversity" class="nav-link" data-scroll-target="#diversity">Diversity</a></li>
+  <li><a href="#modularity" id="toc-modularity" class="nav-link" data-scroll-target="#modularity">Modularity</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">The Stability of Systems</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">complexity-systems</div>
+    <div class="quarto-category">software-engineering</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    A quote from an ecologist regarding the stability of ecosystems could also apply to software systems.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 19, 2019</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +163,47 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
+<p>I recently read this in a popular science magazine:</p>
+<blockquote class="blockquote">
+<p><em>If a system is to persist rather than to collapse in the face of change, it needs to be robust. <strong>Three features</strong> make an ecosystem, or a planetary system, more robust, says ecologist Simon Levin at Princeton University. First, robust systems have some degree of <strong>redundancy</strong>, so the loss of any particular component - the extinction of a species, say, - doesn’t critically compromise the whole. Second, they have <strong>diversity</strong>, which increases the odds that at least some species will be able to cope with unexpected change. Third, they have <strong>modularity</strong>, so that failure of part of the system doesn’t bring down the whole thing.</em> - The Goldilocks Planet - New Scientist (23 March 2019)</p>
+</blockquote>
+<p>These principles seem to be quite applicable to any non-trivial system, including distributed software systems. In particular, when I read that quote, I immediately thought of Netflix and its well publicised techniques for making their platform reliable in the face of infrastructure problems.</p>
+<p>In the above quote, the ecologist talks about robust systems but, technically, the terms <strong>robustness</strong> and <strong>resilience</strong> have different meanings in this context, <em>robustness</em> being strength to bear additional load and <em>resilience</em> the ability to adapt and respond in the face of changing external factors<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The looser, everyday meanings of these words mean that authors (myself included) are liable mix these two concepts even though each play separate roles in a stable system.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;See <a href="https://web.archive.org/web/20190428092808/https://jobs.netflix.com/jobs/869465">this</a> job description for an idea of how important resilience engineering is at Netflix and how if differs from traditional engineering approaches which tend to focus on robustness.</p></div></div><div class="page-columns page-full margin-video">
+<iframe class="margin-video-frame" src="https://www.youtube.com/embed/2Hhu0ihG3kY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+<div class="no-row-height column-margin column-container margin-video-caption">
+<span><strong>Risk and Resilience</strong> - <a href="https://cognitive-edge.com/our-people/dave-snowden/">Dave Snowden</a> talks about the shift from focusing only on robustness to also considering resilience in the face of inevitable failures.</span>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div>
+<p>Bear in mind that here we are talking about the stability of an entire system, not any particular component, and certainly not the robustness of any individual component. Having said that, systems principles tend to be fractal in nature, applicable at different scales simultaneously, so similar techniques which hold at a system level may also be applicable at component level too.</p>
+<p>Let’s take a quick look at each of the principles from the quote in terms of software.</p>
+<section id="redundancy" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="redundancy">Redundancy</h3>
+<p>A distributed software system must be able to take unplanned peaks in load which arise from unexpected changes in the environment like a viral link or, more commonly, the outage of another component. Auto-scaling (a kind of latent redundancy) can help cope with changing load over minutes or hours but sudden peaks require continuous redundancy to avoid service degradation. By intentionally building redundancy into their infrastructure, Netflix <a href="https://www.networkworld.com/article/3178076/why-netflix-didnt-sink-when-amazon-s3-went-down.html">routinely</a> <a href="https://www.computer.org/publications/tech-news/research/realizing-software-reliability-in-the-face-of-infrastructure-instability">survives</a> AWS outages, even though it runs entirely on AWS.</p>
+<p>Similarly, if there is a single design principle behind most if not all distributed systems then it is to have <a href="https://en.wikipedia.org/wiki/Single_point_of_failure">no single point of failure</a>. If a entire systems depends on one particular part of the system to be present then the system is not resilient at all<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;In a similar vein, for organisations and projects we have the <a href="https://en.wikipedia.org/wiki/Bus_factor">bus factor</a>, where an endeavour might fail because of the loss of one or more of its members.</p></div></div><p>A risk-based design approach really comes into its own here.</p>
+</section>
+<section id="diversity" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="diversity">Diversity</h3>
+<p>What happens when Netflix’s personalised recommendations services can’t take the load? They fallback to simpler recommendation services or generic suggestions. The user may not even notice the difference and, even if they do, it’s much better than the alternative. Netflix’s <a href="https://github.com/Netflix/Hystrix">Hystrix</a> fault tolerance library<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> provides timeout and the circuit breaker mechanisms but without diversity there is no alternative to fall back to.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;See also <a href="https://github.com/resilience4j/resilience4j">resilience4j</a>.</p></div></div><p>This is reminiscent of the idea that, in some circumstances, the same or similar services could be written for and run on multiple platforms at the same time. This might sound odd to many engineers but this approach would be justifiable if the <a href="https://en.wikipedia.org/wiki/Expected_loss">risk to the business</a> of an outage, whatever the <a href="https://blog.fosketts.net/2011/07/06/defining-failure-mttr-mttf-mtbf/">MTTR</a>, is greater than cost of adding and maintaining more diversity.</p>
+</section>
+<section id="modularity" class="level3">
+<h3 class="anchored" data-anchor-id="modularity">Modularity</h3>
+<p>Modularity, and the related concept of minimising coupling, has been the basis of many, if not most, good design practices for decades. A change in one module should have minimum affect on another, either directly (dependency) or indirectly (shared assumptions). Remember the <a href="https://www.youtube.com/watch?v=AJW2FAJGgVw">three tenets</a> of modularity: strong encapsulation, well-defined interfaces, and explicit dependencies, all of which are ultimately related to managing coupling. And, of course, the best kind of coupling between modules is no coupling at all, in other words, total isolation.</p>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>Famously, Netflix uses <a href="https://en.wikipedia.org/wiki/Chaos_engineering">Chaos engineering</a> to test the stability of their systems by deliberately applying selective, or even mass outages. Similarly, the article from which the quote above is taken suggests that extinctions, or even mass extinctions, in Earth’s past have actually made its ecosystem more stable. Of course there are other ways we can increase the stability of software systems, or even organisations, but it is nonetheless interesting to see the similarities between software and natural ecosystems.</p>
+<p>I think the principles underlying these ideas are actually applicable to many systems. Consider how they are represented in more sophisticated frameworks like systems thinking, Cynefin and risk-based decision making. And better ways of thinking about resilience will take us into <a href="https://en.wikipedia.org/wiki/Antifragile">Anti-fragility</a> and related ideas.</p>
+<p>There is certainly a great deal to learn in this area.</p>
+
+
+</section>
+
+
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2018-11-03">
+<meta name="description" content="The power of estimation is widely denigrated or ignored. That is a shame.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Estimate Everything – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,65 +70,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -139,7 +81,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +92,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -172,22 +114,45 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#an-estimate-is-not-what-most-people-think-it-is" id="toc-an-estimate-is-not-what-most-people-think-it-is" class="nav-link active" data-scroll-target="#an-estimate-is-not-what-most-people-think-it-is">An estimate is not what most people think it is</a></li>
+  <li><a href="#first-approximations" id="toc-first-approximations" class="nav-link" data-scroll-target="#first-approximations">First approximations</a></li>
+  <li><a href="#in-conclusion" id="toc-in-conclusion" class="nav-link" data-scroll-target="#in-conclusion">In conclusion</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Estimate Everything</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">statistics</div>
+    <div class="quarto-category">software-engineering</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    The power of estimation is widely denigrated or ignored. That is a shame.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 3, 2018</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +162,44 @@ window.Quarto = {
 </header>
 
 
+<p>Many years ago I was having a final interview with the CEO of a company where I very much wanted to work. It went well and at the end of the meeting he asked my salary expectation. I was young and foolish, I knew I could ask for a lot more than I was already getting but I didn’t want to lose the opportunity by asking for too much. Rather than pick a number at random, I said I didn’t know. <em>He then taught me a lesson in estimation which I will never forget</em>. First he asked about my current salary. Then he asked what I would gain or lose from the new job compared to the previous one, including perks and options but also intangibles like the opportunity to work with experts in the field, new challenges, experience, the commute, company values, flexible working hours, etc. Together<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> we roughly <strong>estimated</strong> what those things might be worth in monetary terms. With this information he sketched a graph on the whiteboard and projected an approximate figure which, as it happens, worked for both of us.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Incidentally he also taught me in that moment that negotiating an agreement is not (or should not) be seen winning or losing but rather about finding a fair reward for both parties.</p></div></div><p>What this taught me is that <strong>estimation is a skill</strong>. Literally anything can be estimated, and we have powerful tools at our disposal to help us, but estimation is both misunderstood and misused.</p>
+
+<div class="no-row-height column-margin column-container page-columns page-full"><div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="not-a-number.jpg" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Random cult series reference.</figcaption>
+</figure>
+</div></div><section id="an-estimate-is-not-what-most-people-think-it-is" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="an-estimate-is-not-what-most-people-think-it-is">An estimate is not what most people think it is</h2>
+<p>The most important thing to consider is that <strong>an estimation is not a number</strong>, it must have at the very least two components from which both the <strong>best guess</strong> <em>and</em> the <strong>level of confidence</strong> can be gleaned. The best guess is also misleadingly called the <em>expected</em> value and is what people usually concentrate on but it means very little if stated without the qualification of confidence.</p>
+<p>One of the things that puts many people off a more rigorous approach to estimates is their association with statistics and indeed an estimate is best represented mathematically as a probability distribution. However there are other ways to communicate estimates one of the easiest being <a href="https://en.wikipedia.org/wiki/Confidence_interval">confidence intervals</a>.</p>
+<p>For example, I could say that a job will take between 1 week and 2 weeks with a high level of confidence<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. I could also say that it will take between 10 and 12 days with lower confidence. There are simple rules of thumb for working these things out. In most practical cases you get an intuition for the level of confidence, the key is to <em>communicate it as a constituent part of the estimate</em> along with the best guess.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;100% confidence is virtually impossible so in many fields we use 95% as a yardstick for high confidence.</p></div><div id="fn3"><p><sup>3</sup>&nbsp;Notice that we are not saying anything here about accuracy. I’m assuming you already understand the <a href="https://www.google.es/search?q=accuracy+vs+precision">difference between precision and accuracy</a>. It’s fundamental in any discussion about estimation.</p></div></div><p>The level of confidence can be broken down still further. I think of it as a rectangle with fixed area where one side is the <strong>precision</strong> of the estimation and the other is the <strong>speed</strong> with which it can be produced<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. As one increases the other must decrease. So when we produce a quick estimation then the precision will be relatively low. Likewise when we want more precision we have to take more time to produce it. Just common sense™.</p>
+<div class="page-columns page-full"><p>For some reason people are not very good at recognising this. For decades we’ve been estimating software projects often without specifying the precision at all. Or worse, implying a false precision by using inappropriately precise numbers. It’s no wonder estimates get such a bad press.</p><div class="no-row-height column-margin column-container"><img src="software-estimation-mcconnell.jpg" class="img-fluid" alt="Software Estimation by Steve O’Connell is a notable exception to this. Although dated it is well researched and the general principles are applicable to modern development."></div></div>
+<p>I’ve worked on projects where estimates were calculated with very high precision and attached with guarantees. The precision was valued above speed. The estimates were <strong>hardly ever accurate</strong> and a good deal of time was spent on the details which became invalid as soon as requirements changed. This is one of the drawbacks of outsourcing in its commonest form.</p>
+<p>For every action there is an equal reaction and so there is a movement to stop estimating altogether because it wastes time. Personally I believe that <strong>#NoEstimates is just another form of estimation</strong><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> where speed is valued above precision, the implication being that the project has some implicit, imprecise idea of the magnitude of what needs to be done and its relation to expected return. If that is true then this kind of estimation makes sense, frequently it does not.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;Edit: In fact better considered as the opposite end of a <a href="https://herdingcats.typepad.com/my_weblog/2013/10/how-to-estimate-almost-anything-if-you-really-want-to.html">spectrum of estimating</a>.</p></div></div><p>Estimations are fundamental to making business decisions and therefore as conscientious engineers we should <strong>make estimation skills as important as other technical skills</strong>. We should have an eye for both precision and speed and know when to trade one for the other, just as we do in other areas. We should also understand the business context and know the appropriate level of confidence. We should also be able to communicate the trade-offs to the people who make the decisions.</p>
+</section>
+<section id="first-approximations" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="first-approximations">First approximations</h2>
+<p>Now that we know what an estimation is, it may be surprising to see just how easy they are. In fact you can nearly always have an intuition about how long a task will take together with its precision with hardly any requirements at all. Information is always available from context and <a href="https://en.wikipedia.org/wiki/Order_of_magnitude#Order-of-magnitude_estimate">order-of-magnitude approximations</a> have immediate value. For example how long would it take to do a DIY project on my house? Without any more details you can make an educated guess: in the order of days or weeks. Certainly not minutes and seconds, and probably not years or decades. Of course this guess has low precision. If I then told you that I had just bought a paintbrush and a tin of paint then the precision of your estimation would improve dramatically. In any case you’d be able to say with some confidence if I’d be finished by Christmas.</p>
+<p>From Steve McConnell’s reaction to the #NoEstimates movement<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>: &gt; Is showing someone several pictures of kitchen remodels that have been completed for $30,000 and implying that the next kitchen remodel can be completed for $30,000 estimation? Yes, it is.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;The entire <a href="https://stevemcconnell.com/blog/17-theses-software-estimation/">article</a> is recommended reading.</p></div></div><div class="page-columns page-full"><p>The same for software. As software consultants we’ve all been asked seemingly absurd questions like “How long will it take to create my website?” but with just a couple of pieces of context we won’t have a highly precise estimate but we can know if it’s worth continuing the conversation. <strong>This is also estimation</strong>, in fact it is one of the best kinds.</p><div class="no-row-height column-margin column-container"><span class="">If you’ve ever played 20 questions then you’ll know the power of binary search and that 20 good questions are worth 2^20 random guesses.</span></div></div>
+<div class="page-columns page-full"><p>There is a famous problem attributed to Enrico Fermi  where you are asked to estimate the <a href="https://en.wikipedia.org/wiki/Fermi_problem#Examples">number of piano tuners in Chicago</a>. Using order-of-magnitude estimation and the law of large numbers it is possible to be quite accurate.</p><div class="no-row-height column-margin column-container"><span class="">This is one of Fermi’s problems where surprisingly good estimates are made where seemingly impossible to do so. Another example is <a href="https://en.wikipedia.org/wiki/Drake_equation">Drake’s prediction</a> of the number of civilisations in our own galaxy which leads to Fermi’s paradox, well known to science-fiction aficionados.</span></div></div>
+<p>Another technique could be called <strong>triangulation</strong>, that is estimating quickly in several different ways to narrow down the options, increasing confidence. Drawing lines on a graph and seeing where they cross is one kind of triangulation, so is comparing the estimations of more than one person. <a href="https://en.wikipedia.org/wiki/Bayesian_inference">Baysian inference</a> is a more sophisticated kind of triangulation.</p>
+<div class="page-columns page-full"><p>More information allows us to increase our precision. That is normal, inevitable and to be embraced. Requirements change and estimates change accordingly. New decisions are based on new information. <strong>This is one of the strengths of agile methodologies over waterfall based ones</strong>. Iterations give feedback and improve estimation precision enabling finer-grained business decisions to be made.</p><div class="no-row-height column-margin column-container"><span class="">John Maynard Keynes famously said ”When my information changes, I alter my conclusions. What do you do, sir?”</span></div></div>
+<p>These techniques are part of the skill of estimation that can to be learnt and there is much value in learning it.</p>
+</section>
+<section id="in-conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="in-conclusion">In conclusion</h2>
+<p>Estimation is not the enemy. In fact as we have seen it is easier than you think and we do it subconsciously all the time. By ensuring we keep tabs not only on the best guess but also our level of confidence in that guess we can harness them and control them.</p>
 
 
+</section>
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(

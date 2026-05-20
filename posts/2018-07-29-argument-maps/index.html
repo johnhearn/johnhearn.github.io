@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2018-07-29">
+<meta name="description" content="Simple example of using argument maps to visualise and simplify claims and objections to a given argument.">
 
-<title>Notes on Uno series – John Hearn</title>
+<title>Argument Maps – John Hearn</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffebb1c0c005f3be0474c28a1434b2ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,65 +70,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-image"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -139,7 +81,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Hearn</span>
     </a>
   </div>
@@ -150,15 +92,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -176,18 +118,33 @@ window.Quarto = {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notes on Uno series</h1>
-</div>
+<h1 class="title">Argument Maps</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">communication</div>
+    <div class="quarto-category">philosophy</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Simple example of using argument maps to visualise and simplify claims and objections to a given argument.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 29, 2018</p>
+    </div>
+  </div>
   
     
   </div>
@@ -197,16 +154,82 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
+<p>Ron Jeffries is a well known writer on agile (or is it Agile?) practices in the software industry. He has a very active <a href="https://twitter.com/ronjeffries">Twitter account</a> and his posts tend to have a nice logical and empirical style. He has recently been talking about the value (or not) of <a href="https://en.wikipedia.org/wiki/Software_development_effort_estimation">estimation</a> in the software creation process. One series of posts included the nicely rounded claim that “<a href="https://twitter.com/hashtag/noestimates">#noestimates</a>” is a good hashtag :) Very interesting.</p>
+<p>On the other hand I’ve been lurking on <a href="https://www.kialo.com/">Kialo</a> and reading about <a href="https://en.wikipedia.org/wiki/Argument_map">argument map</a>s in general. Argument maps are basically a type of diagram which helps visualise the flow of reasoning between different claims and objections and can be used to make better decisions. They appeal to my rather pedantic attitude to language and seem to be a great tool to have in the toolbox.</p>
+<p>So I thought it might be interesting to break down Ron’s #noestimates reasoning using this technique and maybe learn something new on the way.</p>
+<p>To create the diagram the first thing to do is to extract the claims from the text. It is normal in these situations for some claims to be repeated, mixed together and restated in other terms. What’s great about the argument map is that at the end of the process not only do you have a distilled version of the original claims but, more importantly, a list of the assumptions or premises underlying the argument. These are often the places where disagreement is hiding and can be very enlightening.</p>
+<p>The following is an extract from Ron’s post with the claims highlighted in <strong>bold</strong>. Between each numbered point I’ve added a note (as objectively as possible) to map the text to one or more unambiguous claims. Let’s see how it goes.</p>
+<blockquote class="blockquote">
+<p>1. <em>So I was thinking about #noestimates. I’d think we could agree that <strong>IF estimates were not needed we would not use them</strong> (i), <strong>because waste</strong> (ii). (If not I have something interesting to learn.)</em></p>
+</blockquote>
+<p>Point (i) is a claim reasoned from a (so far incomplete) supporting claim (ii). Don’t worry this second claim is expanded below.</p>
+<blockquote class="blockquote">
+<p>2. <em>And <strong>WHEN they’re not needed, we’d not use them</strong>, I should think?</em></p>
+</blockquote>
+<p>In terms of an argument map this claim is simply a stronger restatement of 1.</p>
+<blockquote class="blockquote">
+<p>3. <em>Now I want to suggest that <strong>estimates are always waste</strong>.</em></p>
+</blockquote>
+<p>This is an independent claim drawn from 4.</p>
+<blockquote class="blockquote">
+<p>4. <em><strong>They are not product</strong> (i) (I hope) so <strong>they are automatically waste</strong> (ii).</em></p>
+</blockquote>
+<p>Clearly two separate claims. The second is a restatement of 3 substituting “automatically” with the synonym “always” so we can combine the two claims into one.</p>
+<blockquote class="blockquote">
+<p>5. <em><strong>We should want to get rid of them</strong> on those grounds. (See Waste)</em></p>
+</blockquote>
+<p>I first thought that this was a repetition of 1 &amp; 2 but it’s not. It’s implicitly relying on a further claim, which is made in point 7.</p>
+<blockquote class="blockquote">
+<p>6. <em>Now I am somewhat bemused by people actually arguing FOR estimates, rather than saying “well, they are waste, but unfortunately <strong>they are often necessary</strong>, so we should be good at them”. Maybe someone will explain that to me. But that’s not my point.</em></p>
+</blockquote>
+<p>I love this. Ron somewhat generously mentions a potential objection to claim 5. It’ll be interesting to see where this objection sits and its relationship to the rest of the argument.</p>
+<blockquote class="blockquote">
+<p>7. <em><strong>Since they are waste</strong> (i), <strong>if they are not necessary</strong> (ii), surely <strong>we all would like to get rid of them</strong> (iii), save only the people whose job it is to produce estimates. Their hands are not clean and we’ll ignore them.</em></p>
+</blockquote>
+<p>Claims supporting point 5. The same point is expanded further in point 9. Note the second claim, couched with an “if” is actually a predicate. Let’s see where that ends up on the map.</p>
+<blockquote class="blockquote">
+<p>8. <em>Now I want to tell you a story…..[snip]</em></p>
+</blockquote>
+<p>Anecdotal. Here Ron relates a story from his previous experience. It supports the point he’s making but does not make any further claims so I’ll skip it.</p>
+<blockquote class="blockquote">
+<p>9. <em>Since <strong>estimates are always overhead, always waste</strong> (i), <strong>every such elimination</strong>, [<strong>if it can be done readily, at lower cost than the original estimation</strong> (iii)], it <strong>SHOULD be done</strong> (ii), because <strong>we should always reduce waste</strong> (iv).</em></p>
+</blockquote>
+<p>This is a difficult statement to parse. It restates claims 3 and 7 (i) &amp; (iv) but with a caveat about costs involved (iii). From a philosophical point of view the claim “<em>every such elimination SHOULD be done</em>” is a classic example of <a href="https://www.youtube.com/watch?v=eT7yXG2aJdY">Hume’s Is-Ought</a> problem where statements of fact are translated to general prescriptive rules. It’s no problem for our argument map though.</p>
+<blockquote class="blockquote">
+<p>10. <em>What is <strong>the limit of this activity</strong>? <strong>We should keep eliminating waste</strong>, including waste from estimates <strong>until there is none</strong>. <strong>The limit is: NO ESTIMATES</strong> (ii).</em></p>
+</blockquote>
+<p>Again repeating claims made in 1, 2, 5, 7 and 9 - this is the main point it would seem - but this time with a further claim about the limiting case.</p>
+<blockquote class="blockquote">
+<p>11. <em>That’s why <strong>it’s a good idea</strong> and why it’s probably <strong>a good hashtag</strong> as well.</em></p>
+</blockquote>
+<p>And last but not least we have the headline claim about the hashtag being a good one :)</p>
+<p>The next step is to translate the claims and their supporting claims into a tree structure. The online mind mapping tool MindMup has a free <a href="http://argument.mindmup.com/">argument visualizer</a> which works great. This is the result.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="argument-map.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">Argument Map</figcaption>
+</figure>
 </div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+<p>It was actually quite hard to be totally objective but I think it gives a faithful summary of the flow of reasoning. At the top we have the main contention and underneath a hierarchy of other claims that support it.</p>
+<p>It actually felt a little bit like <em>refactoring</em> the argument, extracting the relationships between claims and simplifying by removing redundancy and repetition.</p>
+<p>It seems the most interesting things in these diagrams are often the leaves of the tree which, having no supporting claims and therefore represent the premises and assumptions of the author. In this case we have:</p>
+<ol type="1">
+<li>Estimates are not product [so they are waste].</li>
+<li>We should always reduce waste.</li>
+<li>The limit of eliminating waste is to continue until there is none.</li>
+</ol>
+<p>Ergo, #noestimates!</p>
+<p>If you don’t agree with these points then you probably don’t agree with the conclusion.&nbsp;</p>
+<p>On the other hand, it’s interesting to see that the conditionals (4.1 and 6.3, yellow in the diagram) and the objection that Ron himself mentions (6.2) are basically limiting the scope to saying “<em>if it can be done then it should be done</em>”. Valuable in itself and I think that’s Ron’s general point rather than more extreme interpretations that you might hear.&nbsp;</p>
+<p>Ron makes the same points in a later post stating the bottom line as:&nbsp; “We always could stop estimating, but it’s not always the right thing to do. It’s always legitimate to think about it.”</p>
+<p>It’s also clear where you might insert more claims or objections to the argument in general. For example, you might object to the point that not being product would directly imply waste. My personal opinion is that in <em>some</em> projects the business value of a feature is a function of time, and therefore estimates allow a more precise calculation of value and therefore better decisions and better products. I could insert this objection below the “estimates are always waste” claim. This ability to insert claims and objections makes it an excellent tool for collaborative and constructive decision making, as is done in sites like Kialo.</p>
+<p>In conclusion, I found argument maps to be a great way to distill a piece of text and identify the key claims and premises and actually gain a better understanding. It’s also easier to see where further claims or objections might fit making it an great tool for collaboration. I’ll certainly be using it more often especially for technical decisions and on longer and more complicated arguments.</p>
+<hr>
+<p>Many thanks to my collegue <a href="https://codurance.com/publications/author/raquel-m-carmena/"><strong>Rachel M. Carmena</strong></a> for her review, suggestions and encouragement.</p>
+
+
+
+</main> <!-- /main -->
 <script>
 const visibleMarginItems = () =>
   Array.from(
