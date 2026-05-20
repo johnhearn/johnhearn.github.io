@@ -56,6 +56,6 @@ As always these results need to be used with caution and a full understanding of
 
 Just to check that the model we've described actually works, the shaded area in the plot below shows 100,000 results from Monte Carlo simulations of delivery times for 40 pieces of work when 5 items are delivered together. The red line represents the negative binomial model described here. Hopefully, they match as perfectly now as they did when I wrote this.
 
-<!-- Interactive plots were hosted at /assets/frames/ but are not yet migrated -->
+<iframe title="Monte Carlo delivery-time simulation compared with the negative binomial model" width="700" height="470" src="negative-binomial-plot.html" frameborder="0"></iframe>
 
 [^other-reasons]: There are other reasons too, like the accumulation of changes increasing the probability of bugs but that is not covered in this model.
